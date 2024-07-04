@@ -1,0 +1,124 @@
+.CardBox .MuiCardHeader-avatar {
+  flex-grow: 20;
+}
+
+.AvatarCard {
+  background-color: #fff !important;
+  color: #242424 !important;
+  width: 1.3125rem !important;
+  height: 1.3125rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 700;
+  line-height: normal;
+}
+.HeadSummary {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0px !important;
+  text-transform: inherit !important;
+  margin-bottom: 6px !important;
+  display: block;
+}
+.ChipSpan {
+  color: #17236d !important;
+  font-size: 0.875rem !important;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 2.125rem;
+  background: #d5dded !important;
+  height: 1.4375rem !important;
+  padding: 0.125rem 0.5rem !important;
+  padding-right: 10px !important;
+}
+.ChipSpan.rejected {
+  color: #F20000 !important;
+  background: #FEE5E5 !important;
+}
+
+.MuiChip-label {
+  padding-right: 7px !important;
+}
+.PopBox .MuiPopover-paper {
+  border-radius: 0.4375rem;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  padding: 0.625rem;
+}
+.ItemsDiv {
+  border-radius: 0.5rem;
+  background: rgba(22, 35, 108, 0.08);
+  width: 100%;
+  height: 1.6875rem;
+  padding: 0px 10px;
+  margin-top: 10px;
+}
+.ItemsDiv p {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.7rem;
+}
+.SubmitBtn {
+  color: #fff;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: normal;
+  height: 3rem;
+  width: 100%;
+  flex-shrink: 0;
+  border-radius: 0.3125rem;
+  background: #e6682d;
+  border: none;
+}
+.SummaryContent .MuiAccordionSummary-content {
+  flex-grow: initial;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #fff;
+  padding-right: 10px;
+}
+.MuiGrid-root.codes-act-header {
+  margin: auto 0;
+}
+
+.pdap-ui-codes-read-only-t1-wrap{
+  padding: 8px 0;
+}
+.pdap-ui-codes-read-only-t1{
+  color: #E6682D;
+  padding-left: 30px;
+}
+
+
+@media screen and (max-width: 767px) {
+  .HeadSummary {
+    font-size: 0.875rem;
+  }
+  .codes-act-header-container.MuiGrid-root {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  .codes-act-header.MuiGrid-root {
+    width: 100%;
+    max-width: 100%;
+  }
+  .codes-act-header-title {
+    width: 100%;
+  }
+  .codes-act-header-plist-wrap.MuiGrid-root {
+    width: 100%;
+    max-width: 100%;
+  }
+  .codes-act-header-plist-box {
+    margin-right: 6px;
+  }
+  .pdap-ui-codes-read-only-t1{
+    padding-left: 0px;
+  }
+}

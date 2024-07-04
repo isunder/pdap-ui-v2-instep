@@ -1,0 +1,6 @@
+.MuiDrawerTop .MuiDrawer-paper {
+    top: 8rem;
+    box-shadow: 0px 0px 7px 0px #17236D66;
+    background: #F9F9F9;
+    border-top: 3px solid #D9D9D9;
+}

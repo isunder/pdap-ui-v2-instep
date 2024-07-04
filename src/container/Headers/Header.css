@@ -1,0 +1,17 @@
+@media screen and (min-width: 969px) {
+  .MuiDialog-paper {
+    width: 701px;
+    max-width: 701px !important;
+    border-radius: 13px !important;
+  }
+}
+
+@media screen and (max-width: 968px) {
+  .MuiDialog-paper {
+    width: 355px !important;
+    max-width: 355px !important;
+    border-radius: 13px !important;
+    height: auto !important;
+    padding: 20px 0px;
+  }
+}

@@ -1,0 +1,112 @@
+.PopBox .MuiPopover-paper {
+  height: 65px;
+  width: 160px;
+  padding: 10px 10px 0px;
+  border-radius: 7px;
+  box-shadow: 0px 0px 14px 0px #00000026;
+}
+
+.PopBox div span {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14.62px;
+  text-transform: inherit;
+  text-align: left;
+  padding: 0px;
+  color: #000000;
+}
+
+.CursorIcon {
+  cursor: pointer;
+}
+
+.HistoryBox {
+  box-shadow: 0px 5px 25px 0px #141f5e0d;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 60px 30px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.HistoryBox p {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0em;
+  margin-bottom: 10px;
+}
+
+.HistoryBox span {
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.49px;
+  letter-spacing: 0em;
+}
+
+.HistoryCode {
+  color: #17236d;
+  display: inline-block !important;
+  font-weight: 700 !important;
+}
+
+.AccordHead svg {
+  vertical-align: sub;
+}
+
+.AccordHead p {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-bottom: 0px;
+  color: #000000;
+  padding-left: 5px;
+}
+
+.AccordHead span {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: 0em;
+  padding-left: 20px;
+  color: #00000099;
+}
+
+.ContentAccord p span {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  letter-spacing: 0em;
+  color: #000000;
+}
+
+.ContentAccord p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  color: #000000;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+.BorderLeft {
+  width: 1px;
+  height: 54px;
+  background: rgba(217, 217, 217, 0.8);
+  margin-left: 50px;
+  display: inline-block;
+}
+
+.DropIcon {
+  margin-left: 20px;
+}
+.MuiAlert-action {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}

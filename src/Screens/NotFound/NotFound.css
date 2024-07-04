@@ -1,0 +1,82 @@
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+div {
+    display: block;
+}
+
+@media only screen and (max-width: 968px) {
+    .notfound .notfound-bg {
+        width: 287px;
+        margin: auto;
+    }
+}
+
+#notfound {
+    position: relative;
+    height: 100vh;
+    background-color: #fafbfd;
+}
+
+#notfound .notfound {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.notfound {
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+}
+
+.notfound .notfound-bg {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    z-index: -1;
+}
+
+.notfound .notfound-bg>div {
+    width: 100%;
+    background: #fff;
+    border-radius: 90px;
+    height: 125px;
+}
+
+.notfound .notfound-bg>div:nth-child(2) {
+    -webkit-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    transform: scale(1.3);
+    -webkit-box-shadow: 5px 5px 0px 0px #f3f3f3;
+    box-shadow: 5px 5px 0px 0px #f3f3f3;
+    position: relative;
+    z-index: 10;
+}
+
+.notfound .notfound-bg>div:nth-child(3) {
+    -webkit-box-shadow: 5px 5px 0px 0px #f3f3f3;
+    box-shadow: 5px 5px 0px 0px #f3f3f3;
+    position: relative;
+    z-index: 90;
+}
+
+h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    color: #7C7C7D;
+}
