@@ -29,6 +29,7 @@ import {
   ExistingConditions,
   SubHeader,
   Suspects,
+  DeletedCodes
 } from "../../container";
 import { WarningIcon } from "../../components";
 import { PrimaryButton } from "../../components/Button";
@@ -191,8 +192,8 @@ export const Codes = () => {
       existingCode?.length > 0 && sessionObject?.existingCode?.length > 0
         ? [...sessionObject?.existingCode, ...existingCode]
         : existingCode?.length > 0
-        ? existingCode
-        : sessionObject?.existingCode || [];
+          ? existingCode
+          : sessionObject?.existingCode || [];
 
     let sessionExisting = newExisting?.filter((item, index, self) => {
       return index === self.findIndex((t) => t.code === item.code);
@@ -200,11 +201,11 @@ export const Codes = () => {
 
     let newExistingReject =
       existingCodeReject?.length > 0 &&
-      sessionObject?.existingCodeReject?.length > 0
+        sessionObject?.existingCodeReject?.length > 0
         ? [...sessionObject?.existingCodeReject, ...existingCodeReject]
         : existingCodeReject?.length > 0
-        ? existingCodeReject
-        : sessionObject?.existingCodeReject || [];
+          ? existingCodeReject
+          : sessionObject?.existingCodeReject || [];
 
     let sessionExistingReject = newExistingReject?.filter(
       (item, index, self) => {
@@ -217,8 +218,8 @@ export const Codes = () => {
       recaptureCode?.length > 0 && sessionObject?.recaptureCode?.length > 0
         ? [...sessionObject?.recaptureCode, ...recaptureCode]
         : recaptureCode?.length > 0
-        ? recaptureCode
-        : sessionObject?.recaptureCode || [];
+          ? recaptureCode
+          : sessionObject?.recaptureCode || [];
 
     let sessionRecapture = newRecapture?.filter((item, index, self) => {
       return index === self.findIndex((t) => t.code === item.code);
@@ -226,11 +227,11 @@ export const Codes = () => {
 
     let newRecaptureReject =
       recaptureCodeReject?.length > 0 &&
-      sessionObject?.recaptureCodeReject?.length > 0
+        sessionObject?.recaptureCodeReject?.length > 0
         ? [...sessionObject?.recaptureCodeReject, ...recaptureCodeReject]
         : recaptureCodeReject?.length > 0
-        ? recaptureCodeReject
-        : sessionObject?.recaptureCodeReject || [];
+          ? recaptureCodeReject
+          : sessionObject?.recaptureCodeReject || [];
 
     let sessionRecaptureReject = newRecaptureReject?.filter(
       (item, index, self) => {
@@ -243,8 +244,8 @@ export const Codes = () => {
       suspectCode?.length > 0 && sessionObject?.suspectCode?.length > 0
         ? [...sessionObject?.suspectCode, ...suspectCode]
         : suspectCode?.length > 0
-        ? suspectCode
-        : sessionObject?.suspectCode || [];
+          ? suspectCode
+          : sessionObject?.suspectCode || [];
 
     let sessionSuspect = newSuspect?.filter((item, index, self) => {
       return index === self.findIndex((t) => t.code === item.code);
@@ -252,11 +253,11 @@ export const Codes = () => {
 
     let newSuspectReject =
       suspectCodeReject?.length > 0 &&
-      sessionObject?.suspectCodeReject?.length > 0
+        sessionObject?.suspectCodeReject?.length > 0
         ? [...sessionObject?.suspectCodeReject, ...suspectCodeReject]
         : suspectCodeReject?.length > 0
-        ? suspectCodeReject
-        : sessionObject?.suspectCodeReject || [];
+          ? suspectCodeReject
+          : sessionObject?.suspectCodeReject || [];
 
     let sessionSuspectReject = newSuspectReject?.filter((item, index, self) => {
       let key = Object.keys(item)[0];
@@ -267,8 +268,8 @@ export const Codes = () => {
       duplicateCode?.length > 0 && sessionObject?.duplicateCode?.length > 0
         ? [...sessionObject?.duplicateCode, ...duplicateCode]
         : duplicateCode?.length > 0
-        ? duplicateCode
-        : sessionObject?.duplicateCode || [];
+          ? duplicateCode
+          : sessionObject?.duplicateCode || [];
 
     let sessionDuplicate = newDuplicate?.filter((item, index, self) => {
       return index === self.findIndex((t) => t.code === item.code);
@@ -276,11 +277,11 @@ export const Codes = () => {
 
     let newDuplicateReject =
       duplicateCodeReject?.length > 0 &&
-      sessionObject?.duplicateCodeReject?.length > 0
+        sessionObject?.duplicateCodeReject?.length > 0
         ? [...sessionObject?.duplicateCodeReject, ...duplicateCodeReject]
         : duplicateCodeReject?.length > 0
-        ? duplicateCodeReject
-        : sessionObject?.duplicateCodeReject || [];
+          ? duplicateCodeReject
+          : sessionObject?.duplicateCodeReject || [];
 
     let sessionDuplicateReject = newDuplicateReject?.filter(
       (item, index, self) => {
@@ -342,6 +343,8 @@ export const Codes = () => {
       localStorage.removeItem(`sessionObject_${userDetail.mrn}`);
     }
   };
+
+
   const handleSubmit = async () => {
     let requestBody;
     if (existingCode?.length > 0) {
@@ -450,7 +453,7 @@ export const Codes = () => {
           localStorage.removeItem(`sessionObject_${userDetail.mrn}`);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     if (slug && tabData) {
@@ -478,7 +481,6 @@ export const Codes = () => {
   ]);
 
   const { summary } = useSelector((state) => state.user.data);
-
   // const localData =
 
   const codesData = [
@@ -514,6 +516,13 @@ export const Codes = () => {
       code: "Duplicate Codes",
       codeCount: summary?.duplicate_codes_count,
       container: <DuplicateCodes sessionObject={sessionObject} />,
+    },
+
+    {
+      key: 6,
+      code: "Deleted Codes/Conditions",
+      codeCount: summary?.deleted_codes_count,
+      container: <DeletedCodes sessionObject={sessionObject} />,
     },
   ];
 
@@ -557,11 +566,11 @@ export const Codes = () => {
                 let changeData = updatedRejectData?.map((value) => {
                   return Object.keys(codeValue)[0] === Object.keys(value)[0]
                     ? {
-                        [item.code]: {
-                          ...value[item.code],
-                          delete_code: false,
-                        },
-                      }
+                      [item.code]: {
+                        ...value[item.code],
+                        delete_code: false,
+                      },
+                    }
                     : value;
                 });
                 setExistingRejectData([...changeData]);
@@ -681,13 +690,13 @@ export const Codes = () => {
     sessionHistory();
     setSumCount(
       existingCode?.length +
-        existingCodeReject?.length +
-        recaptureCode?.length +
-        recaptureCodeReject?.length +
-        suspectCode?.length +
-        suspectCodeReject?.length +
-        duplicateCode?.length +
-        duplicateCodeReject?.length
+      existingCodeReject?.length +
+      recaptureCode?.length +
+      recaptureCodeReject?.length +
+      suspectCode?.length +
+      suspectCodeReject?.length +
+      duplicateCode?.length +
+      duplicateCodeReject?.length
     );
   }, [
     existingCode,
@@ -1056,7 +1065,7 @@ export const Codes = () => {
                                           .toString()
                                           .slice(0, 20)}{" "}
                                         {Object.keys(item).toString().length >
-                                        20
+                                          20
                                           ? "..."
                                           : ""}
                                         <Typography sx={{ ml: "10px" }}>
@@ -1295,13 +1304,13 @@ export const Codes = () => {
                         )}
                       </Grid>
                       {existingCode?.length > 0 ||
-                      recaptureCode?.length > 0 ||
-                      duplicateCode?.length > 0 ||
-                      Object?.keys(suspectCode)?.length > 0 ||
-                      existingCodeReject?.length > 0 ||
-                      recaptureCodeReject?.length > 0 ||
-                      suspectCodeReject?.length > 0 ||
-                      duplicateCodeReject?.length > 0 ? (
+                        recaptureCode?.length > 0 ||
+                        duplicateCode?.length > 0 ||
+                        Object?.keys(suspectCode)?.length > 0 ||
+                        existingCodeReject?.length > 0 ||
+                        recaptureCodeReject?.length > 0 ||
+                        suspectCodeReject?.length > 0 ||
+                        duplicateCodeReject?.length > 0 ? (
                         <button
                           style={{ cursor: "pointer" }}
                           className="SubmitBtn"
@@ -1567,7 +1576,7 @@ export const Codes = () => {
                           textTransform: "initial",
                         }}
                       >
-                        You have {}
+                        You have { }
                         <Typography
                           sx={{
                             color: "#000;",
@@ -1575,7 +1584,7 @@ export const Codes = () => {
                         >
                           {summary?.existing_codes_count || 0}
                         </Typography>
-                        {} urgent existing conditions requiring recapturing.
+                        { } urgent existing conditions requiring recapturing.
                       </Typography>
                     </Grid>
                   </Grid>
@@ -1612,7 +1621,7 @@ export const Codes = () => {
                           textTransform: "initial",
                         }}
                       >
-                        You have {}
+                        You have { }
                         <Typography
                           sx={{
                             color: "#000;",
@@ -1620,7 +1629,7 @@ export const Codes = () => {
                         >
                           {summary?.suspect_conditions_count || 0}
                         </Typography>
-                        {} urgent new suspects for review.
+                        { } urgent new suspects for review.
                       </Typography>
                     </Grid>
                   </Grid>
@@ -1662,7 +1671,7 @@ export const Codes = () => {
                           textTransform: "initial",
                         }}
                       >
-                        You have {}
+                        You have { }
                         <Typography
                           sx={{
                             color: "#000;",
@@ -1670,7 +1679,7 @@ export const Codes = () => {
                         >
                           {summary?.recapture_codes_count || 0}
                         </Typography>
-                        {} codes that are not in the problem list
+                        { } codes that are not in the problem list
                       </Typography>
                     </Grid>
                   </Grid>
@@ -1773,7 +1782,7 @@ export const Codes = () => {
                         </Typography>
                       </Grid>
                       {!(existingCode?.length || existingRejectCode?.length) >
-                      0 ? (
+                        0 ? (
                         <>
                           <Grid
                             item
@@ -2213,13 +2222,13 @@ export const Codes = () => {
                     </Grid>
 
                     {existingCode?.length > 0 ||
-                    recaptureCode?.length > 0 ||
-                    duplicateCode?.length > 0 ||
-                    Object?.keys(suspectCode)?.length > 0 ||
-                    existingCodeReject?.length > 0 ||
-                    recaptureCodeReject?.length > 0 ||
-                    duplicateCodeReject?.length > 0 ||
-                    suspectCodeReject?.length > 0 ? (
+                      recaptureCode?.length > 0 ||
+                      duplicateCode?.length > 0 ||
+                      Object?.keys(suspectCode)?.length > 0 ||
+                      existingCodeReject?.length > 0 ||
+                      recaptureCodeReject?.length > 0 ||
+                      duplicateCodeReject?.length > 0 ||
+                      suspectCodeReject?.length > 0 ? (
                       <button
                         style={{ cursor: "pointer" }}
                         className="SubmitBtn"

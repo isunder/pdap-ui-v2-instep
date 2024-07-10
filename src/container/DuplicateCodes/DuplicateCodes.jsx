@@ -238,18 +238,18 @@ export const DuplicateCodes = ({ sessionObject }) => {
         duplicateCode?.length > 0 && sessionObject?.duplicateCode?.length > 0
           ? [...sessionObject?.duplicateCode, ...duplicateCode]
           : duplicateCode?.length > 0
-          ? duplicateCode
-          : sessionObject?.duplicateCode || [];
+            ? duplicateCode
+            : sessionObject?.duplicateCode || [];
       selectedDuplicatecode?.length === 0 &&
         setSelectedDuplicatecode([...newDuplicate]);
 
       let newDuplicateReject =
         rejectDuplicateCode?.length > 0 &&
-        sessionObject?.duplicateCodeReject?.length > 0
+          sessionObject?.duplicateCodeReject?.length > 0
           ? [...sessionObject?.duplicateCodeReject, ...rejectDuplicateCode]
           : rejectDuplicateCode?.length > 0
-          ? rejectDuplicateCode
-          : sessionObject?.duplicateCodeReject || [];
+            ? rejectDuplicateCode
+            : sessionObject?.duplicateCodeReject || [];
       rejectDuplicateCode?.length === 0 &&
         setRejectDuplicateCode([...newDuplicateReject]);
 
@@ -366,11 +366,11 @@ export const DuplicateCodes = ({ sessionObject }) => {
           let changeData = rejectDuplicateData?.map((value) => {
             return Object.keys(codeValue)[0] === Object.keys(value)[0]
               ? {
-                  [selectedMainCode]: {
-                    ...value[selectedMainCode],
-                    delete_code: true,
-                  },
-                }
+                [selectedMainCode]: {
+                  ...value[selectedMainCode],
+                  delete_code: true,
+                },
+              }
               : value;
           });
           setDuplicateRejectData([...changeData]);
@@ -593,11 +593,11 @@ export const DuplicateCodes = ({ sessionObject }) => {
               const updatingData = updatedRejectData?.map((val) => {
                 return Object.keys(val)[0] === item?.code
                   ? {
-                      [selectedMainCode]: {
-                        ...val[selectedMainCode],
-                        delete_code: false,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...val[selectedMainCode],
+                      delete_code: false,
+                    },
+                  }
                   : val;
               });
               setDuplicateRejectData([...updatingData]);
@@ -605,11 +605,11 @@ export const DuplicateCodes = ({ sessionObject }) => {
               let changeData = updatedRejectData?.map((value) => {
                 return Object.keys(codeValue)[0] === Object.keys(value)[0]
                   ? {
-                      [selectedMainCode]: {
-                        ...value[selectedMainCode],
-                        delete_code: codeValue[id]?.delete_code,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...value[selectedMainCode],
+                      delete_code: codeValue[id]?.delete_code,
+                    },
+                  }
                   : value;
               });
               setDuplicateRejectData([...changeData]);
@@ -1076,11 +1076,11 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                 Accepted
                               </StyledButton1>
                             ) : !rejectDuplicateCode?.some((value, index) => {
-                                let key = Object.keys(value)[0];
-                                if (item.code === key) {
-                                  return true;
-                                }
-                              }) ? (
+                              let key = Object.keys(value)[0];
+                              if (item.code === key) {
+                                return true;
+                              }
+                            }) ? (
                               <StyledButton
                                 onClick={() => handleClickOpen1(item)}
                                 sx={{
@@ -1218,9 +1218,8 @@ export const DuplicateCodes = ({ sessionObject }) => {
                       },
                     }}
                     expandIcon={<ArrowDropDownIcon width={12} height={12} />}
-                    header={`Show Alternate Codes (${
-                      Object.keys(item?.info?.alternate_codes).length
-                    })`}
+                    header={`Show Alternate Codes (${Object.keys(item?.info?.alternate_codes).length
+                      })`}
                   >
                     {item?.info?.alternate_codes &&
                       item?.info?.alternate_codes?.map((value, i) => (
@@ -1375,13 +1374,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             Accepted
                                           </StyledButton1>
                                         ) : !rejectDuplicateCode?.some(
-                                            (val, index) => {
-                                              let key = Object.keys(val)[0];
-                                              if (value?.code === key) {
-                                                return true;
-                                              }
+                                          (val, index) => {
+                                            let key = Object.keys(val)[0];
+                                            if (value?.code === key) {
+                                              return true;
                                             }
-                                          ) ? (
+                                          }
+                                        ) ? (
                                           <StyledButton
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -1658,13 +1657,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         Accepted
                                       </StyledButton1>
                                     ) : !rejectDuplicateCode?.some(
-                                        (val, index) => {
-                                          let key = Object.keys(val)[0];
-                                          if (value?.code === key) {
-                                            return true;
-                                          }
+                                      (val, index) => {
+                                        let key = Object.keys(val)[0];
+                                        if (value?.code === key) {
+                                          return true;
                                         }
-                                      ) ? (
+                                      }
+                                    ) ? (
                                       <StyledButton
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
@@ -2101,13 +2100,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             Accepted
                                           </StyledButton1>
                                         ) : !rejectDuplicateCode?.some(
-                                            (val, index) => {
-                                              let key = Object.keys(val)[0];
-                                              if (value.code === key) {
-                                                return true;
-                                              }
+                                          (val, index) => {
+                                            let key = Object.keys(val)[0];
+                                            if (value.code === key) {
+                                              return true;
                                             }
-                                          ) ? (
+                                          }
+                                        ) ? (
                                           <StyledButton
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -2586,13 +2585,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         Accepted
                                       </StyledButton1>
                                     ) : !rejectDuplicateCode?.some(
-                                        (val, index) => {
-                                          let key = Object.keys(val)[0];
-                                          if (value?.code === key) {
-                                            return true;
-                                          }
+                                      (val, index) => {
+                                        let key = Object.keys(val)[0];
+                                        if (value?.code === key) {
+                                          return true;
                                         }
-                                      ) ? (
+                                      }
+                                    ) ? (
                                       <StyledButton
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
@@ -2730,20 +2729,20 @@ export const DuplicateCodes = ({ sessionObject }) => {
                           {tabs &&
                             tabs["patient_dashboard_accept_all"]?.active &&
                             (rejectDuplicateData &&
-                            rejectDuplicateData?.some((value) => {
-                              if (Object.keys(value)[0] === item.code) {
-                                if (
-                                  item?.info?.alternate_codes?.length ===
+                              rejectDuplicateData?.some((value) => {
+                                if (Object.keys(value)[0] === item.code) {
+                                  if (
+                                    item?.info?.alternate_codes?.length ===
                                     value[Object.keys(value)[0]]
                                       ?.alternate_codes?.length &&
-                                  value[Object.keys(value)[0]].delete_code ===
+                                    value[Object.keys(value)[0]].delete_code ===
                                     true
-                                ) {
-                                  return true;
+                                  ) {
+                                    return true;
+                                  }
                                 }
-                              }
-                              return false;
-                            }) ? (
+                                return false;
+                              }) ? (
                               <StyledButton
                                 sx={{
                                   backgroundColor: theme.palette.error.active1,
@@ -2859,20 +2858,20 @@ export const DuplicateCodes = ({ sessionObject }) => {
                             {tabs &&
                               tabs["patient_dashboard_accept_all"]?.active &&
                               (rejectDuplicateData &&
-                              rejectDuplicateData?.some((value) => {
-                                if (Object.keys(value)[0] === item.code) {
-                                  if (
-                                    item?.info?.alternate_codes?.length ===
+                                rejectDuplicateData?.some((value) => {
+                                  if (Object.keys(value)[0] === item.code) {
+                                    if (
+                                      item?.info?.alternate_codes?.length ===
                                       value[Object.keys(value)[0]]
                                         ?.alternate_codes?.length &&
-                                    value[Object.keys(value)[0]].delete_code ===
+                                      value[Object.keys(value)[0]].delete_code ===
                                       true
-                                  ) {
-                                    return true;
+                                    ) {
+                                      return true;
+                                    }
                                   }
-                                }
-                                return false;
-                              }) ? (
+                                  return false;
+                                }) ? (
                                 <Button
                                   sx={{
                                     borderRadius: "10px",

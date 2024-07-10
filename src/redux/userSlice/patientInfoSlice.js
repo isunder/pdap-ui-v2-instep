@@ -55,6 +55,18 @@ export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", asy
     }
 });
 
+// function for patient Duplicate Codes
+export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
+    try {
+        if (slug) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}`);
+            return data.data;
+        }
+    } catch (error) {
+        console.log("error in patientDeletedCode", error)
+    }
+});
+
 // function for patient suspect Codes
 export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", async () => {
     try {
@@ -179,6 +191,20 @@ const slice = createSlice({
             console.log('Error', action.payload)
             state.isError = true;
         });
+
+            // for patient delted code
+            builder.addCase(patientDeletedCode.pending, (state) => {
+                state.isLoading = true
+            });
+            builder.addCase(patientDeletedCode.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.data.deletedCodes = action.payload;
+            });
+            builder.addCase(patientDeletedCode.rejected, (state, action) => {
+                state.isLoading = false;
+                console.log('Error', action.payload)
+                state.isError = true;
+            });
 
         // for patient patient Suspect code
         builder.addCase(patientSuspectedCode.pending, (state) => {
