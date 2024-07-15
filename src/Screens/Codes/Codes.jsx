@@ -122,6 +122,7 @@ export const Codes = () => {
   const [closeSubmitModal, setCloseSubmitModal] = useState(false);
 
   const [codesDataLoaded, setCodesDataLoaded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
   const sessionObject = JSON.parse(
@@ -355,7 +356,7 @@ export const Codes = () => {
 
 
   const handleSubmitRedirect = async (tabs) => {
-
+    setIsModalOpen(true);
 
     const isAthenaModal = tabs['tenant_type']?.value === "EPIC";
 
@@ -2321,6 +2322,7 @@ export const Codes = () => {
         duplicateCodeNew={duplicateCodeNew}
         recaptureCodeNew={recaptureCodeNew}
         suspectCodeNew={suspectCodeNew}
+        isModalOpen={isModalOpen}
       />
 
       <DialogModal

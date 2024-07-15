@@ -104,6 +104,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
     duplicateCodeNew,
     recaptureCodeNew,
     suspectCodeNew,
+    isModalOpen
 }) => {
 
     // State variables for different matched values
@@ -112,18 +113,18 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
     const [matchedValuesRecapture, setMatchedValuesRecapture] = useState([]);
     const [matchedValuesDuplicate, setMatchedValuesDuplicate] = useState([]);
 
-    useEffect(() => {
-        if (existingCode.length > 0 && existingConditionnew) {
-            const updatedValues = [];
-            existingCode.forEach(item => {
-                const code = item.code;
-                if (existingConditionnew[code]) {
-                    updatedValues.push(existingConditionnew[code]);
-                }
-            });
-            setMatchedValuesExisting(updatedValues);
-        }
-    }, [existingCode, existingConditionnew, matchedValuesExisting]);
+    // useEffect(() => {
+    //     if (existingCode.length > 0 && existingConditionnew) {
+    //         const updatedValues = [];
+    //         existingCode.forEach(item => {
+    //             const code = item.code;
+    //             if (existingConditionnew[code]) {
+    //                 updatedValues.push(existingConditionnew[code]);
+    //             }
+    //         });
+    //         setMatchedValuesExisting(updatedValues);
+    //     }
+    // }, [existingCode, existingConditionnew, matchedValuesExisting]);
 
     // useEffect(() => {
     //     if (suspectCode.length > 0) {
@@ -138,7 +139,46 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
     //     }
     // }, [suspectCode, matchedValuesSuspect]);
 
+    // useEffect(() => {
+    //     if (recaptureCode.length > 0) {
+    //         const updatedValues = [];
+    //         recaptureCode.forEach(item => {
+    //             const code = item.code;
+    //             if (recaptureCodeNew[code]) {
+    //                 updatedValues.push(recaptureCodeNew[code]);
+    //             }
+    //         });
+    //         setMatchedValuesRecapture(updatedValues);
+    //     }
+    // }, [recaptureCode, matchedValuesRecapture]);
+
+    // useEffect(() => {
+    //     if (duplicateCode.length > 0) {
+    //         const updatedValues = [];
+    //         duplicateCode.forEach(item => {
+    //             const code = item.code;
+    //             if (duplicateCodeNew[code]) {
+    //                 updatedValues.push(duplicateCodeNew[code]);
+    //             }
+    //         });
+    //         setMatchedValuesDuplicate(updatedValues);
+    //     }
+    // }, [duplicateCode, matchedValuesDuplicate]);
+
     useEffect(() => {
+        if(isModalOpen) {
+            if (duplicateCode.length > 0) {
+                const updatedValues = [];
+                duplicateCode.forEach(item => {
+                    const code = item.code;
+                    if (duplicateCodeNew[code]) {
+                        updatedValues.push(duplicateCodeNew[code]);
+                    }
+                });
+                setMatchedValuesDuplicate(updatedValues);
+            }
+        }
+
         if (recaptureCode.length > 0) {
             const updatedValues = [];
             recaptureCode.forEach(item => {
@@ -149,20 +189,29 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
             });
             setMatchedValuesRecapture(updatedValues);
         }
-    }, [recaptureCode, matchedValuesRecapture]);
 
-    useEffect(() => {
-        if (duplicateCode.length > 0) {
+        if (suspectCode.length > 0) {
             const updatedValues = [];
-            duplicateCode.forEach(item => {
+            suspectCode.forEach(item => {
                 const code = item.code;
-                if (duplicateCodeNew[code]) {
-                    updatedValues.push(duplicateCodeNew[code]);
+                if (suspectCodeNew[code]) {
+                    updatedValues.push(suspectCodeNew[code]);
                 }
             });
-            setMatchedValuesDuplicate(updatedValues);
+            setMatchedValuesSuspect(updatedValues);
         }
-    }, [duplicateCode, matchedValuesDuplicate]);
+
+        if (existingCode.length > 0 && existingConditionnew) {
+            const updatedValues = [];
+            existingCode.forEach(item => {
+                const code = item.code;
+                if (existingConditionnew[code]) {
+                    updatedValues.push(existingConditionnew[code]);
+                }
+            });
+            setMatchedValuesExisting(updatedValues);
+        }
+    },[isModalOpen])
 
 
     const removeFromExisting = (item, key, index) => {
