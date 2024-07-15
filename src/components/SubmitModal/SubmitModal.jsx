@@ -13,7 +13,7 @@ import { Card, CardContent, Stack, Tooltip } from '@mui/material';
 import { ArrowDropDownIcon, CrossIcon, CrossIcon2 } from "../../../src/components/Icons";
 
 import { styled } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: 10,
@@ -98,10 +98,102 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
     handleDelete,
     recaptureCodeReject,
     handleSubmit,
-    switchModal
+    switchModal,
+    summary,
+    existingConditionnew,
+    duplicateCodeNew,
+    recaptureCodeNew,
+    suspectCodeNew,
 }) => {
 
-    console.log(recaptureCode, "recaptureCode")
+    // State variables for different matched values
+    const [matchedValuesExisting, setMatchedValuesExisting] = useState([]);
+    const [matchedValuesSuspect, setMatchedValuesSuspect] = useState([]);
+    const [matchedValuesRecapture, setMatchedValuesRecapture] = useState([]);
+    const [matchedValuesDuplicate, setMatchedValuesDuplicate] = useState([]);
+
+    // useEffect for existingCode
+    useEffect(() => {
+        const updatedValues = [];
+        existingCode.forEach(item => {
+            const code = item.code;
+            if (existingConditionnew[code]) {
+                updatedValues.push(existingConditionnew[code]);
+            }
+        });
+        setMatchedValuesExisting(updatedValues);
+    }, [matchedValuesExisting]);
+
+    // useEffect for suspectCode
+    useEffect(() => {
+        const updatedValues = [];
+        suspectCode.forEach(item => {
+            const code = item.code;
+            if (suspectCodeNew[code]) {
+                updatedValues.push(suspectCodeNew[code]);
+            }
+        });
+        setMatchedValuesSuspect(updatedValues);
+    }, [matchedValuesSuspect]);
+
+    // useEffect for recaptureCode
+    useEffect(() => {
+        const updatedValues = [];
+        recaptureCode.forEach(item => {
+            const code = item.code;
+            if (recaptureCodeNew[code]) {
+                updatedValues.push(recaptureCodeNew[code]);
+            }
+        });
+        setMatchedValuesRecapture(updatedValues);
+    }, [matchedValuesRecapture]);
+
+    // useEffect for duplicateCode
+    useEffect(() => {
+        const updatedValues = [];
+        duplicateCode.forEach(item => {
+            const code = item.code;
+            if (duplicateCodeNew[code]) {
+                updatedValues.push(duplicateCodeNew[code]);
+            }
+        });
+        setMatchedValuesDuplicate(updatedValues);
+    }, [matchedValuesDuplicate]);
+
+    console.log(matchedValuesDuplicate, matchedValuesExisting, matchedValuesRecapture, matchedValuesSuspect)
+
+
+    // Function to remove item by index from matchedValuesExisting
+    const removeFromExisting = (item, key, index) => {
+        handleDelete(item, "existing")
+        const updatedValues = [...matchedValuesExisting];
+        updatedValues.splice(index, 1); // Remove one element at index
+        setMatchedValuesExisting(updatedValues);
+    };
+
+    // Function to remove item by index from matchedValuesSuspect
+    const removeFromSuspect = (item, index) => {
+        handleDelete(item, "suspect")
+        const updatedValues = [...matchedValuesSuspect];
+        updatedValues.splice(index, 1); // Remove one element at index
+        setMatchedValuesSuspect(updatedValues);
+    };
+
+    // Function to remove item by index from matchedValuesRecapture
+    const removeFromRecapture = (item, index) => {
+        handleDelete(item, "recapture")
+        const updatedValues = [...matchedValuesRecapture];
+        updatedValues.splice(index, 1); // Remove one element at index
+        setMatchedValuesRecapture(updatedValues);
+    };
+
+    // Function to remove item by index from matchedValuesDuplicate
+    const removeFromDuplicate = (item, index) => {
+        handleDelete(item, "duplicate")
+        const updatedValues = [...matchedValuesDuplicate];
+        updatedValues.splice(index, 1); // Remove one element at index
+        setMatchedValuesDuplicate(updatedValues);
+    };
 
 
     return (
@@ -136,7 +228,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                         borderRadius: "5px",
                                                     }}
                                                 >
-                                                    <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                    <Grid item lg={12} md={12} sm={12} xs={12}>
                                                         <StyledCodeTypography className="">
                                                             Codes that would go in EHR
                                                         </StyledCodeTypography>
@@ -153,25 +245,16 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                 xs={12}
                                                                 sx={{ textAlign: "end" }}
                                                             >
+                                                                <div className="ItemsDivNew">
+                                                                    <p>0 item</p>
+                                                                </div>
 
                                                             </Grid>
-                                                            <div className="ItemsDivNew">
-                                                                <p>0 item</p>
-                                                            </div>
+
 
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Grid
-                                                                item
-                                                                lg={3}
-                                                                md={2}
-                                                                sm={2}
-                                                                xs={12}
-                                                                sx={{ textAlign: "end" }}
-                                                            >
-
-                                                            </Grid>
                                                             {existingCode?.length > 0 &&
                                                                 existingCode?.filter((items) => items.value !== "").map((item, index) => (
                                                                     <Stack
@@ -313,7 +396,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                         borderRadius: "5px",
                                                     }}
                                                 >
-                                                    <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                    <Grid item lg={12} md={12} sm={12} xs={12}>
                                                         <StyledCodeTypography className="">
                                                             Actions to be taken in EHR                                                     </StyledCodeTypography>
                                                     </Grid>
@@ -329,26 +412,17 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                 xs={12}
                                                                 sx={{ textAlign: "end" }}
                                                             >
+                                                                <div className="ItemsDivNew">
+                                                                    <p>0 item</p>
+                                                                </div>
 
                                                             </Grid>
-                                                            <div className="ItemsDivNew">
-                                                                <p>0 item</p>
-                                                            </div>
+
 
 
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Grid
-                                                                item
-                                                                lg={3}
-                                                                md={2}
-                                                                sm={2}
-                                                                xs={12}
-                                                                sx={{ textAlign: "end" }}
-                                                            >
-
-                                                            </Grid>
                                                             {existingCode?.length > 0 &&
                                                                 existingCode?.filter((items) => items.value == "").map((item, index) => (
                                                                     <Stack
@@ -491,7 +565,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                         borderRadius: "5px",
                                                     }}
                                                 >
-                                                    <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                    <Grid item lg={12} md={12} sm={12} xs={12}>
                                                         <StyledCodeTypography className="">
                                                             Rejected codes/conditions from Doctustech                                                     </StyledCodeTypography>
                                                     </Grid>
@@ -507,27 +581,14 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                 xs={12}
                                                                 sx={{ textAlign: "end" }}
                                                             >
-
+                                                                <div className="ItemsDivNew">
+                                                                    <p>0 item</p>
+                                                                </div>
                                                             </Grid>
-
-                                                            <div className="ItemsDivNew">
-                                                                <p>0 item</p>
-                                                            </div>
-
-
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Grid
-                                                                item
-                                                                lg={3}
-                                                                md={2}
-                                                                sm={2}
-                                                                xs={12}
-                                                                sx={{ textAlign: "end" }}
-                                                            >
 
-                                                            </Grid>
                                                             {suspectCodeReject?.length > 0 &&
                                                                 suspectCodeReject?.map((item, index) => (
                                                                     <Stack
@@ -763,15 +824,14 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                             borderRadius: "5px",
                                                         }}
                                                     >
-                                                        <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                        <Grid item lg={12} md={12} sm={12} xs={12}>
                                                             <StyledCodeTypography className="">
                                                                 Codes to be actioned in Care Everywhere
                                                             </StyledCodeTypography>
                                                         </Grid>
 
                                                         {!(
-                                                            existingCode?.length || 0 + suspectCode?.length || 0 + recaptureCode?.length || 0 + duplicateCode?.length || 0) > 0 ? (
-                                                            <>
+                                                            matchedValuesExisting?.length || 0 + matchedValuesSuspect?.length || 0 + matchedValuesRecapture?.length || 0 + matchedValuesDuplicate?.length || 0) > 0 ? (<>
                                                                 <Grid
                                                                     item
                                                                     lg={3}
@@ -780,27 +840,19 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                     xs={12}
                                                                     sx={{ textAlign: "end" }}
                                                                 >
+                                                                    <div className="ItemsDivNew">
+                                                                        <p>0 item</p>
+                                                                    </div>
 
                                                                 </Grid>
-                                                                <div className="ItemsDivNew">
-                                                                    <p>0 item</p>
-                                                                </div>
+
 
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <Grid
-                                                                    item
-                                                                    lg={3}
-                                                                    md={2}
-                                                                    sm={2}
-                                                                    xs={12}
-                                                                    sx={{ textAlign: "end" }}
-                                                                >
 
-                                                                </Grid>
-                                                                {existingCode?.length > 0 &&
-                                                                    existingCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesExisting?.length > 0 &&
+                                                                    matchedValuesExisting?.filter((items) => items.code_in_problem_list === true).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -815,9 +867,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "existing")
-                                                                                    }
+                                                                                    onClick={() => removeFromExisting(item, index)}
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
@@ -830,8 +880,8 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             </Tooltip>
                                                                         </Stack>
                                                                     ))}
-                                                                {suspectCode?.length > 0 &&
-                                                                    suspectCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesSuspect?.length > 0 &&
+                                                                    matchedValuesSuspect?.filter((items) => items.code_in_problem_list === true).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -847,7 +897,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             >
                                                                                 <Typography
                                                                                     onClick={() =>
-                                                                                        handleDelete(item, "suspect")
+                                                                                        removeFromSuspect(item, index)
                                                                                     }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
@@ -862,8 +912,8 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                         </Stack>
                                                                     ))}
 
-                                                                {duplicateCode?.length > 0 &&
-                                                                    duplicateCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesDuplicate?.length > 0 &&
+                                                                    matchedValuesDuplicate?.filter((items) => items.code_in_problem_list === true).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -879,7 +929,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             >
                                                                                 <Typography
                                                                                     onClick={() =>
-                                                                                        handleDelete(item, "duplicate")
+                                                                                        removeFromDuplicate(item, index)
                                                                                     }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
@@ -894,8 +944,8 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                         </Stack>
                                                                     ))}
 
-                                                                {recaptureCode?.length > 0 &&
-                                                                    recaptureCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesRecapture?.length > 0 &&
+                                                                    matchedValuesRecapture?.filter((items) => items.code_in_problem_list === true).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -911,7 +961,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             >
                                                                                 <Typography
                                                                                     onClick={() =>
-                                                                                        handleDelete(item, "recapture")
+                                                                                        removeFromRecapture(item, index)
                                                                                     }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
@@ -940,51 +990,41 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                             borderRadius: "5px",
                                                         }}
                                                     >
-                                                        <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                        <Grid item lg={12} md={12} sm={12} xs={12}>
                                                             <StyledCodeTypography className="">
                                                                 Codes to be actioned in EHR
                                                             </StyledCodeTypography>
                                                         </Grid>
 
 
-                                                        <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                        <Grid item lg={12} md={12} sm={12} xs={12}>
                                                             <Typography>
                                                                 Potential Recaptures:
                                                             </Typography>
                                                         </Grid>
 
                                                         {!(
-                                                            existingCode?.length || 0 + suspectCode?.length || 0 + recaptureCode?.length || 0 + duplicateCode?.length || 0) > 0 ? (
+                                                            matchedValuesExisting?.length || 0 + matchedValuesSuspect?.length || 0 + matchedValuesRecapture?.length || 0 + matchedValuesDuplicate?.length || 0) > 0 ? (
                                                             <>
                                                                 <Grid
                                                                     item
                                                                     lg={3}
-                                                                    md={2}
-                                                                    sm={12}
-                                                                    xs={12}
+                                                                    md={3}
+                                                                    sm={3}
+                                                                    xs={3}
                                                                     sx={{ textAlign: "end" }}
                                                                 >
 
+                                                                    <div className="ItemsDivNew">
+                                                                        <p>0 item</p>
+                                                                    </div>
                                                                 </Grid>
-                                                                <div className="ItemsDivNew">
-                                                                    <p>0 item</p>
-                                                                </div>
-
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <Grid
-                                                                    item
-                                                                    lg={3}
-                                                                    md={2}
-                                                                    sm={2}
-                                                                    xs={12}
-                                                                    sx={{ textAlign: "end" }}
-                                                                >
 
-                                                                </Grid>
-                                                                {existingCode?.length > 0 &&
-                                                                    existingCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesExisting?.length > 0 &&
+                                                                    matchedValuesExisting?.filter((items) => items.code_in_problem_list === false).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -1000,7 +1040,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             >
                                                                                 <Typography
                                                                                     onClick={() =>
-                                                                                        handleDelete(item, "existing")
+                                                                                        removeFromExisting(item, index)
                                                                                     }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
@@ -1014,8 +1054,8 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             </Tooltip>
                                                                         </Stack>
                                                                     ))}
-                                                                {suspectCode?.length > 0 &&
-                                                                    suspectCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesSuspect?.length > 0 &&
+                                                                    matchedValuesSuspect?.filter((items) => items.code_in_problem_list === false).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -1031,7 +1071,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             >
                                                                                 <Typography
                                                                                     onClick={() =>
-                                                                                        handleDelete(item, "suspect")
+                                                                                        removeFromSuspect(item, index)
                                                                                     }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
@@ -1046,8 +1086,8 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                         </Stack>
                                                                     ))}
 
-                                                                {duplicateCode?.length > 0 &&
-                                                                    duplicateCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesDuplicate?.length > 0 &&
+                                                                    matchedValuesDuplicate?.filter((items) => items.code_in_problem_list === false).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -1063,7 +1103,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             >
                                                                                 <Typography
                                                                                     onClick={() =>
-                                                                                        handleDelete(item, "duplicate")
+                                                                                        removeFromDuplicate(item, index)
                                                                                     }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
@@ -1078,8 +1118,8 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                         </Stack>
                                                                     ))}
 
-                                                                {recaptureCode?.length > 0 &&
-                                                                    recaptureCode?.filter((items) => items.value !== "").map((item, index) => (
+                                                                {matchedValuesRecapture?.length > 0 &&
+                                                                    matchedValuesRecapture?.filter((items) => items.code_in_problem_list === false).map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -1094,9 +1134,8 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "recapture")
-                                                                                    }
+                                                                                    onClick={() => removeFromRecapture(item, index)}
+
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
@@ -1112,7 +1151,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                             </>
                                                         )}
 
-                                                        <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                        <Grid item lg={12} md={12} sm={12} xs={12}>
                                                             <Typography>
                                                                 Potential Actions:
                                                             </Typography>
@@ -1129,26 +1168,18 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                     xs={12}
                                                                     sx={{ textAlign: "end" }}
                                                                 >
+                                                                    <div className="ItemsDivNew">
+                                                                        <p>0 item</p>
+                                                                    </div>
 
                                                                 </Grid>
-                                                                <div className="ItemsDivNew">
-                                                                    <p>0 item</p>
-                                                                </div>
+
 
 
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <Grid
-                                                                    item
-                                                                    lg={3}
-                                                                    md={2}
-                                                                    sm={2}
-                                                                    xs={12}
-                                                                    sx={{ textAlign: "end" }}
-                                                                >
 
-                                                                </Grid>
                                                                 {existingCode?.length > 0 &&
                                                                     existingCode?.filter((items) => items.value == "").map((item, index) => (
                                                                         <Stack
@@ -1291,7 +1322,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                             borderRadius: "5px",
                                                         }}
                                                     >
-                                                        <Grid item lg={9} md={9} sm={10} xs={10}>
+                                                        <Grid item lg={12} md={12} sm={12} xs={12}>
                                                             <StyledCodeTypography className="">
                                                                 Rejected codes/conditions from Doctustech                                                     </StyledCodeTypography>
                                                         </Grid>
@@ -1307,27 +1338,19 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                     xs={12}
                                                                     sx={{ textAlign: "end" }}
                                                                 >
+                                                                    <div className="ItemsDivNew">
+                                                                        <p>0 item</p>
+                                                                    </div>
+
 
                                                                 </Grid>
 
-                                                                <div className="ItemsDivNew">
-                                                                    <p>0 item</p>
-                                                                </div>
 
 
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <Grid
-                                                                    item
-                                                                    lg={3}
-                                                                    md={2}
-                                                                    sm={2}
-                                                                    xs={12}
-                                                                    sx={{ textAlign: "end" }}
-                                                                >
 
-                                                                </Grid>
                                                                 {suspectCodeReject?.length > 0 &&
                                                                     suspectCodeReject?.map((item, index) => (
                                                                         <Stack

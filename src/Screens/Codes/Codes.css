@@ -62,6 +62,9 @@
   height: 1.6875rem;
   padding: 0px 10px;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ItemsDiv p {
@@ -104,7 +107,9 @@
   color: #E6682D;
   padding-left: 30px;
 }
-
+.ItemsDivNew p{
+  text-align: center;
+}
 
 @media screen and (max-width: 767px) {
   .HeadSummary {

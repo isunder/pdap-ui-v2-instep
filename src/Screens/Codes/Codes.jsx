@@ -132,6 +132,8 @@ export const Codes = () => {
   const recaptureCodeReject = useSelector(
     (state) => state?.reject.recaptureReject
   );
+
+  console.log(recaptureCode, "recaptureCode")
   const existingCode = useSelector((state) => state?.summary?.existing);
   const existingCodeReject = useSelector(
     (state) => state?.reject?.existingReject
@@ -355,7 +357,7 @@ export const Codes = () => {
   const handleSubmitRedirect = async (tabs) => {
 
 
-    const isAthenaModal = tabs['id_tenant']?.active || false;
+    const isAthenaModal = tabs['tenant_type']?.value === "EPIC";
 
     if (isAthenaModal) {
       setSwitchModal(true);
@@ -513,6 +515,12 @@ export const Codes = () => {
 
   const { summary } = useSelector((state) => state.user.data);
   // const localData =
+  const existingConditionnew = useSelector((state) => state.user.data.existingCondition);
+  const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
+  const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
+  const suspectCodeNew = useSelector((state) => state.user.data.suspectCode);
+
+
 
   const codesData = [
     {
@@ -2301,7 +2309,7 @@ export const Codes = () => {
         duplicateCodeReject={duplicateCodeReject}
         suspectCode={suspectCode}
         suspectCodeReject={suspectCodeReject}
-
+        summary={summary}
         existingCodeReject={existingCodeReject}
         existingRejectData={existingRejectData}
         handleDelete={handleDelete}
@@ -2309,7 +2317,10 @@ export const Codes = () => {
         recaptureCodeReject={recaptureCodeReject}
         existingRejectCode={existingRejectCode}
         duplicateRejectCode={duplicateRejectCode}
-
+        existingConditionnew={existingConditionnew}
+        duplicateCodeNew={duplicateCodeNew}
+        recaptureCodeNew={recaptureCodeNew}
+        suspectCodeNew={suspectCodeNew}
       />
 
       <DialogModal
