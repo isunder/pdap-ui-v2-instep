@@ -112,58 +112,59 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
     const [matchedValuesRecapture, setMatchedValuesRecapture] = useState([]);
     const [matchedValuesDuplicate, setMatchedValuesDuplicate] = useState([]);
 
-    // useEffect for existingCode
     useEffect(() => {
-        const updatedValues = [];
-        existingCode.forEach(item => {
-            const code = item.code;
-            if (existingConditionnew[code]) {
-                updatedValues.push(existingConditionnew[code]);
-            }
-        });
-        setMatchedValuesExisting(updatedValues);
-    }, [matchedValuesExisting]);
+        if (existingCode.length > 0 && existingConditionnew) {
+            const updatedValues = [];
+            existingCode.forEach(item => {
+                const code = item.code;
+                if (existingConditionnew[code]) {
+                    updatedValues.push(existingConditionnew[code]);
+                }
+            });
+            setMatchedValuesExisting(updatedValues);
+        }
+    }, [existingCode, existingConditionnew, matchedValuesExisting]);
 
-    // useEffect for suspectCode
+    // useEffect(() => {
+    //     if (suspectCode.length > 0) {
+    //         const updatedValues = [];
+    //         suspectCode.forEach(item => {
+    //             const code = item.code;
+    //             if (suspectCodeNew[code]) {
+    //                 updatedValues.push(suspectCodeNew[code]);
+    //             }
+    //         });
+    //         setMatchedValuesSuspect(updatedValues);
+    //     }
+    // }, [suspectCode, matchedValuesSuspect]);
+
     useEffect(() => {
-        const updatedValues = [];
-        suspectCode.forEach(item => {
-            const code = item.code;
-            if (suspectCodeNew[code]) {
-                updatedValues.push(suspectCodeNew[code]);
-            }
-        });
-        setMatchedValuesSuspect(updatedValues);
-    }, [matchedValuesSuspect]);
+        if (recaptureCode.length > 0) {
+            const updatedValues = [];
+            recaptureCode.forEach(item => {
+                const code = item.code;
+                if (recaptureCodeNew[code]) {
+                    updatedValues.push(recaptureCodeNew[code]);
+                }
+            });
+            setMatchedValuesRecapture(updatedValues);
+        }
+    }, [recaptureCode, matchedValuesRecapture]);
 
-    // useEffect for recaptureCode
     useEffect(() => {
-        const updatedValues = [];
-        recaptureCode.forEach(item => {
-            const code = item.code;
-            if (recaptureCodeNew[code]) {
-                updatedValues.push(recaptureCodeNew[code]);
-            }
-        });
-        setMatchedValuesRecapture(updatedValues);
-    }, [matchedValuesRecapture]);
-
-    // useEffect for duplicateCode
-    useEffect(() => {
-        const updatedValues = [];
-        duplicateCode.forEach(item => {
-            const code = item.code;
-            if (duplicateCodeNew[code]) {
-                updatedValues.push(duplicateCodeNew[code]);
-            }
-        });
-        setMatchedValuesDuplicate(updatedValues);
-    }, [matchedValuesDuplicate]);
-
-    console.log(matchedValuesDuplicate, matchedValuesExisting, matchedValuesRecapture, matchedValuesSuspect)
+        if (duplicateCode.length > 0) {
+            const updatedValues = [];
+            duplicateCode.forEach(item => {
+                const code = item.code;
+                if (duplicateCodeNew[code]) {
+                    updatedValues.push(duplicateCodeNew[code]);
+                }
+            });
+            setMatchedValuesDuplicate(updatedValues);
+        }
+    }, [duplicateCode, matchedValuesDuplicate]);
 
 
-    // Function to remove item by index from matchedValuesExisting
     const removeFromExisting = (item, key, index) => {
         handleDelete(item, "existing")
         const updatedValues = [...matchedValuesExisting];

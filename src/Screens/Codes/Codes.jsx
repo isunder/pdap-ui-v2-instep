@@ -518,7 +518,7 @@ export const Codes = () => {
   const existingConditionnew = useSelector((state) => state.user.data.existingCondition);
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
-  const suspectCodeNew = useSelector((state) => state.user.data.suspectCode);
+  const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
 
 
 
