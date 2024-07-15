@@ -55,6 +55,7 @@ import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { useNavigate } from "react-router-dom";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { Mixpanel } from "../../services";
+import SubmitModal from "../../components/SubmitModal/SubmitModal";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -117,6 +118,9 @@ export const Codes = () => {
   const slug = urlParams.get("slug");
   const theme = useTheme();
 
+  const [openSubmitModal, setOpenSubmitModal] = useState(false);
+  const [closeSubmitModal, setCloseSubmitModal] = useState(false);
+
   const [codesDataLoaded, setCodesDataLoaded] = useState(false);
 
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
@@ -140,6 +144,9 @@ export const Codes = () => {
   const duplicateCodeReject = useSelector(
     (state) => state?.reject.duplicateReject
   );
+
+  const [switchModal, setSwitchModal] = useState(true);
+
   const [existingRejectCode, setExistingRejectCode] = useState([]);
   const [recaptureRejectCode, setRecaptureRejectCode] = useState([]);
   const [duplicateRejectCode, setDuplicateRejectCode] = useState([]);
@@ -345,7 +352,30 @@ export const Codes = () => {
   };
 
 
+  const handleSubmitRedirect = async (tabs) => {
+
+
+    const isAthenaModal = tabs['id_tenant']?.active || false;
+
+    if (isAthenaModal) {
+      setSwitchModal(true);
+    }
+    else {
+      setSwitchModal(false);
+    }
+
+
+    const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
+    if (isSummaryModal) {
+      setOpenSubmitModal(true)
+    } else {
+      handleSubmit()
+    }
+    return;
+  }
+
   const handleSubmit = async () => {
+
     let requestBody;
     if (existingCode?.length > 0) {
       let mapped = existingCode?.map((item) => ({
@@ -455,6 +485,7 @@ export const Codes = () => {
       }
     } catch (error) { }
   };
+
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary());
@@ -1314,7 +1345,7 @@ export const Codes = () => {
                         <button
                           style={{ cursor: "pointer" }}
                           className="SubmitBtn"
-                          onClick={() => handleSubmit()}
+                          onClick={() => handleSubmitRedirect(tabs)}
                         >
                           Submit
                         </button>
@@ -1335,6 +1366,7 @@ export const Codes = () => {
                 </MuiAccordions>
               </Card>
             </Grid>
+
           </Grid>
         </Container>
 
@@ -2232,7 +2264,7 @@ export const Codes = () => {
                       <button
                         style={{ cursor: "pointer" }}
                         className="SubmitBtn"
-                        onClick={() => handleSubmit()}
+                        onClick={() => handleSubmitRedirect(tabs)}
                       >
                         Submit
                       </button>
@@ -2256,6 +2288,30 @@ export const Codes = () => {
         </Container>
       </Box>
 
+      <SubmitModal
+        openSubmitModal={openSubmitModal}
+        closeSubmitModal={closeSubmitModal}
+        handleSubmit={handleSubmit}
+        setOpenSubmitModal={setOpenSubmitModal}
+        setCloseSubmitModal={setCloseSubmitModal}
+        existingCode={existingCode}
+        recaptureCode={recaptureCode}
+        switchModal={switchModal}
+        duplicateCode={duplicateCode}
+        duplicateCodeReject={duplicateCodeReject}
+        suspectCode={suspectCode}
+        suspectCodeReject={suspectCodeReject}
+
+        existingCodeReject={existingCodeReject}
+        existingRejectData={existingRejectData}
+        handleDelete={handleDelete}
+        recaptureRejectCode={recaptureRejectCode}
+        recaptureCodeReject={recaptureCodeReject}
+        existingRejectCode={existingRejectCode}
+        duplicateRejectCode={duplicateRejectCode}
+
+      />
+
       <DialogModal
         open={dialog}
         setOpen={setDialog}
@@ -2263,6 +2319,9 @@ export const Codes = () => {
         header={<DoneIcon style={{ width: 45, height: 45 }} />}
         width="25rem"
       >
+
+
+
         <Box
           sx={{
             display: "flex",
