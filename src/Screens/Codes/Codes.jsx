@@ -560,7 +560,7 @@ export const Codes = () => {
 
     {
       key: 6,
-      code: "Deleted Codes/Conditions",
+      code: "Deleted Codes / Conditions",
       codeCount: summary?.deleted_codes_count,
       container: <DeletedCodes sessionObject={sessionObject} />,
     },

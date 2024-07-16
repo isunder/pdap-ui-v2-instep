@@ -166,7 +166,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
     // }, [duplicateCode, matchedValuesDuplicate]);
 
     useEffect(() => {
-        if(isModalOpen) {
+        if (isModalOpen) {
             if (duplicateCode.length > 0) {
                 const updatedValues = [];
                 duplicateCode.forEach(item => {
@@ -211,7 +211,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
             });
             setMatchedValuesExisting(updatedValues);
         }
-    },[isModalOpen])
+    }, [isModalOpen])
 
 
     const removeFromExisting = (item, key, index) => {
@@ -321,15 +321,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "existing")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "existing")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon />{" "}
+                                                                                        {/* <CrossIcon />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -352,15 +352,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "suspect")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "suspect")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon />{" "}
+                                                                                        {/* <CrossIcon />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -384,15 +384,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "duplicate")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "duplicate")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="" />{" "}
+                                                                                        {/* <CrossIcon state="" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -416,15 +416,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "recapture")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "recapture")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="" />{" "}
+                                                                                        {/* <CrossIcon state="" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -489,15 +489,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "existing")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "existing")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon />{" "}
+                                                                                        {/* <CrossIcon />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -520,15 +520,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "suspect")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "suspect")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon />{" "}
+                                                                                        {/* <CrossIcon />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -552,15 +552,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "duplicate")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "duplicate")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="" />{" "}
+                                                                                        {/* <CrossIcon state="" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -584,15 +584,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             title={item?.code + " : " + item?.value}
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "recapture")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "recapture")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan">
                                                                                     {item?.code?.slice(0, 20)}{" "}
                                                                                     {item?.code.length > 20 ? "..." : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="" />{" "}
+                                                                                        {/* <CrossIcon state="" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -659,9 +659,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             }
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "suspect")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "suspect")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan rejected">
                                                                                     {Object.keys(item)
@@ -672,7 +672,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                         ? "..."
                                                                                         : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="rejected" />{" "}
+                                                                                        {/* <CrossIcon state="rejected" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -700,9 +700,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             }
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "existing")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "existing")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan rejected">
                                                                                     {Object.keys(item)
@@ -713,7 +713,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                         ? "..."
                                                                                         : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="rejected" />{" "}
+                                                                                        {/* <CrossIcon state="rejected" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -742,9 +742,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             }
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "recapture")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "recapture")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan rejected">
                                                                                     {Object.keys(item)
@@ -755,7 +755,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                         ? "..."
                                                                                         : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="rejected" />{" "}
+                                                                                        {/* <CrossIcon state="rejected" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -783,9 +783,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                             }
                                                                         >
                                                                             <Typography
-                                                                                onClick={() =>
-                                                                                    handleDelete(item, "duplicate")
-                                                                                }
+                                                                            // onClick={() =>
+                                                                            //     handleDelete(item, "duplicate")
+                                                                            // }
                                                                             >
                                                                                 <StylePop className="ChipSpan rejected">
                                                                                     {Object.keys(item)
@@ -796,7 +796,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                         ? "..."
                                                                                         : ""}
                                                                                     <Typography sx={{ ml: "10px" }}>
-                                                                                        <CrossIcon state="rejected" />{" "}
+                                                                                        {/* <CrossIcon state="rejected" />{" "} */}
                                                                                     </Typography>
                                                                                 </StylePop>{" "}
                                                                             </Typography>
@@ -881,7 +881,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                         </Grid>
 
                                                         {!(
-                                                            matchedValuesExisting?.length || 0 + matchedValuesSuspect?.length || 0 + matchedValuesRecapture?.length || 0 + matchedValuesDuplicate?.length || 0) > 0 ? (<>
+                                                            matchedValuesExisting?.length || 0 + suspectCode?.length || 0 + matchedValuesRecapture?.length || 0 + matchedValuesDuplicate?.length || 0) > 0 ? (<>
                                                                 <Grid
                                                                     item
                                                                     lg={3}
@@ -917,21 +917,21 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() => removeFromExisting(item, index)}
+                                                                                // onClick={() => removeFromExisting(item, index)}
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon />{" "}
+                                                                                            {/* <CrossIcon />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
                                                                             </Tooltip>
                                                                         </Stack>
                                                                     ))}
-                                                                {matchedValuesSuspect?.length > 0 &&
-                                                                    matchedValuesSuspect?.filter((items) => items.code_in_problem_list === true).map((item, index) => (
+                                                                {suspectCode?.length > 0 &&
+                                                                    suspectCode?.filter((items) => items.value !== "").map((item, index) => (
                                                                         <Stack
                                                                             direction="row"
                                                                             spacing={1}
@@ -946,15 +946,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        removeFromSuspect(item, index)
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     removeFromSuspect(item, index)
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon />{" "}
+                                                                                            {/* <CrossIcon />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -978,15 +978,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        removeFromDuplicate(item, index)
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     removeFromDuplicate(item, index)
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="" />{" "}
+                                                                                            {/* <CrossIcon state="" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1010,15 +1010,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        removeFromRecapture(item, index)
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     removeFromRecapture(item, index)
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="" />{" "}
+                                                                                            {/* <CrossIcon state="" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1089,46 +1089,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        removeFromExisting(item, index)
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     removeFromExisting(item, index)
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon />{" "}
-                                                                                        </Typography>
-                                                                                    </StylePop>{" "}
-                                                                                </Typography>
-                                                                            </Tooltip>
-                                                                        </Stack>
-                                                                    ))}
-                                                                {matchedValuesSuspect?.length > 0 &&
-                                                                    matchedValuesSuspect?.filter((items) => items.code_in_problem_list === false).map((item, index) => (
-                                                                        <Stack
-                                                                            direction="row"
-                                                                            spacing={1}
-                                                                            sx={{
-                                                                                px: 0,
-                                                                                ml: 0.08,
-                                                                                mt: 0.5,
-                                                                                cursor: "pointer",
-                                                                            }}
-                                                                        >
-                                                                            <Tooltip
-                                                                                title={item?.code + " : " + item?.value}
-                                                                            >
-                                                                                <Typography
-                                                                                    onClick={() =>
-                                                                                        removeFromSuspect(item, index)
-                                                                                    }
-                                                                                >
-                                                                                    <StylePop className="ChipSpan">
-                                                                                        {item?.code?.slice(0, 20)}{" "}
-                                                                                        {item?.code.length > 20 ? "..." : ""}
-                                                                                        <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon />{" "}
+                                                                                            {/* <CrossIcon />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1152,15 +1121,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        removeFromDuplicate(item, index)
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     removeFromDuplicate(item, index)
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="" />{" "}
+                                                                                            {/* <CrossIcon state="" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1184,14 +1153,14 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() => removeFromRecapture(item, index)}
+                                                                                // onClick={() => removeFromRecapture(item, index)}
 
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="" />{" "}
+                                                                                            {/* <CrossIcon state="" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1246,15 +1215,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "existing")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "existing")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon />{" "}
+                                                                                            {/* <CrossIcon />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1277,15 +1246,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "suspect")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "suspect")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon />{" "}
+                                                                                            {/* <CrossIcon />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1309,15 +1278,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "duplicate")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "duplicate")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="" />{" "}
+                                                                                            {/* <CrossIcon state="" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1341,15 +1310,15 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 title={item?.code + " : " + item?.value}
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "recapture")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "recapture")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan">
                                                                                         {item?.code?.slice(0, 20)}{" "}
                                                                                         {item?.code.length > 20 ? "..." : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="" />{" "}
+                                                                                            {/* <CrossIcon state="" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1421,9 +1390,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 }
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "suspect")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "suspect")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan rejected">
                                                                                         {Object.keys(item)
@@ -1434,7 +1403,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                             ? "..."
                                                                                             : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="rejected" />{" "}
+                                                                                            {/* <CrossIcon state="rejected" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1462,9 +1431,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 }
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "existing")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "existing")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan rejected">
                                                                                         {Object.keys(item)
@@ -1475,7 +1444,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                             ? "..."
                                                                                             : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="rejected" />{" "}
+                                                                                            {/* <CrossIcon state="rejected" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1504,9 +1473,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 }
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "recapture")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "recapture")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan rejected">
                                                                                         {Object.keys(item)
@@ -1517,7 +1486,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                             ? "..."
                                                                                             : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="rejected" />{" "}
+                                                                                            {/* <CrossIcon state="rejected" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
@@ -1545,9 +1514,9 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                 }
                                                                             >
                                                                                 <Typography
-                                                                                    onClick={() =>
-                                                                                        handleDelete(item, "duplicate")
-                                                                                    }
+                                                                                // onClick={() =>
+                                                                                //     handleDelete(item, "duplicate")
+                                                                                // }
                                                                                 >
                                                                                     <StylePop className="ChipSpan rejected">
                                                                                         {Object.keys(item)
@@ -1558,7 +1527,7 @@ const SubmitModal = ({ openSubmitModal, setOpenSubmitModal,
                                                                                             ? "..."
                                                                                             : ""}
                                                                                         <Typography sx={{ ml: "10px" }}>
-                                                                                            <CrossIcon state="rejected" />{" "}
+                                                                                            {/* <CrossIcon state="rejected" />{" "} */}
                                                                                         </Typography>
                                                                                     </StylePop>{" "}
                                                                                 </Typography>
