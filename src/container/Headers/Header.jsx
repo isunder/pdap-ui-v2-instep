@@ -497,7 +497,7 @@ export const Header = ({ sessionObject }) => {
                     {sessionObject?.duplicateCode?.length +
                       sessionObject?.duplicateCodeReject?.length}
                   </StyleNumber>
-                  {` duplicate codes,`}
+                  {` Additional diagnoses,`}
                 </Typography>
               )}
 

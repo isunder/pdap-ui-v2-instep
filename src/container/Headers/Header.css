@@ -23,6 +23,9 @@
   .SubmitModal .MuiDialogContent-root{
     padding: 20px 8px;
   }
+  .SubmitModal2 .MuiDialogContent-root{
+    padding: 20px 8px;
+  }
 }
 
 @media screen and (max-width: 968px) {

@@ -50,7 +50,7 @@ import {
   suspectReject,
   duplicateReject,
 } from "../../redux/userSlice/rejectCodesSlice";
-import { DoneIcon } from "../../../src/components/Icons";
+import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { useNavigate } from "react-router-dom";
 import { DialogModal } from "../../components/Modal/DialogModal";
@@ -123,6 +123,7 @@ export const Codes = () => {
 
   const [codesDataLoaded, setCodesDataLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalSubmit, setIsModalSubmit] = useState(false);
 
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
   const sessionObject = JSON.parse(
@@ -134,7 +135,6 @@ export const Codes = () => {
     (state) => state?.reject.recaptureReject
   );
 
-  console.log(recaptureCode, "recaptureCode")
   const existingCode = useSelector((state) => state?.summary?.existing);
   const existingCodeReject = useSelector(
     (state) => state?.reject?.existingReject
@@ -482,7 +482,9 @@ export const Codes = () => {
       if (result) {
         if (result?.meta?.requestStatus === "fulfilled") {
           Mixpanel("Submit-Codes", tabs, requestBody);
+          setOpenSubmitModal(false);
           setDialog(true);
+          setIsModalSubmit(true);
           localStorage.removeItem(`sessionObject_${userDetail.mrn}`);
         }
       }
@@ -516,7 +518,7 @@ export const Codes = () => {
 
   const { summary } = useSelector((state) => state.user.data);
   // const localData =
-  const existingConditionnew = useSelector((state) => state.user.data.existingCondition);
+  const existingConditionNew = useSelector((state) => state.user.data.existingCondition);
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
   const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
@@ -553,7 +555,7 @@ export const Codes = () => {
     },
     {
       key: 5,
-      code: "Duplicate Codes",
+      code: "Additional diagnoses",
       codeCount: summary?.duplicate_codes_count,
       container: <DuplicateCodes sessionObject={sessionObject} />,
     },
@@ -753,11 +755,6 @@ export const Codes = () => {
   const open = Boolean(anchorEl);
   const [expanded, setExpanded] = React.useState(false);
   const [singleExpand, setSingleExpand] = React.useState(false);
-
-  const handleClose1 = () => {
-    setDialog(false);
-    window.location.reload();
-  };
 
   return (
     <>
@@ -1238,7 +1235,7 @@ export const Codes = () => {
                       <Grid container sx={{ pb: 2, mb: 0 }}>
                         <Grid item lg={9} md={9} sm={10} xs={10}>
                           <Typography className="HeadSummary">
-                            Duplicate Codes
+                            Additional diagnoses
                           </Typography>
                         </Grid>
 
@@ -1403,7 +1400,7 @@ export const Codes = () => {
                 </>
               ) : (
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {codesData?.map((item, i) => (
+                  {!isModalSubmit && codesData?.map((item, i) => (
                     <MuiAccordions
                       tabs={tabs}
                       panel={item?.key}
@@ -1554,11 +1551,17 @@ export const Codes = () => {
                       {item.container}
                     </MuiAccordions>
                   ))}
+
+                  {isModalSubmit && 
+                  <Container sx={{ height: '80vh'}}>
+                    
+                  </Container>
+                  }
                 </Box>
               )}
             </Grid>
             <Grid item xs={12} lg={3} md={4}>
-              <Card
+              {!isModalSubmit && <Card
                 sx={{
                   minWidth: 275,
                   borderRadius: "0.625rem 0.625rem 0.625rem 0.625rem",
@@ -1768,9 +1771,10 @@ export const Codes = () => {
                     </Grid>
                   </Grid> */}
                 </CardContent>
-              </Card>
+                </Card>
+              }
 
-              <Card
+              {!isModalSubmit && <Card
                 className="CardBox"
                 sx={{
                   minWidth: 275,
@@ -2155,7 +2159,7 @@ export const Codes = () => {
                     <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
                       <Grid item lg={9} md={9} sm={2} xs={12}>
                         <Typography className="HeadSummary">
-                          Duplicate Codes
+                          Additional diagnoses
                         </Typography>
                       </Grid>
                       {!(
@@ -2291,7 +2295,8 @@ export const Codes = () => {
                     )}
                   </Box>
                 </CardContent>
-              </Card>
+                </Card>
+              }
             </Grid>
           </Grid>
         </Container>
@@ -2318,7 +2323,7 @@ export const Codes = () => {
         recaptureCodeReject={recaptureCodeReject}
         existingRejectCode={existingRejectCode}
         duplicateRejectCode={duplicateRejectCode}
-        existingConditionnew={existingConditionnew}
+        existingConditionNew={existingConditionNew}
         duplicateCodeNew={duplicateCodeNew}
         recaptureCodeNew={recaptureCodeNew}
         suspectCodeNew={suspectCodeNew}
@@ -2328,13 +2333,10 @@ export const Codes = () => {
       <DialogModal
         open={dialog}
         setOpen={setDialog}
-        handleClick={handleClose1}
-        header={<DoneIcon style={{ width: 45, height: 45 }} />}
-        width="25rem"
+        header={<GreenDoneIcon style={{ width: 45, height: 45, }} />}
+        width="26rem"
+        removeCloseButton={true}
       >
-
-
-
         <Box
           sx={{
             display: "flex",
@@ -2348,39 +2350,36 @@ export const Codes = () => {
               variant="h4"
               sx={{
                 display: "flex",
-                width: "90%",
-                height: "28px",
                 fontSize: "18px",
+                justifyContent:'center',
                 fontWeight: 700,
                 lineHeight: "28px",
                 letterSpacing: "0em",
-                textAlign: "left",
-                color: "#101828",
+                textAlign: "center",
+                color: "#242629",
               }}
             >
-              Done !
+              Your actions are successfully captured
             </Typography>
             <Typography
               variant="body2"
               sx={{
-                color: "#475467",
+                marginTop:'5px',
+                color: "#5C6469",
+                textAlign:'center'
               }}
             >
-              You have successfully submitted the codes. You can safely close
-              this window.
+              You can now close the DoctusTech window by
             </Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Box
+            <Typography
+              variant="body2"
               sx={{
-                display: "flex",
-                width: "100%",
+                color: "#5C6469",
+                textAlign:'center'
               }}
             >
-              <StyleButton variant="outlined" onClick={handleClose1} sx={{}}>
-                Close
-              </StyleButton>
-            </Box>
+              clicking X button.
+            </Typography>
           </Box>
         </Box>
       </DialogModal>
