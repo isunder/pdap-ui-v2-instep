@@ -128,7 +128,7 @@ export const AddressedCodes = () => {
                   <StyledText className="acc-content-header-item ct-code">
                     Code(s)
                   </StyledText>
-                  <StyledText className="acc-content-header-item ct-desc">
+                  <StyledText sx={{ width: "80% !important" }} className="acc-content-header-item ct-desc">
                     Description
                   </StyledText>
                   {tabs && tabs["patient_dashboard_weights"]?.active && (
@@ -194,7 +194,7 @@ export const AddressedCodes = () => {
                     </Grid>
 
                     {/* Content - Description */}
-                    <Grid item className="acc-content-header-item ct-desc">
+                    <Grid sx={{ width: "80% !important" }} item className="acc-content-header-item ct-desc">
                       {/* Collapsed view */}
                       {!item?.collapse ? (
                         <Box

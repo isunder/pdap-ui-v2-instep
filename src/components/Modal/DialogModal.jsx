@@ -24,28 +24,30 @@ const StyleDialog = styled(Dialog)(({ theme, width, minHeight }) => ({
 
 
 export const DialogModal = (props) => {
-    const { setOpen, open, header, width, minHeight, children, handleClick, ...rest } = props;
+    const { setOpen, open, header, width, minHeight, children, handleClick, removeCloseButton, ...rest } = props;
     const theme = useTheme()
 
     const handleClose = () => {
-        setOpen(!open)
+        if(!removeCloseButton) {
+            setOpen(!open)
+        }
     }
 
     return (
         <StyleDialog width={width} minHeight={minHeight} onClose={handleClose} open={open} onClick={handleClick}>
-            <Box >
-                <DialogActions >
-                    <Grid container sx={{ justifyContent: " space-between", m: '0.9rem 1rem 0.5rem 0.8rem' }} >
+            <Box>
+                <DialogActions>
+                    <Grid container sx={{ justifyContent: !removeCloseButton ? "space-between" : "center", m: '0.9rem 1rem 0.5rem 0.8rem', textAlign: removeCloseButton? 'center':'inherit' }} >
                         <Grid item xs={10}>
                             <Box>
                                 {header}
                             </Box>
                         </Grid>
-                        <Grid item xs={1}>
+                        {!removeCloseButton &&<Grid item xs={1}>
                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <CloseButton onClick={handleClose} />
                             </Box>
-                        </Grid>
+                        </Grid>}
                     </Grid>
                 </DialogActions>
                 <DialogContent

@@ -39,6 +39,8 @@
 }
 .acc-content-header-item.ct-code .MuiBox-root {
   overflow-wrap: break-word;
+  min-width: 70px;
+    text-align: center;
 }
 .MuiGrid-root.acc-content-header-item {
   border: none;

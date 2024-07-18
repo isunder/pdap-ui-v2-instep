@@ -63,6 +63,7 @@ import {
   StyledButton1,
   StyledButton2,
 } from "../Common/StyledMuiComponents";
+import SubmitModal from "../../components/SubmitModal/SubmitModal";
 
 export const DuplicateCodes = ({ sessionObject }) => {
   const dispatch = useDispatch();
@@ -2991,6 +2992,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
         handleClose1={handleClose1}
         clinicalDoc={clinicalDoc}
       />
+
       <DialogModal
         open={Deleteopen}
         setOpen={setDeleteOpen}

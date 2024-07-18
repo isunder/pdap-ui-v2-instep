@@ -50,11 +50,12 @@ import {
   suspectReject,
   duplicateReject,
 } from "../../redux/userSlice/rejectCodesSlice";
-import { DoneIcon } from "../../../src/components/Icons";
+import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { useNavigate } from "react-router-dom";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { Mixpanel } from "../../services";
+import SubmitModal from "../../components/SubmitModal/SubmitModal";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -117,7 +118,12 @@ export const Codes = () => {
   const slug = urlParams.get("slug");
   const theme = useTheme();
 
+  const [openSubmitModal, setOpenSubmitModal] = useState(false);
+  const [closeSubmitModal, setCloseSubmitModal] = useState(false);
+
   const [codesDataLoaded, setCodesDataLoaded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalSubmit, setIsModalSubmit] = useState(false);
 
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
   const sessionObject = JSON.parse(
@@ -128,6 +134,7 @@ export const Codes = () => {
   const recaptureCodeReject = useSelector(
     (state) => state?.reject.recaptureReject
   );
+
   const existingCode = useSelector((state) => state?.summary?.existing);
   const existingCodeReject = useSelector(
     (state) => state?.reject?.existingReject
@@ -140,6 +147,9 @@ export const Codes = () => {
   const duplicateCodeReject = useSelector(
     (state) => state?.reject.duplicateReject
   );
+
+  const [switchModal, setSwitchModal] = useState(true);
+
   const [existingRejectCode, setExistingRejectCode] = useState([]);
   const [recaptureRejectCode, setRecaptureRejectCode] = useState([]);
   const [duplicateRejectCode, setDuplicateRejectCode] = useState([]);
@@ -345,7 +355,30 @@ export const Codes = () => {
   };
 
 
+  const handleSubmitRedirect = async (tabs) => {
+    setIsModalOpen(true);
+
+    const isAthenaModal = tabs['tenant_type']?.value === "EPIC";
+
+    if (isAthenaModal) {
+      setSwitchModal(true);
+    }
+    else {
+      setSwitchModal(false);
+    }
+
+
+    const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
+    if (isSummaryModal) {
+      setOpenSubmitModal(true)
+    } else {
+      handleSubmit()
+    }
+    return;
+  }
+
   const handleSubmit = async () => {
+
     let requestBody;
     if (existingCode?.length > 0) {
       let mapped = existingCode?.map((item) => ({
@@ -449,12 +482,15 @@ export const Codes = () => {
       if (result) {
         if (result?.meta?.requestStatus === "fulfilled") {
           Mixpanel("Submit-Codes", tabs, requestBody);
+          setOpenSubmitModal(false);
           setDialog(true);
+          setIsModalSubmit(true);
           localStorage.removeItem(`sessionObject_${userDetail.mrn}`);
         }
       }
     } catch (error) { }
   };
+
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary());
@@ -482,6 +518,12 @@ export const Codes = () => {
 
   const { summary } = useSelector((state) => state.user.data);
   // const localData =
+  const existingConditionNew = useSelector((state) => state.user.data.existingCondition);
+  const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
+  const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
+  const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
+
+
 
   const codesData = [
     {
@@ -513,14 +555,14 @@ export const Codes = () => {
     },
     {
       key: 5,
-      code: "Duplicate Codes",
+      code: "Additional diagnoses",
       codeCount: summary?.duplicate_codes_count,
       container: <DuplicateCodes sessionObject={sessionObject} />,
     },
 
     {
       key: 6,
-      code: "Deleted Codes/Conditions",
+      code: "Deleted Codes / Conditions",
       codeCount: summary?.deleted_codes_count,
       container: <DeletedCodes sessionObject={sessionObject} />,
     },
@@ -713,11 +755,6 @@ export const Codes = () => {
   const open = Boolean(anchorEl);
   const [expanded, setExpanded] = React.useState(false);
   const [singleExpand, setSingleExpand] = React.useState(false);
-
-  const handleClose1 = () => {
-    setDialog(false);
-    window.location.reload();
-  };
 
   return (
     <>
@@ -1198,7 +1235,7 @@ export const Codes = () => {
                       <Grid container sx={{ pb: 2, mb: 0 }}>
                         <Grid item lg={9} md={9} sm={10} xs={10}>
                           <Typography className="HeadSummary">
-                            Duplicate Codes
+                            Additional diagnoses
                           </Typography>
                         </Grid>
 
@@ -1314,7 +1351,7 @@ export const Codes = () => {
                         <button
                           style={{ cursor: "pointer" }}
                           className="SubmitBtn"
-                          onClick={() => handleSubmit()}
+                          onClick={() => handleSubmitRedirect(tabs)}
                         >
                           Submit
                         </button>
@@ -1335,6 +1372,7 @@ export const Codes = () => {
                 </MuiAccordions>
               </Card>
             </Grid>
+
           </Grid>
         </Container>
 
@@ -1362,7 +1400,7 @@ export const Codes = () => {
                 </>
               ) : (
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {codesData?.map((item, i) => (
+                  {!isModalSubmit && codesData?.map((item, i) => (
                     <MuiAccordions
                       tabs={tabs}
                       panel={item?.key}
@@ -1513,11 +1551,17 @@ export const Codes = () => {
                       {item.container}
                     </MuiAccordions>
                   ))}
+
+                  {isModalSubmit && 
+                  <Container sx={{ height: '80vh'}}>
+                    
+                  </Container>
+                  }
                 </Box>
               )}
             </Grid>
             <Grid item xs={12} lg={3} md={4}>
-              <Card
+              {!isModalSubmit && <Card
                 sx={{
                   minWidth: 275,
                   borderRadius: "0.625rem 0.625rem 0.625rem 0.625rem",
@@ -1727,9 +1771,10 @@ export const Codes = () => {
                     </Grid>
                   </Grid> */}
                 </CardContent>
-              </Card>
+                </Card>
+              }
 
-              <Card
+              {!isModalSubmit && <Card
                 className="CardBox"
                 sx={{
                   minWidth: 275,
@@ -2114,7 +2159,7 @@ export const Codes = () => {
                     <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
                       <Grid item lg={9} md={9} sm={2} xs={12}>
                         <Typography className="HeadSummary">
-                          Duplicate Codes
+                          Additional diagnoses
                         </Typography>
                       </Grid>
                       {!(
@@ -2232,7 +2277,7 @@ export const Codes = () => {
                       <button
                         style={{ cursor: "pointer" }}
                         className="SubmitBtn"
-                        onClick={() => handleSubmit()}
+                        onClick={() => handleSubmitRedirect(tabs)}
                       >
                         Submit
                       </button>
@@ -2250,18 +2295,47 @@ export const Codes = () => {
                     )}
                   </Box>
                 </CardContent>
-              </Card>
+                </Card>
+              }
             </Grid>
           </Grid>
         </Container>
       </Box>
 
+      <SubmitModal
+        openSubmitModal={openSubmitModal}
+        closeSubmitModal={closeSubmitModal}
+        handleSubmit={handleSubmit}
+        setOpenSubmitModal={setOpenSubmitModal}
+        setCloseSubmitModal={setCloseSubmitModal}
+        existingCode={existingCode}
+        recaptureCode={recaptureCode}
+        switchModal={switchModal}
+        duplicateCode={duplicateCode}
+        duplicateCodeReject={duplicateCodeReject}
+        suspectCode={suspectCode}
+        suspectCodeReject={suspectCodeReject}
+        summary={summary}
+        existingCodeReject={existingCodeReject}
+        existingRejectData={existingRejectData}
+        handleDelete={handleDelete}
+        recaptureRejectCode={recaptureRejectCode}
+        recaptureCodeReject={recaptureCodeReject}
+        existingRejectCode={existingRejectCode}
+        duplicateRejectCode={duplicateRejectCode}
+        existingConditionNew={existingConditionNew}
+        duplicateCodeNew={duplicateCodeNew}
+        recaptureCodeNew={recaptureCodeNew}
+        suspectCodeNew={suspectCodeNew}
+        isModalOpen={isModalOpen}
+      />
+
       <DialogModal
         open={dialog}
         setOpen={setDialog}
-        handleClick={handleClose1}
-        header={<DoneIcon style={{ width: 45, height: 45 }} />}
-        width="25rem"
+        header={<GreenDoneIcon style={{ width: 45, height: 45, }} />}
+        width="26rem"
+        removeCloseButton={true}
       >
         <Box
           sx={{
@@ -2276,39 +2350,36 @@ export const Codes = () => {
               variant="h4"
               sx={{
                 display: "flex",
-                width: "90%",
-                height: "28px",
                 fontSize: "18px",
+                justifyContent:'center',
                 fontWeight: 700,
                 lineHeight: "28px",
                 letterSpacing: "0em",
-                textAlign: "left",
-                color: "#101828",
+                textAlign: "center",
+                color: "#242629",
               }}
             >
-              Done !
+              Your actions are successfully captured
             </Typography>
             <Typography
               variant="body2"
               sx={{
-                color: "#475467",
+                marginTop:'5px',
+                color: "#5C6469",
+                textAlign:'center'
               }}
             >
-              You have successfully submitted the codes. You can safely close
-              this window.
+              You can now close the DoctusTech window by
             </Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Box
+            <Typography
+              variant="body2"
               sx={{
-                display: "flex",
-                width: "100%",
+                color: "#5C6469",
+                textAlign:'center'
               }}
             >
-              <StyleButton variant="outlined" onClick={handleClose1} sx={{}}>
-                Close
-              </StyleButton>
-            </Box>
+              clicking X button.
+            </Typography>
           </Box>
         </Box>
       </DialogModal>
