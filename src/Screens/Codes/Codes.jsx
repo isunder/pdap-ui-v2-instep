@@ -11,7 +11,7 @@ import {
   Tooltip,
   Skeleton,
 } from "@mui/material";
-
+import { addAuditLog1 } from "../../utils/indexedDb"
 import { MuiAccordions } from "../../components/MuiAccordions/MuiAccordions";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -358,7 +358,7 @@ export const Codes = () => {
   const handleSubmitRedirect = async (tabs) => {
     setIsModalOpen(true);
 
-    const isAthenaModal = tabs['tenant_type']?.value === "EPIC";
+    const isAthenaModal = tabs['tenant_type']?.value === "Athena";
 
     if (isAthenaModal) {
       setSwitchModal(true);
@@ -727,6 +727,7 @@ export const Codes = () => {
       JSON.stringify(newSessionObject)
     );
   };
+
 
   useEffect(() => {
     sessionHistory();
@@ -1552,10 +1553,10 @@ export const Codes = () => {
                     </MuiAccordions>
                   ))}
 
-                  {isModalSubmit && 
-                  <Container sx={{ height: '80vh'}}>
-                    
-                  </Container>
+                  {isModalSubmit &&
+                    <Container sx={{ height: '80vh' }}>
+
+                    </Container>
                   }
                 </Box>
               )}
@@ -1771,7 +1772,7 @@ export const Codes = () => {
                     </Grid>
                   </Grid> */}
                 </CardContent>
-                </Card>
+              </Card>
               }
 
               {!isModalSubmit && <Card
@@ -2295,7 +2296,7 @@ export const Codes = () => {
                     )}
                   </Box>
                 </CardContent>
-                </Card>
+              </Card>
               }
             </Grid>
           </Grid>
@@ -2351,7 +2352,7 @@ export const Codes = () => {
               sx={{
                 display: "flex",
                 fontSize: "18px",
-                justifyContent:'center',
+                justifyContent: 'center',
                 fontWeight: 700,
                 lineHeight: "28px",
                 letterSpacing: "0em",
@@ -2364,9 +2365,9 @@ export const Codes = () => {
             <Typography
               variant="body2"
               sx={{
-                marginTop:'5px',
+                marginTop: '5px',
                 color: "#5C6469",
-                textAlign:'center'
+                textAlign: 'center'
               }}
             >
               You can now close the DoctusTech window by
@@ -2375,7 +2376,7 @@ export const Codes = () => {
               variant="body2"
               sx={{
                 color: "#5C6469",
-                textAlign:'center'
+                textAlign: 'center'
               }}
             >
               clicking X button.

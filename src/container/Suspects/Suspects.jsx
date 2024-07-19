@@ -42,6 +42,7 @@ import {
   StyledBox,
   StyledButton,
 } from "../Common/StyledMuiComponents";
+import { addAuditLog1 } from "../../utils/indexedDb";
 
 const StyleHead = styled("h2")(() => ({
   fontSize: "16px",
@@ -93,6 +94,7 @@ export const Suspects = ({ sessionObject }) => {
     otherText?.length > 0 && setOtherText(null);
     setError({});
     setDeleteOpen(false);
+    addAuditLog1("Suspect Code Close", selectedRejectData, rejectReason);
   };
 
   const handleRemoveDeletedCode = (item) => {
@@ -135,6 +137,8 @@ export const Suspects = ({ sessionObject }) => {
   };
 
   const handleClickOpen = (item) => {
+    console.log(item, "hgdhgfdsh")
+    addAuditLog1(`Suspect Code Reject Click ${item?.SuspectedCondition}`, item?.data, item?.definition);
     setDeleteOpen(true);
     setSelectedRejectData(item);
   };
@@ -224,6 +228,8 @@ export const Suspects = ({ sessionObject }) => {
         );
       }
     }
+
+    addAuditLog1("Suspect Code Rejected", selectedRejectData, rejectReason);
   };
 
   const handleReseon = (event) => {
@@ -275,6 +281,8 @@ export const Suspects = ({ sessionObject }) => {
           tabs,
           itemCode?.code
         );
+
+
       } else {
         codeList = {
           code: itemCode,
@@ -308,6 +316,7 @@ export const Suspects = ({ sessionObject }) => {
         JSON.stringify(sessionObject)
       );
       setSelectedSuspectcode(updateVal);
+      addAuditLog1(`Suspects-Codes-Remove-From-Summary`, itemCode?.code, value);
     }
   };
 
@@ -341,18 +350,18 @@ export const Suspects = ({ sessionObject }) => {
         suspectedCode?.length > 0 && sessionObject?.suspectCode?.length > 0
           ? [...sessionObject?.suspectCode, ...suspectedCode]
           : suspectedCode?.length > 0
-          ? suspectedCode
-          : sessionObject?.suspectCode || [];
+            ? suspectedCode
+            : sessionObject?.suspectCode || [];
       selectedSuspectcode?.length === 0 &&
         setSelectedSuspectcode([...newSuspect]);
 
       let newSuspectReject =
         rejectSuspectCode?.length > 0 &&
-        sessionObject?.suspectCodeReject?.length > 0
+          sessionObject?.suspectCodeReject?.length > 0
           ? [...sessionObject?.suspectCodeReject, ...rejectSuspectCode]
           : rejectSuspectCode?.length > 0
-          ? rejectSuspectCode
-          : sessionObject?.suspectCodeReject || [];
+            ? rejectSuspectCode
+            : sessionObject?.suspectCodeReject || [];
       rejectSuspectCode?.length === 0 &&
         setRejectSuspectCode([...newSuspectReject]);
       setSessionObjLoaded(true);
@@ -461,6 +470,8 @@ export const Suspects = ({ sessionObject }) => {
                     {index + 1}. {item.SuspectedCondition}
                     {item.definition?.length > 0 && (
                       <ReadMore
+                        item={item}
+    
                         length={0}
                         readMore={"Read More"}
                         showLess={"Show Less"}

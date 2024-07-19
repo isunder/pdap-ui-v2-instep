@@ -50,6 +50,7 @@ import {
   StyledButton1,
   StyledButton2,
 } from "../Common/StyledMuiComponents";
+import { addAuditLog1 } from "../../utils/indexedDb";
 
 export const ExistingConditions = ({ sessionObject }) => {
   const dispatch = useDispatch();
@@ -88,18 +89,25 @@ export const ExistingConditions = ({ sessionObject }) => {
   const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
 
   const handleClickOpen = (item, code) => {
+
+    console.log(item, code)
     if (!isNaN(item)) {
       let code = result[item];
       setHandleFunction(true);
       setSelectedRejectData(code);
+      addAuditLog1("Existing Code Rejected", code, item?.info?.value)
     } else {
       setSelectedRejectData(item);
+      addAuditLog1("Existing Code Rejected", code, item?.info?.value)
     }
     setSelectedMainCode(code);
     setDeleteOpen(true);
+
   };
 
   const handleRemoveDeletedCode = (item, id) => {
+
+    console.log(item, "bdjbdsubgdjbv")
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -174,11 +182,11 @@ export const ExistingConditions = ({ sessionObject }) => {
               const updatingData = updatedRejectData?.map((val) => {
                 return Object.keys(val)[0] === item?.code
                   ? {
-                      [selectedMainCode]: {
-                        ...val[selectedMainCode],
-                        delete_code: false,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...val[selectedMainCode],
+                      delete_code: false,
+                    },
+                  }
                   : val;
               });
               setExistingRejectData([...updatingData]);
@@ -186,11 +194,11 @@ export const ExistingConditions = ({ sessionObject }) => {
               let changeData = updatedRejectData?.map((value) => {
                 return Object.keys(codeValue)[0] === Object.keys(value)[0]
                   ? {
-                      [selectedMainCode]: {
-                        ...value[selectedMainCode],
-                        delete_code: codeValue[id]?.delete_code,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...value[selectedMainCode],
+                      delete_code: codeValue[id]?.delete_code,
+                    },
+                  }
                   : value;
               });
               setExistingRejectData([...changeData]);
@@ -210,6 +218,8 @@ export const ExistingConditions = ({ sessionObject }) => {
       }
       Mixpanel(`${id}-Existing-Codes-Remove-From-Summary`, tabs, id);
     }
+
+    addAuditLog1("Existing-Codes-Remove-From-Summary", item?.code, item?.info?.value);
   };
 
   const handleClose = () => {
@@ -267,6 +277,8 @@ export const ExistingConditions = ({ sessionObject }) => {
             ? [...selectedExistingcode, codeList]
             : [codeList];
         setSelectedExistingcode(updateVal);
+
+        addAuditLog1("Existing Code Accepted", item?.code, item?.value ? item?.value : item?.info?.value,);
       }
 
       sessionObject = {
@@ -383,18 +395,18 @@ export const ExistingConditions = ({ sessionObject }) => {
         existingCode?.length > 0 && sessionObject?.existingCode?.length > 0
           ? [...sessionObject?.existingCode, ...existingCode]
           : existingCode?.length > 0
-          ? existingCode
-          : sessionObject?.existingCode || [];
+            ? existingCode
+            : sessionObject?.existingCode || [];
       selectedExistingcode?.length === 0 &&
         setSelectedExistingcode([...newExisting]);
 
       let newExistingReject =
         rejectExistingCode?.length > 0 &&
-        sessionObject?.existingCodeReject?.length > 0
+          sessionObject?.existingCodeReject?.length > 0
           ? [...sessionObject?.existingCodeReject, ...rejectExistingCode]
           : rejectExistingCode?.length > 0
-          ? rejectExistingCode
-          : sessionObject?.existingCodeReject || [];
+            ? rejectExistingCode
+            : sessionObject?.existingCodeReject || [];
       rejectExistingCode?.length === 0 &&
         setRejectExistingCode([...newExistingReject]);
       checkCodesAvailability(existingCondition, existingCode);
@@ -420,12 +432,18 @@ export const ExistingConditions = ({ sessionObject }) => {
   }, [selectedExistingcode, rejectExistingCode]);
 
   const handleCollapse = (code) => {
+
+    let val;
+
     let changeData = existingCondition?.map((value) => {
       return value?.code === code
         ? ((value.collapse = !value?.collapse), value)
+
+
         : value;
     });
     setExistingCondition(changeData);
+    addAuditLog1(code, "", "Collapse Click")
   };
 
   const handleIsCollapse = (data) => {
@@ -441,6 +459,7 @@ export const ExistingConditions = ({ sessionObject }) => {
     });
 
     setExistingCondition(changeData);
+    addAuditLog1(code, data, "Collapse Click")
   };
 
   const handleClinicalDoc = async (item) => {
@@ -544,6 +563,9 @@ export const ExistingConditions = ({ sessionObject }) => {
   };
 
   const handleDelete = () => {
+
+
+
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -599,11 +621,11 @@ export const ExistingConditions = ({ sessionObject }) => {
           let changeData = rejectExistingData?.map((value) => {
             return Object.keys(codeValue)[0] === Object.keys(value)[0]
               ? {
-                  [selectedMainCode]: {
-                    ...value[selectedMainCode],
-                    delete_code: true,
-                  },
-                }
+                [selectedMainCode]: {
+                  ...value[selectedMainCode],
+                  delete_code: true,
+                },
+              }
               : value;
           });
           setExistingRejectData([...changeData]);
@@ -660,6 +682,8 @@ export const ExistingConditions = ({ sessionObject }) => {
       tabs,
       selectedRejectData?.code
     );
+
+    addAuditLog1("Existing Code Deleted", selectedRejectData?.code, rejectReason);
   };
 
   const handleReseon = (event) => {
@@ -882,6 +906,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                               </Typography>
                             </Box>
                           </Grid>
+
                           <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
                             <Box
                               sx={{
@@ -1071,11 +1096,11 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 Accepted
                               </StyledButton1>
                             ) : !rejectExistingCode?.some((value, index) => {
-                                let key = Object.keys(value)[0];
-                                if (item.code === key) {
-                                  return true;
-                                }
-                              }) ? (
+                              let key = Object.keys(value)[0];
+                              if (item.code === key) {
+                                return true;
+                              }
+                            }) ? (
                               <StyledButton
                                 onClick={() => handleClickOpen1(item)}
                                 sx={{
@@ -1210,9 +1235,8 @@ export const ExistingConditions = ({ sessionObject }) => {
                       },
                     }}
                     expandIcon={<ArrowDropDownIcon width={12} height={12} />}
-                    header={`Show Alternate Codes (${
-                      Object.keys(item?.info?.alternate_codes).length
-                    })`}
+                    header={`Show Alternate Codes (${Object.keys(item?.info?.alternate_codes).length
+                      })`}
                   >
                     {item?.info?.alternate_codes &&
                       item?.info?.alternate_codes?.map(
@@ -1609,13 +1633,13 @@ export const ExistingConditions = ({ sessionObject }) => {
                                             Accepted
                                           </StyledButton1>
                                         ) : !rejectExistingCode?.some(
-                                            (val, index) => {
-                                              let key = Object.keys(val)[0];
-                                              if (value?.code === key) {
-                                                return true;
-                                              }
+                                          (val, index) => {
+                                            let key = Object.keys(val)[0];
+                                            if (value?.code === key) {
+                                              return true;
                                             }
-                                          ) ? (
+                                          }
+                                        ) ? (
                                           <StyledButton
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -1761,20 +1785,20 @@ export const ExistingConditions = ({ sessionObject }) => {
                           {tabs &&
                             tabs["patient_dashboard_accept_all"]?.active &&
                             (rejectExistingData &&
-                            rejectExistingData?.some((value) => {
-                              if (Object.keys(value)[0] === item?.code) {
-                                if (
-                                  item?.info?.alternate_codes?.length ===
+                              rejectExistingData?.some((value) => {
+                                if (Object.keys(value)[0] === item?.code) {
+                                  if (
+                                    item?.info?.alternate_codes?.length ===
                                     value[Object.keys(value)[0]]
                                       ?.alternate_codes?.length &&
-                                  value[Object.keys(value)[0]].delete_code ===
+                                    value[Object.keys(value)[0]].delete_code ===
                                     true
-                                ) {
-                                  return true;
+                                  ) {
+                                    return true;
+                                  }
                                 }
-                              }
-                              return false;
-                            }) ? (
+                                return false;
+                              }) ? (
                               <StyledButton
                                 sx={{
                                   backgroundColor: theme.palette.error.active1,
@@ -1890,20 +1914,20 @@ export const ExistingConditions = ({ sessionObject }) => {
                             {tabs &&
                               tabs["patient_dashboard_accept_all"]?.active &&
                               (rejectExistingData &&
-                              rejectExistingData?.some((value) => {
-                                if (Object.keys(value)[0] === item?.code) {
-                                  if (
-                                    item?.info?.alternate_codes?.length ===
+                                rejectExistingData?.some((value) => {
+                                  if (Object.keys(value)[0] === item?.code) {
+                                    if (
+                                      item?.info?.alternate_codes?.length ===
                                       value[Object.keys(value)[0]]
                                         ?.alternate_codes?.length &&
-                                    value[Object.keys(value)[0]].delete_code ===
+                                      value[Object.keys(value)[0]].delete_code ===
                                       true
-                                  ) {
-                                    return true;
+                                    ) {
+                                      return true;
+                                    }
                                   }
-                                }
-                                return false;
-                              }) ? (
+                                  return false;
+                                }) ? (
                                 <Button
                                   sx={{
                                     borderRadius: "10px",
