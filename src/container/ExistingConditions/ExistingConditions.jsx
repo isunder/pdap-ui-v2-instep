@@ -745,6 +745,9 @@ export const ExistingConditions = ({ sessionObject }) => {
                       padding: "10px 10px 10px",
                       backgroundColor: "#fff",
                       borderRadius: index === 0 ? 0 : "10px",
+                      borderBottomLeftRadius: Object.keys(item?.info?.alternate_codes).length > 0 ? 0 : "10px",
+                      borderBottomRightRadius: Object.keys(item?.info?.alternate_codes).length > 0 ? 0 : "10px",
+
                     }}
                   >
                     {/* Content - Code */}
@@ -1225,7 +1228,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 sx={{
                                   padding: "10px 10px 10px",
                                   backgroundColor: "#fff",
-                                  borderRadius: altCodeIndex === 0 ? 0 : "10px",
+
                                 }}
                               >
                                 {/* Alt code Content - Code */}
