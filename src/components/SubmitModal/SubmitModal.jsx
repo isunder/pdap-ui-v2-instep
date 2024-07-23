@@ -64,9 +64,15 @@ const SubmitModal = ({
   const [matchedValuesRecapture, setMatchedValuesRecapture] = useState([]);
   const [matchedValuesDuplicate, setMatchedValuesDuplicate] = useState([]);
 
-  useEffect(() => {
 
-    if (duplicateCode && duplicateCode.length >= 0) {
+  const [combinedData, setCombinedData] = useState([]);
+  const [combinedData2, setCombinedData2] = useState([]);
+  const [inProblemList, setInProblemList] = useState([]);
+  const [notInProblemList, setNotInProblemList] = useState([]);
+
+
+  useEffect(() => {
+    if (duplicateCode && duplicateCode.length > 0 && duplicateCodeNew) {
       const updatedValues = [];
       duplicateCode.forEach((item) => {
         const code = item.code;
@@ -77,9 +83,7 @@ const SubmitModal = ({
       setMatchedValuesDuplicate(updatedValues);
     }
 
-
-
-    if (recaptureCode && recaptureCode.length >= 0) {
+    if (recaptureCode && recaptureCode.length > 0 && recaptureCodeNew) {
       const updatedValues = [];
       recaptureCode.forEach((item) => {
         const code = item.code;
@@ -90,8 +94,7 @@ const SubmitModal = ({
       setMatchedValuesRecapture(updatedValues);
     }
 
-
-    if (suspectCode && suspectCode.length >= 0) {
+    if (suspectCode && suspectCode.length > 0 && suspectCodeNew) {
       const updatedValues = [];
       suspectCode.forEach((item) => {
         const code = item.code;
@@ -102,8 +105,7 @@ const SubmitModal = ({
       setMatchedValuesSuspect(updatedValues);
     }
 
-
-    if (existingCode && existingCode.length >= 0 && existingConditionNew) {
+    if (existingCode && existingCode.length > 0 && existingConditionNew) {
       const updatedValues = [];
       existingCode.forEach((item) => {
         const code = item.code;
@@ -113,14 +115,8 @@ const SubmitModal = ({
       });
       setMatchedValuesExisting(updatedValues);
     }
-
-
   }, [isModalOpen, suspectCode, existingCode, recaptureCode, duplicateCode, duplicateCodeNew]);
 
-  const [combinedData, setCombinedData] = useState([]);
-  const [combinedData2, setCombinedData2] = useState([]);
-  const [inProblemList, setInProblemList] = useState([]);
-  const [notInProblemList, setNotInProblemList] = useState([]);
 
   useEffect(() => {
     const combined = [
