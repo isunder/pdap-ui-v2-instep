@@ -128,7 +128,13 @@ export const AddressedCodes = () => {
                   <StyledText className="acc-content-header-item ct-code">
                     Code(s)
                   </StyledText>
-                  <StyledText sx={{ width: "80% !important" }} className="acc-content-header-item ct-desc">
+                  <StyledText sx={{
+                    width: {
+                      md: "68% !important",
+                      lg: "80% !important",  // width for large screens
+                      xl: "80% !important",  // width for extra-large screens
+                    }
+                  }} className="acc-content-header-item ct-desc">
                     Description
                   </StyledText>
                   {tabs && tabs["patient_dashboard_weights"]?.active && (
@@ -161,7 +167,8 @@ export const AddressedCodes = () => {
                     sx={{
                       padding: "10px 10px 10px",
                       backgroundColor: "#fff",
-                      borderRadius: index === 0 ? 0 : "10px",
+                      borderBottomLeftRadius: index === (addressCodes.length - 1) ? "10px" : 0,
+                      borderBottomRightRadius: index === (addressCodes.length - 1) ? "10px" : 0,
                     }}
                   >
                     {/* Content - Code */}
@@ -194,7 +201,13 @@ export const AddressedCodes = () => {
                     </Grid>
 
                     {/* Content - Description */}
-                    <Grid sx={{ width: "80% !important" }} item className="acc-content-header-item ct-desc">
+                    <Grid sx={{
+                      width: {
+                        md: "68% !important",
+                        lg: "80% !important",  // width for large screens
+                        xl: "80% !important",  // width for extra-large screens
+                      }
+                    }} item className="acc-content-header-item ct-desc">
                       {/* Collapsed view */}
                       {!item?.collapse ? (
                         <Box

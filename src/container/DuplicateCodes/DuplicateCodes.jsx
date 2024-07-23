@@ -750,7 +750,8 @@ export const DuplicateCodes = ({ sessionObject }) => {
                     sx={{
                       padding: "10px 10px 10px",
                       backgroundColor: "#fff",
-                      borderRadius: index === 0 ? 0 : "10px",
+                      borderBottomLeftRadius: index === (duplicateCodes.length - 1) ? "10px" : 0,
+                      borderBottomRightRadius: index === (duplicateCodes.length - 1) ? "10px" : 0,
                     }}
                   >
                     {/* Content - Code */}
@@ -1059,6 +1060,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
+                                sx={{ width: "105px !important" }}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
                                   <StyleCircle
@@ -1069,7 +1071,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon state="active" />
+                                    <CorrectIcon />
                                   </StyleCircle>
                                 }
                                 className="acc-content-act-btn act-btn-active"
@@ -1090,18 +1092,18 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "grey ",
+                                    tabs?.read_only?.active && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: "#3D4A8F",
+                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon />
+                                    <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
                                 disabled={tabs?.read_only?.active}
@@ -1134,7 +1136,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "red",
+                                        background: "#B90E0E",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1161,12 +1163,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         theme.palette.primary.main,
                                     },
                                     background:
-                                      tabs?.read_only?.active && "grey ",
+                                      tabs?.read_only?.active && "#D5D5D5 ",
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "#434343",
+                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1356,6 +1358,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           (ele) => ele?.code === value?.code
                                         ) ? (
                                           <StyledButton1
+                                            sx={{ width: "105px !important" }}
                                             onClick={() =>
                                               handleClickOpen1(value)
                                             }
@@ -1368,7 +1371,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon state="active" />
+                                                <CorrectIcon />
                                               </StyleCircle>
                                             }
                                           >
@@ -1393,18 +1396,18 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               },
                                               background:
                                                 tabs?.read_only?.active &&
-                                                "grey ",
+                                                "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: "#3D4A8F",
+                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon />
+                                                <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
                                             disabled={tabs?.read_only?.active}
@@ -1442,7 +1445,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "red",
+                                                    background: "#B90E0E",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1477,7 +1480,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "#434343",
+                                                    background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1640,7 +1643,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 23,
-                                          width: "50%",
+                                          width: "105px !important",
                                         }}
                                         startIcon={
                                           <StyleCircle
@@ -1651,7 +1654,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon state="active" />
+                                            <CorrectIcon />
                                           </StyleCircle>
                                         }
                                       >
@@ -1676,13 +1679,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: "#3D4A8F",
+                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon />
+                                            <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
                                         disabled={tabs?.read_only?.active}
@@ -1722,7 +1725,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "red",
+                                                background: "#B90E0E",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -1755,7 +1758,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "#434343",
+                                                background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2082,8 +2085,10 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           (ele) => ele.code === value.code
                                         ) ? (
                                           <StyledButton1
+                                            sx={{ width: "105px !important" }}
                                             onClick={() =>
                                               handleClickOpen1(value)
+
                                             }
                                             startIcon={
                                               <StyleCircle
@@ -2094,7 +2099,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon state="active" />
+                                                <CorrectIcon />
                                               </StyleCircle>
                                             }
                                           >
@@ -2124,13 +2129,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: "#3D4A8F",
+                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon />
+                                                <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
                                             disabled={tabs?.read_only?.active}
@@ -2168,7 +2173,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "red",
+                                                    background: "#B90E0E",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2203,7 +2208,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "#434343",
+                                                    background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2568,7 +2573,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 23,
-                                          width: "50%",
+                                          width: "105px !important",
                                         }}
                                         startIcon={
                                           <StyleCircle
@@ -2579,7 +2584,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon state="active" />
+                                            <CorrectIcon />
                                           </StyleCircle>
                                         }
                                       >
@@ -2599,18 +2604,18 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.read_only?.active && "grey ",
+                                            tabs?.read_only?.active && "#D5D5D5 ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: "#3D4A8F",
+                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon />
+                                            <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
                                         disabled={tabs?.read_only?.active}
@@ -2651,7 +2656,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "red",
+                                                background: "#B90E0E",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2684,7 +2689,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "#434343",
+                                                background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2757,7 +2762,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: "red",
+                                      background: "#B90E0E",
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -2891,7 +2896,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "red",
+                                        background: "#B90E0E",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -2927,7 +2932,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: "#434343",
+                                          background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",

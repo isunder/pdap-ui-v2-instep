@@ -341,18 +341,18 @@ export const Suspects = ({ sessionObject }) => {
         suspectedCode?.length > 0 && sessionObject?.suspectCode?.length > 0
           ? [...sessionObject?.suspectCode, ...suspectedCode]
           : suspectedCode?.length > 0
-          ? suspectedCode
-          : sessionObject?.suspectCode || [];
+            ? suspectedCode
+            : sessionObject?.suspectCode || [];
       selectedSuspectcode?.length === 0 &&
         setSelectedSuspectcode([...newSuspect]);
 
       let newSuspectReject =
         rejectSuspectCode?.length > 0 &&
-        sessionObject?.suspectCodeReject?.length > 0
+          sessionObject?.suspectCodeReject?.length > 0
           ? [...sessionObject?.suspectCodeReject, ...rejectSuspectCode]
           : rejectSuspectCode?.length > 0
-          ? rejectSuspectCode
-          : sessionObject?.suspectCodeReject || [];
+            ? rejectSuspectCode
+            : sessionObject?.suspectCodeReject || [];
       rejectSuspectCode?.length === 0 &&
         setRejectSuspectCode([...newSuspectReject]);
       setSessionObjLoaded(true);
@@ -429,7 +429,7 @@ export const Suspects = ({ sessionObject }) => {
                     },
                   }}
                 >
-                  <StyledText className="acc-content-cust-header1">
+                  <StyledText sx={{ border: "none !important" }} className="acc-content-cust-header1">
                     Actions
                   </StyledText>
                 </Grid>
@@ -443,9 +443,10 @@ export const Suspects = ({ sessionObject }) => {
             <Box key={index + 1}>
               <Grid
                 container
-                sx={{ paddingTop: "10px" }}
+                sx={{ paddingTop: "20px", borderBottom: "1px solid #D9D9D999", }}
                 spacing={0}
                 className="ContentBody"
+
               >
                 {/* Description contents */}
                 <Grid
@@ -538,7 +539,7 @@ export const Suspects = ({ sessionObject }) => {
                       sx={{
                         fontSize: "80%",
                         width: "90%",
-                        justifyContent: "left",
+                        justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
                         color: "#fff",
                         ":hover": {
@@ -588,7 +589,7 @@ export const Suspects = ({ sessionObject }) => {
                         [theme.breakpoints.down("md")]: {
                           width: "100%",
                         },
-                        background: tabs?.read_only?.active && "grey ",
+                        background: tabs?.read_only?.active && "#D5D5D5 ",
                         filter:
                           selectedSuspectcode?.length > 0
                             ? "opacity(0.5)"
@@ -603,7 +604,7 @@ export const Suspects = ({ sessionObject }) => {
                       startIcon={
                         <StyleCircle
                           sx={{
-                            background: "#434343",
+                            background: tabs?.read_only?.active ? "#ADADAD" : "#434343",
                             ...flexAlignCenter,
                             justifyContent: "center",
                             borderRadius: "100px",
@@ -629,7 +630,7 @@ export const Suspects = ({ sessionObject }) => {
                           spacing={0}
                           className="ContentBody"
                           sx={{
-                            borderBottom: "1px solid #D9D9D999",
+
                             pb: 1,
                             mb: 1,
                             flexWrap: "nowrap",
@@ -710,16 +711,17 @@ export const Suspects = ({ sessionObject }) => {
                                 {dataValue}
                                 <StyleCircle
                                   sx={{
-                                    background: "#008F53",
+                                    background: "#FFF",
                                     ...flexAlignCenter,
                                     justifyContent: "center",
                                     marginLeft: "6px",
                                     borderRadius: "100px",
                                     display: "inline-block",
                                     textAlign: "center",
+                                    alignItems: "center"
                                   }}
                                 >
-                                  <CorrectIcon />
+                                  <CorrectIcon fill={"#008F53"} />
                                 </StyleCircle>
                               </StyleCode>
                             </Grid>
@@ -733,13 +735,13 @@ export const Suspects = ({ sessionObject }) => {
                             xl={10}
                             sx={{
                               [theme.breakpoints.up("lg")]: {
-                                ml: "12px",
+                                ml: "10px",
                               },
                               [theme.breakpoints.up("md")]: {
-                                ml: "30px",
+                                ml: "10px",
                               },
                               [theme.breakpoints.down("md")]: {
-                                ml: "8px",
+                                ml: "10px",
                               },
                             }}
                           >

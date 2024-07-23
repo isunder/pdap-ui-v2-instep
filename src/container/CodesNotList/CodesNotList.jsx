@@ -294,18 +294,18 @@ export const CodesNotList = ({ sessionObject }) => {
         recaptureCode?.length > 0 && sessionObject?.recaptureCode?.length > 0
           ? [...sessionObject?.recaptureCode, ...recaptureCode]
           : recaptureCode?.length > 0
-          ? recaptureCode
-          : sessionObject?.recaptureCode || [];
+            ? recaptureCode
+            : sessionObject?.recaptureCode || [];
       selectedRecapturecode?.length === 0 &&
         setSelectedRecapturecode([...newRecapture]);
 
       let newRecaptureReject =
         rejectRecaptureCode?.length > 0 &&
-        sessionObject?.recaptureCodeReject?.length > 0
+          sessionObject?.recaptureCodeReject?.length > 0
           ? [...sessionObject?.recaptureCodeReject, ...rejectRecaptureCode]
           : rejectRecaptureCode?.length > 0
-          ? rejectRecaptureCode
-          : sessionObject?.recaptureCodeReject || [];
+            ? rejectRecaptureCode
+            : sessionObject?.recaptureCodeReject || [];
       rejectRecaptureCode?.length === 0 &&
         setRejectRecaptureCode([...newRecaptureReject]);
 
@@ -429,11 +429,11 @@ export const CodesNotList = ({ sessionObject }) => {
               const updatingData = updatedRejectData?.map((val) => {
                 return Object.keys(val)[0] === item?.code
                   ? {
-                      [selectedMainCode]: {
-                        ...val[selectedMainCode],
-                        delete_code: false,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...val[selectedMainCode],
+                      delete_code: false,
+                    },
+                  }
                   : val;
               });
               setRecaptureRejectData([...updatingData]);
@@ -441,11 +441,11 @@ export const CodesNotList = ({ sessionObject }) => {
               let changeData = updatedRejectData?.map((value) => {
                 return Object.keys(codeValue)[0] === Object.keys(value)[0]
                   ? {
-                      [selectedMainCode]: {
-                        ...value[selectedMainCode],
-                        delete_code: codeValue[id]?.delete_code,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...value[selectedMainCode],
+                      delete_code: codeValue[id]?.delete_code,
+                    },
+                  }
                   : value;
               });
               setRecaptureRejectData([...changeData]);
@@ -523,11 +523,11 @@ export const CodesNotList = ({ sessionObject }) => {
           let changeData = rejectRecaptureData?.map((value) => {
             return Object.keys(codeValue)[0] === Object.keys(value)[0]
               ? {
-                  [selectedMainCode]: {
-                    ...value[selectedMainCode],
-                    delete_code: true,
-                  },
-                }
+                [selectedMainCode]: {
+                  ...value[selectedMainCode],
+                  delete_code: true,
+                },
+              }
               : value;
           });
           setRecaptureRejectData([...changeData]);
@@ -759,7 +759,8 @@ export const CodesNotList = ({ sessionObject }) => {
                     sx={{
                       padding: "10px 10px 10px",
                       backgroundColor: "#fff",
-                      borderRadius: index === 0 ? 0 : "10px",
+                      borderBottomLeftRadius: index === (recapture.length - 1) ? "10px" : 0,
+                      borderBottomRightRadius: index === (recapture.length - 1) ? "10px" : 0,
                     }}
                   >
                     {/* Content - Code */}
@@ -1061,11 +1062,11 @@ export const CodesNotList = ({ sessionObject }) => {
                                 Accepted
                               </StyledButton1>
                             ) : !rejectRecaptureCode?.some((value, index) => {
-                                let key = Object.keys(value)[0];
-                                if (item.code === key) {
-                                  return true;
-                                }
-                              }) ? (
+                              let key = Object.keys(value)[0];
+                              if (item.code === key) {
+                                return true;
+                              }
+                            }) ? (
                               <StyledButton
                                 onClick={() => handleClickOpen1(item)}
                                 sx={{
@@ -1074,12 +1075,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "grey ",
+                                    tabs?.read_only?.active && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: "#3D4A8F",
+                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1118,7 +1119,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "red",
+                                        background: "#B90E0E",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1145,12 +1146,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                         theme.palette.primary.main,
                                     },
                                     background:
-                                      tabs?.read_only?.active && "grey ",
+                                      tabs?.read_only?.active && "#D5D5D5 ",
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "#434343",
+                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1202,9 +1203,8 @@ export const CodesNotList = ({ sessionObject }) => {
                       },
                     }}
                     expandIcon={<ArrowDropDownIcon width={12} height={12} />}
-                    header={`Show Alternate Codes (${
-                      Object.keys(item?.info?.alternate_codes)?.length
-                    })`}
+                    header={`Show Alternate Codes (${Object.keys(item?.info?.alternate_codes)?.length
+                      })`}
                   >
                     {item?.info?.alternate_codes &&
                       item?.info?.alternate_codes?.map((value, i) => (
@@ -1359,13 +1359,13 @@ export const CodesNotList = ({ sessionObject }) => {
                                             Accepted
                                           </StyledButton1>
                                         ) : !rejectRecaptureCode?.some(
-                                            (val, index) => {
-                                              let key = Object.keys(val)[0];
-                                              if (value?.code === key) {
-                                                return true;
-                                              }
+                                          (val, index) => {
+                                            let key = Object.keys(val)[0];
+                                            if (value?.code === key) {
+                                              return true;
                                             }
-                                          ) ? (
+                                          }
+                                        ) ? (
                                           <StyledButton
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -1377,12 +1377,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                               },
                                               background:
                                                 tabs?.read_only?.active &&
-                                                "grey ",
+                                                "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: "#3D4A8F",
+                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1426,7 +1426,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "red",
+                                                    background: "#B90E0E",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1456,12 +1456,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 },
                                                 background:
                                                   tabs?.read_only?.active &&
-                                                  "grey ",
+                                                  "#D5D5D5 ",
                                               }}
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "#434343",
+                                                    background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1642,25 +1642,25 @@ export const CodesNotList = ({ sessionObject }) => {
                                         Accepted
                                       </StyledButton1>
                                     ) : !rejectRecaptureCode?.some(
-                                        (val, index) => {
-                                          let key = Object.keys(val)[0];
-                                          if (value?.code === key) {
-                                            return true;
-                                          }
+                                      (val, index) => {
+                                        let key = Object.keys(val)[0];
+                                        if (value?.code === key) {
+                                          return true;
                                         }
-                                      ) ? (
+                                      }
+                                    ) ? (
                                       <StyledButton
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.read_only?.active && "grey ",
+                                            tabs?.read_only?.active && "#D5D5D5 ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: "#3D4A8F",
+                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -1706,7 +1706,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "red",
+                                                background: "#B90E0E",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -1734,12 +1734,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                             },
                                             background:
                                               tabs?.read_only?.active &&
-                                              "grey ",
+                                              "#D5D5D5 ",
                                           }}
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "#434343",
+                                                background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2053,13 +2053,13 @@ export const CodesNotList = ({ sessionObject }) => {
                                             Accepted
                                           </StyledButton1>
                                         ) : !rejectRecaptureCode?.some(
-                                            (val, index) => {
-                                              let key = Object.keys(val)[0];
-                                              if (value.code === key) {
-                                                return true;
-                                              }
+                                          (val, index) => {
+                                            let key = Object.keys(val)[0];
+                                            if (value.code === key) {
+                                              return true;
                                             }
-                                          ) ? (
+                                          }
+                                        ) ? (
                                           <StyledButton
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -2071,12 +2071,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                               },
                                               background:
                                                 tabs?.read_only?.active &&
-                                                "grey ",
+                                                "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: "#3D4A8F",
+                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -2120,7 +2120,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "red",
+                                                    background: "#B90E0E",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2150,12 +2150,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 },
                                                 background:
                                                   tabs?.read_only?.active &&
-                                                  "grey ",
+                                                  "#D5D5D5 ",
                                               }}
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "#434343",
+                                                    background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2506,25 +2506,25 @@ export const CodesNotList = ({ sessionObject }) => {
                                         Accepted
                                       </StyledButton1>
                                     ) : !rejectRecaptureCode?.some(
-                                        (val, index) => {
-                                          let key = Object.keys(val)[0];
-                                          if (value?.code === key) {
-                                            return true;
-                                          }
+                                      (val, index) => {
+                                        let key = Object.keys(val)[0];
+                                        if (value?.code === key) {
+                                          return true;
                                         }
-                                      ) ? (
+                                      }
+                                    ) ? (
                                       <StyledButton
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.read_only?.active && "grey ",
+                                            tabs?.read_only?.active && "#D5D5D5 ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: "#3D4A8F",
+                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -2571,7 +2571,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "red",
+                                                background: "#B90E0E",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2599,12 +2599,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                             },
                                             background:
                                               tabs?.read_only?.active &&
-                                              "grey ",
+                                              "#D5D5D5 ",
                                           }}
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: "#434343",
+                                                background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2653,10 +2653,10 @@ export const CodesNotList = ({ sessionObject }) => {
                               if (Object.keys(value)[0] === item.code) {
                                 if (
                                   item?.info?.alternate_codes?.length ===
-                                    value[Object.keys(value)[0]]
-                                      ?.alternate_codes?.length &&
+                                  value[Object.keys(value)[0]]
+                                    ?.alternate_codes?.length &&
                                   value[Object.keys(value)[0]].delete_code ===
-                                    true
+                                  true
                                 ) {
                                   return true;
                                 }
@@ -2676,7 +2676,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: "red",
+                                      background: "#B90E0E",
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -2707,12 +2707,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                     width: "9.75rem",
                                     height: "2rem",
                                     background:
-                                      tabs?.read_only?.active && "grey ",
+                                      tabs?.read_only?.active && "#D5D5D5 ",
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "#434343",
+                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -2781,10 +2781,10 @@ export const CodesNotList = ({ sessionObject }) => {
                                 if (Object.keys(value)[0] === item.code) {
                                   if (
                                     item?.info?.alternate_codes?.length ===
-                                      value[Object.keys(value)[0]]
-                                        ?.alternate_codes?.length &&
+                                    value[Object.keys(value)[0]]
+                                      ?.alternate_codes?.length &&
                                     value[Object.keys(value)[0]].delete_code ===
-                                      true
+                                    true
                                   ) {
                                     return true;
                                   }
@@ -2809,7 +2809,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "red",
+                                        background: "#B90E0E",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -2840,12 +2840,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                       textTransform: "inherit",
                                       padding: "5px 25px",
                                       background:
-                                        tabs?.read_only?.active && "grey ",
+                                        tabs?.read_only?.active && "#D5D5D5 ",
                                     }}
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: "#434343",
+                                          background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",

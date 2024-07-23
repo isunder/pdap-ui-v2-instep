@@ -8,12 +8,14 @@
     width: 450px;
     max-width: 450px !important;
     height: 518px !important;
+    max-height: unset !important;
   }
 
   .SubmitModal2 .MuiDialog-paper{
     width: 450px;
     max-width: 450px !important;
     height: 589px !important;
+    max-height: unset !important;
   }
 
   .SubmitModal .css-1va6kh9-MuiCardContent-root:last-child{
@@ -37,3 +39,4 @@
     padding: 20px 0px;
   }
 }
+

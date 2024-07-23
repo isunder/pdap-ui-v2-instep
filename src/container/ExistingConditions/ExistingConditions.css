@@ -41,6 +41,7 @@
   overflow-wrap: break-word;
   min-width: 70px;
     text-align: center;
+    font-weight: 700 !important;
 }
 .MuiGrid-root.acc-content-header-item {
   border: none;
@@ -52,8 +53,8 @@
   margin-bottom: 6px;
 }
 .acc-content-header-item.ct-actions .acc-content-act-btn {
-  width: 45%;
-  font-size: 70%;
+  width: 92px;
+  font-size: 14px;
 }
 .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
   width: auto;
@@ -78,6 +79,7 @@
   display: block;
   padding-left: 8px;
   font-weight: bold;
+  border-right: 2px solid rgba(0, 0, 0, 0.12);
 }
 
 @media screen and (max-width: 968px) {

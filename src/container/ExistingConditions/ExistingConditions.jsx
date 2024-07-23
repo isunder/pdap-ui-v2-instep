@@ -174,11 +174,11 @@ export const ExistingConditions = ({ sessionObject }) => {
               const updatingData = updatedRejectData?.map((val) => {
                 return Object.keys(val)[0] === item?.code
                   ? {
-                      [selectedMainCode]: {
-                        ...val[selectedMainCode],
-                        delete_code: false,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...val[selectedMainCode],
+                      delete_code: false,
+                    },
+                  }
                   : val;
               });
               setExistingRejectData([...updatingData]);
@@ -186,11 +186,11 @@ export const ExistingConditions = ({ sessionObject }) => {
               let changeData = updatedRejectData?.map((value) => {
                 return Object.keys(codeValue)[0] === Object.keys(value)[0]
                   ? {
-                      [selectedMainCode]: {
-                        ...value[selectedMainCode],
-                        delete_code: codeValue[id]?.delete_code,
-                      },
-                    }
+                    [selectedMainCode]: {
+                      ...value[selectedMainCode],
+                      delete_code: codeValue[id]?.delete_code,
+                    },
+                  }
                   : value;
               });
               setExistingRejectData([...changeData]);
@@ -383,18 +383,18 @@ export const ExistingConditions = ({ sessionObject }) => {
         existingCode?.length > 0 && sessionObject?.existingCode?.length > 0
           ? [...sessionObject?.existingCode, ...existingCode]
           : existingCode?.length > 0
-          ? existingCode
-          : sessionObject?.existingCode || [];
+            ? existingCode
+            : sessionObject?.existingCode || [];
       selectedExistingcode?.length === 0 &&
         setSelectedExistingcode([...newExisting]);
 
       let newExistingReject =
         rejectExistingCode?.length > 0 &&
-        sessionObject?.existingCodeReject?.length > 0
+          sessionObject?.existingCodeReject?.length > 0
           ? [...sessionObject?.existingCodeReject, ...rejectExistingCode]
           : rejectExistingCode?.length > 0
-          ? rejectExistingCode
-          : sessionObject?.existingCodeReject || [];
+            ? rejectExistingCode
+            : sessionObject?.existingCodeReject || [];
       rejectExistingCode?.length === 0 &&
         setRejectExistingCode([...newExistingReject]);
       checkCodesAvailability(existingCondition, existingCode);
@@ -599,11 +599,11 @@ export const ExistingConditions = ({ sessionObject }) => {
           let changeData = rejectExistingData?.map((value) => {
             return Object.keys(codeValue)[0] === Object.keys(value)[0]
               ? {
-                  [selectedMainCode]: {
-                    ...value[selectedMainCode],
-                    delete_code: true,
-                  },
-                }
+                [selectedMainCode]: {
+                  ...value[selectedMainCode],
+                  delete_code: true,
+                },
+              }
               : value;
           });
           setExistingRejectData([...changeData]);
@@ -1053,6 +1053,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
+                                sx={{ border: "none !important", width: "105px !important" }}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
                                   <StyleCircle
@@ -1063,7 +1064,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon state="active" />
+                                    <CorrectIcon />
                                   </StyleCircle>
                                 }
                                 className="acc-content-act-btn act-btn-active"
@@ -1071,11 +1072,11 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 Accepted
                               </StyledButton1>
                             ) : !rejectExistingCode?.some((value, index) => {
-                                let key = Object.keys(value)[0];
-                                if (item.code === key) {
-                                  return true;
-                                }
-                              }) ? (
+                              let key = Object.keys(value)[0];
+                              if (item.code === key) {
+                                return true;
+                              }
+                            }) ? (
                               <StyledButton
                                 onClick={() => handleClickOpen1(item)}
                                 sx={{
@@ -1084,18 +1085,18 @@ export const ExistingConditions = ({ sessionObject }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "grey ",
+                                    tabs?.read_only?.active && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: "#3D4A8F",
+                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon />
+                                    <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
                                 disabled={tabs?.read_only?.active}
@@ -1128,7 +1129,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "red",
+                                        background: "#B90E0E",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1210,9 +1211,8 @@ export const ExistingConditions = ({ sessionObject }) => {
                       },
                     }}
                     expandIcon={<ArrowDropDownIcon width={12} height={12} />}
-                    header={`Show Alternate Codes (${
-                      Object.keys(item?.info?.alternate_codes).length
-                    })`}
+                    header={`Show Alternate Codes (${Object.keys(item?.info?.alternate_codes).length
+                      })`}
                   >
                     {item?.info?.alternate_codes &&
                       item?.info?.alternate_codes?.map(
@@ -1589,6 +1589,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                           (ele) => ele?.code === value?.code
                                         ) ? (
                                           <StyledButton1
+                                            sx={{ width: "105px !important" }}
                                             onClick={() =>
                                               handleClickOpen1(value)
                                             }
@@ -1609,13 +1610,13 @@ export const ExistingConditions = ({ sessionObject }) => {
                                             Accepted
                                           </StyledButton1>
                                         ) : !rejectExistingCode?.some(
-                                            (val, index) => {
-                                              let key = Object.keys(val)[0];
-                                              if (value?.code === key) {
-                                                return true;
-                                              }
+                                          (val, index) => {
+                                            let key = Object.keys(val)[0];
+                                            if (value?.code === key) {
+                                              return true;
                                             }
-                                          ) ? (
+                                          }
+                                        ) ? (
                                           <StyledButton
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -1627,12 +1628,12 @@ export const ExistingConditions = ({ sessionObject }) => {
                                               },
                                               background:
                                                 tabs?.read_only?.active &&
-                                                "grey ",
+                                                "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: "#3D4A8F",
+                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1677,7 +1678,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "red",
+                                                    background: "#B90E0E",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1761,20 +1762,20 @@ export const ExistingConditions = ({ sessionObject }) => {
                           {tabs &&
                             tabs["patient_dashboard_accept_all"]?.active &&
                             (rejectExistingData &&
-                            rejectExistingData?.some((value) => {
-                              if (Object.keys(value)[0] === item?.code) {
-                                if (
-                                  item?.info?.alternate_codes?.length ===
+                              rejectExistingData?.some((value) => {
+                                if (Object.keys(value)[0] === item?.code) {
+                                  if (
+                                    item?.info?.alternate_codes?.length ===
                                     value[Object.keys(value)[0]]
                                       ?.alternate_codes?.length &&
-                                  value[Object.keys(value)[0]].delete_code ===
+                                    value[Object.keys(value)[0]].delete_code ===
                                     true
-                                ) {
-                                  return true;
+                                  ) {
+                                    return true;
+                                  }
                                 }
-                              }
-                              return false;
-                            }) ? (
+                                return false;
+                              }) ? (
                               <StyledButton
                                 sx={{
                                   backgroundColor: theme.palette.error.active1,
@@ -1788,7 +1789,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: "red",
+                                      background: "#B90E0E",
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1819,12 +1820,12 @@ export const ExistingConditions = ({ sessionObject }) => {
                                     width: "9.75rem",
                                     height: "2rem",
                                     background:
-                                      tabs?.read_only?.active && "grey",
+                                      tabs?.read_only?.active && "#D5D5D5",
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "#434343",
+                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1845,7 +1846,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                         </Grid>
                       ) : (
                         <StyledButton2
-                          sx={{ mr: 2, width: "9.75rem", height: "2rem" }}
+                          sx={{ mr: 2, width: "105px !important", height: "2rem" }}
                           startIcon={
                             <StyleCircle
                               sx={{
@@ -1890,20 +1891,20 @@ export const ExistingConditions = ({ sessionObject }) => {
                             {tabs &&
                               tabs["patient_dashboard_accept_all"]?.active &&
                               (rejectExistingData &&
-                              rejectExistingData?.some((value) => {
-                                if (Object.keys(value)[0] === item?.code) {
-                                  if (
-                                    item?.info?.alternate_codes?.length ===
+                                rejectExistingData?.some((value) => {
+                                  if (Object.keys(value)[0] === item?.code) {
+                                    if (
+                                      item?.info?.alternate_codes?.length ===
                                       value[Object.keys(value)[0]]
                                         ?.alternate_codes?.length &&
-                                    value[Object.keys(value)[0]].delete_code ===
+                                      value[Object.keys(value)[0]].delete_code ===
                                       true
-                                  ) {
-                                    return true;
+                                    ) {
+                                      return true;
+                                    }
                                   }
-                                }
-                                return false;
-                              }) ? (
+                                  return false;
+                                }) ? (
                                 <Button
                                   sx={{
                                     borderRadius: "10px",
@@ -1922,7 +1923,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "red",
+                                        background: "#B90E0E",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1953,12 +1954,12 @@ export const ExistingConditions = ({ sessionObject }) => {
                                       textTransform: "inherit",
                                       padding: "5px 25px",
                                       background:
-                                        tabs?.read_only?.active && "grey",
+                                        tabs?.read_only?.active && "#D5D5D5",
                                     }}
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: "#434343",
+                                          background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",
@@ -2034,7 +2035,7 @@ export const ExistingConditions = ({ sessionObject }) => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: 1,
+            gap: 2,
             mb: 3,
           }}
         >
@@ -2051,6 +2052,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                 letterSpacing: "0em",
                 textAlign: "left",
                 color: "#101828",
+
               }}
             >
               Are you sure?

@@ -23,7 +23,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: `"Nunito Sans", sans-serif`,
+    fontFamily: `"Proxima-nova", sans-serif`,
   },
   components: {
     MuiTypography: {
@@ -33,7 +33,7 @@ const theme = createTheme({
         },
         variant: "suntilte2",
         // textTransform: "capitalize",
-        fontFamily: `"Nunito Sans", sans-serif`,
+        fontFamily: `"Proxima-nova", sans-serif`,
       },
     },
     MuiStack: {
@@ -44,14 +44,14 @@ const theme = createTheme({
         },
         spacing: 2,
         direction: "row",
-        fontFamily: `"Nunito Sans", sans-serif`,
+        fontFamily: `"Proxima-nova", sans-serif`,
       },
     },
     MuiPaper: {
       defaultProps: {
         elevation: 0,
       },
-      fontFamily: `"Nunito Sans", sans-serif`,
+      fontFamily: `"Proxima-nova", sans-serif`,
     },
     MuiLink: {
       defaultProps: {
@@ -59,7 +59,7 @@ const theme = createTheme({
           color: (theme) => theme.palette.primary.main,
         },
         underline: "none",
-        fontFamily: `"Nunito Sans", sans-serif`,
+        fontFamily: `"Proxima-nova", sans-serif`,
       },
     },
     MuiButton: {
@@ -69,13 +69,13 @@ const theme = createTheme({
         disableRipple: true,
       },
       variant: "text",
-      fontFamily: `"Nunito Sans", sans-serif`,
+      fontFamily: `"Proxima-nova", sans-serif`,
     },
     MuiTab: {
       defaultProps: {
         disableRipple: true,
       },
-      fontFamily: `"Nunito Sans", sans-serif`,
+      fontFamily: `"Proxima-nova", sans-serif`,
     },
   },
   breakpoints: {

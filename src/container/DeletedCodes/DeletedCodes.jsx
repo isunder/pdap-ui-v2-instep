@@ -20,6 +20,7 @@ import {
     StyledHeader,
     StyledBox,
     StyledAccordingBox,
+    StyleCode2,
 } from "../Common/StyledMuiComponents";
 
 export const DeletedCodes = ({ sessionObject }) => {
@@ -167,7 +168,13 @@ export const DeletedCodes = ({ sessionObject }) => {
                                     <StyledText className="acc-content-header-item ct-code">
                                         Code(s)
                                     </StyledText>
-                                    <StyledText sx={{ width: "80% !important" }} className="acc-content-header-item ct-desc">
+                                    <StyledText sx={{
+                                        width: {
+                                            md: "68% !important",
+                                            lg: "80% !important",  // width for large screens
+                                            xl: "80% !important",  // width for extra-large screens
+                                        }
+                                    }} className="acc-content-header-item ct-desc">
                                         Description
                                     </StyledText>
                                     {tabs && tabs["patient_dashboard_weights"]?.active && (
@@ -203,40 +210,77 @@ export const DeletedCodes = ({ sessionObject }) => {
                                         sx={{
                                             padding: "10px 10px 10px",
                                             backgroundColor: "#fff",
-                                            borderRadius: index === 0 ? 0 : "10px",
+                                            borderBottomLeftRadius: index === (deletedCodess.length - 1) ? "10px" : 0,
+                                            borderBottomRightRadius: index === (deletedCodess.length - 1) ? "10px" : 0,
                                         }}
                                     >
                                         {/* Content - Code */}
                                         <Grid item className="acc-content-header-item ct-code">
-                                            <StyleCode
-                                                sx={{
-                                                    verticalAlign: "top",
-                                                    ml: 0.5,
-                                                    maxWidth: "100%",
-                                                    textOverflow: "ellipsis",
-                                                    overflow: "hidden",
-                                                    [theme.breakpoints.only("md")]: {
-                                                        mr: 2,
-                                                    },
-                                                    [theme.breakpoints.down("md")]: {
-                                                        mt: 0.5,
-                                                    },
-                                                    [theme.breakpoints.up("md")]: {
-                                                        mr: 2,
-                                                        mt: 1.5,
-                                                    },
-                                                }}
-                                            >
-                                                {item?.code?.length > 11 ? (
-                                                    <Tooltip title={item?.code}>{item?.code}</Tooltip>
-                                                ) : (
-                                                    item?.info?.icd_code
-                                                )}
-                                            </StyleCode>
+                                            {
+                                                item?.info?.icd_code_description === "" ?
+
+                                                    <StyleCode2
+                                                        sx={{
+                                                            verticalAlign: "top",
+                                                            ml: 0.5,
+                                                            maxWidth: "100%",
+                                                            textOverflow: "ellipsis",
+                                                            overflow: "hidden",
+                                                            [theme.breakpoints.only("md")]: {
+                                                                mr: 2,
+                                                            },
+                                                            [theme.breakpoints.down("md")]: {
+                                                                mt: 0.5,
+                                                            },
+                                                            [theme.breakpoints.up("md")]: {
+                                                                mr: 2,
+                                                                mt: 1.5,
+                                                            },
+                                                        }}
+                                                    >
+                                                        {item?.code?.length > 11 ? (
+                                                            <Tooltip title={item?.code}>{item?.code}</Tooltip>
+                                                        ) : (
+                                                            "--"
+                                                        )}
+                                                    </StyleCode2>
+                                                    :
+                                                    <StyleCode
+                                                        sx={{
+                                                            verticalAlign: "top",
+                                                            ml: 0.5,
+                                                            maxWidth: "100%",
+                                                            textOverflow: "ellipsis",
+                                                            overflow: "hidden",
+                                                            [theme.breakpoints.only("md")]: {
+                                                                mr: 2,
+                                                            },
+                                                            [theme.breakpoints.down("md")]: {
+                                                                mt: 0.5,
+                                                            },
+                                                            [theme.breakpoints.up("md")]: {
+                                                                mr: 2,
+                                                                mt: 1.5,
+                                                            },
+                                                        }}
+                                                    >
+                                                        {item?.code?.length > 11 ? (
+                                                            <Tooltip title={item?.code}>{item?.code}</Tooltip>
+                                                        ) : (
+                                                            item?.info?.icd_code
+                                                        )}
+                                                    </StyleCode>
+                                            }
                                         </Grid>
 
                                         {/* Content - Description */}
-                                        <Grid sx={{ width: "80% !important" }} item className="acc-content-header-item ct-desc">
+                                        <Grid sx={{
+                                            width: {
+                                                md: "68% !important",
+                                                lg: "80% !important",  // width for large screens
+                                                xl: "80% !important",  // width for extra-large screens
+                                            }
+                                        }} item className="acc-content-header-item ct-desc">
                                             {/* Collapsed view */}
                                             {!item?.collapse ? (
                                                 <Box
@@ -272,7 +316,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             },
                                                         }}
                                                     >
-                                                        {item?.info?.icd_code_description}
+                                                        {item?.info?.icd_code_description === "" ? item?.info?.icd_code : item?.info?.icd_code_description}
                                                     </StyledText>
                                                     <StyledText
                                                         sx={{
@@ -299,7 +343,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                     </StyledText>
                                                 </Box>
                                             ) : (
-                                                <Grid container>
+                                                <Grid sx={{ gap: '10px' }} container>
                                                     {/* Expanded view */}
                                                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                                         <StyledText
@@ -311,9 +355,10 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 textTransform: "inherit",
                                                                 display: "inline-block",
                                                                 verticalAlign: "bottom",
+                                                                margin: 0
                                                             }}
                                                         >
-                                                            {item?.info?.icd_code_description}
+                                                            {item?.info?.icd_code_description === "" ? item?.info?.icd_code : item?.info?.icd_code_description}
                                                         </StyledText>
                                                     </Grid>
                                                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -325,6 +370,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 lineHeight: "25px",
                                                                 letterSpacing: "0em",
                                                                 display: "inline-block",
+                                                                margin: "0px !important"
                                                             }}
                                                         >
                                                             Deleted by:
@@ -334,7 +380,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                     fontWeight: 700,
                                                                     lineHeight: "25px",
                                                                     letterSpacing: "0.02em",
-                                                                    paddingLeft: "4px",
+
                                                                 }}
                                                             >
                                                                 {item?.info?.deleted_by}
@@ -349,10 +395,6 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 lineHeight: "25px",
                                                                 letterSpacing: "0em",
                                                                 display: "inline-block",
-                                                                [theme.breakpoints.up("lg")]: {
-
-                                                                    my: 1,
-                                                                },
                                                             }}
                                                         >
                                                             Deleted On:
@@ -365,7 +407,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                     paddingLeft: "4px",
                                                                 }}
                                                             >
-                                                                {item?.info?.deleted_on}
+                                                                {item?.info?.deleted_on.substring(0, 10)}
                                                             </Typography>
                                                         </Box>
                                                     </Grid>
@@ -379,6 +421,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 lineHeight: "25px",
                                                                 letterSpacing: "0em",
                                                                 display: "inline-block",
+                                                                margin: "0px !important"
                                                             }}
                                                         >
                                                             Type of Code/Condition:
@@ -389,6 +432,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                     lineHeight: "25px",
                                                                     letterSpacing: "0.02em",
                                                                     paddingLeft: "4px",
+
                                                                 }}
                                                             >
                                                                 {item?.info?.deleted_code_type}
@@ -405,6 +449,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 lineHeight: "25px",
                                                                 letterSpacing: "0em",
                                                                 display: "inline-block",
+                                                                margin: "0px !important"
                                                             }}
                                                         >
                                                             Reason
@@ -434,6 +479,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             letterSpacing: "0.02em",
                                                             m: 0,
                                                             cursor: "pointer",
+                                                            margin: "0px !important"
                                                         }}
                                                         onClick={() => handleCollapse(item.code)}
                                                     >

@@ -23,10 +23,11 @@ import { patientInfo, patientSummary } from '../../redux/userSlice/patientInfoSl
 
 const StyledText = styled("span")(() => ({
   color: "#000000",
-  fontSize: "0.8125rem",
+  fontSize: "14px",
   lineHeight: "1.3rem",
   fontWeight: 500,
   paddingLeft: "0px",
+  fontWeight: "600"
 }));
 const StyledSubText = styled(Typography)(({ theme }) => ({
   color: "#00000099",
@@ -95,7 +96,7 @@ export const SubHeader = () => {
       <Box
         sx={{
           backgroundColor: "white",
-          height: "4.5rem",
+          height: "50px",
           ...flexAlignCenter,
 
           [theme.breakpoints.down("md")]: {
@@ -149,7 +150,7 @@ export const SubHeader = () => {
                           }
                       }
                     >
-                      <Typography sx={{ p: 0.2, fontWeight:'bold' }}>  {keys}:</Typography>
+                      <Typography sx={{ p: 0.2, fontWeight: 'bold' }}>  {keys}:</Typography>
                     </StyledSubText>
                     <StyledText
                       sx={
