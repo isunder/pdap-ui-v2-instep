@@ -70,7 +70,6 @@
   height: 14px;
 }
 .MuiTypography-root.acc-content-collapse-see-less {
-  margin-top: 16px;
   width: 100%;
   display: block;
 }
@@ -157,9 +156,7 @@
   .acc-content-header-item.ct-actions {
     width: 32%;
   }
-  .MuiGrid-root.acc-content-header-item.ct-raf {
-    padding-top: 12px;
-  }
+  
 }
 
 @media screen and (min-width: 1280px) {

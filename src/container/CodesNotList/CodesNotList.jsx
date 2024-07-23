@@ -856,7 +856,7 @@ export const CodesNotList = ({ sessionObject }) => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid container>
+                        <Grid container sx={{ gap: "10px" }}>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText
@@ -876,7 +876,7 @@ export const CodesNotList = ({ sessionObject }) => {
                           <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
                             <Box
                               sx={{
-                                my: 1,
+
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",
@@ -906,10 +906,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                 lineHeight: "25px",
                                 letterSpacing: "0em",
                                 display: "inline-block",
-                                [theme.breakpoints.up("lg")]: {
-                                  ml: 2,
-                                  my: 1,
-                                },
+
                               }}
                             >
                               Date:
@@ -929,7 +926,7 @@ export const CodesNotList = ({ sessionObject }) => {
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <Box
                               sx={{
-                                my: 1,
+
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",

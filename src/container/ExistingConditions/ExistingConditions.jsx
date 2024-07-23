@@ -840,7 +840,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid container>
+                        <Grid sx={{ gap: "10px !important" }} container>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText
@@ -848,7 +848,8 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 fontWeight: 400,
                                 width: "100%",
                                 // maxWidth: "35rem",
-                                padding: "0",
+                                padding: "0 !important",
+                                margin: "0 !important",
                                 textTransform: "inherit",
                                 display: "inline-block",
                                 verticalAlign: "bottom",
@@ -860,7 +861,6 @@ export const ExistingConditions = ({ sessionObject }) => {
                           <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
                             <Box
                               sx={{
-                                my: 1,
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",
@@ -875,7 +875,8 @@ export const ExistingConditions = ({ sessionObject }) => {
                                   fontWeight: 700,
                                   lineHeight: "25px",
                                   letterSpacing: "0.02em",
-                                  paddingLeft: "4px",
+                                  padding: "0px",
+                                  margin: "0px"
                                 }}
                               >
                                 {item?.info?.noted_by}
@@ -890,10 +891,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 lineHeight: "25px",
                                 letterSpacing: "0em",
                                 display: "inline-block",
-                                [theme.breakpoints.up("lg")]: {
-                                  ml: 2,
-                                  my: 1,
-                                },
+
                               }}
                             >
                               Date:
@@ -913,7 +911,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <Box
                               sx={{
-                                my: 1,
+
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",
@@ -938,7 +936,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <Box
                               sx={{
-                                my: 1,
+
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",
@@ -1006,7 +1004,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                               fontWeight: 500,
                               textDecorationLine: "underline",
                               color: "#3D4A8F",
-                              ml: 1,
+
                               letterSpacing: "0.02em",
                               m: 0,
                               cursor: "pointer",
