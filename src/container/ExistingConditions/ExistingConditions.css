@@ -82,6 +82,10 @@
   border-right: 2px solid rgba(0, 0, 0, 0.12);
 }
 
+.acc-content-suspects-action{
+  width: 92px !important;
+}
+
 @media screen and (max-width: 968px) {
   .MuiDialog-paper {
     height: auto;

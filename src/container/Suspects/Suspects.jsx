@@ -537,8 +537,8 @@ export const Suspects = ({ sessionObject }) => {
                         handleRemoveDeletedCode(item?.SuspectedCondition)
                       }
                       sx={{
-                        fontSize: "80%",
-                        width: "90%",
+                        fontSize: "14px",
+                        width: "98px !important",
                         justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
                         color: "#fff",
@@ -578,8 +578,8 @@ export const Suspects = ({ sessionObject }) => {
                     <StyledButton
                       onClick={() => handleClickOpen(item)}
                       sx={{
-                        fontSize: "80%",
-                        width: "90%",
+                        fontSize: "14px",
+                        width: "92px !important",
                         justifyContent: "left",
                         backgroundColor: theme.palette.primary.main,
                         color: "#fff",
@@ -825,6 +825,7 @@ export const Suspects = ({ sessionObject }) => {
                   placeholder="Please mention the reason for rejection"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
+                  labelText="Please enter reject reason"
                 />
               )}
             </Box>

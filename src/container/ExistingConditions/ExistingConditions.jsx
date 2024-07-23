@@ -2085,6 +2085,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                   placeholder="Please mention the reason for rejection"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
+                  labelText="Please enter reject reason"
                 />
               )}
             </Box>
