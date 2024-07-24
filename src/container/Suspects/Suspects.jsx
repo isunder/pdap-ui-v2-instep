@@ -657,13 +657,17 @@ export const Suspects = ({ sessionObject }) => {
                               lg="auto"
                               xl="auto"
                               onClick={() => {
+                                if (tabs?.read_only?.active) {
+                                  return;
+                                }
                                 if (!isConditionRejected(item)) {
                                   handleClickOpen1(
                                     dataValue,
                                     item?.data[dataValue]
                                   );
                                 }
-                              }}
+                              }
+                              }
                             >
                               <StyleCode
                                 sx={{
