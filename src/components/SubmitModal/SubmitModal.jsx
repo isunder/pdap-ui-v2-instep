@@ -37,6 +37,7 @@ const StyledCodeTypography = styled(Typography)(({ theme }) => ({
 const StylePop = styled("Typography")(() => ({
   color: "#17236D",
   fontWeight: "600",
+
 }));
 
 const SubmitModal = ({
@@ -205,7 +206,7 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
-                            gap: "10px"
+                            gap: "10px 0px !important"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -549,7 +550,7 @@ const SubmitModal = ({
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Codes to be actioned in Care Everywhere
+                              Codes/Conditions to be actioned in Care everywhere.
                             </StyledCodeTypography>
                           </Grid>
 
@@ -610,12 +611,12 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
-                            gap: "10px"
+                            gap: "10px 0px !important"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Codes to be actioned in EHR
+                              Actions to be taken in EHR
                             </StyledCodeTypography>
                           </Grid>
 

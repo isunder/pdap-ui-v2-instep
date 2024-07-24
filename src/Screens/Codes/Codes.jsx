@@ -1828,7 +1828,7 @@ export const Codes = () => {
                   <Box>
                     <Grid
                       container
-                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2, justifyContent: "space-between" }}
+                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
                       <Grid item lg={9} md={9} sm={2} xs={12}>
                         <Typography className="HeadSummary">
@@ -1948,7 +1948,7 @@ export const Codes = () => {
 
                     <Grid
                       container
-                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2, justifyContent: "space-between" }}
+                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
                       <Grid item lg={9} md={9} sm={2} xs={12}>
                         <Typography className="HeadSummary">
@@ -2079,7 +2079,7 @@ export const Codes = () => {
 
                     <Grid
                       container
-                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2, justifyContent: "space-between" }}
+                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
                       <Grid item lg={9} md={9} sm={2} xs={12}>
                         <Typography className="HeadSummary">
@@ -2202,7 +2202,7 @@ export const Codes = () => {
                       )}
                     </Grid>
 
-                    <Grid container sx={{ pb: 2, mb: 0, position: "relative", justifyContent: "space-between" }}>
+                    <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
                       <Grid item lg={9} md={9} sm={2} xs={12}>
                         <Typography className="HeadSummary">
                           Additional diagnoses

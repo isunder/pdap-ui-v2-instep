@@ -109,7 +109,7 @@ export const AddressedCodes = () => {
             container
             spacing={0}
             className="ContentBody"
-            sx={{ padding: "0px 10px 5px", backgroundColor: "#fff" }}
+            sx={{ backgroundColor: "#fff" }}
           >
             <Grid
               container
@@ -120,12 +120,12 @@ export const AddressedCodes = () => {
                 <StyledBox
                   sx={{
                     [theme.breakpoints.only("md")]: {
-                      pl: 0,
+                      pl: "10px",
                     },
                   }}
                   className="acc-content-header-items"
                 >
-                  <StyledText className="acc-content-header-item ct-code">
+                  <StyledText sx={{ paddingLeft: "6px !important" }} className="acc-content-header-item ct-code">
                     Code(s)
                   </StyledText>
                   <StyledText sx={{
@@ -237,10 +237,7 @@ export const AddressedCodes = () => {
                               [theme.breakpoints.up("md")]: {
                                 fontSize: "90%",
                               },
-                              [theme.breakpoints.down("md")]: {
-                                ml: "8px",
-                                fontSize: "85%",
-                              },
+
                             }}
                           >
                             {item?.info?.value}
@@ -270,7 +267,7 @@ export const AddressedCodes = () => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid container sx={{gap:"10px"}}>
+                        <Grid container sx={{ gap: "10px" }}>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText
@@ -279,7 +276,7 @@ export const AddressedCodes = () => {
                                 width: "100%",
                                 // maxWidth: "35rem",
                                 padding: "0",
-                                margin:"0 !important",
+                                margin: "0 !important",
                                 textTransform: "inherit",
                                 display: "inline-block",
                                 verticalAlign: "bottom",
@@ -291,7 +288,7 @@ export const AddressedCodes = () => {
                           <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
                             <Box
                               sx={{
-                                
+
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",
@@ -321,7 +318,7 @@ export const AddressedCodes = () => {
                                 lineHeight: "25px",
                                 letterSpacing: "0em",
                                 display: "inline-block",
-                                
+
                               }}
                             >
                               Date:
@@ -341,7 +338,7 @@ export const AddressedCodes = () => {
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <Box
                               sx={{
-                                my: 1,
+
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",
@@ -434,6 +431,19 @@ export const AddressedCodes = () => {
                               [theme.breakpoints.only("md")]: {
                                 justifyContent: "start",
                               },
+
+                              [theme.breakpoints.only("sm")]: {
+                                pl: "12px",
+                              },
+
+                              [theme.breakpoints.only("md")]: {
+                                pl: "12px",
+                              },
+
+                              [theme.breakpoints.only("lg")]: {
+                                pl: "12px",
+                              }
+
                             }}
                           >
                             {item?.info?.total_weight}

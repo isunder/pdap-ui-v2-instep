@@ -701,7 +701,7 @@ export const CodesNotList = ({ sessionObject }) => {
             container
             spacing={0}
             className="ContentBody"
-            sx={{ padding: "0px 10px 5px", backgroundColor: "#fff" }}
+            sx={{ backgroundColor: "#fff" }}
           >
             <Grid
               container
@@ -712,12 +712,12 @@ export const CodesNotList = ({ sessionObject }) => {
                 <StyledBox
                   sx={{
                     [theme.breakpoints.only("md")]: {
-                      pl: 0,
+                      pl: "10px",
                     },
                   }}
                   className="acc-content-header-items"
                 >
-                  <StyledText className="acc-content-header-item ct-code">
+                  <StyledText sx={{ paddingLeft: "6px !important" }} className="acc-content-header-item ct-code">
                     Code(s)
                   </StyledText>
                   <StyledText className="acc-content-header-item ct-desc">
@@ -823,10 +823,7 @@ export const CodesNotList = ({ sessionObject }) => {
                               [theme.breakpoints.up("md")]: {
                                 fontSize: "90%",
                               },
-                              [theme.breakpoints.down("md")]: {
-                                ml: "8px",
-                                fontSize: "85%",
-                              },
+
                             }}
                           >
                             {item?.info?.value}
@@ -1019,6 +1016,19 @@ export const CodesNotList = ({ sessionObject }) => {
                               [theme.breakpoints.only("md")]: {
                                 justifyContent: "start",
                               },
+
+                              [theme.breakpoints.only("sm")]: {
+                                pl: "10px",
+                              },
+
+                              [theme.breakpoints.only("md")]: {
+                                pl: "12px",
+                              },
+
+                              [theme.breakpoints.only("lg")]: {
+                                pl: "12px",
+                              }
+
                             }}
                           >
                             {item?.info?.total_weight}
@@ -1051,7 +1061,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon state="active" />
+                                    <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
                                 className="acc-content-act-btn act-btn-active"
@@ -1083,7 +1093,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon />
+                                    <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
                                 disabled={tabs?.read_only?.active}
@@ -1142,13 +1152,13 @@ export const CodesNotList = ({ sessionObject }) => {
                                       backgroundColor:
                                         theme.palette.primary.main,
                                     },
-                                    background:
-                                      tabs?.read_only?.active && "#D5D5D5 ",
+                                    // background:
+                                    //   tabs?.read_only?.active && "#D5D5D5 ",
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                        background: '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1157,7 +1167,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       <CrossWhite />
                                     </StyleCircle>
                                   }
-                                  disabled={tabs?.read_only?.active}
+                                  // disabled={tabs?.read_only?.active}
                                   className="acc-content-act-btn"
                                 >
                                   Reject
@@ -1349,7 +1359,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon state="active" />
+                                                <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
                                           >
@@ -1632,7 +1642,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon state="active" />
+                                            <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
                                       >
@@ -2043,7 +2053,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon state="active" />
+                                                <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
                                           >
@@ -2496,7 +2506,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon state="active" />
+                                            <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
                                       >
@@ -2740,7 +2750,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                 borderRadius: "100px",
                               }}
                             >
-                              <CorrectIcon state="active" />
+                              <CorrectIcon state="white" />
                             </StyleCircle>
                           }
                         >
@@ -2885,7 +2895,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                   borderRadius: "100px",
                                 }}
                               >
-                                <CorrectIcon state="active" />
+                                <CorrectIcon state="white" />
                               </StyleCircle>
                             }
                           >

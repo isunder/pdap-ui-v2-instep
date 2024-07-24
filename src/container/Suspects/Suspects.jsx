@@ -72,7 +72,8 @@ export const Suspects = ({ sessionObject }) => {
 
   const state = useSelector((state) => state.user.data.suspectedCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
-
+  const [aarr, setAarr] = useState([]);
+  console.log(selectedSuspectcode, aarr, "selectedSuspectcode")
   let array = [];
   state &&
     Object.keys(state).forEach((key) => {
@@ -135,6 +136,8 @@ export const Suspects = ({ sessionObject }) => {
   };
 
   const handleClickOpen = (item) => {
+
+    console.log(item, "bdhfbdsjbf")
     setDeleteOpen(true);
     setSelectedRejectData(item);
   };
@@ -242,6 +245,9 @@ export const Suspects = ({ sessionObject }) => {
   };
 
   const handleClickOpen1 = (key, item) => {
+
+    setAarr([...aarr, key])
+
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -376,6 +382,8 @@ export const Suspects = ({ sessionObject }) => {
 
   const keyOfRejectedData = rejectedData?.map((value) => Object.keys(value)[0]);
 
+  console.log(tabs, "tabssss---")
+
   return (
     <div>
       <Box
@@ -396,6 +404,7 @@ export const Suspects = ({ sessionObject }) => {
             >
               <StyledBox
                 sx={{
+                  fontWeight: "800 !important",
                   [theme.breakpoints.only("md")]: {
                     pl: 0,
                   },
@@ -512,7 +521,10 @@ export const Suspects = ({ sessionObject }) => {
                     xl={2}
                     sx={{
                       textAlign: "start",
+                      fontSize: "14px",
+                      fontWeight: 600,
                     }}
+
                   >
                     {item?.total_weight ? item.total_weight : "--"}
                   </Grid>
@@ -549,15 +561,15 @@ export const Suspects = ({ sessionObject }) => {
                           width: "100%",
                         },
                         filter:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode.find(obj => obj.value === item?.SuspectedCondition)
                             ? "opacity(0.5)"
                             : "none",
                         cursor:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition)
                             ? "not-allowed"
                             : "pointer",
                         pointerEvents:
-                          selectedSuspectcode?.length > 0 ? "none" : "all",
+                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle
@@ -582,29 +594,29 @@ export const Suspects = ({ sessionObject }) => {
                         width: "92px !important",
                         justifyContent: "left",
                         backgroundColor: theme.palette.primary.main,
-                        color: "#fff",
+                        color: "#fff !important",
                         ":hover": {
                           backgroundColor: theme.palette.primary.main,
                         },
                         [theme.breakpoints.down("md")]: {
                           width: "100%",
                         },
-                        background: tabs?.read_only?.active && "#D5D5D5 ",
+
                         filter:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition)
                             ? "opacity(0.5)"
                             : "none",
                         cursor:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition)
                             ? "not-allowed"
                             : "pointer",
                         pointerEvents:
-                          selectedSuspectcode?.length > 0 ? "none" : "all",
+                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle
                           sx={{
-                            background: tabs?.read_only?.active ? "#ADADAD" : "#434343",
+                            background: "#434343",
                             ...flexAlignCenter,
                             justifyContent: "center",
                             borderRadius: "100px",
@@ -613,7 +625,7 @@ export const Suspects = ({ sessionObject }) => {
                           <CrossWhite />
                         </StyleCircle>
                       }
-                      disabled={tabs?.read_only?.active}
+
                     >
                       Reject
                     </StyledButton>
@@ -655,13 +667,13 @@ export const Suspects = ({ sessionObject }) => {
                             >
                               <StyleCode
                                 sx={{
-                                  filter: isConditionRejected(item)
+                                  filter: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "opacity(0.5)"
                                     : "none",
-                                  cursor: isConditionRejected(item)
+                                  cursor: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "not-allowed"
                                     : "pointer",
-                                  pointerEvents: isConditionRejected(item)
+                                  pointerEvents: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "none"
                                     : "all",
                                 }}
