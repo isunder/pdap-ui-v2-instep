@@ -73,7 +73,7 @@ export const Suspects = ({ sessionObject }) => {
   const state = useSelector((state) => state.user.data.suspectedCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
   const [aarr, setAarr] = useState([]);
-  console.log(selectedSuspectcode, aarr, "selectedSuspectcode")
+
   let array = [];
   state &&
     Object.keys(state).forEach((key) => {
@@ -136,8 +136,6 @@ export const Suspects = ({ sessionObject }) => {
   };
 
   const handleClickOpen = (item) => {
-
-    console.log(item, "bdhfbdsjbf")
     setDeleteOpen(true);
     setSelectedRejectData(item);
   };
@@ -381,8 +379,6 @@ export const Suspects = ({ sessionObject }) => {
   }, [suspectedCode.length, rejectedData.length]);
 
   const keyOfRejectedData = rejectedData?.map((value) => Object.keys(value)[0]);
-
-  console.log(tabs, "tabssss---")
 
   return (
     <div>

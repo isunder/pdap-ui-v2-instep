@@ -19,11 +19,6 @@
   padding-left: 10px;
 }
 
-.acc-content-header-item span{
-  padding-left: 2px !important;
-}
-
-
 .MuiTypography-root.acc-content-header-item, .acc-content-header-item {
   flex-grow: 1;
   margin: auto 0;
