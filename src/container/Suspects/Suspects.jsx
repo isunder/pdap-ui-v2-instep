@@ -448,7 +448,9 @@ export const Suspects = ({ sessionObject }) => {
             <Box key={index + 1}>
               <Grid
                 container
-                sx={{ paddingTop: "20px", borderBottom: "1px solid #D9D9D999", }}
+                sx={{
+                  paddingTop: "20px", borderBottom: "1px solid #D9D9D999",
+                }}
                 spacing={0}
                 className="ContentBody"
 
@@ -540,6 +542,7 @@ export const Suspects = ({ sessionObject }) => {
                   className="acc-content-suspects-action"
                 >
                   {isConditionRejected(item) ? (
+                    console.log(selectedSuspectcode, item, "knfksndklndsklnkls"),
                     <StyledButton
                       onClick={() =>
                         handleRemoveDeletedCode(item?.SuspectedCondition)
@@ -557,20 +560,26 @@ export const Suspects = ({ sessionObject }) => {
                           width: "100%",
                         },
                         filter:
-                          selectedSuspectcode.find(obj => obj.value === item?.SuspectedCondition)
-                            ? "opacity(0.5)"
-                            : "none",
+                          item?.data[Object.keys(item.data)[0]].value === "" ?
+                            selectedSuspectcode?.find(obj => obj.value == item.data[Object.keys(item.data)[0]]) :
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
+                              ? "opacity(0.5)"
+                              : "none",
                         cursor:
-                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition)
-                            ? "not-allowed"
-                            : "pointer",
+                          item?.data[Object.keys(item.data)[0]].value === "" ?
+                            selectedSuspectcode?.find(obj => obj.value == item.data[Object.keys(item.data)[0]]) :
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
+                              ? "not-allowed"
+                              : "pointer",
                         pointerEvents:
-                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition) ? "none" : "all",
+                          item?.data[Object.keys(item.data)[0]].value === "" ?
+                            selectedSuspectcode?.find(obj => obj.value == item.data[Object.keys(item.data)[0]]) :
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle
                           sx={{
-                            background: "red",
+                            background: "#B90E0E",
                             ...flexAlignCenter,
                             justifyContent: "center",
                             borderRadius: "100px",
@@ -599,15 +608,21 @@ export const Suspects = ({ sessionObject }) => {
                         },
 
                         filter:
-                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition)
-                            ? "opacity(0.5)"
-                            : "none",
+                          item?.data[Object.keys(item.data)[0]].value === "" ?
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]]) :
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
+                              ? "opacity(0.5)"
+                              : "none",
                         cursor:
-                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition)
-                            ? "not-allowed"
-                            : "pointer",
+                          item?.data[Object.keys(item.data)[0]].value === "" ?
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]]) :
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
+                              ? "not-allowed"
+                              : "pointer",
                         pointerEvents:
-                          selectedSuspectcode?.find(obj => obj.value === item?.SuspectedCondition) ? "none" : "all",
+                          item?.data[Object.keys(item.data)[0]].value === "" ?
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]]) :
+                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle

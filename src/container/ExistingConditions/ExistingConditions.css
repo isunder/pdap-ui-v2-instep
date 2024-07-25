@@ -114,6 +114,7 @@
   }
   .acc-content-suspects-action {
     order: 2;
+    margin-bottom: 20px !important;
   }
 }
 

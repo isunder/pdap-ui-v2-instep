@@ -1617,9 +1617,10 @@ export const Codes = () => {
                     <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
                       <Typography
                         sx={{
+                          fontFamily: "Proxima Nova Rg",
                           fontSize: "1rem",
                           color: "rgba(0, 0, 0, 0.60);",
-                          fontWeight: "600",
+                          fontWeight: "500",
                           lineHeight: "1.375rem",
                           textTransform: "initial",
                         }}
@@ -1663,9 +1664,10 @@ export const Codes = () => {
                     <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
                       <Typography
                         sx={{
+                          fontFamily: "Proxima Nova Rg",
+                          fontWeight: 500,
                           fontSize: "1rem",
                           color: "rgba(0, 0, 0, 0.60);",
-                          fontWeight: "600",
                           lineHeight: "1.375rem",
                           textTransform: "initial",
                         }}
@@ -1714,6 +1716,8 @@ export const Codes = () => {
                     >
                       <Typography
                         sx={{
+                          fontFamily: "Proxima Nova Rg",
+                          fontWeight: 500,
                           fontSize: "1rem",
                           color: "rgba(0, 0, 0, 0.60);",
                           fontWeight: "600",
@@ -1830,7 +1834,7 @@ export const Codes = () => {
                       container
                       sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           Existing Conditions (recapturing required)
                         </Typography>
@@ -1841,7 +1845,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -1858,7 +1862,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -1950,7 +1954,7 @@ export const Codes = () => {
                       container
                       sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           New Suspects
                         </Typography>
@@ -1964,7 +1968,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -1981,7 +1985,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2081,7 +2085,7 @@ export const Codes = () => {
                       container
                       sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           Existing Conditions <br /> (not in problem list)
                         </Typography>
@@ -2095,7 +2099,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2112,7 +2116,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2203,7 +2207,7 @@ export const Codes = () => {
                     </Grid>
 
                     <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           Additional diagnoses
                         </Typography>
@@ -2217,7 +2221,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2234,7 +2238,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
