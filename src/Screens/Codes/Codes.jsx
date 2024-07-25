@@ -863,6 +863,11 @@ export const Codes = () => {
                                     fontStyle: "normal",
                                     fontWeight: "600",
                                     lineHeight: "normal",
+
+                                    [theme.breakpoints.up("sm")]: {
+                                      p: '7px',
+                                    },
+
                                   }}
                                 >
                                   {sumCount}

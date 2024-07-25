@@ -84,6 +84,7 @@ export const Suspects = ({ sessionObject }) => {
         remarks: state[key].remarks,
         definition: state[key].definition,
         total_weight: state[key].total_weight,
+        dataValue: state[key].data.value
       });
     });
   array?.length !== suspectCode?.length && setSuspectCode(array);
@@ -242,9 +243,9 @@ export const Suspects = ({ sessionObject }) => {
     setOtherText(e.target.value);
   };
 
-  const handleClickOpen1 = (key, item) => {
+  const handleClickOpen1 = (key, item, allData) => {
 
-    setAarr([...aarr, key])
+
 
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -253,7 +254,7 @@ export const Suspects = ({ sessionObject }) => {
       let itemCode = key;
       let value = item?.value;
       let additional_info = item?.remarks?.reason;
-
+      let suspectedCondition = allData?.SuspectedCondition
       let code = sessionObject?.suspectCode?.some((value, index) => {
         if (key === value.code) {
           return true;
@@ -284,6 +285,7 @@ export const Suspects = ({ sessionObject }) => {
           code: itemCode,
           value: value,
           additional_info: additional_info,
+          suspectedCondition: suspectedCondition,
         };
         updateVal =
           selectedSuspectcode?.length > 0
@@ -320,6 +322,15 @@ export const Suspects = ({ sessionObject }) => {
     return keyOfRejectedData?.some(
       (value) => item?.SuspectedCondition === value
     );
+  };
+
+  // Function to check if the condition is rejected
+  const isConditionRejected2 = (item) => {
+    const newKey = keyOfRejectedData?.map(
+      (value) => item?.SuspectedCondition === value
+    );
+
+    isConditionRejected2();
   };
 
   // Function to check if the code is not selected
@@ -542,7 +553,6 @@ export const Suspects = ({ sessionObject }) => {
                   className="acc-content-suspects-action"
                 >
                   {isConditionRejected(item) ? (
-                    console.log(selectedSuspectcode, item, "knfksndklndsklnkls"),
                     <StyledButton
                       onClick={() =>
                         handleRemoveDeletedCode(item?.SuspectedCondition)
@@ -560,21 +570,15 @@ export const Suspects = ({ sessionObject }) => {
                           width: "100%",
                         },
                         filter:
-                          item?.data[Object.keys(item.data)[0]].value === "" ?
-                            selectedSuspectcode?.find(obj => obj.value == item.data[Object.keys(item.data)[0]]) :
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
-                              ? "opacity(0.5)"
-                              : "none",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "opacity(0.5)"
+                            : "none",
                         cursor:
-                          item?.data[Object.keys(item.data)[0]].value === "" ?
-                            selectedSuspectcode?.find(obj => obj.value == item.data[Object.keys(item.data)[0]]) :
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
-                              ? "not-allowed"
-                              : "pointer",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "not-allowed"
+                            : "pointer",
                         pointerEvents:
-                          item?.data[Object.keys(item.data)[0]].value === "" ?
-                            selectedSuspectcode?.find(obj => obj.value == item.data[Object.keys(item.data)[0]]) :
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value) ? "none" : "all",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle
@@ -608,21 +612,15 @@ export const Suspects = ({ sessionObject }) => {
                         },
 
                         filter:
-                          item?.data[Object.keys(item.data)[0]].value === "" ?
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]]) :
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
-                              ? "opacity(0.5)"
-                              : "none",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "opacity(0.5)"
+                            : "none",
                         cursor:
-                          item?.data[Object.keys(item.data)[0]].value === "" ?
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]]) :
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value)
-                              ? "not-allowed"
-                              : "pointer",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "not-allowed"
+                            : "pointer",
                         pointerEvents:
-                          item?.data[Object.keys(item.data)[0]].value === "" ?
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]]) :
-                            selectedSuspectcode?.find(obj => obj.value === item.data[Object.keys(item.data)[0]].value) ? "none" : "all",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle
@@ -674,7 +672,8 @@ export const Suspects = ({ sessionObject }) => {
                                 if (!isConditionRejected(item)) {
                                   handleClickOpen1(
                                     dataValue,
-                                    item?.data[dataValue]
+                                    item?.data[dataValue],
+                                    item
                                   );
                                 }
                               }
@@ -721,7 +720,8 @@ export const Suspects = ({ sessionObject }) => {
                                 if (!isConditionRejected(item)) {
                                   handleClickOpen1(
                                     dataValue,
-                                    item?.data[dataValue]
+                                    item?.data[dataValue],
+                                    item
                                   );
                                 }
                               }}
