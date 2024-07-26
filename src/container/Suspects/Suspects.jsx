@@ -72,6 +72,7 @@ export const Suspects = ({ sessionObject }) => {
 
   const state = useSelector((state) => state.user.data.suspectedCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
+  const [aarr, setAarr] = useState([]);
 
   let array = [];
   state &&
@@ -83,6 +84,7 @@ export const Suspects = ({ sessionObject }) => {
         remarks: state[key].remarks,
         definition: state[key].definition,
         total_weight: state[key].total_weight,
+        dataValue: state[key].data.value
       });
     });
   array?.length !== suspectCode?.length && setSuspectCode(array);
@@ -241,7 +243,10 @@ export const Suspects = ({ sessionObject }) => {
     setOtherText(e.target.value);
   };
 
-  const handleClickOpen1 = (key, item) => {
+  const handleClickOpen1 = (key, item, allData) => {
+
+
+
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -249,7 +254,7 @@ export const Suspects = ({ sessionObject }) => {
       let itemCode = key;
       let value = item?.value;
       let additional_info = item?.remarks?.reason;
-
+      let suspectedCondition = allData?.SuspectedCondition
       let code = sessionObject?.suspectCode?.some((value, index) => {
         if (key === value.code) {
           return true;
@@ -280,6 +285,7 @@ export const Suspects = ({ sessionObject }) => {
           code: itemCode,
           value: value,
           additional_info: additional_info,
+          suspectedCondition: suspectedCondition,
         };
         updateVal =
           selectedSuspectcode?.length > 0
@@ -318,6 +324,15 @@ export const Suspects = ({ sessionObject }) => {
     );
   };
 
+  // Function to check if the condition is rejected
+  const isConditionRejected2 = (item) => {
+    const newKey = keyOfRejectedData?.map(
+      (value) => item?.SuspectedCondition === value
+    );
+
+    isConditionRejected2();
+  };
+
   // Function to check if the code is not selected
   const isCodeSelected = (dataValue) => {
     return selectedSuspectcode?.some((ele) => ele.code === dataValue);
@@ -341,18 +356,18 @@ export const Suspects = ({ sessionObject }) => {
         suspectedCode?.length > 0 && sessionObject?.suspectCode?.length > 0
           ? [...sessionObject?.suspectCode, ...suspectedCode]
           : suspectedCode?.length > 0
-          ? suspectedCode
-          : sessionObject?.suspectCode || [];
+            ? suspectedCode
+            : sessionObject?.suspectCode || [];
       selectedSuspectcode?.length === 0 &&
         setSelectedSuspectcode([...newSuspect]);
 
       let newSuspectReject =
         rejectSuspectCode?.length > 0 &&
-        sessionObject?.suspectCodeReject?.length > 0
+          sessionObject?.suspectCodeReject?.length > 0
           ? [...sessionObject?.suspectCodeReject, ...rejectSuspectCode]
           : rejectSuspectCode?.length > 0
-          ? rejectSuspectCode
-          : sessionObject?.suspectCodeReject || [];
+            ? rejectSuspectCode
+            : sessionObject?.suspectCodeReject || [];
       rejectSuspectCode?.length === 0 &&
         setRejectSuspectCode([...newSuspectReject]);
       setSessionObjLoaded(true);
@@ -396,6 +411,7 @@ export const Suspects = ({ sessionObject }) => {
             >
               <StyledBox
                 sx={{
+                  fontWeight: "800 !important",
                   [theme.breakpoints.only("md")]: {
                     pl: 0,
                   },
@@ -429,7 +445,7 @@ export const Suspects = ({ sessionObject }) => {
                     },
                   }}
                 >
-                  <StyledText className="acc-content-cust-header1">
+                  <StyledText sx={{ border: "none !important" }} className="acc-content-cust-header1">
                     Actions
                   </StyledText>
                 </Grid>
@@ -443,9 +459,12 @@ export const Suspects = ({ sessionObject }) => {
             <Box key={index + 1}>
               <Grid
                 container
-                sx={{ paddingTop: "10px" }}
+                sx={{
+                  paddingTop: "20px", borderBottom: "1px solid #D9D9D999",
+                }}
                 spacing={0}
                 className="ContentBody"
+
               >
                 {/* Description contents */}
                 <Grid
@@ -511,7 +530,10 @@ export const Suspects = ({ sessionObject }) => {
                     xl={2}
                     sx={{
                       textAlign: "start",
+                      fontSize: "14px",
+                      fontWeight: 600,
                     }}
+
                   >
                     {item?.total_weight ? item.total_weight : "--"}
                   </Grid>
@@ -536,9 +558,9 @@ export const Suspects = ({ sessionObject }) => {
                         handleRemoveDeletedCode(item?.SuspectedCondition)
                       }
                       sx={{
-                        fontSize: "80%",
-                        width: "90%",
-                        justifyContent: "left",
+                        fontSize: "14px",
+                        width: "98px !important",
+                        justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
                         color: "#fff",
                         ":hover": {
@@ -548,20 +570,20 @@ export const Suspects = ({ sessionObject }) => {
                           width: "100%",
                         },
                         filter:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
                             ? "opacity(0.5)"
                             : "none",
                         cursor:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
                             ? "not-allowed"
                             : "pointer",
                         pointerEvents:
-                          selectedSuspectcode?.length > 0 ? "none" : "all",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle
                           sx={{
-                            background: "red",
+                            background: "#B90E0E",
                             ...flexAlignCenter,
                             justifyContent: "center",
                             borderRadius: "100px",
@@ -577,28 +599,28 @@ export const Suspects = ({ sessionObject }) => {
                     <StyledButton
                       onClick={() => handleClickOpen(item)}
                       sx={{
-                        fontSize: "80%",
-                        width: "90%",
+                        fontSize: "14px",
+                        width: "92px !important",
                         justifyContent: "left",
                         backgroundColor: theme.palette.primary.main,
-                        color: "#fff",
+                        color: "#fff !important",
                         ":hover": {
                           backgroundColor: theme.palette.primary.main,
                         },
                         [theme.breakpoints.down("md")]: {
                           width: "100%",
                         },
-                        background: tabs?.read_only?.active && "grey ",
+
                         filter:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
                             ? "opacity(0.5)"
                             : "none",
                         cursor:
-                          selectedSuspectcode?.length > 0
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
                             ? "not-allowed"
                             : "pointer",
                         pointerEvents:
-                          selectedSuspectcode?.length > 0 ? "none" : "all",
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
                       }}
                       startIcon={
                         <StyleCircle
@@ -612,7 +634,7 @@ export const Suspects = ({ sessionObject }) => {
                           <CrossWhite />
                         </StyleCircle>
                       }
-                      disabled={tabs?.read_only?.active}
+
                     >
                       Reject
                     </StyledButton>
@@ -629,7 +651,7 @@ export const Suspects = ({ sessionObject }) => {
                           spacing={0}
                           className="ContentBody"
                           sx={{
-                            borderBottom: "1px solid #D9D9D999",
+
                             pb: 1,
                             mb: 1,
                             flexWrap: "nowrap",
@@ -644,23 +666,28 @@ export const Suspects = ({ sessionObject }) => {
                               lg="auto"
                               xl="auto"
                               onClick={() => {
+                                if (tabs?.read_only?.active) {
+                                  return;
+                                }
                                 if (!isConditionRejected(item)) {
                                   handleClickOpen1(
                                     dataValue,
-                                    item?.data[dataValue]
+                                    item?.data[dataValue],
+                                    item
                                   );
                                 }
-                              }}
+                              }
+                              }
                             >
                               <StyleCode
                                 sx={{
-                                  filter: isConditionRejected(item)
+                                  filter: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "opacity(0.5)"
                                     : "none",
-                                  cursor: isConditionRejected(item)
+                                  cursor: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "not-allowed"
                                     : "pointer",
-                                  pointerEvents: isConditionRejected(item)
+                                  pointerEvents: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "none"
                                     : "all",
                                 }}
@@ -693,7 +720,8 @@ export const Suspects = ({ sessionObject }) => {
                                 if (!isConditionRejected(item)) {
                                   handleClickOpen1(
                                     dataValue,
-                                    item?.data[dataValue]
+                                    item?.data[dataValue],
+                                    item
                                   );
                                 }
                               }}
@@ -710,16 +738,17 @@ export const Suspects = ({ sessionObject }) => {
                                 {dataValue}
                                 <StyleCircle
                                   sx={{
-                                    background: "#008F53",
+                                    background: "#FFF",
                                     ...flexAlignCenter,
                                     justifyContent: "center",
                                     marginLeft: "6px",
                                     borderRadius: "100px",
                                     display: "inline-block",
                                     textAlign: "center",
+                                    alignItems: "center"
                                   }}
                                 >
-                                  <CorrectIcon />
+                                  <CorrectIcon fill={"#008F53"} />
                                 </StyleCircle>
                               </StyleCode>
                             </Grid>
@@ -733,13 +762,13 @@ export const Suspects = ({ sessionObject }) => {
                             xl={10}
                             sx={{
                               [theme.breakpoints.up("lg")]: {
-                                ml: "12px",
+                                ml: "10px",
                               },
                               [theme.breakpoints.up("md")]: {
-                                ml: "30px",
+                                ml: "10px",
                               },
                               [theme.breakpoints.down("md")]: {
-                                ml: "8px",
+                                ml: "10px",
                               },
                             }}
                           >
@@ -823,6 +852,7 @@ export const Suspects = ({ sessionObject }) => {
                   placeholder="Please mention the reason for rejection"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
+                  labelText="Please enter reject reason"
                 />
               )}
             </Box>

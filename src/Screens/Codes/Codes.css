@@ -53,18 +53,11 @@
   height: 1.6875rem;
   padding: 0px 10px;
   margin-top: 10px;
+  
 }
 
 .ItemsDivNew {
-  border-radius: 15px;
-  background: rgba(22, 35, 108, 0.08);
-  margin-left: 10px;
-  height: 1.6875rem;
-  padding: 0px 10px;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ 
 }
 
 .ItemsDiv p {
@@ -108,7 +101,15 @@
   padding-left: 30px;
 }
 .ItemsDivNew p{
-  text-align: center;
+
+  color: #C3C3C3;
+padding:0px 10px;
+font-size: 16px;
+font-weight: 400;
+line-height: 20px;
+text-align: left;
+
+
 }
 
 @media screen and (max-width: 767px) {

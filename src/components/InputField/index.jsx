@@ -12,6 +12,7 @@ const Label = styled(Typography)(({ theme }) => ({
     textTransform: "capitalize",
     color: '#344054',
     padding: 0,
+    marginTop: "5px !important"
 }));
 
 const StyledInput = styled(OutlinedInput)(({ theme, iserror }) => ({
@@ -25,6 +26,7 @@ const StyledInput = styled(OutlinedInput)(({ theme, iserror }) => ({
     border: `${iserror ? "1px" : "2px"} solid ${iserror ? "#D0D5DD" : theme.palette.error.main}`,
     height: "2.375rem",
     paddingLeft: "0.5rem",
+    marginTop: "5px",
     width: "100%",
     "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
         "::placeholder": {
@@ -65,7 +67,7 @@ export const InputField = (props) => {
     const { labelText, onChange, error, helperText, startIcon, endIcon, isRequired, errorWidth, startIconCss, labelCss, errorCss, mainBoxCss, ...rest } = props;
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: "column", width: "100%", gap: "0.25rem", ...mainBoxCss }}>
+        <Box sx={{ display: 'flex', flexDirection: "column", width: "100%", gap: "5px", ...mainBoxCss }}>
             {labelText && (
                 <Label sx={{ ...labelCss }}>
                     {labelText}

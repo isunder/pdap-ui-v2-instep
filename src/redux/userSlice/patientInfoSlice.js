@@ -146,7 +146,7 @@ const slice = createSlice({
         });
         builder.addCase(patientInfo.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -160,7 +160,7 @@ const slice = createSlice({
         });
         builder.addCase(patientExistingConditions.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -174,7 +174,7 @@ const slice = createSlice({
         });
         builder.addCase(patientAddressCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -188,7 +188,7 @@ const slice = createSlice({
         });
         builder.addCase(patientDuplicateCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -202,7 +202,7 @@ const slice = createSlice({
             });
             builder.addCase(patientDeletedCode.rejected, (state, action) => {
                 state.isLoading = false;
-                console.log('Error', action.payload)
+                
                 state.isError = true;
             });
 
@@ -216,7 +216,7 @@ const slice = createSlice({
         });
         builder.addCase(patientSuspectedCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -230,7 +230,7 @@ const slice = createSlice({
         });
         builder.addCase(patientSummary.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -244,7 +244,7 @@ const slice = createSlice({
         });
         builder.addCase(patientRecaptureCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -258,7 +258,7 @@ const slice = createSlice({
         });
         builder.addCase(patientTabFlag.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -272,7 +272,7 @@ const slice = createSlice({
         });
         builder.addCase(patientHistory.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
     }

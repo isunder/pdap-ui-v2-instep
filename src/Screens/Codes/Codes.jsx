@@ -118,7 +118,7 @@ export const Codes = () => {
   const slug = urlParams.get("slug");
   const theme = useTheme();
 
-  const [openSubmitModal, setOpenSubmitModal] = useState(false);
+  const [openSubmitModal, setOpenSubmitModal] = useState();
   const [closeSubmitModal, setCloseSubmitModal] = useState(false);
 
   const [codesDataLoaded, setCodesDataLoaded] = useState(false);
@@ -354,11 +354,14 @@ export const Codes = () => {
     }
   };
 
+  useEffect(() => {
+
+  }, [setOpenSubmitModal])
+
 
   const handleSubmitRedirect = async (tabs) => {
     setIsModalOpen(true);
-
-    const isAthenaModal = tabs['tenant_type']?.value === "EPIC";
+    const isAthenaModal = tabs['type']?.value == "Athena";
 
     if (isAthenaModal) {
       setSwitchModal(true);
@@ -522,8 +525,6 @@ export const Codes = () => {
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
   const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
-
-
 
   const codesData = [
     {
@@ -851,7 +852,7 @@ export const Codes = () => {
                                   height: "1.3125rem",
                                   width: "1.3125rem",
                                   ...flexCenter,
-                                  justifyContent: "center",
+
                                 }}
                               >
                                 <Typography
@@ -862,6 +863,11 @@ export const Codes = () => {
                                     fontStyle: "normal",
                                     fontWeight: "600",
                                     lineHeight: "normal",
+
+                                    [theme.breakpoints.up("sm")]: {
+                                      p: '7px',
+                                    },
+
                                   }}
                                 >
                                   {sumCount}
@@ -930,6 +936,7 @@ export const Codes = () => {
                               existingCode?.map((item, index) => (
                                 <Stack
                                   direction="row"
+                                  justifyContent={'start'}
                                   spacing={1}
                                   sx={{
                                     px: 0,
@@ -939,9 +946,11 @@ export const Codes = () => {
                                   }}
                                 >
                                   <Tooltip
+                                    sx={{ padding: " 0px !important" }}
                                     title={item?.code + " : " + item?.value}
                                   >
                                     <Typography
+
                                       onClick={() =>
                                         handleDelete(item, "existing")
                                       }
@@ -949,7 +958,7 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -980,7 +989,7 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan rejected">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon state="rejected" />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -1065,7 +1074,7 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -1105,7 +1114,7 @@ export const Codes = () => {
                                           20
                                           ? "..."
                                           : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon state="rejected" />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -1190,7 +1199,7 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -1221,7 +1230,7 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan rejected">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon state="rejected" />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -1298,7 +1307,7 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -1329,7 +1338,7 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan rejected">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ ml: "10px" }}>
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon state="rejected" />{" "}
                                         </Typography>
                                       </StylePop>{" "}
@@ -1379,7 +1388,7 @@ export const Codes = () => {
         <Container
           maxWidth="xl"
           sx={{
-            padding: "0px 50px !important",
+            padding: "8px 50px !important",
             [theme.breakpoints.down("md")]: {
               padding: "10px !important",
             },
@@ -1552,10 +1561,10 @@ export const Codes = () => {
                     </MuiAccordions>
                   ))}
 
-                  {isModalSubmit && 
-                  <Container sx={{ height: '80vh'}}>
-                    
-                  </Container>
+                  {isModalSubmit &&
+                    <Container sx={{ height: '80vh' }}>
+
+                    </Container>
                   }
                 </Box>
               )}
@@ -1613,9 +1622,10 @@ export const Codes = () => {
                     <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
                       <Typography
                         sx={{
+                          fontFamily: "Proxima Nova Rg",
                           fontSize: "1rem",
                           color: "rgba(0, 0, 0, 0.60);",
-                          fontWeight: "600",
+                          fontWeight: "500",
                           lineHeight: "1.375rem",
                           textTransform: "initial",
                         }}
@@ -1624,6 +1634,7 @@ export const Codes = () => {
                         <Typography
                           sx={{
                             color: "#000;",
+                            fontWeight: "800"
                           }}
                         >
                           {summary?.existing_codes_count || 0}
@@ -1658,9 +1669,10 @@ export const Codes = () => {
                     <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
                       <Typography
                         sx={{
+                          fontFamily: "Proxima Nova Rg",
+                          fontWeight: 500,
                           fontSize: "1rem",
                           color: "rgba(0, 0, 0, 0.60);",
-                          fontWeight: "600",
                           lineHeight: "1.375rem",
                           textTransform: "initial",
                         }}
@@ -1669,6 +1681,7 @@ export const Codes = () => {
                         <Typography
                           sx={{
                             color: "#000;",
+                            fontWeight: "800"
                           }}
                         >
                           {summary?.suspect_conditions_count || 0}
@@ -1708,6 +1721,8 @@ export const Codes = () => {
                     >
                       <Typography
                         sx={{
+                          fontFamily: "Proxima Nova Rg",
+                          fontWeight: 500,
                           fontSize: "1rem",
                           color: "rgba(0, 0, 0, 0.60);",
                           fontWeight: "600",
@@ -1719,6 +1734,7 @@ export const Codes = () => {
                         <Typography
                           sx={{
                             color: "#000;",
+                            fontWeight: "800"
                           }}
                         >
                           {summary?.recapture_codes_count || 0}
@@ -1771,7 +1787,7 @@ export const Codes = () => {
                     </Grid>
                   </Grid> */}
                 </CardContent>
-                </Card>
+              </Card>
               }
 
               {!isModalSubmit && <Card
@@ -1811,7 +1827,9 @@ export const Codes = () => {
                         {sumCount}
                       </Avatar>
                     ) : (
-                      <Avatar className="AvatarCard" aria-label="recipe" />
+                      <Avatar className="AvatarCard" aria-label="recipe" >
+                        0
+                      </Avatar>
                     )
                   }
                 />
@@ -1821,7 +1839,7 @@ export const Codes = () => {
                       container
                       sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           Existing Conditions (recapturing required)
                         </Typography>
@@ -1832,7 +1850,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -1849,7 +1867,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -1875,6 +1893,12 @@ export const Codes = () => {
                                   title={item?.code + " : " + item?.value}
                                 >
                                   <Typography
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                     onClick={() =>
                                       handleDelete(item, "existing")
                                     }
@@ -1882,7 +1906,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -1909,11 +1933,17 @@ export const Codes = () => {
                                     onClick={() =>
                                       handleDelete(item, "existing")
                                     }
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                   >
                                     <StylePop className="ChipSpan rejected">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -1929,7 +1959,7 @@ export const Codes = () => {
                       container
                       sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           New Suspects
                         </Typography>
@@ -1943,7 +1973,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -1960,7 +1990,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -1970,7 +2000,7 @@ export const Codes = () => {
                                 (suspectCodeReject?.length || 0)}
                             </StyleSheetNumber>
                           </Grid>
-                          {suspectCode?.length > 0 &&
+                          {suspectCode && suspectCode?.length > 0 &&
                             suspectCode?.map((item, index) => (
                               <Stack
                                 direction="row"
@@ -1986,6 +2016,12 @@ export const Codes = () => {
                                   title={item?.code + " : " + item?.value}
                                 >
                                   <Typography
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                     onClick={() =>
                                       handleDelete(item, "suspect")
                                     }
@@ -1993,7 +2029,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -2001,7 +2037,7 @@ export const Codes = () => {
                                 </Tooltip>
                               </Stack>
                             ))}
-                          {suspectCodeReject?.length > 0 &&
+                          {suspectCodeReject && suspectCodeReject?.length > 0 &&
                             suspectCodeReject?.map((item, index) => (
                               <Stack
                                 direction="row"
@@ -2021,6 +2057,12 @@ export const Codes = () => {
                                   }
                                 >
                                   <Typography
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                     onClick={() =>
                                       handleDelete(item, "suspect")
                                     }
@@ -2032,7 +2074,7 @@ export const Codes = () => {
                                       {Object.keys(item).toString().length > 20
                                         ? "..."
                                         : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -2048,7 +2090,7 @@ export const Codes = () => {
                       container
                       sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                     >
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           Existing Conditions <br /> (not in problem list)
                         </Typography>
@@ -2062,7 +2104,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2079,7 +2121,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2089,7 +2131,7 @@ export const Codes = () => {
                                 (recaptureRejectCode?.length || 0)}
                             </StyleSheetNumber>
                           </Grid>
-                          {recaptureCode?.length > 0 &&
+                          {recaptureCode && recaptureCode?.length > 0 &&
                             recaptureCode?.map((item, index) => (
                               <Stack
                                 direction="row"
@@ -2106,6 +2148,12 @@ export const Codes = () => {
                                   title={item?.code + " : " + item?.value}
                                 >
                                   <Typography
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                     onClick={() =>
                                       handleDelete(item, "recapture")
                                     }
@@ -2113,7 +2161,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -2121,7 +2169,7 @@ export const Codes = () => {
                                 </Tooltip>
                               </Stack>
                             ))}
-                          {recaptureRejectCode?.length > 0 &&
+                          {recaptureRejectCode && recaptureRejectCode?.length > 0 &&
                             recaptureRejectCode?.map((item, index) => (
                               <Stack
                                 direction="row"
@@ -2138,6 +2186,12 @@ export const Codes = () => {
                                   title={item?.code + " : " + item?.value}
                                 >
                                   <Typography
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                     onClick={() =>
                                       handleDelete(item, "recapture")
                                     }
@@ -2145,7 +2199,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan rejected">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -2156,8 +2210,9 @@ export const Codes = () => {
                         </>
                       )}
                     </Grid>
+
                     <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
-                      <Grid item lg={9} md={9} sm={2} xs={12}>
+                      <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
                           Additional diagnoses
                         </Typography>
@@ -2171,7 +2226,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2188,7 +2243,7 @@ export const Codes = () => {
                           <Grid
                             item
                             lg={3}
-                            md={2}
+                            md={3}
                             sm={2}
                             xs={12}
                             sx={{ textAlign: "end" }}
@@ -2198,7 +2253,7 @@ export const Codes = () => {
                                 (duplicateRejectCode?.length || 0)}
                             </StyleSheetNumber>
                           </Grid>
-                          {duplicateCode?.length > 0 &&
+                          {duplicateCode && duplicateCode?.length > 0 &&
                             duplicateCode?.map((item, index) => (
                               <Stack
                                 direction="row"
@@ -2215,6 +2270,12 @@ export const Codes = () => {
                                   title={item?.code + " : " + item?.value}
                                 >
                                   <Typography
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                     onClick={() =>
                                       handleDelete(item, "duplicate")
                                     }
@@ -2222,7 +2283,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -2247,6 +2308,12 @@ export const Codes = () => {
                                   title={item?.code + " : " + item?.value}
                                 >
                                   <Typography
+                                    sx={
+                                      {
+                                        padding: "0px !important",
+                                        paddingRight: "8px !important"
+                                      }
+                                    }
                                     onClick={() =>
                                       handleDelete(item, "duplicate")
                                     }
@@ -2254,7 +2321,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan rejected">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      <Typography sx={{ ml: "10px" }}>
+                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
                                     </StylePop>{" "}
@@ -2295,7 +2362,7 @@ export const Codes = () => {
                     )}
                   </Box>
                 </CardContent>
-                </Card>
+              </Card>
               }
             </Grid>
           </Grid>
@@ -2351,7 +2418,7 @@ export const Codes = () => {
               sx={{
                 display: "flex",
                 fontSize: "18px",
-                justifyContent:'center',
+                justifyContent: 'center',
                 fontWeight: 700,
                 lineHeight: "28px",
                 letterSpacing: "0em",
@@ -2364,9 +2431,9 @@ export const Codes = () => {
             <Typography
               variant="body2"
               sx={{
-                marginTop:'5px',
+                marginTop: '5px',
                 color: "#5C6469",
-                textAlign:'center'
+                textAlign: 'center'
               }}
             >
               You can now close the DoctusTech window by
@@ -2375,7 +2442,7 @@ export const Codes = () => {
               variant="body2"
               sx={{
                 color: "#5C6469",
-                textAlign:'center'
+                textAlign: 'center'
               }}
             >
               clicking X button.
