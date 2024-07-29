@@ -7,15 +7,15 @@
   .SubmitModal .MuiDialog-paper{
     width: 450px;
     max-width: 450px !important;
-    height: 518px !important;
-    max-height: unset !important;
+    min-height: 518px !important;
+    max-height: auto !important;
   }
 
   .SubmitModal2 .MuiDialog-paper{
     width: 450px;
     max-width: 450px !important;
-    height: 589px !important;
-    max-height: unset !important;
+    min-height: 589px !important;
+    max-height: auto !important;
   }
 
   .SubmitModal .css-1va6kh9-MuiCardContent-root:last-child{

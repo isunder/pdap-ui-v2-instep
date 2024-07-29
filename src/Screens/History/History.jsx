@@ -15,7 +15,6 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CircularProgress from '@mui/material/CircularProgress';
 import moment from 'moment';
-import mixpanel from 'mixpanel-browser';
 
 import { PrimaryButton } from "../../components/Button";
 import {
@@ -32,7 +31,6 @@ import { MuiAccordions } from "../../components";
 import { patientHistory } from "../../redux/userSlice/patientInfoSlice";
 import { patientSummaryBarSlice } from "../../redux/userSlice/patientSummaryBarSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
-import { Mixpanel } from "../../services";
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -148,7 +146,6 @@ export const History = () => {
     if (slug) {
       dispatch(patientHistory());
       dispatch(patientSummaryBarSlice());
-      Mixpanel('History-Page-Visit', tabs)
     }
   }, []);
 

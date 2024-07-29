@@ -50,7 +50,7 @@ import { DialogModal } from "../../components/Modal/DialogModal";
 import Deletemodal from "../../components/DeleteModal/DeleteModal";
 import { SelectField } from "../../components/SelectField";
 import { InputField } from "../../components/InputField";
-import { Mixpanel } from "../../services";
+
 import {
   StyleCircle,
   StyleButton,
@@ -181,11 +181,7 @@ export const CodesNotList = ({ sessionObject }) => {
     setRejectRecaptureCode([...rejectedCodes]);
     codeList?.length &&
       setSelectedRecapturecode([...selectedRecapturecode, ...codeList]);
-    Mixpanel(
-      `${value?.code}-CodesNotList-Codes-AcceptAll-And-Add-Summary`,
-      tabs,
-      value?.code
-    );
+
   };
 
   const handleOtherText = (e) => {
@@ -276,11 +272,6 @@ export const CodesNotList = ({ sessionObject }) => {
       otherText?.length > 0 && setOtherText(null);
       setHandleFunction(false);
       setDeleteOpen(false);
-      Mixpanel(
-        `${selectedRejectData?.code}-CodesNotList-Codes-RejectAll-And-Add-Summary`,
-        tabs,
-        selectedRejectData?.code
-      );
     }
   };
 
@@ -463,7 +454,6 @@ export const CodesNotList = ({ sessionObject }) => {
           }
         }
       }
-      Mixpanel(`${id}-CodesNotList-Codes-Remove-From-Summary `, tabs, id);
     }
   };
 
@@ -575,11 +565,7 @@ export const CodesNotList = ({ sessionObject }) => {
         setRejectReason("Insufficient Proof");
       otherText?.length > 0 && setOtherText(null);
       setDeleteOpen(false);
-      Mixpanel(
-        `${selectedRejectData.code}-CodesNotList-Codes-Reject-And-Add-Summary `
-          .tabs,
-        selectedRejectData.code
-      );
+
     }
   };
 
@@ -631,11 +617,7 @@ export const CodesNotList = ({ sessionObject }) => {
           (value) => value?.code !== item?.code
         );
         updateVal = codeList;
-        Mixpanel(
-          `${item?.code}-CodesNotList-Codes-Remove-From-Summary`,
-          tabs,
-          item?.code
-        );
+
       } else {
         codeList = {
           code: item.code,
@@ -646,11 +628,7 @@ export const CodesNotList = ({ sessionObject }) => {
           selectedRecapturecode?.length > 0
             ? [...selectedRecapturecode, codeList]
             : [codeList];
-        Mixpanel(
-          `${item?.code}-CodesNotList-Codes-Accept-And-Add-Summary`,
-          tabs,
-          item?.code
-        );
+
       }
       setSelectedRecapturecode(updateVal);
       sessionObject = {

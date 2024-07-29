@@ -50,7 +50,7 @@ import Documentmodal from "../../components/DocumentModal/DocumentModal";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { SelectField } from "../../components/SelectField";
 import { InputField } from "../../components/InputField";
-import { Mixpanel } from "../../services";
+
 import {
   StyleCircle,
   StyleButton,
@@ -153,11 +153,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
           JSON.stringify(sessionObject)
         );
         setSelectedDuplicatecode(codeList);
-        Mixpanel(
-          `${item?.code}-Duplicated-Codes-Remove-From-Summary`,
-          tabs,
-          item?.code
-        );
+
       } else {
         codeList = {
           code: item?.code,
@@ -167,11 +163,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
         selectedDuplicatecode?.length > 0
           ? setSelectedDuplicatecode([...selectedDuplicatecode, codeList])
           : setSelectedDuplicatecode([codeList]);
-        Mixpanel(
-          `${item?.code}-Duplicated-Codes-Accept-And-Add-Summary`,
-          tabs,
-          item?.code
-        );
+
       }
     }
   };
@@ -422,11 +414,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
       rejectReason !== "Insufficient Proof" &&
         setRejectReason("Insufficient Proof");
       otherText?.length > 0 && setOtherText(null);
-      Mixpanel(
-        `${selectedRejectData.code}-Duplicate-Codes-Reject-And-Add-Summary `,
-        tabs,
-        selectedRejectData?.code
-      );
+
     }
   };
 
@@ -511,11 +499,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
       otherText?.length > 0 && setOtherText(null);
       setHandleFunction(false);
       setDeleteOpen(false);
-      Mixpanel(
-        `${selectedRejectData?.code}-Duplicate-Codes-RejectAll-And-Add-Summary`,
-        tabs,
-        selectedRejectData?.code
-      );
+
     }
   };
 
@@ -628,7 +612,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
           }
         }
       }
-      Mixpanel(`${id}-Duplicate-Codes-Remove-From-Summary `, tabs, id);
     }
   };
 
@@ -662,11 +645,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
     setRejectDuplicateCode([...rejectedCodes]);
     codeList?.length &&
       setSelectedDuplicatecode([...selectedDuplicatecode, ...codeList]);
-    Mixpanel(
-      `${value?.code}-Duplicate-Codes-AcceptAll-And-Add-Summary`,
-      tabs,
-      value?.code
-    );
+
   };
 
   const handleReseon = (event) => {

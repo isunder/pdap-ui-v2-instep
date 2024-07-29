@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import mixpanel from "mixpanel-browser";
+
 
 import {
   CrossWhite,
@@ -32,7 +32,7 @@ import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { InputField } from "../../components/InputField";
 import { SelectField } from "../../components/SelectField";
-import { Mixpanel } from "../../services";
+
 import {
   StyleCircle,
   StyleButton,
@@ -219,11 +219,6 @@ export const Suspects = ({ sessionObject }) => {
           setRejectReason("Insufficient Proof");
         otherText?.length > 0 && setOtherText(null);
         setDeleteOpen(false);
-        Mixpanel(
-          `${selectedRejectData.SuspectedCondition}-Suspects-Codes-RejectAll-And-Add-Summary`,
-          tabs,
-          selectedRejectData?.code
-        );
       }
     }
   };
@@ -275,11 +270,7 @@ export const Suspects = ({ sessionObject }) => {
           (value) => value?.code !== key
         );
         updateVal = codeList;
-        Mixpanel(
-          `${itemCode}-Suspects-Codes-Remove-From-Summary`,
-          tabs,
-          itemCode?.code
-        );
+
       } else {
         codeList = {
           code: itemCode,
@@ -291,11 +282,6 @@ export const Suspects = ({ sessionObject }) => {
           selectedSuspectcode?.length > 0
             ? [...selectedSuspectcode, codeList]
             : [codeList];
-        Mixpanel(
-          `${itemCode}-Suspects-Codes-Accept-And-Add-Summary`,
-          tabs,
-          itemCode?.code
-        );
       }
       sessionObject = {
         mrn: userDetail?.mrn,

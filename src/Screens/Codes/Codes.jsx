@@ -54,7 +54,6 @@ import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { useNavigate } from "react-router-dom";
 import { DialogModal } from "../../components/Modal/DialogModal";
-import { Mixpanel } from "../../services";
 import SubmitModal from "../../components/SubmitModal/SubmitModal";
 
 const StyledText = styled("Box")(() => ({
@@ -484,7 +483,6 @@ export const Codes = () => {
       const result = await dispatch(patientSubmitData(requestBody));
       if (result) {
         if (result?.meta?.requestStatus === "fulfilled") {
-          Mixpanel("Submit-Codes", tabs, requestBody);
           setOpenSubmitModal(false);
           setDialog(true);
           setIsModalSubmit(true);
@@ -497,7 +495,6 @@ export const Codes = () => {
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary());
-      Mixpanel("Codes-Page-Visit", tabs);
       // Set a timeout to update the code data loaded state
       const timer = setTimeout(() => {
         setCodesDataLoaded(true);
@@ -647,11 +644,6 @@ export const Codes = () => {
         };
         dispatch(existingValue(codeList));
       }
-      Mixpanel(
-        `${item?.code}-Existing-Codes-Remove-From-Summary`,
-        tabs,
-        item?.code
-      );
     } else if (key === "suspect") {
       if (item[Object.keys(item)]?.reason) {
         const codeList = suspectCodeReject.filter(
@@ -672,11 +664,6 @@ export const Codes = () => {
         };
         dispatch(suspectValue(codeList));
       }
-      Mixpanel(
-        `${item?.code}-Suspects-Codes-Remove-From-Summary`,
-        tabs,
-        item?.code
-      );
     } else if (key === "recapture") {
       if (item?.reason) {
         const codeList = recaptureCodeReject.filter(
@@ -717,11 +704,6 @@ export const Codes = () => {
         };
         dispatch(duplicateValue(codeList));
       }
-      Mixpanel(
-        `${item?.code}-Duplicated-Codes-Remove-From-Summary`,
-        tabs,
-        item?.code
-      );
     }
     localStorage.setItem(
       `sessionObject_${userDetail.mrn}`,
