@@ -190,7 +190,7 @@ export const Header = ({ sessionObject }) => {
           >
             <>
               <Grid container sx={{ flexWrap: "nowrap" }} spacing={{ md: 2 }}>
-                <Grid item xs={12} md={5} sx={{ alignItems: "center" }} sm={6}>
+                <Grid item xs={12} md={5} sx={{ alignItems: "center" }} >
                   <Box
                     sx={{
                       display: "flex",
