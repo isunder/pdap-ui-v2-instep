@@ -9,7 +9,12 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const patientSummaryBarSlice = createAsyncThunk("SummaryBar", async () => {
     try {
-        const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/?slug=${slug}`);
+        const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/?slug=${slug}`, {
+            headers: {
+                'Method' : "GET",
+                'Content-Type': 'application/json'
+            }
+        });
         return data.data;
     } catch (error) {
         console.log("error in patientSummaryBarSlice", error)

@@ -7,6 +7,7 @@ const urlParams = new URLSearchParams(queryString);
 const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
+
 export const patientSubmitData = createAsyncThunk(
     'patientSubmitData',
 
