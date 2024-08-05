@@ -4,7 +4,7 @@ import MuiAccordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material";
-import { Mixpanel } from "../../services";
+
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -44,10 +44,10 @@ export const MuiAccordions = (props) => {
       let codeValue = "";
       if (isExpanded) {
         if (code) codeValue = `${code}-`
-        Mixpanel(`${codeValue}${name}-Expand`, tabs, code)
+       
       }
       else {
-        Mixpanel(`${codeValue}${name}-Collapse`, tabs, code)
+       
       }
       setExpanded(isExpanded ? panel : false);
     } else {

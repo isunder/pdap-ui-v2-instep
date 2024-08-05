@@ -11,7 +11,7 @@ import {
   Tooltip,
   Skeleton,
 } from "@mui/material";
-import { addAuditLog1 } from "../../utils/indexedDb"
+import { addAuditLog1, getAuditLog1, addAuditLog2, getAuditLog2 } from "../../utils/indexedDb"
 import { MuiAccordions } from "../../components/MuiAccordions/MuiAccordions";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -21,7 +21,7 @@ import Stack from "@mui/material/Stack";
 import moment from "moment";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import fetchAuditLogs from "../../redux/userSlice/auditLogSlice"
 import {
   AddressedCodes,
   CodesNotList,
@@ -52,9 +52,8 @@ import {
 } from "../../redux/userSlice/rejectCodesSlice";
 import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
-import { useNavigate } from "react-router-dom";
 import { DialogModal } from "../../components/Modal/DialogModal";
-import { Mixpanel } from "../../services";
+
 import SubmitModal from "../../components/SubmitModal/SubmitModal";
 
 const StyledText = styled("Box")(() => ({
@@ -354,6 +353,49 @@ export const Codes = () => {
     }
   };
 
+  useEffect(() => {
+    handleAddEventData('launch-success', 'launch-success');
+  }, [])
+
+  const [eventData, setEventData] = useState([]);
+  const [newEventData, setNewEventData] = useState([]);
+
+  const handleAddEventData = async (event_type, metadata) => {
+    await addAuditLog1(event_type, metadata);
+    const allEventData = await getAuditLog1();
+    setEventData(allEventData); // Update the state with the new data
+  };
+
+  useEffect(() => {
+    async function fetchEventData() {
+      const data = await getAuditLog1();
+      setEventData(data);
+    }
+    fetchEventData();
+  }, []);
+
+  const processEventData = async () => {
+    for (const item of eventData) {
+      const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
+      if (!existingItem) {
+        try {
+          dispatch(fetchAuditLogs([{ event_type: item.event_type, metadata: item.metadata }]));
+          await addAuditLog2(item.event_type, item.metadata);
+          const updatedEventData = await getAuditLog2();
+          setNewEventData(updatedEventData);
+        } catch (error) {
+          console.error('Error processing event data:', error);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (eventData.length > 0) {
+      processEventData();
+    }
+  }, [eventData, newEventData])
+
 
   const handleSubmitRedirect = async (tabs) => {
     setIsModalOpen(true);
@@ -481,7 +523,7 @@ export const Codes = () => {
       const result = await dispatch(patientSubmitData(requestBody));
       if (result) {
         if (result?.meta?.requestStatus === "fulfilled") {
-          Mixpanel("Submit-Codes", tabs, requestBody);
+
           setOpenSubmitModal(false);
           setDialog(true);
           setIsModalSubmit(true);
@@ -494,7 +536,6 @@ export const Codes = () => {
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary());
-      Mixpanel("Codes-Page-Visit", tabs);
       // Set a timeout to update the code data loaded state
       const timer = setTimeout(() => {
         setCodesDataLoaded(true);
@@ -646,11 +687,7 @@ export const Codes = () => {
         };
         dispatch(existingValue(codeList));
       }
-      Mixpanel(
-        `${item?.code}-Existing-Codes-Remove-From-Summary`,
-        tabs,
-        item?.code
-      );
+
     } else if (key === "suspect") {
       if (item[Object.keys(item)]?.reason) {
         const codeList = suspectCodeReject.filter(
@@ -671,11 +708,7 @@ export const Codes = () => {
         };
         dispatch(suspectValue(codeList));
       }
-      Mixpanel(
-        `${item?.code}-Suspects-Codes-Remove-From-Summary`,
-        tabs,
-        item?.code
-      );
+
     } else if (key === "recapture") {
       if (item?.reason) {
         const codeList = recaptureCodeReject.filter(
@@ -716,11 +749,7 @@ export const Codes = () => {
         };
         dispatch(duplicateValue(codeList));
       }
-      Mixpanel(
-        `${item?.code}-Duplicated-Codes-Remove-From-Summary`,
-        tabs,
-        item?.code
-      );
+
     }
     localStorage.setItem(
       `sessionObject_${userDetail.mrn}`,
