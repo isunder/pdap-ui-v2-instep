@@ -147,9 +147,9 @@ export const SubHeader = () => {
                       sx={
                         keys !== "MRN"
                           ? {
-                            // [theme.breakpoints.down("md")]: {
-                            //   display: "none",
-                            // },
+                            [theme.breakpoints.down("md")]: {
+                              display: "none",
+                            },
                             [theme.breakpoints.down('md')]: {
                               fontSize: '0.675rem',
                             }
@@ -162,7 +162,15 @@ export const SubHeader = () => {
                           }
                       }
                     >
-                      <Typography sx={{ p: 0.2, fontWeight: 'bold' }}>  {keys}:</Typography>
+                      <Typography sx={(keys === "MRN") ? {
+                        p: 0.2, fontWeight: 'bold',
+                      } : {
+                        [theme.breakpoints.down("md")]: {
+                          display: "none",
+                        },
+                      }}>
+                        {keys}:
+                      </Typography>
                     </StyledSubText>
                     <StyledText
                       sx={
@@ -174,20 +182,31 @@ export const SubHeader = () => {
                               gap: 0.6,
                             },
                             [theme.breakpoints.down('md')]: {
-                              fontSize: '0.675rem'
+                              fontSize: '13px'
                             }
                           }
                           : (
                             keys === 'MRN' ? {
                               [theme.breakpoints.down("md")]: {
-                                fontSize: '0.675rem',
+                                fontSize: '13px',
                                 textOverflow: "ellipsis",
                                 overflow: "hidden",
                                 maxWidth: 'rem'
                               },
+
+                              [theme.breakpoints.down("sm")]: {
+                                display: "-webkit-box",
+                                overflow: "hidden",
+                                WebkitLineClamp: 3, // Capitalized as per CSS property standards
+                                WebkitBoxOrient: "vertical",
+                              },
+
                             } : keys === "DoB" && {
                               [theme.breakpoints.down("md")]: {
-                                fontSize: '0.675rem',
+                                fontSize: '13px',
+                              },
+                              [theme.breakpoints.down("md")]: {
+                                display: "none",
                               },
                             }
                           )

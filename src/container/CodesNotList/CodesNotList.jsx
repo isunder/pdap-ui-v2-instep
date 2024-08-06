@@ -1039,7 +1039,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon state="white" />
+                                    <CorrectIcon  />
                                   </StyleCircle>
                                 }
                                 className="acc-content-act-btn act-btn-active"
@@ -1337,7 +1337,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon state="white" />
+                                                <CorrectIcon  />
                                               </StyleCircle>
                                             }
                                           >
@@ -1620,7 +1620,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon state="white" />
+                                            <CorrectIcon  />
                                           </StyleCircle>
                                         }
                                       >
@@ -2031,7 +2031,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon state="white" />
+                                                <CorrectIcon  />
                                               </StyleCircle>
                                             }
                                           >
@@ -2484,7 +2484,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon state="white" />
+                                            <CorrectIcon  />
                                           </StyleCircle>
                                         }
                                       >
@@ -2728,7 +2728,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                 borderRadius: "100px",
                               }}
                             >
-                              <CorrectIcon state="white" />
+                              <CorrectIcon  />
                             </StyleCircle>
                           }
                         >
@@ -2873,7 +2873,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                   borderRadius: "100px",
                                 }}
                               >
-                                <CorrectIcon state="white" />
+                                <CorrectIcon  />
                               </StyleCircle>
                             }
                           >
