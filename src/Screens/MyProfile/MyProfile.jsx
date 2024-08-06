@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
-import { Mixpanel } from "../../services";
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -70,7 +69,6 @@ export const MyProfile = () => {
   useEffect(() => {
     if (slug) {
       dispatch(doctorInfo());
-      Mixpanel('MyProfile-Page-Visit', tabs)
     }
   }, []);
 
