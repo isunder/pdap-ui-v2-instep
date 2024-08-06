@@ -92,9 +92,7 @@
 
 .MuiTypography-root.acc-content-cust-header1:nth-child(2),
 .MuiTypography-root.acc-content-cust-header1:nth-child(3) {
-
   padding-left: 8px;
-
 }
 
 
@@ -106,6 +104,15 @@
   .MuiDialog-paper {
     height: auto;
   }
+
+  .MuiGrid-grid-sm-2.acc-content-cust-header1{
+    border: none !important;
+  }
+
+  .cust_RAF_suspect{
+    border: none !important;
+  }
+
   .PopupDelete .MuiDialog-paper {
     height: auto !important;
   }

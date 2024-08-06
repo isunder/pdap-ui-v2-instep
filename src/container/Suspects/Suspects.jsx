@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-
+import "../ExistingConditions/ExistingConditions.css"
 import {
   CrossWhite,
   PrimaryButton,
@@ -413,7 +413,14 @@ export const Suspects = ({ sessionObject }) => {
 
                 <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                   {tabs && tabs["patient_dashboard_weights"]?.active && (
-                    <StyledText className="acc-content-cust-header1">
+                    <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
+                      sx={{
+                        [theme.breakpoints.only("xs")]: {
+                          borderRight: "0px",
+                          padding: 0
+                        },
+                      }}
+                    >
                       RAF
                     </StyledText>
                   )}
