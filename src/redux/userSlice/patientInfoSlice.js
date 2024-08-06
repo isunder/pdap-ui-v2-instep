@@ -7,16 +7,18 @@ const urlParams = new URLSearchParams(queryString);
 const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
+const headerr = {
+    'Method' : "GET",
+    'Content-Type': 'application/json'
+}
+
 // function for patient info
 export const patientInfo = createAsyncThunk("patientInfo", async () => {
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-info/?slug=${slug}`,
                 {
-                    headers: {
-                        'Method' : "GET",
-                        'Content-Type': 'application/json'
-                    }
+                    headers: headerr
                 }
             );
             return data.data;
@@ -31,10 +33,7 @@ export const patientExistingConditions = createAsyncThunk("patientExistingCondit
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-existing-conditions/?slug=${slug}` , {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -48,10 +47,7 @@ export const patientAddressCode = createAsyncThunk("patientAddressCode", async (
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-addressed-codes/?slug=${slug}`, {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -65,10 +61,7 @@ export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", asy
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/?slug=${slug}`, {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -82,10 +75,7 @@ export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async (
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}` , {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -99,10 +89,7 @@ export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", asy
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/?slug=${slug}` , {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -116,10 +103,7 @@ export const patientSummary = createAsyncThunk("patientSummary", async () => {
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-summary/?slug=${slug}` , {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -133,10 +117,7 @@ export const patientRecaptureCode = createAsyncThunk("patientRecaptureCode", asy
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-recapture-codes/?slug=${slug}`, {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -150,10 +131,7 @@ export const patientTabFlag = createAsyncThunk("patientTabFlag", async () => {
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-tabs/?slug=${slug}` , {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
@@ -167,10 +145,7 @@ export const patientHistory = createAsyncThunk("patientHistory", async () => {
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-history/?slug=${slug}` , {
-                headers: {
-                    'Method' : "GET",
-                    'Content-Type': 'application/json'
-                }
+                headers: headerr
             });
             return data.data;
         }
