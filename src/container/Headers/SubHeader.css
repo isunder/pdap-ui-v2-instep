@@ -4,3 +4,21 @@
     background: #F9F9F9;
     border-top: 3px solid #D9D9D9;
 }
+
+@media only screen and (max-width:599px){
+    .subTop__header{
+        height: 85px !important;
+    }
+}
+
+@media only screen and (max-width:340px){
+    .subTop__header{
+       height: auto !important;
+    }
+}
+
+@media (max-width: 374.95px) {
+    .css-1h2zfbv-MuiContainer-root {
+        padding: 5px !important;
+    }
+}

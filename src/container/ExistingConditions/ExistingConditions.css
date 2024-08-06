@@ -161,6 +161,20 @@
   }
 }
 
+
+@media screen and (max-width:400px){
+  .acc-content-header-item.ct-desc {
+    width: 50%;
+   
+  }
+
+  .acc-content-header-item.ct-raf {
+    width: 10%;
+    padding: 5px !important;
+
+  }
+}
+
 @media screen and (min-width: 969px) {
   .acc-content-header-item.ct-code {
     width: 17%;

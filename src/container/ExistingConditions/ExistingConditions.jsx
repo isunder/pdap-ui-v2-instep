@@ -683,7 +683,11 @@ export const ExistingConditions = ({ sessionObject }) => {
                   <StyledText sx={{ paddingLeft: "6px !important" }} className="acc-content-header-item ct-code">
                     Code(s)
                   </StyledText>
-                  <StyledText className="acc-content-header-item ct-desc">
+                  <StyledText sx={{
+                    [theme.breakpoints.only("xs")]: {
+                      borderRight:"2px solid black"
+                    },
+                  }} className="acc-content-header-item ct-desc">
                     Description
                   </StyledText>
                   {tabs && tabs["patient_dashboard_weights"]?.active && (

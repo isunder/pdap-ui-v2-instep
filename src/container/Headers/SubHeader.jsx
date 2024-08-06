@@ -94,6 +94,8 @@ export const SubHeader = () => {
   return (
     <Box sx={{ flexGrow: 1 }} >
       <Box
+
+        className="subTop__header"
         sx={{
           backgroundColor: "white",
           height: "50px",
@@ -104,6 +106,11 @@ export const SubHeader = () => {
             position: state["top"] && "relative",
             background: state["top"] && "#fff",
           },
+
+          [theme.breakpoints.down('sm')]: {
+            height: "100px !important",
+          },
+
         }}
       >
         <Container
@@ -113,6 +120,11 @@ export const SubHeader = () => {
             [theme.breakpoints.down("md")]: {
               padding: "10px !important",
             },
+
+            [theme.breakpoints.down("sm")]: {
+              padding: "5px !important",
+            },
+
           }}
         >
           <Box sx={{ ...flexAlignCenter }}>
