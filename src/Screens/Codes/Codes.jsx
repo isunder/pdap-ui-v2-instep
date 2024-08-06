@@ -353,9 +353,7 @@ export const Codes = () => {
     }
   };
 
-  useEffect(() => {
-    handleAddEventData('launch-success', 'launch-success');
-  }, [])
+
 
   const [eventData, setEventData] = useState([]);
   const [newEventData, setNewEventData] = useState([]);
@@ -373,6 +371,10 @@ export const Codes = () => {
     }
     fetchEventData();
   }, []);
+
+  useEffect(() => {
+    handleAddEventData('launch-success', 'launch-success');
+  }, [])
 
   const processEventData = async () => {
     for (const item of eventData) {
