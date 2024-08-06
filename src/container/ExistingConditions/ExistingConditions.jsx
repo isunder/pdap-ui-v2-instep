@@ -37,7 +37,6 @@ import { DialogModal } from "../../components/Modal/DialogModal";
 import Documentmodal from "../../components/DocumentModal/DocumentModal";
 import { SelectField } from "../../components/SelectField";
 import { InputField } from "../../components/InputField";
-import { Mixpanel } from "../../services";
 import {
   StyleCircle,
   StyleButton,
@@ -208,7 +207,6 @@ export const ExistingConditions = ({ sessionObject }) => {
           }
         }
       }
-      Mixpanel(`${id}-Existing-Codes-Remove-From-Summary`, tabs, id);
     }
   };
 
@@ -246,17 +244,9 @@ export const ExistingConditions = ({ sessionObject }) => {
         );
         updateVal = codeList;
         setSelectedExistingcode(codeList);
-        Mixpanel(
-          `${item?.code}-Existing-Codes-Remove-From-Summary`,
-          tabs,
-          item?.code
-        );
+
       } else {
-        Mixpanel(
-          `${item?.code}-Existing-Codes-Accept-And-Add-Summary`,
-          tabs,
-          item?.code
-        );
+
         codeList = {
           code: item?.code,
           value: item?.value ? item?.value : item?.info?.value,
@@ -366,11 +356,7 @@ export const ExistingConditions = ({ sessionObject }) => {
     setRejectExistingCode([...rejectedCodes]);
     codeList.length &&
       setSelectedExistingcode([...selectedExistingcode, ...codeList]);
-    Mixpanel(
-      `${value?.code}-Existing Codes-Accept-All-And-Add-Summary`,
-      tabs,
-      value?.code
-    );
+
   };
 
   useEffect(() => {
@@ -535,11 +521,7 @@ export const ExistingConditions = ({ sessionObject }) => {
       otherText?.length > 0 && setOtherText(null);
       setHandleFunction(false);
       setDeleteOpen(false);
-      Mixpanel(
-        `${selectedRejectData?.code}-Existing-Codes-Reject-All-And-Add-Summary`,
-        tabs,
-        selectedRejectData?.code
-      );
+
     }
   };
 
@@ -655,11 +637,7 @@ export const ExistingConditions = ({ sessionObject }) => {
         setRejectReason("Insufficient Proof");
       otherText?.length > 0 && setOtherText(null);
     }
-    Mixpanel(
-      `${selectedRejectData.code}-Existing-Codes-Reject-And-Add-Summary`,
-      tabs,
-      selectedRejectData?.code
-    );
+
   };
 
   const handleReseon = (event) => {
@@ -705,7 +683,11 @@ export const ExistingConditions = ({ sessionObject }) => {
                   <StyledText sx={{ paddingLeft: "6px !important" }} className="acc-content-header-item ct-code">
                     Code(s)
                   </StyledText>
-                  <StyledText className="acc-content-header-item ct-desc">
+                  <StyledText sx={{
+                    [theme.breakpoints.only("xs")]: {
+                      borderRight:"2px solid black"
+                    },
+                  }} className="acc-content-header-item ct-desc">
                     Description
                   </StyledText>
                   {tabs && tabs["patient_dashboard_weights"]?.active && (

@@ -182,113 +182,77 @@ export const Header = ({ sessionObject }) => {
           <Container
             maxWidth="xl"
             sx={{
-              padding: "0px 50px !important",
-              [theme.breakpoints.down("md")]: {
-                padding: "0px 10px !important",
+              padding: "0px 50px",
+              [theme.breakpoints.down('sm')]: {
+                padding: "0px 10px",
               },
             }}
           >
-            <>
-              <Grid container spacing={{ md: 2 }}>
-                <Grid item xs={12} md={5} sx={{ alignItems: "center" }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: { xs: 3, md: 7, lg: 5 },
-                      height: "3.75rem",
-                      width: "100%",
-                      [theme.breakpoints.down("md")]: {
-                        justifyContent: "space-between",
-                      },
+            <Grid container sx={{ flexWrap: "nowrap" }} spacing={{ md: 2 }}>
+              <Grid item xs={12} md={5} sx={{ alignItems: "center" }} >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: { xs: 3, md: 7, lg: 5 },
+                    height: "3.75rem",
+                    width: "100%",
+                    [theme.breakpoints.down("sm")]: {
+                      justifyContent: "space-between",
+                    },
+                  }}
+                >
+                  <StyleLogo
+                    onClick={() => {
+                      getActiveTab(0);
+                      navigate(`/?slug=${slug}`);
                     }}
                   >
-                    <StyleLogo
-                      onClick={() => {
-                        getActiveTab(0);
-                        navigate(`/?slug=${slug}`);
-                      }}
-                    >
-                      <DTLogo width="100%" height="100%" />
-                    </StyleLogo>
-                    <Box sx={{ ...flexCenter, gap: { xs: 1, md: 1, lg: 4 } }}>
-                      {routes?.length > 0 &&
-                        routes?.map((item, i) => {
-                          return item.name === "History" ? (
-                            tabs &&
-                              tabs["patient_dashboard_history_tab"]?.active && (
-                                <Box
-                                  key={i}
-                                  onClick={() => {
-                                    getActiveTab(i);
-                                    navigate(item.path);
-                                  }}
-                                  sx={
-                                    value === i
-                                      ? {
-                                          ...activeBorder,
-                                          borderColor: "#E6682D",
-                                        }
-                                      : {
-                                          ...activeBorder,
-                                          borderColor: "transparent",
-                                        }
+                    <DTLogo width="100%" height="100%" />
+                  </StyleLogo>
+                  <Box sx={{ ...flexCenter, gap: { xs: "4px", md: 1, lg: 4 } }}>
+                    {routes?.length > 0 &&
+                      routes?.map((item, i) => {
+                        return item.name === "History" ? (
+                          tabs &&
+                          tabs["patient_dashboard_history_tab"]?.active && (
+                            <Box
+                              key={i}
+                              onClick={() => {
+                                getActiveTab(i);
+                                navigate(item.path);
+                              }}
+                              sx={
+                                value === i
+                                  ? {
+                                    ...activeBorder,
+                                    borderColor: "#E6682D",
                                   }
-                                >
-                                  <StyleTabText
-                                    label={item?.name}
-                                    sx={
-                                      value === i
-                                        ? {
-                                            ...tabStyle?.active_tab,
-                                          }
-                                        : {
-                                            ...tabStyle.default_tab,
-                                          }
-                                    }
-                                  >
-                                    {item?.name}
-                                  </StyleTabText>
-                                </Box>
-                              )
-                          ) : item.name === "My Profile" ? (
-                            tabs &&
-                            tabs["patient_dashboard_view_profile"]?.active && (
-                              <Box
-                                key={i}
-                                onClick={() => {
-                                  getActiveTab(i);
-                                  navigate(item?.path);
-                                }}
+                                  : {
+                                    ...activeBorder,
+                                    borderColor: "transparent",
+                                  }
+                              }
+                            >
+                              <StyleTabText
+                                label={item?.name}
                                 sx={
                                   value === i
                                     ? {
-                                        ...activeBorder,
-                                        borderColor: "#E6682D",
-                                      }
+                                      ...tabStyle?.active_tab,
+                                    }
                                     : {
-                                        ...activeBorder,
-                                        borderColor: "transparent",
-                                      }
+                                      ...tabStyle.default_tab,
+                                    }
                                 }
                               >
-                                <StyleTabText
-                                  label={item?.name}
-                                  sx={
-                                    value === i
-                                      ? {
-                                          ...tabStyle?.active_tab,
-                                        }
-                                      : {
-                                          ...tabStyle.default_tab,
-                                        }
-                                  }
-                                >
-                                  {item?.name}
-                                </StyleTabText>
-                              </Box>
-                            )
-                          ) : (
+                                {item?.name}
+                              </StyleTabText>
+                            </Box>
+                          )
+                        ) : item.name === "My Profile" ? (
+                          tabs &&
+                          tabs["patient_dashboard_view_profile"]?.active && (
                             <Box
                               key={i}
                               onClick={() => {
@@ -297,11 +261,14 @@ export const Header = ({ sessionObject }) => {
                               }}
                               sx={
                                 value === i
-                                  ? { ...activeBorder, borderColor: "#E6682D" }
+                                  ? {
+                                    ...activeBorder,
+                                    borderColor: "#E6682D",
+                                  }
                                   : {
-                                      ...activeBorder,
-                                      borderColor: "transparent",
-                                    }
+                                    ...activeBorder,
+                                    borderColor: "transparent",
+                                  }
                               }
                             >
                               <StyleTabText
@@ -309,117 +276,178 @@ export const Header = ({ sessionObject }) => {
                                 sx={
                                   value === i
                                     ? {
-                                        ...tabStyle?.active_tab,
-                                      }
+                                      ...tabStyle?.active_tab,
+                                    }
                                     : {
-                                        ...tabStyle.default_tab,
-                                      }
+                                      ...tabStyle.default_tab,
+                                    }
                                 }
                               >
                                 {item?.name}
                               </StyleTabText>
                             </Box>
-                          );
-                        })}
-                    </Box>
+                          )
+                        ) : (
+                          <Box
+                            key={i}
+                            onClick={() => {
+                              getActiveTab(i);
+                              navigate(item?.path);
+                            }}
+                            sx={
+                              value === i
+                                ? { ...activeBorder, borderColor: "#E6682D" }
+                                : {
+                                  ...activeBorder,
+                                  borderColor: "transparent",
+                                }
+                            }
+                          >
+                            <StyleTabText
+                              label={item?.name}
+                              sx={
+                                value === i
+                                  ? {
+                                    ...tabStyle?.active_tab,
+                                  }
+                                  : {
+                                    ...tabStyle.default_tab,
+                                  }
+                              }
+                            >
+                              {item?.name}
+                            </StyleTabText>
+                          </Box>
+                        );
+                      })}
                   </Box>
-                </Grid>
-                <Grid item md={7}>
-                  <Box
-                    sx={{
-                      ...flexCenter,
-                      gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
-                      width: "100%",
-                      height: "3.75rem",
-                      justifyContent: "flex-end",
-                      [theme.breakpoints.down("md")]: {
-                        display: "none",
-                      },
-                      [theme.breakpoints.down("lg")]: {},
-                    }}
-                  >
-                    {tabs &&
-                      tabs["patient_dashboard_recapture_percentage"]
-                        ?.active && (
-                        <Box sx={{ ...flexCenter, gap: 0.7 }}>
-                          <StyleText
-                            sx={{
-                              fontWeight: 400,
-                              fontSize: "0.875rem",
-                              color: "#000",
-
-                              [theme.breakpoints.only("md")]: {
-                                p: 0,
-                              },
-                            }}
-                          >
-                            Recapture:
-                          </StyleText>
-                          <PrimaryButton
-                            sx={{
-                              backgroundColor: theme.palette.error.A200,
-                              color: theme.palette.error.main,
-                              ":hover": {
-                                backgroundColor: theme.palette.error.A200,
-                              },
-                              fontWeight: 600,
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {doctorDetail?.recapture_percentage}
-                          </PrimaryButton>
-                        </Box>
-                      )}
-                    {tabs &&
-                      tabs["patient_dashboard_suspect_percentage"]?.active && (
-                        <Box sx={{ ...flexCenter, gap: 0.7 }}>
-                          <StyleText
-                            sx={{
-                              fontWeight: 400,
-                              fontSize: "0.875rem",
-                              color: "#000",
-                              [theme.breakpoints.down("lg")]: {
-                                width: "9rem",
-                              },
-                              [theme.breakpoints.only("md")]: {
-                                width: "8.5rem",
-                                p: 0,
-                              },
-                            }}
-                          >
-                            Suspects Addressed:
-                          </StyleText>
-                          <PrimaryButton
-                            sx={{
-                              backgroundColor: theme.palette.success.A200,
-                              color: theme.palette.success.main,
-                              ":hover": {
-                                backgroundColor: theme.palette.success.A200,
-                              },
-                              fontWeight: 600,
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {doctorDetail?.suspects_addressed_percentage}
-                          </PrimaryButton>
-                        </Box>
-                      )}
-                    <Box>
-                      <StyleText
-                        sx={{
-                          fontWeight: 600,
-                          [theme.breakpoints.down("lg")]: {
-                            width: "10rem",
-                          },
-                        }}
-                      >
-                        {doctorDetail?.doctor_name && doctorDetail?.doctor_name}
-                      </StyleText>
-                    </Box>
-                  </Box>
-                </Grid>
+                </Box>
               </Grid>
-            </>
+
+              {
+                tabs && tabs["patient_dashboard_recapture_percentage"].active && tabs["patient_dashboard_suspect_percentage"].active ?
+                  <Grid className="suspect_recapture_header" item md={7} sm={6}>
+                    <Box
+                      sx={{
+                        ...flexCenter,
+                        // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                        width: "100%",
+                        height: "3.75rem",
+                        justifyContent: "flex-end",
+                        [theme.breakpoints.down("sm")]: {
+                          display: "none",
+                        },
+                        [theme.breakpoints.down("lg")]: {},
+                      }}
+                    >
+
+                      <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                        <StyleText
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: "0.875rem",
+                            color: "#000",
+
+                            [theme.breakpoints.only("md")]: {
+                              p: 0,
+                            },
+                          }}
+                        >
+                          Panel
+
+                        </StyleText>
+
+                        <StyleText
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: "0.875rem",
+                            color: "#000",
+
+                            [theme.breakpoints.only("md")]: {
+                              p: 0,
+                            },
+                          }}
+                        >
+
+                          Metrics:
+                        </StyleText>
+                      </Box>
+
+                      {tabs &&
+                        tabs["patient_dashboard_recapture_percentage"]
+                        && (
+                          <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                            <StyleText
+                              sx={{
+                                fontWeight: 600,
+
+                                fontSize: "12px",
+                                color: "#000",
+                                [theme.breakpoints.only("md")]: {
+                                  p: 0,
+                                },
+                              }}
+                            >
+                              Recapture
+                            </StyleText>
+
+                            <StyleText
+                              sx={{
+                                fontFamily: "Proxima nova",
+                                color: theme.palette.success.main,
+                                fontWeight: 600,
+                                fontSize: "0.875rem",
+                              }}
+                            >
+                              {doctorDetail?.recapture_percentage || "-"}
+                            </StyleText>
+                          </Box>
+                        )}
+                      {tabs &&
+                        tabs["patient_dashboard_suspect_percentage"] && (
+                          <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                            <StyleText
+                              sx={{
+                                fontWeight: 600,
+                                fontSize: "12px",
+                                color: "#000",
+
+                              }}
+                            >
+                              Suspects
+                            </StyleText>
+                            <StyleText
+                              sx={{
+                                color: theme.palette.success.main,
+                                fontFamily: "Proxima nova",
+                                fontWeight: 600,
+                                fontSize: "0.875rem",
+                              }}
+                            >
+                              {doctorDetail?.suspects_addressed_percentage || "-"}
+                            </StyleText>
+                          </Box>
+                        )}
+                      <Box>
+                        <StyleText
+                          sx={{
+                            fontWeight: 600,
+                            [theme.breakpoints.down("lg")]: {
+                              width: "10rem",
+                            },
+                          }}
+                        >
+                          {doctorDetail?.doctor_name && doctorDetail?.doctor_name || "-"}
+                        </StyleText>
+                      </Box>
+                    </Box>
+                  </Grid> : null
+              }
+
+
+
+            </Grid>
+
           </Container>
         </AppBar>
 
@@ -469,37 +497,37 @@ export const Header = ({ sessionObject }) => {
               {sessionObject?.existingCode?.length +
                 sessionObject?.existingCodeReject?.length >
                 0 && (
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "#475467",
-                  }}
-                >
-                  <StyleNumber>
-                    {sessionObject?.existingCode?.length +
-                      sessionObject?.existingCodeReject?.length}
-                  </StyleNumber>
-                  {` urgent recaptures,`}
-                </Typography>
-              )}
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "#475467",
+                    }}
+                  >
+                    <StyleNumber>
+                      {sessionObject?.existingCode?.length +
+                        sessionObject?.existingCodeReject?.length}
+                    </StyleNumber>
+                    {` urgent recaptures,`}
+                  </Typography>
+                )}
 
               {/* Duplicate code count */}
               {sessionObject?.duplicateCode?.length +
                 sessionObject?.duplicateCodeReject?.length >
                 0 && (
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "#475467",
-                  }}
-                >
-                  <StyleNumber>
-                    {sessionObject?.duplicateCode?.length +
-                      sessionObject?.duplicateCodeReject?.length}
-                  </StyleNumber>
-                  {` Additional diagnoses,`}
-                </Typography>
-              )}
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "#475467",
+                    }}
+                  >
+                    <StyleNumber>
+                      {sessionObject?.duplicateCode?.length +
+                        sessionObject?.duplicateCodeReject?.length}
+                    </StyleNumber>
+                    {` Additional diagnoses,`}
+                  </Typography>
+                )}
 
               {/* Suspects count */}
               <Box
@@ -511,25 +539,25 @@ export const Header = ({ sessionObject }) => {
                 {sessionObject?.suspectCode?.length +
                   sessionObject?.suspectCodeReject?.length >
                   0 && (
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "#475467",
-                    }}
-                  >
-                    <StyleNumber>
-                      {sessionObject?.suspectCode?.length +
-                        sessionObject?.suspectCodeReject?.length}
-                    </StyleNumber>
-                    {` suspects`}
-                  </Typography>
-                )}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#475467",
+                      }}
+                    >
+                      <StyleNumber>
+                        {sessionObject?.suspectCode?.length +
+                          sessionObject?.suspectCodeReject?.length}
+                      </StyleNumber>
+                      {` suspects`}
+                    </Typography>
+                  )}
                 {sessionObject?.suspectCode?.length +
                   sessionObject?.suspectCodeReject?.length >
                   0 &&
                   sessionObject?.recaptureCode?.length +
-                    sessionObject?.recaptureCodeReject?.length >
-                    0 && (
+                  sessionObject?.recaptureCodeReject?.length >
+                  0 && (
                     <Typography
                       variant="body2"
                       sx={{
@@ -542,19 +570,19 @@ export const Header = ({ sessionObject }) => {
                 {sessionObject?.recaptureCode?.length +
                   sessionObject?.recaptureCodeReject?.length >
                   0 && (
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "#475467",
-                    }}
-                  >
-                    <StyleNumber>
-                      {sessionObject?.recaptureCode?.length +
-                        sessionObject?.recaptureCodeReject?.length}
-                    </StyleNumber>
-                    {` code not in your problem list.`}
-                  </Typography>
-                )}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#475467",
+                      }}
+                    >
+                      <StyleNumber>
+                        {sessionObject?.recaptureCode?.length +
+                          sessionObject?.recaptureCodeReject?.length}
+                      </StyleNumber>
+                      {` code not in your problem list.`}
+                    </Typography>
+                  )}
               </Box>
             </Box>
             <Box>

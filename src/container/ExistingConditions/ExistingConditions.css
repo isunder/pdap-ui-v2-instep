@@ -92,9 +92,7 @@
 
 .MuiTypography-root.acc-content-cust-header1:nth-child(2),
 .MuiTypography-root.acc-content-cust-header1:nth-child(3) {
-
   padding-left: 8px;
-
 }
 
 
@@ -106,6 +104,15 @@
   .MuiDialog-paper {
     height: auto;
   }
+
+  .MuiGrid-grid-sm-2.acc-content-cust-header1{
+    border: none !important;
+  }
+
+  .cust_RAF_suspect{
+    border: none !important;
+  }
+
   .PopupDelete .MuiDialog-paper {
     height: auto !important;
   }
@@ -158,6 +165,20 @@
   .acc-content-body-desc {
     display: flex;
     align-items: center;
+  }
+}
+
+
+@media screen and (max-width:400px){
+  .acc-content-header-item.ct-desc {
+    width: 50%;
+   
+  }
+
+  .acc-content-header-item.ct-raf {
+    width: 10%;
+    padding: 5px !important;
+
   }
 }
 
