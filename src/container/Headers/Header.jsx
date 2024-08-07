@@ -437,7 +437,7 @@ export const Header = ({ sessionObject }) => {
                             },
                           }}
                         >
-                          {doctorDetail?.doctor_name && doctorDetail?.doctor_name || "-"}
+                          {doctorDetail?.doctor_name && doctorDetail?.doctor_name || ""}
                         </StyleText>
                       </Box>
                     </Box>
