@@ -86,7 +86,13 @@ export const ExistingConditions = ({ sessionObject }) => {
 
   const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
 
+  const [butttonDisable, setButtonDisable] = useState(false)
+
+
+
   const handleClickOpen = (item, code) => {
+    setButtonDisable(false);
+
     if (!isNaN(item)) {
       let code = result[item];
       setHandleFunction(true);
@@ -441,6 +447,7 @@ export const ExistingConditions = ({ sessionObject }) => {
   };
 
   const handleDeleteAll = () => {
+    
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -526,6 +533,8 @@ export const ExistingConditions = ({ sessionObject }) => {
   };
 
   const handleDelete = () => {
+
+    setButtonDisable(true);
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -2106,6 +2115,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                 onClick={() =>
                   handleFunction ? handleDeleteAll() : handleDelete()
                 }
+                disabled={butttonDisable}
                 color="error"
                 sx={{}}
               >

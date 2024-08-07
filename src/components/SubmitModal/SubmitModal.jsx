@@ -71,9 +71,8 @@ const SubmitModal = ({
   const [inProblemList, setInProblemList] = useState([]);
   const [notInProblemList, setNotInProblemList] = useState([]);
 
-
   useEffect(() => {
-    if (duplicateCode && duplicateCode.length > 0 && duplicateCodeNew) {
+    if (duplicateCode && duplicateCodeNew) {
       const updatedValues = [];
       duplicateCode.forEach((item) => {
         const code = item.code;
@@ -84,7 +83,7 @@ const SubmitModal = ({
       setMatchedValuesDuplicate(updatedValues);
     }
 
-    if (recaptureCode && recaptureCode.length > 0 && recaptureCodeNew) {
+    if (recaptureCode && recaptureCodeNew) {
       const updatedValues = [];
       recaptureCode.forEach((item) => {
         const code = item.code;
@@ -95,7 +94,7 @@ const SubmitModal = ({
       setMatchedValuesRecapture(updatedValues);
     }
 
-    if (suspectCode && suspectCode.length > 0 && suspectCodeNew) {
+    if (suspectCode && suspectCodeNew) {
       const updatedValues = [];
       suspectCode.forEach((item) => {
         const code = item.code;
@@ -106,7 +105,7 @@ const SubmitModal = ({
       setMatchedValuesSuspect(updatedValues);
     }
 
-    if (existingCode && existingCode.length > 0 && existingConditionNew) {
+    if (existingCode && existingConditionNew) {
       const updatedValues = [];
       existingCode.forEach((item) => {
         const code = item.code;
@@ -565,18 +564,8 @@ const SubmitModal = ({
                             ) :
 
                               <>
-                                {[
-                                  ...matchedValuesExisting.filter(items => items.code_in_problem_list === true),
-                                  ...suspectCode.filter(items => items.value !== ''),
-                                  ...matchedValuesDuplicate.filter(items => items.code_in_problem_list === true),
-                                  ...matchedValuesRecapture.filter(items => items.code_in_problem_list === true)
-                                ].length > 0 &&
-                                  [
-                                    ...matchedValuesExisting.filter(items => items.code_in_problem_list === true),
-                                    ...suspectCode.filter(items => items.value !== ''),
-                                    ...matchedValuesDuplicate.filter(items => items.code_in_problem_list === true),
-                                    ...matchedValuesRecapture.filter(items => items.code_in_problem_list === true)
-                                  ].map((item, index) => (
+                                {inProblemList.length > 0 &&
+                                  inProblemList.map((item, index) => (
                                     <Stack
                                       key={index}
                                       direction="row"
@@ -633,16 +622,8 @@ const SubmitModal = ({
                               </>
                             ) :
                               <>
-                                {[
-                                  ...matchedValuesExisting.filter(items => items.code_in_problem_list === false),
-                                  ...matchedValuesDuplicate.filter(items => items.code_in_problem_list === false),
-                                  ...matchedValuesRecapture.filter(items => items.code_in_problem_list === false)
-                                ].length > 0 &&
-                                  [
-                                    ...matchedValuesExisting.filter(items => items.code_in_problem_list === false),
-                                    ...matchedValuesDuplicate.filter(items => items.code_in_problem_list === false),
-                                    ...matchedValuesRecapture.filter(items => items.code_in_problem_list === false)
-                                  ].map((item, index) => (
+                                {
+                                  notInProblemList.map((item, index) => (
                                     <Stack
                                       key={index}
                                       direction="row"

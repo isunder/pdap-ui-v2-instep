@@ -91,7 +91,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
     (state) => state?.reject?.duplicateReject
   );
   const [rejectDuplicateCode, setRejectDuplicateCode] = useState([]);
-
+  const [butttonDisable, setButtonDisable] = useState(false)
   const duplicateRejectCode = useSelector(
     (state) => state?.summary?.duplicateRejectCode
   );
@@ -99,6 +99,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
     useState(duplicateRejectCode);
 
   const handleClickOpen = (item, code) => {
+    setButtonDisable(false)
     if (!isNaN(item)) {
       let code = result[item];
       setHandleFunction(true);
@@ -303,6 +304,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
   };
 
   const handleDelete = () => {
+    setButtonDisable(true);
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -3052,6 +3054,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                 }
                 color="error"
                 sx={{}}
+                disabled={butttonDisable}
               >
                 Delete
               </StyleButton>

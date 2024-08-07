@@ -97,6 +97,7 @@ export const Suspects = ({ sessionObject }) => {
   };
 
   const handleRemoveDeletedCode = (item) => {
+    setButtonDisable(false)
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -135,12 +136,19 @@ export const Suspects = ({ sessionObject }) => {
     }
   };
 
+  const [butttonDisable, setButtonDisable] = useState(false)
+
   const handleClickOpen = (item) => {
+    setButtonDisable(false)
     setDeleteOpen(true);
     setSelectedRejectData(item);
   };
 
+
+
   const handleDelete = () => {
+    setButtonDisable(true);
+
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -865,6 +873,7 @@ export const Suspects = ({ sessionObject }) => {
                 onClick={() => handleDelete()}
                 color="error"
                 sx={{}}
+                disabled={butttonDisable}
               >
                 Delete
               </StyleButton>

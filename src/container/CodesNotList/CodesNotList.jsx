@@ -89,6 +89,7 @@ export const CodesNotList = ({ sessionObject }) => {
   const RejectedCodes = useSelector((state) => state?.reject?.recaptureReject);
   const [rejectRecaptureCode, setRejectRecaptureCode] = useState([]);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
+  const [butttonDisable, setButtonDisable] = useState(false)
 
   const recatupreRejectCode = useSelector(
     (state) => state?.summary?.recaptureRejectCode
@@ -322,6 +323,7 @@ export const CodesNotList = ({ sessionObject }) => {
   }, [recaptureCode.length, RejectedCodes.length]);
 
   const handleClickOpen = (item, code) => {
+    setButtonDisable(false)
     if (!isNaN(item)) {
       let code = result[item];
       setHandleFunction(true);
@@ -458,6 +460,8 @@ export const CodesNotList = ({ sessionObject }) => {
   };
 
   const handleDelete = () => {
+
+    setButtonDisable(true);
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -1039,7 +1043,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       borderRadius: "100px",
                                     }}
                                   >
-                                    <CorrectIcon  />
+                                    <CorrectIcon />
                                   </StyleCircle>
                                 }
                                 className="acc-content-act-btn act-btn-active"
@@ -1337,7 +1341,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon  />
+                                                <CorrectIcon />
                                               </StyleCircle>
                                             }
                                           >
@@ -1620,7 +1624,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon  />
+                                            <CorrectIcon />
                                           </StyleCircle>
                                         }
                                       >
@@ -2031,7 +2035,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   borderRadius: "100px",
                                                 }}
                                               >
-                                                <CorrectIcon  />
+                                                <CorrectIcon />
                                               </StyleCircle>
                                             }
                                           >
@@ -2484,7 +2488,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               borderRadius: "100px",
                                             }}
                                           >
-                                            <CorrectIcon  />
+                                            <CorrectIcon />
                                           </StyleCircle>
                                         }
                                       >
@@ -2728,7 +2732,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                 borderRadius: "100px",
                               }}
                             >
-                              <CorrectIcon  />
+                              <CorrectIcon />
                             </StyleCircle>
                           }
                         >
@@ -2873,7 +2877,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                   borderRadius: "100px",
                                 }}
                               >
-                                <CorrectIcon  />
+                                <CorrectIcon />
                               </StyleCircle>
                             }
                           >
@@ -2978,6 +2982,7 @@ export const CodesNotList = ({ sessionObject }) => {
                 }
                 color="error"
                 sx={{}}
+                disabled={butttonDisable}
               >
                 Delete
               </StyleButton>
