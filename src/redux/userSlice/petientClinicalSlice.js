@@ -7,7 +7,7 @@ const urlParams = new URLSearchParams(queryString);
 
 const slug = urlParams.get('jwt')
 const baseUrl = process.env.REACT_APP_BASE_URL;
-const headerr = postApiHeaders();
+const importedHeader = postApiHeaders();
 
 export const patientClinicalDocument = createAsyncThunk(
     'patientClinicalDocument',
@@ -16,7 +16,7 @@ export const patientClinicalDocument = createAsyncThunk(
         const config = {
             
             url: `${baseUrl}/api/v1/patient-clinical-document/`,
-            headers: headerr,
+            headers: importedHeader,
             data: data
         };
         const response = await axios(config)

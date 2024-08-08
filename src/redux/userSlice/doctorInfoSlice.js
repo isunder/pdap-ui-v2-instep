@@ -8,12 +8,12 @@ const urlParams = new URLSearchParams(queryString);
 const slug = urlParams.get('jwt')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-const headerr = getApiHeaders();
+const importedHeader = getApiHeaders();
 
 export const doctorInfo = createAsyncThunk("doctorInfo", async () => {
     try {
         const data = await axios.get(`${baseUrl}/api/v1/patient-doctor-info/`, {
-            headers: headerr
+            headers: importedHeader
         });
         return data.data;
     } catch (error) {

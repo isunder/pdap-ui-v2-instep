@@ -3,11 +3,10 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const slug = urlParams.get("jwt");
 
-
 export function getApiHeaders(customHeaders = {}) {
 
     const defaultHeaders = {
-        'method': 'GET',
+      'method': 'GET',
       'Content-Type': 'application/json',
       'Authorization': `${slug}`, 
     };

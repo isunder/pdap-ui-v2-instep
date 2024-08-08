@@ -7,11 +7,11 @@ const urlParams = new URLSearchParams(queryString);
 
 const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
-const headerr = getApiHeaders();
+const importedHeader = getApiHeaders();
 export const patientSummaryBarSlice = createAsyncThunk("SummaryBar", async () => {
     try {
         const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/`, {
-            headers: headerr
+            headers: importedHeader
         });
         return data.data;
     } catch (error) {
