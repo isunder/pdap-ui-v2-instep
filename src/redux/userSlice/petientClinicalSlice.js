@@ -1,22 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
+import { postApiHeaders } from "../../utils/helper";
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-const slug = urlParams.get('slug')
+const slug = urlParams.get('jwt')
 const baseUrl = process.env.REACT_APP_BASE_URL;
+const headerr = postApiHeaders();
 
 export const patientClinicalDocument = createAsyncThunk(
     'patientClinicalDocument',
 
     async (data, thunkAPI) => {
         const config = {
-            method: 'post',
-            url: `${baseUrl}/api/v1/patient-clinical-document/?slug=${slug}`,
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            
+            url: `${baseUrl}/api/v1/patient-clinical-document/`,
+            headers: headerr,
             data: data
         };
         const response = await axios(config)

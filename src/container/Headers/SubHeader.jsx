@@ -82,7 +82,7 @@ export const SubHeader = () => {
   const params = window.location.pathname
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  const slug = urlParams.get('jwt');
   useEffect(() => {
     dispatch(patientInfo());
     if (slug) {

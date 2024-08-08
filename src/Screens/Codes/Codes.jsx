@@ -114,7 +114,7 @@ export const Codes = () => {
   const dispatch = useDispatch();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get("slug");
+  const slug = urlParams.get("jwt");
   const theme = useTheme();
 
   const [openSubmitModal, setOpenSubmitModal] = useState();

@@ -62,7 +62,7 @@ export const MyProfile = () => {
   const dispatch = useDispatch();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  const slug = urlParams.get('jwt');
   const tabs = TabsSlag();
   const { doctorDetail } = useSelector(state => state.doctor.data);
 
