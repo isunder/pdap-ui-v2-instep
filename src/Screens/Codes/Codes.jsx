@@ -11,7 +11,10 @@ import {
   Tooltip,
   Skeleton,
 } from "@mui/material";
-
+import {
+  ArrowDropUpIcon
+} from "../../components";
+import Drawer from "@mui/material/Drawer";
 import { MuiAccordions } from "../../components/MuiAccordions/MuiAccordions";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -21,7 +24,7 @@ import Stack from "@mui/material/Stack";
 import moment from "moment";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import useAppContext from "../../hooks/useAppContext";
 import {
   AddressedCodes,
   CodesNotList,
@@ -119,7 +122,7 @@ export const Codes = () => {
 
   const [openSubmitModal, setOpenSubmitModal] = useState();
   const [closeSubmitModal, setCloseSubmitModal] = useState(false);
-
+  const { state, setState } = useAppContext();
   const [codesDataLoaded, setCodesDataLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalSubmit, setIsModalSubmit] = useState(false);
@@ -356,6 +359,17 @@ export const Codes = () => {
   useEffect(() => {
 
   }, [setOpenSubmitModal])
+
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setState({ ...state, [anchor]: open });
+  };
 
 
   const handleSubmitRedirect = async (tabs) => {
@@ -772,7 +786,7 @@ export const Codes = () => {
         transition={Zoom}
         autoClose={2000}
       />
-      <Box sx={{ flexGrow: 1, my: 1.5 }}>
+      <Box sx={{ flexGrow: 1, }}>
         <Container
           maxWidth="xl"
           sx={{
@@ -780,20 +794,406 @@ export const Codes = () => {
             [theme.breakpoints.down("md")]: {
               padding: "0px !important",
             },
+
+            [theme.breakpoints.up("md")]: {
+              display: "none",
+            },
           }}
         >
-          <Grid container spacing={2} sx={{ mb: 0 }}>
+          <Grid container sx={{
+            display: "flex", mt: 0, pt: 0, mb: 0,
+            [theme.breakpoints.down("md")]: {
+              position: "relative",
+              zIndex: 9999
+            },
+            // backgroundColor: "#17236D"
+          }}>
+
+            <Grid
+              item xs={6}
+              sx={{
+                backgroundColor: "#17236D", color: "white",
+                padding: "15px 20px",
+                [theme.breakpoints.down("sm")]: {
+                  padding: "10px 10px",
+                },
+              }} >
+              <Box
+                sx={{
+
+                  [theme.breakpoints.up("md")]: {
+                    display: "none",
+                  },
+
+                  [theme.breakpoints.down("md")]: {
+                    position: "relative",
+                    zIndex: 99999
+                  }
+                }}
+              >
+                <Box sx={{
+                  [theme.breakpoints.up("md")]: {
+                    display: "none",
+                  },
+                }}>
+                  <React.Fragment>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                      <Grid item
+                        onClick={toggleDrawer("top", !state["top"])}
+                        sx={{
+                          display: "flex", justifyContent: "space-between", alignItems: "center",
+                          [theme.breakpoints.down("xs")]: {
+                            padding: "10px 5px"
+                          }
+
+                        }} xs={12} sm={12} md={4} lg={4}>
+                        <StyledText className="pendingActions"
+                          sx={{ ...flexCenter, gap: "4px" }}
+                          onClick={toggleDrawer("top", !state["top"])}
+                        >
+                          Pending actions
+                          <Box
+                            sx={{
+                              borderRadius: " 1.875rem",
+                              background: "white",
+                              color: "#F20000",
+                              width: "20px",
+                              height: "20px",
+                              ...flexCenter,
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                textAlign: "center",
+                                lineHeight: "160%",
+                                fontWeight: 600,
+                              }}
+                            >
+
+                              {(summary?.recapture_codes_count + summary?.suspect_conditions_count + summary?.existing_codes_count) || 0}
+                            </Typography>
+                          </Box>
+                        </StyledText>
+                        <>
+                          {state["top"] ? (
+                            <ArrowDropUpIcon
+                              onClick={toggleDrawer("top", false)}
+                              width={" 0.75rem"}
+                              height={"0.5rem"}
+                              fill={"white"}
+                            />
+                          ) : (
+                            <ArrowDropDownIcon
+                              onClick={toggleDrawer("top", true)}
+                              width={" 0.75rem"}
+                              height={"0.5rem"}
+                              fill={"white"}
+                            />
+                          )}
+                        </>
+                      </Grid>
+                    </Grid>
+                    <Drawer
+                      anchor={"top"}
+                      open={state["top"]}
+                      onClose={toggleDrawer("top", false)}
+                      className="MuiDrawerTop"
+                      sx={{
+
+                        [theme.breakpoints.up("md")]: {
+                          display: "none",
+                        }
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor: "#F2F4FF",
+                          px: 2,
+                          py: 2,
+                        }}
+                      >
+                        <Grid container>
+                          <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                            <PrimaryButton
+                              sx={{
+                                width: "2.375rem",
+                                height: "1.5625rem",
+                                backgroundColor: "#F200001A",
+                                color: theme.palette.error.main,
+                                ":hover": {
+                                  backgroundColor: "#F200001A",
+                                },
+                                fontWeight: 600,
+                                minWidth: "inherit",
+                                fontSize: "0.875rem",
+                              }}
+                            >
+                              {summary?.existing_codes_count || 0}
+                            </PrimaryButton>
+                          </Grid>
+                          <Grid
+                            item
+                            lg={10}
+                            md={10}
+                            sm={10.5}
+                            xs={9}
+                            sx={{ pl: 1 }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "1rem",
+                                color: "rgba(0, 0, 0, 0.60);",
+                                fontWeight: "600",
+                                lineHeight: "1.375rem",
+                                textTransform: "initial",
+                              }}
+                            >
+                              You have { }
+                              <Typography
+                                sx={{
+                                  color: "#000;",
+                                }}
+                              >
+                                {summary?.existing_codes_count || 0}
+                              </Typography>
+                              { } urgent existing conditions requiring recapturing.
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid container sx={{ my: 2 }}>
+                          <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                            <PrimaryButton
+                              sx={{
+                                width: "2.375rem",
+                                height: "1.5625rem",
+                                backgroundColor: "#F200001A",
+                                color: theme.palette.error.main,
+                                ":hover": {
+                                  backgroundColor: "#F200001A",
+                                },
+                                fontWeight: 600,
+                                minWidth: "inherit",
+                                fontSize: "0.875rem",
+                              }}
+                            >
+                              {summary?.suspect_conditions_count || 0}
+                            </PrimaryButton>
+                          </Grid>
+                          <Grid
+                            item
+                            lg={10}
+                            md={10}
+                            sm={10.5}
+                            xs={9}
+                            sx={{ pl: 1 }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "1rem",
+                                color: "rgba(0, 0, 0, 0.60);",
+                                fontWeight: "600",
+                                lineHeight: "1.375rem",
+                                textTransform: "initial",
+                              }}
+                            >
+                              You have { }
+                              <Typography
+                                sx={{
+                                  color: "#000;",
+                                }}
+                              >
+                                {summary?.suspect_conditions_count || 0}
+                              </Typography>
+                              { }  urgent new suspects for review.
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid container sx={{ my: 2 }}>
+                          <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                            <PrimaryButton
+                              sx={{
+                                width: "2.375rem",
+                                height: "1.5625rem",
+                                backgroundColor: "#F200001A",
+                                color: theme.palette.error.main,
+                                ":hover": {
+                                  backgroundColor: "#F200001A",
+                                },
+                                fontWeight: 600,
+                                minWidth: "inherit",
+                                fontSize: "0.875rem",
+                              }}
+                            >
+                              {summary?.recapture_codes_count || 0}
+                            </PrimaryButton>
+                          </Grid>
+                          <Grid
+                            item
+                            lg={10}
+                            md={10}
+                            sm={10.5}
+                            xs={9}
+                            sx={{ pl: 1 }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "1rem",
+                                color: "rgba(0, 0, 0, 0.60);",
+                                fontWeight: "600",
+                                lineHeight: "1.375rem",
+                                textTransform: "initial",
+                              }}
+                            >
+                              You have { }
+                              <Typography
+                                sx={{
+                                  color: "#000;",
+                                  pr: 0.5,
+                                }}
+                              >
+                                {summary?.recapture_codes_count || 0}
+                              </Typography>
+                              { } existing conditions that are not in the problem list.
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        {/* <Grid container >
+                        <Grid item lg={2} md={2} sm={1.5} xs={3} >
+                          <PrimaryButton
+
+                            sx={{
+                              width: "2.375rem",
+                              height: "1.5625rem",
+                              backgroundColor: "#F200001A",
+                              color: theme.palette.error.main,
+                              ":hover": {
+                                backgroundColor: "#F200001A",
+                              },
+                              fontWeight: 600,
+                              minWidth: "inherit",
+                              fontSize: "0.875rem",
+                            }}
+                          >
+                            {summary?.duplicate_codes_count || 0}
+                          </PrimaryButton>
+                        </Grid>
+                        <Grid
+                          item
+                          lg={10}
+                          md={10}
+                          sm={10.5}
+                          xs={9}
+                          sx={{ pl: 1 }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "1rem",
+                              color: "rgba(0, 0, 0, 0.60);",
+                              fontWeight: "600",
+                              lineHeight: "1.375rem",
+                              textTransform: "initial",
+                            }}
+                          >
+                            You have  { }
+                            <Typography
+                              sx={{
+                                color: "#000;",
+                              }}
+                            >
+                              {summary?.duplicate_codes_count || 0}
+                            </Typography>
+                            { } Duplicate Codes
+                          </Typography>
+                        </Grid>
+                      </Grid> */}
+                      </Box>
+                    </Drawer>
+                  </React.Fragment>
+                </Box>
+              </Box>
+            </Grid>
+
             <Grid
               item
-              xs={12}
+              xs={6}
               lg={3}
               md={4}
               sx={{
-                [theme.breakpoints.down("md")]: {
-                  paddingTop: "8px !important",
+
+                backgroundColor: "white",
+                padding: "15px 20px",
+                [theme.breakpoints.down("sm")]: {
+                  padding: "10px 10px",
                 },
               }}
             >
+              <>
+                <Grid
+                  container
+                  rowSpacing={1}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                >
+                  <Grid onClick={toggleDrawer("down", !state["down"])} sx={{
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                    [theme.breakpoints.down("xs")]: {
+                      padding: "10px 5px"
+                    }
+                  }} item xs={12} sm={12} md={4} lg={4}>
+                    <StyledText className="summary-mobile" onClick={toggleDrawer("down", !state["down"])} sx={{ ...flexCenter, gap: 0.5 }}>
+                      Summary
+                      {sumCount >= 0 && (
+                        <Box
+                          sx={{
+                            background: "#E6682D",
+                            color: "#FFFFFF",
+                            borderRadius: "100%",
+                            height: "20px",
+                            width: "20px",
+                            ...flexCenter,
+                            justifyContent: "center"
+                          }}
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              textAlign: "center",
+                              fontSize: "0.75rem",
+                              fontStyle: "normal",
+                              fontWeight: "600",
+                              lineHeight: "normal",
+
+                              [theme.breakpoints.up("sm")]: {
+                                p: '7px',
+                              },
+
+                            }}
+                          >
+                            {sumCount}
+                          </Typography>
+                        </Box>
+                      )}
+                    </StyledText>
+
+                    {state["down"] ? (
+                      <ArrowDropUpIcon
+                        onClick={toggleDrawer("down", false)}
+                        width={" 0.75rem"}
+                        height={"0.5rem"}
+                        fill={"black"}
+                      />
+                    ) : (
+                      <ArrowDropDownIcon
+                        onClick={toggleDrawer("down", true)}
+                        width={" 0.75rem"}
+                        height={"0.5rem"}
+                        fill={"black"}
+                      />
+                    )}
+                  </Grid>
+                </Grid>
+              </>
               <Card
                 className="CardBox"
                 sx={{
@@ -808,64 +1208,82 @@ export const Codes = () => {
                   },
                 }}
               >
-                <MuiAccordions
-                  singleExpand={singleExpand}
-                  setSingleExpand={setSingleExpand}
-                  expandIcon={
-                    <ArrowDropDownIcon
-                      width={12}
-                      height={12}
-                      fill={theme.palette.black.main}
-                    />
-                  }
-                  header={
-                    <>
-                      <Grid
-                        container
-                        rowSpacing={1}
-                        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                      >
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <StyledText sx={{ ...flexCenter, gap: 0.5 }}>
-                            Summary
-                            {sumCount > 0 && (
-                              <Box
+                <Drawer
+                  anchor={"down"}
+                  open={state["down"]}
+                  onClose={toggleDrawer("down", false)}
+                  className="MuiDrawerDown"
+                  sx={{
+                    [theme.breakpoints.up("md")]: {
+                      display: "none",
+                    }
+                  }}
+                >
+                  <CardContent>
+
+                    <Grid
+                      container
+                      rowSpacing={1}
+                      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                    >
+                      <Grid onClick={toggleDrawer("down", !state["down"])} sx={{
+                        display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px 0px",
+                        [theme.breakpoints.down("xs")]: {
+                          padding: "10px 5px"
+                        }
+                      }} item xs={12} sm={12} md={4} lg={4}>
+                        <StyledText className="summary-mobile" onClick={toggleDrawer("down", !state["down"])} sx={{ ...flexCenter, gap: 0.5 }}>
+                          Summary
+                          {sumCount >= 0 && (
+                            <Box
+                              sx={{
+                                background: "#E6682D",
+                                color: "#FFFFFF",
+                                borderRadius: "100%",
+                                height: "20px",
+                                width: "20px",
+                                ...flexCenter,
+                                justifyContent: "center"
+                              }}
+                            >
+                              <Typography
+                                variant="body2"
                                 sx={{
-                                  background: "#E6682D",
-                                  color: "#FFFFFF",
-                                  borderRadius: "100%",
-                                  height: "1.3125rem",
-                                  width: "1.3125rem",
-                                  ...flexCenter,
+                                  textAlign: "center",
+                                  fontSize: "0.75rem",
+                                  fontStyle: "normal",
+                                  fontWeight: "600",
+                                  lineHeight: "normal",
+
+                                  [theme.breakpoints.up("sm")]: {
+                                    p: '7px',
+                                  },
 
                                 }}
                               >
-                                <Typography
-                                  variant="body2"
-                                  sx={{
-                                    textAlign: "center",
-                                    fontSize: "0.75rem",
-                                    fontStyle: "normal",
-                                    fontWeight: "600",
-                                    lineHeight: "normal",
+                                {sumCount}
+                              </Typography>
+                            </Box>
+                          )}
+                        </StyledText>
 
-                                    [theme.breakpoints.up("sm")]: {
-                                      p: '7px',
-                                    },
-
-                                  }}
-                                >
-                                  {sumCount}
-                                </Typography>
-                              </Box>
-                            )}
-                          </StyledText>
-                        </Grid>
+                        {state["down"] ? (
+                          <ArrowDropUpIcon
+                            onClick={toggleDrawer("down", false)}
+                            width={" 0.75rem"}
+                            height={"0.5rem"}
+                            fill={"black"}
+                          />
+                        ) : (
+                          <ArrowDropDownIcon
+                            onClick={toggleDrawer("down", true)}
+                            width={" 0.75rem"}
+                            height={"0.5rem"}
+                            fill={"black"}
+                          />
+                        )}
                       </Grid>
-                    </>
-                  }
-                >
-                  <CardContent>
+                    </Grid>
                     <Box>
                       <Grid
                         container
@@ -1363,9 +1781,13 @@ export const Codes = () => {
                       )}
                     </Box>
                   </CardContent>
-                </MuiAccordions>
+                </Drawer>
+
+
               </Card>
             </Grid>
+
+
 
           </Grid>
         </Container>
@@ -2440,6 +2862,11 @@ export const Codes = () => {
 };
 
 const flexCenter = {
+  display: "flex",
+  alignItems: "center",
+};
+
+const flexAlignCenter = {
   display: "flex",
   alignItems: "center",
 };

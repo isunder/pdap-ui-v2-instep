@@ -165,9 +165,9 @@ export const Header = ({ sessionObject }) => {
     <>
       <Box
         sx={{
-          zIndex: state["top"] && 9999,
-          position: state["top"] && "relative",
-          background: state["top"] && "#fff",
+          zIndex: state["top"] ? 9999 : (state["down"] ? 9999 : 'auto'),
+          position: state["top"] ? "relative" : (state["down"] ? "relative" : 'static'),
+          background: state["top"] ? "#fff" : (state["down"] ? "#fff" : 'transparent'),
         }}
       >
         <AppBar
