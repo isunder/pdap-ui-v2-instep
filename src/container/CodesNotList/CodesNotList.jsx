@@ -461,7 +461,7 @@ export const CodesNotList = ({ sessionObject }) => {
 
   const handleDelete = () => {
 
-    setButtonDisable(true);
+
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -469,9 +469,11 @@ export const CodesNotList = ({ sessionObject }) => {
     if (rejectReason === "Other") {
       val = ReasonTextVal(otherText);
       setError(val);
+      return;
     }
     if (!val.isValid) {
       setError(val);
+      return;
     } else {
       let code = rejectRecaptureData?.some((value, index) => {
         let key = Object.keys(value)[0];
@@ -571,6 +573,8 @@ export const CodesNotList = ({ sessionObject }) => {
       setDeleteOpen(false);
 
     }
+
+    setButtonDisable(true);
   };
 
   const handleIsCollapse = (data) => {

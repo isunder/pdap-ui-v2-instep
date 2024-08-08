@@ -147,7 +147,6 @@ export const Suspects = ({ sessionObject }) => {
 
 
   const handleDelete = () => {
-    setButtonDisable(true);
 
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -160,9 +159,11 @@ export const Suspects = ({ sessionObject }) => {
       if (rejectReason === "Other") {
         val = ReasonTextVal(otherText);
         setError(val);
+      
       }
       if (!val.isValid) {
         setError(val);
+        return;
       } else {
         let newObj = selectedRejectData.data;
         let codeValue = [];
@@ -229,6 +230,7 @@ export const Suspects = ({ sessionObject }) => {
 
       }
     }
+    setButtonDisable(true);
   };
 
   const handleReseon = (event) => {

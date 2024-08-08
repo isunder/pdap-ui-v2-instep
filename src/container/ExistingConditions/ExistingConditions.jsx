@@ -447,7 +447,7 @@ export const ExistingConditions = ({ sessionObject }) => {
   };
 
   const handleDeleteAll = () => {
-    
+
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -534,7 +534,8 @@ export const ExistingConditions = ({ sessionObject }) => {
 
   const handleDelete = () => {
 
-    setButtonDisable(true);
+
+
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -542,9 +543,11 @@ export const ExistingConditions = ({ sessionObject }) => {
     if (rejectReason === "Other") {
       val = ReasonTextVal(otherText);
       setError(val);
+
     }
     if (!val.isValid) {
       setError(val);
+      return
     } else {
       let code = rejectExistingData?.some((value, index) => {
         let key = Object.keys(value)[0];
@@ -646,7 +649,7 @@ export const ExistingConditions = ({ sessionObject }) => {
         setRejectReason("Insufficient Proof");
       otherText?.length > 0 && setOtherText(null);
     }
-
+    setButtonDisable(true);
   };
 
   const handleReseon = (event) => {
@@ -694,7 +697,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                   </StyledText>
                   <StyledText sx={{
                     [theme.breakpoints.only("xs")]: {
-                      borderRight:"2px solid black"
+                      borderRight: "2px solid black"
                     },
                   }} className="acc-content-header-item ct-desc">
                     Description

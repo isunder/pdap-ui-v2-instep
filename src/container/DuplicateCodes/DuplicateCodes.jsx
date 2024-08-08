@@ -304,7 +304,8 @@ export const DuplicateCodes = ({ sessionObject }) => {
   };
 
   const handleDelete = () => {
-    setButtonDisable(true);
+
+   
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -312,9 +313,11 @@ export const DuplicateCodes = ({ sessionObject }) => {
     if (rejectReason === "Other") {
       val = ReasonTextVal(otherText);
       setError(val);
+      
     }
     if (!val.isValid) {
       setError(val);
+      return;
     } else {
       let code = rejectDuplicateData?.some((value, index) => {
         let key = Object.keys(value)[0];
@@ -417,6 +420,8 @@ export const DuplicateCodes = ({ sessionObject }) => {
       otherText?.length > 0 && setOtherText(null);
 
     }
+
+    setButtonDisable(true);
   };
 
   const handleDeleteAll = () => {
