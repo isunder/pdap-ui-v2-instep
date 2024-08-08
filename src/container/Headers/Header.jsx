@@ -324,125 +324,132 @@ export const Header = ({ sessionObject }) => {
                 </Box>
               </Grid>
 
-              {
-                tabs && tabs["patient_dashboard_recapture_percentage"].active && tabs["patient_dashboard_suspect_percentage"].active ?
-                  <Grid className="suspect_recapture_header" item md={7} sm={6}>
-                    <Box
+
+              <Grid className="suspect_recapture_header" item md={7} sm={6}>
+                <Box
+                  sx={{
+                    ...flexCenter,
+                    // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                    width: "100%",
+                    height: "3.75rem",
+                    justifyContent: "flex-end",
+                    [theme.breakpoints.down("sm")]: {
+                      display: "none",
+                    },
+                    [theme.breakpoints.down("lg")]: {},
+                  }}
+                >
+
+                  {
+                    tabs && tabs["patient_dashboard_recapture_percentage"].active && tabs["patient_dashboard_suspect_percentage"].active ?
+                      <>
+                        <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                          <StyleText
+                            sx={{
+                              fontWeight: 600,
+                              fontSize: "0.875rem",
+                              color: "#000",
+
+                              [theme.breakpoints.only("md")]: {
+                                p: 0,
+                              },
+                            }}
+                          >
+                            Panel
+
+                          </StyleText>
+
+                          <StyleText
+                            sx={{
+                              fontWeight: 600,
+                              fontSize: "0.875rem",
+                              color: "#000",
+
+                              [theme.breakpoints.only("md")]: {
+                                p: 0,
+                              },
+                            }}
+                          >
+
+                            Metrics:
+                          </StyleText>
+                        </Box>
+
+                        {tabs &&
+                          tabs["patient_dashboard_recapture_percentage"]
+                          && (
+                            <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                              <StyleText
+                                sx={{
+                                  fontWeight: 600,
+
+                                  fontSize: "12px",
+                                  color: "#000",
+                                  [theme.breakpoints.only("md")]: {
+                                    p: 0,
+                                  },
+                                }}
+                              >
+                                Recapture
+                              </StyleText>
+
+                              <StyleText
+                                sx={{
+                                  fontFamily: "Proxima nova",
+                                  color: theme.palette.success.main,
+                                  fontWeight: 600,
+                                  fontSize: "0.875rem",
+                                }}
+                              >
+                                {doctorDetail?.recapture_percentage || "-"}
+                              </StyleText>
+                            </Box>
+                          )}
+
+                        {tabs &&
+                          tabs["patient_dashboard_suspect_percentage"] && (
+                            <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                              <StyleText
+                                sx={{
+                                  fontWeight: 600,
+                                  fontSize: "12px",
+                                  color: "#000",
+
+                                }}
+                              >
+                                Suspects
+                              </StyleText>
+                              <StyleText
+                                sx={{
+                                  color: theme.palette.success.main,
+                                  fontFamily: "Proxima nova",
+                                  fontWeight: 600,
+                                  fontSize: "0.875rem",
+                                }}
+                              >
+                                {doctorDetail?.suspects_addressed_percentage || "-"}
+                              </StyleText>
+                            </Box>
+
+                          )}
+                      </> : null
+                  }
+
+                  <Box>
+                    <StyleText
                       sx={{
-                        ...flexCenter,
-                        // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
-                        width: "100%",
-                        height: "3.75rem",
-                        justifyContent: "flex-end",
-                        [theme.breakpoints.down("sm")]: {
-                          display: "none",
+                        fontWeight: 600,
+                        [theme.breakpoints.down("lg")]: {
+                          width: "10rem",
                         },
-                        [theme.breakpoints.down("lg")]: {},
                       }}
                     >
+                      {doctorDetail?.doctor_name && doctorDetail?.doctor_name || ""}
+                    </StyleText>
+                  </Box>
+                </Box>
+              </Grid>
 
-                      <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
-                        <StyleText
-                          sx={{
-                            fontWeight: 600,
-                            fontSize: "0.875rem",
-                            color: "#000",
-
-                            [theme.breakpoints.only("md")]: {
-                              p: 0,
-                            },
-                          }}
-                        >
-                          Panel
-
-                        </StyleText>
-
-                        <StyleText
-                          sx={{
-                            fontWeight: 600,
-                            fontSize: "0.875rem",
-                            color: "#000",
-
-                            [theme.breakpoints.only("md")]: {
-                              p: 0,
-                            },
-                          }}
-                        >
-
-                          Metrics:
-                        </StyleText>
-                      </Box>
-
-                      {tabs &&
-                        tabs["patient_dashboard_recapture_percentage"]
-                        && (
-                          <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
-                            <StyleText
-                              sx={{
-                                fontWeight: 600,
-
-                                fontSize: "12px",
-                                color: "#000",
-                                [theme.breakpoints.only("md")]: {
-                                  p: 0,
-                                },
-                              }}
-                            >
-                              Recapture
-                            </StyleText>
-
-                            <StyleText
-                              sx={{
-                                fontFamily: "Proxima nova",
-                                color: theme.palette.success.main,
-                                fontWeight: 600,
-                                fontSize: "0.875rem",
-                              }}
-                            >
-                              {doctorDetail?.recapture_percentage || "-"}
-                            </StyleText>
-                          </Box>
-                        )}
-                      {tabs &&
-                        tabs["patient_dashboard_suspect_percentage"] && (
-                          <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
-                            <StyleText
-                              sx={{
-                                fontWeight: 600,
-                                fontSize: "12px",
-                                color: "#000",
-
-                              }}
-                            >
-                              Suspects
-                            </StyleText>
-                            <StyleText
-                              sx={{
-                                color: theme.palette.success.main,
-                                fontFamily: "Proxima nova",
-                                fontWeight: 600,
-                                fontSize: "0.875rem",
-                              }}
-                            >
-                              {doctorDetail?.suspects_addressed_percentage || "-"}
-                            </StyleText>
-                          </Box>
-                        )}
-                      <Box>
-                        <StyleText
-                          sx={{
-                            fontWeight: 600,
-                            [theme.breakpoints.down("lg")]: {
-                              width: "10rem",
-                            },
-                          }}
-                        >
-                          {doctorDetail?.doctor_name && doctorDetail?.doctor_name || ""}
-                        </StyleText>
-                      </Box>
-                    </Box>
-                  </Grid> : null
-              }
 
 
 
