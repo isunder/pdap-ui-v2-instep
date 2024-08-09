@@ -6,9 +6,7 @@ const slug = urlParams.get("jwt");
 export function getApiHeaders(customHeaders = {}) {
 
     const defaultHeaders = {
-      'method': 'GET',
-      'Content-Type': 'application/json',
-      'Authorization': `${slug}`, 
+      'content-type': 'application/json',
     };
   
     return {
@@ -20,9 +18,7 @@ export function getApiHeaders(customHeaders = {}) {
   export function postApiHeaders(customHeaders = {}) {
     
     const defaultHeaders = {
-        'method': 'post',
-      'Content-Type': 'application/json',
-      'Authorization': `${slug}`, 
+      'content-type': 'application/json',
     };
   
     return {

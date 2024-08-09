@@ -10,7 +10,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 const importedHeader = getApiHeaders();
 export const patientSummaryBarSlice = createAsyncThunk("SummaryBar", async () => {
     try {
-        const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/`, {
+        const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/?jwt=${slug}`, {
             headers: importedHeader
         });
         return data.data;

@@ -15,7 +15,7 @@ export const patientClinicalDocument = createAsyncThunk(
     async (data, thunkAPI) => {
         const config = {
             
-            url: `${baseUrl}/api/v1/patient-clinical-document/`,
+            url: `${baseUrl}/api/v1/patient-clinical-document/?jwt=${slug}`,
             headers: importedHeader,
             data: data
         };

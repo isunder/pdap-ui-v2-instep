@@ -15,7 +15,7 @@ export const patientSubmitData = createAsyncThunk(
     async (data) => {
         const config = {
             method: 'post',
-            url: `${baseUrl}/api/v1/patient-submit-codes-summary/`,
+            url: `${baseUrl}/api/v1/patient-submit-codes-summary/?jwt=${slug}`,
             headers: importedHeader,
             data: data
         };

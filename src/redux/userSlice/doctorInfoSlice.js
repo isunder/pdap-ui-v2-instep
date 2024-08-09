@@ -12,7 +12,7 @@ const importedHeader = getApiHeaders();
 
 export const doctorInfo = createAsyncThunk("doctorInfo", async () => {
     try {
-        const data = await axios.get(`${baseUrl}/api/v1/patient-doctor-info/`, {
+        const data = await axios.get(`${baseUrl}/api/v1/patient-doctor-info/?jwt=${slug}`, {
             headers: importedHeader
         });
         return data.data;
