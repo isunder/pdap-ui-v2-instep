@@ -804,7 +804,7 @@ export const Codes = () => {
             display: "flex", mt: 0, pt: 0, mb: 0,
             [theme.breakpoints.down("md")]: {
               position: "relative",
-              zIndex: 9999
+              zIndex: 1234
             },
             // backgroundColor: "#17236D"
           }}>
@@ -2368,7 +2368,7 @@ export const Codes = () => {
                     >
                       <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
-                          New Suspects
+                          Suspects
                         </Typography>
                       </Grid>
                       {!(
@@ -2499,7 +2499,7 @@ export const Codes = () => {
                     >
                       <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
-                          Existing Conditions <br /> (not in problem list)
+                          Code not in problem list
                         </Typography>
                       </Grid>
                       {!(

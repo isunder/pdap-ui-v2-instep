@@ -19,6 +19,18 @@ export const patientInfo = createAsyncThunk("patientInfo", async () => {
     }
 });
 
+// function for patient Duplicate Codes
+export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
+    try {
+        if (slug) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}`);
+            return data.data;
+        }
+    } catch (error) {
+        console.log("error in patientDeletedCode", error)
+    }
+});
+
 // function for patient Existing Conditions
 export const patientExistingConditions = createAsyncThunk("patientExistingConditions", async () => {
     try {
@@ -55,17 +67,6 @@ export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", asy
     }
 });
 
-// function for patient Duplicate Codes
-export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
-    try {
-        if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}`);
-            return data.data;
-        }
-    } catch (error) {
-        console.log("error in patientDeletedCode", error)
-    }
-});
 
 // function for patient suspect Codes
 export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", async () => {

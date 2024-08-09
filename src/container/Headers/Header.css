@@ -7,15 +7,17 @@
   .SubmitModal .MuiDialog-paper{
     width: 450px;
     max-width: 450px !important;
-    height: 518px !important;
-    max-height: unset !important;
+    overflow: hidden !important;
   }
 
   .SubmitModal2 .MuiDialog-paper{
     width: 450px;
     max-width: 450px !important;
-    height: 589px !important;
-    max-height: unset !important;
+    overflow: hidden !important;
+  }
+  .SubmitModal2 .MuiDialog-paper .css-1hgfzkp-MuiDialogContent-root{
+    overflow: unset; 
+    height: 100% !important;
   }
 
   .SubmitModal .css-1va6kh9-MuiCardContent-root:last-child{
@@ -28,15 +30,16 @@
   .SubmitModal2 .MuiDialogContent-root{
     padding: 20px 8px;
   }
+
 }
 
-@media screen and (max-width: 968px) {
-  .MuiDialog-paper {
-    width: 355px !important;
-    max-width: 355px !important;
-    border-radius: 13px !important;
-    height: auto !important;
-    padding: 20px 0px;
+
+/* @media (min-width: 1200px) and (max-width: 1300px) {
+  .modalInner.MuiBox-root.css-0 {
+    height: 320px !important;
+    overflow: auto;
   }
 }
+ */
+
 

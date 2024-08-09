@@ -71,6 +71,8 @@ const SubmitModal = ({
   const [inProblemList, setInProblemList] = useState([]);
   const [notInProblemList, setNotInProblemList] = useState([]);
 
+  console.log(existingCodeReject, "existingCodeReject")
+
   useEffect(() => {
     if (duplicateCode && duplicateCodeNew) {
       const updatedValues = [];
@@ -116,6 +118,33 @@ const SubmitModal = ({
       setMatchedValuesExisting(updatedValues);
     }
   }, [isModalOpen, suspectCode, existingCode, recaptureCode, duplicateCode, duplicateCodeNew]);
+
+
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  console.log(windowSize, "windowSizess")
+
+  useEffect(() => {
+    // Handler to call on window resize
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
 
   useEffect(() => {
@@ -193,10 +222,10 @@ const SubmitModal = ({
                   </Button>
                 </Box>
 
-                <Grid>
-                  <Card>
+                <Grid >
+                  <Card >
                     <CardContent sx={{ paddingInline: "0px" }}>
-                      <Box>
+                      <Box className="modalInner" sx={{ height: windowSize.height / 2, overflow: "auto" }}>
                         <Grid
                           container
                           sx={{
@@ -532,10 +561,10 @@ const SubmitModal = ({
                   </Button>
                 </Box>
 
-                <Grid>
+                <Grid >
                   <Card>
                     <CardContent sx={{ paddingInline: "0px" }}>
-                      <Box>
+                      <Box className="modalInner" sx={{ height: windowSize.height / 2, overflow: "auto" }} >
                         <Grid
                           container
                           sx={{
@@ -580,8 +609,8 @@ const SubmitModal = ({
                                       <Tooltip title={`${item?.code} : ${item?.value}`}>
                                         <Typography>
                                           <StylePop className="ChipSpan">
-                                            {item?.code?.slice(0, 20)}{' '}
-                                            {item?.code.length > 20 ? '...' : ''}
+                                            {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
+                                            {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
                                           </StylePop>{' '}
                                         </Typography>
                                       </Tooltip>
@@ -638,8 +667,8 @@ const SubmitModal = ({
                                       <Tooltip title={`${item?.code} : ${item?.value}`}>
                                         <Typography>
                                           <StylePop className="ChipSpan">
-                                            {item?.code?.slice(0, 20)}{' '}
-                                            {item?.code.length > 20 ? '...' : ''}
+                                            {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
+                                            {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
                                           </StylePop>{' '}
                                         </Typography>
                                       </Tooltip>
@@ -773,11 +802,20 @@ const SubmitModal = ({
                                           <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
-                                              .slice(0, 20)}{" "}
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
                                               : ""}
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -807,11 +845,20 @@ const SubmitModal = ({
                                           <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
-                                              .slice(0, 20)}{" "}
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
                                               : ""}
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -841,11 +888,20 @@ const SubmitModal = ({
                                           <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
-                                              .slice(0, 20)}{" "}
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
                                               : ""}
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -873,7 +929,7 @@ const SubmitModal = ({
             suspectCodeReject?.length > 0 ||
             duplicateCodeReject?.length > 0 ? (
             <button
-              style={{ cursor: "pointer", width: "98%", margin: "0 auto" }}
+              style={{ cursor: "pointer", width: "98%", margin: "0 auto", }}
               className="SubmitBtn"
               onClick={() => handleSubmit()}
             >

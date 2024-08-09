@@ -102,7 +102,7 @@ export const SubHeader = () => {
           ...flexAlignCenter,
 
           [theme.breakpoints.down("md")]: {
-            zIndex: state["top"] ? 9999 : (state["down"] ? 9999 : 'auto'),
+            zIndex: state["top"] ? 1234 : (state["down"] ? 1234 : 'auto'),
             position: state["top"] ? "relative" : (state["down"] ? "relative" : 'static'),
             background: state["top"] ? "#fff" : (state["down"] ? "#fff" : '#fff'),
           },
