@@ -1,7 +1,7 @@
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const slug = urlParams.get("jwt");
+const slug = urlParams.get("slug");
 
 export function getApiHeaders(customHeaders = {}) {
 

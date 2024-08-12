@@ -89,7 +89,7 @@ const StyleButton = styled(Button)(() => ({
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const slug = urlParams.get("jwt");
+const slug = urlParams.get("slug");
 
 export const Header = ({ sessionObject }) => {
   const location = useLocation();
@@ -206,7 +206,7 @@ export const Header = ({ sessionObject }) => {
                     <StyleLogo
                       onClick={() => {
                         getActiveTab(0);
-                        navigate(`/?jwt=${slug}`);
+                        navigate(`/?slug=${slug}`);
                       }}
                     >
                       <DTLogo width="100%" height="100%" />
@@ -612,12 +612,12 @@ export const Header = ({ sessionObject }) => {
   );
 };
 const routes = [
-  { name: "Codes", routesPath: "/", path: `/?jwt=${slug}` },
-  { name: "History", routesPath: "/history/", path: `/history/?jwt=${slug}` },
+  { name: "Codes", routesPath: "/", path: `/?slug=${slug}` },
+  { name: "History", routesPath: "/history/", path: `/history/?slug=${slug}` },
   {
     name: "My Profile",
     routesPath: "/my-profile/",
-    path: `/my-profile/?jwt=${slug}`,
+    path: `/my-profile/?slug=${slug}`,
   },
 ];
 const flexCenter = {

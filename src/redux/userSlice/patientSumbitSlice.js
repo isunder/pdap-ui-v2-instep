@@ -5,7 +5,7 @@ import { getApiHeaders, postApiHeaders } from "../../utils/helper";
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-const slug = urlParams.get('jwt')
+const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const importedHeader = postApiHeaders();
 
@@ -15,7 +15,7 @@ export const patientSubmitData = createAsyncThunk(
     async (data) => {
         const config = {
             method: 'post',
-            url: `${baseUrl}/api/v1/patient-submit-codes-summary/?jwt=${slug}`,
+            url: `${baseUrl}/api/v1/patient-submit-codes-summary/?slug=${slug}`,
             headers: importedHeader,
             data: data
         };

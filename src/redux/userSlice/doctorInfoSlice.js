@@ -5,16 +5,14 @@ import { getApiHeaders } from '../../utils/helper';
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-const slug = urlParams.get('jwt')
+const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const importedHeader = getApiHeaders();
 
 export const doctorInfo = createAsyncThunk("doctorInfo", async () => {
     try {
-        const data = await axios.get(`${baseUrl}/api/v1/patient-doctor-info/?jwt=${slug}`, {
-            headers: importedHeader
-        });
+        const data = await axios.get(`${baseUrl}/api/v1/patient-doctor-info/?slug=${slug}`);
         return data.data;
     } catch (error) {
         console.log("error in doctorInfo", error)

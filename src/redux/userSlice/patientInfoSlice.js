@@ -4,7 +4,7 @@ import { getApiHeaders } from '../../utils/helper';
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-const slug = urlParams.get('jwt')
+const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const importedHeader = getApiHeaders();
@@ -13,10 +13,8 @@ const importedHeader = getApiHeaders();
 export const patientInfo = createAsyncThunk("patientInfo", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-info/?jwt=${slug}`,
-                {
-                     headers: importedHeader
-                }
+            const data = await axios.get(`${baseUrl}/api/v1/patient-info/?slug=${slug}`,
+                
             );
             return data.data;
         }
@@ -29,9 +27,7 @@ export const patientInfo = createAsyncThunk("patientInfo", async () => {
 export const patientExistingConditions = createAsyncThunk("patientExistingConditions", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-existing-conditions/?jwt=${slug}` , {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-existing-conditions/?slug=${slug}`);
             return data.data;
         }
     } catch (error) {
@@ -43,9 +39,7 @@ export const patientExistingConditions = createAsyncThunk("patientExistingCondit
 export const patientAddressCode = createAsyncThunk("patientAddressCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-addressed-codes/?jwt=${slug}`, {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-addressed-codes/?slug=${slug}`);
             return data.data;
         }
     } catch (error) {
@@ -57,9 +51,7 @@ export const patientAddressCode = createAsyncThunk("patientAddressCode", async (
 export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/?jwt=${slug}`, {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/?slug=${slug}`,);
             return data.data;
         }
     } catch (error) {
@@ -71,9 +63,7 @@ export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", asy
 export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?jwt=${slug}` , {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}` );
             return data.data;
         }
     } catch (error) {
@@ -85,9 +75,7 @@ export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async (
 export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/?jwt=${slug}` , {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/?slug=${slug}` );
             return data.data;
         }
     } catch (error) {
@@ -99,9 +87,7 @@ export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", asy
 export const patientSummary = createAsyncThunk("patientSummary", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-summary/?jwt=${slug}` , {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-summary/?slug=${slug}`);
             return data.data;
         }
     } catch (error) {
@@ -113,9 +99,7 @@ export const patientSummary = createAsyncThunk("patientSummary", async () => {
 export const patientRecaptureCode = createAsyncThunk("patientRecaptureCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-recapture-codes/?jwt=${slug}`, {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-recapture-codes/?slug=${slug}`);
             return data.data;
         }
     } catch (error) {
@@ -127,9 +111,7 @@ export const patientRecaptureCode = createAsyncThunk("patientRecaptureCode", asy
 export const patientTabFlag = createAsyncThunk("patientTabFlag", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-tabs/?jwt=${slug}` , {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-tabs/?slug=${slug}`);
             return data.data;
         }
     } catch (error) {
@@ -141,9 +123,7 @@ export const patientTabFlag = createAsyncThunk("patientTabFlag", async () => {
 export const patientHistory = createAsyncThunk("patientHistory", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-history/?jwt=${slug}` , {
-                headers: importedHeader
-            });
+            const data = await axios.get(`${baseUrl}/api/v1/patient-history/?slug=${slug}`);
             return data.data;
         }
     } catch (error) {
