@@ -848,7 +848,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                             </StyledText>
                           </Grid>
                           {
-                            !item?.['hide_noted_by_&_noted_date'] &&
+                           !item?.info['hide_noted_by_&_noted_date']  &&
                               <>
                                 <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
                                   <Box
