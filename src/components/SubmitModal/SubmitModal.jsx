@@ -71,8 +71,6 @@ const SubmitModal = ({
   const [inProblemList, setInProblemList] = useState([]);
   const [notInProblemList, setNotInProblemList] = useState([]);
 
-  console.log(existingCodeReject, "existingCodeReject")
-
   useEffect(() => {
     if (duplicateCode && duplicateCodeNew) {
       const updatedValues = [];
@@ -124,8 +122,6 @@ const SubmitModal = ({
     width: window.innerWidth,
     height: window.innerHeight,
   });
-
-  console.log(windowSize, "windowSizess")
 
   useEffect(() => {
     // Handler to call on window resize
