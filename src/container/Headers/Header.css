@@ -43,3 +43,14 @@
  */
 
 
+@media only screen and (max-width:730px){
+  .suspect_recapture_header{
+    display: none;
+  }
+}
+
+@media only screen and (max-width:730px){
+  .suspect_recapture_header{
+    display: none;
+  }
+}

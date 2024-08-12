@@ -51,6 +51,7 @@ import Deletemodal from "../../components/DeleteModal/DeleteModal";
 import { SelectField } from "../../components/SelectField";
 import { InputField } from "../../components/InputField";
 
+
 import {
   StyleCircle,
   StyleButton,
@@ -182,6 +183,7 @@ export const CodesNotList = ({ sessionObject }) => {
     setRejectRecaptureCode([...rejectedCodes]);
     codeList?.length &&
       setSelectedRecapturecode([...selectedRecapturecode, ...codeList]);
+
   };
 
   const handleOtherText = (e) => {
@@ -272,7 +274,6 @@ export const CodesNotList = ({ sessionObject }) => {
       otherText?.length > 0 && setOtherText(null);
       setHandleFunction(false);
       setDeleteOpen(false);
-
     }
   };
 
@@ -573,8 +574,6 @@ export const CodesNotList = ({ sessionObject }) => {
       setDeleteOpen(false);
 
     }
-
-    setButtonDisable(true);
   };
 
   const handleIsCollapse = (data) => {

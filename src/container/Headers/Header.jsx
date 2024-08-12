@@ -182,77 +182,113 @@ export const Header = ({ sessionObject }) => {
           <Container
             maxWidth="xl"
             sx={{
-              padding: "0px 50px",
-              [theme.breakpoints.down('sm')]: {
-                padding: "0px 10px",
+              padding: "0px 50px !important",
+              [theme.breakpoints.down("sm")]: {
+                padding: "0px 10px !important",
               },
             }}
           >
-            <Grid container sx={{ flexWrap: "nowrap" }} spacing={{ md: 2 }}>
-              <Grid item xs={12} md={5} sx={{ alignItems: "center" }} >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: { xs: 3, md: 7, lg: 5 },
-                    height: "3.75rem",
-                    width: "100%",
-                    [theme.breakpoints.down("sm")]: {
-                      justifyContent: "space-between",
-                    },
-                  }}
-                >
-                  <StyleLogo
-                    onClick={() => {
-                      getActiveTab(0);
-                      navigate(`/?slug=${slug}`);
+            <>
+              <Grid container sx={{ flexWrap: "nowrap" }} spacing={{ md: 2 }}>
+                <Grid item xs={12} md={5} sx={{ alignItems: "center" }} >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: { xs: 3, md: 7, lg: 5 },
+                      height: "3.75rem",
+                      width: "100%",
+                      [theme.breakpoints.down("sm")]: {
+                        justifyContent: "space-between",
+                      },
                     }}
                   >
-                    <DTLogo width="100%" height="100%" />
-                  </StyleLogo>
-                  <Box sx={{ ...flexCenter, gap: { xs: "4px", md: 1, lg: 4 } }}>
-                    {routes?.length > 0 &&
-                      routes?.map((item, i) => {
-                        return item.name === "History" ? (
-                          tabs &&
-                          tabs["patient_dashboard_history_tab"]?.active && (
-                            <Box
-                              key={i}
-                              onClick={() => {
-                                getActiveTab(i);
-                                navigate(item.path);
-                              }}
-                              sx={
-                                value === i
-                                  ? {
-                                    ...activeBorder,
-                                    borderColor: "#E6682D",
-                                  }
-                                  : {
-                                    ...activeBorder,
-                                    borderColor: "transparent",
-                                  }
-                              }
-                            >
-                              <StyleTabText
-                                label={item?.name}
+                    <StyleLogo
+                      onClick={() => {
+                        getActiveTab(0);
+                        navigate(`/?slug=${slug}`);
+                      }}
+                    >
+                      <DTLogo width="100%" height="100%" />
+                    </StyleLogo>
+                    <Box sx={{ ...flexCenter, gap: { xs: 1, md: 1, lg: 4 } }}>
+                      {routes?.length > 0 &&
+                        routes?.map((item, i) => {
+                          return item.name === "History" ? (
+                            tabs &&
+                            tabs["patient_dashboard_history_tab"]?.active && (
+                              <Box
+                                key={i}
+                                onClick={() => {
+                                  getActiveTab(i);
+                                  navigate(item.path);
+                                }}
                                 sx={
                                   value === i
                                     ? {
-                                      ...tabStyle?.active_tab,
+                                      ...activeBorder,
+                                      borderColor: "#E6682D",
                                     }
                                     : {
-                                      ...tabStyle.default_tab,
+                                      ...activeBorder,
+                                      borderColor: "transparent",
                                     }
                                 }
                               >
-                                {item?.name}
-                              </StyleTabText>
-                            </Box>
-                          )
-                        ) : item.name === "My Profile" ? (
-                          tabs &&
-                          tabs["patient_dashboard_view_profile"]?.active && (
+                                <StyleTabText
+                                  label={item?.name}
+                                  sx={
+                                    value === i
+                                      ? {
+                                        ...tabStyle?.active_tab,
+                                      }
+                                      : {
+                                        ...tabStyle.default_tab,
+                                      }
+                                  }
+                                >
+                                  {item?.name}
+                                </StyleTabText>
+                              </Box>
+                            )
+                          ) : item.name === "My Profile" ? (
+                            tabs &&
+                            tabs["patient_dashboard_view_profile"]?.active && (
+                              <Box
+                                key={i}
+                                onClick={() => {
+                                  getActiveTab(i);
+                                  navigate(item?.path);
+                                }}
+                                sx={
+                                  value === i
+                                    ? {
+                                      ...activeBorder,
+                                      borderColor: "#E6682D",
+                                    }
+                                    : {
+                                      ...activeBorder,
+                                      borderColor: "transparent",
+                                    }
+                                }
+                              >
+                                <StyleTabText
+                                  label={item?.name}
+                                  sx={
+                                    value === i
+                                      ? {
+                                        ...tabStyle?.active_tab,
+                                      }
+                                      : {
+                                        ...tabStyle.default_tab,
+                                      }
+                                  }
+                                >
+                                  {item?.name}
+                                </StyleTabText>
+                              </Box>
+                            )
+                          ) : (
                             <Box
                               key={i}
                               onClick={() => {
@@ -261,10 +297,7 @@ export const Header = ({ sessionObject }) => {
                               }}
                               sx={
                                 value === i
-                                  ? {
-                                    ...activeBorder,
-                                    borderColor: "#E6682D",
-                                  }
+                                  ? { ...activeBorder, borderColor: "#E6682D" }
                                   : {
                                     ...activeBorder,
                                     borderColor: "transparent",
@@ -286,63 +319,29 @@ export const Header = ({ sessionObject }) => {
                                 {item?.name}
                               </StyleTabText>
                             </Box>
-                          )
-                        ) : (
-                          <Box
-                            key={i}
-                            onClick={() => {
-                              getActiveTab(i);
-                              navigate(item?.path);
-                            }}
-                            sx={
-                              value === i
-                                ? { ...activeBorder, borderColor: "#E6682D" }
-                                : {
-                                  ...activeBorder,
-                                  borderColor: "transparent",
-                                }
-                            }
-                          >
-                            <StyleTabText
-                              label={item?.name}
-                              sx={
-                                value === i
-                                  ? {
-                                    ...tabStyle?.active_tab,
-                                  }
-                                  : {
-                                    ...tabStyle.default_tab,
-                                  }
-                              }
-                            >
-                              {item?.name}
-                            </StyleTabText>
-                          </Box>
-                        );
-                      })}
+                          );
+                        })}
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
+                </Grid>
 
+                {
+                  tabs && !tabs["patient_dashboard_recapture_percentage"].active && !tabs["patient_dashboard_suspect_percentage"].active ?
+                    <Grid className="suspect_recapture_header" item md={7} sm={6}>
+                      <Box
+                        sx={{
+                          ...flexCenter,
+                          // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                          width: "100%",
+                          height: "3.75rem",
+                          justifyContent: "flex-end",
+                          [theme.breakpoints.down("sm")]: {
+                            display: "none",
+                          },
+                          [theme.breakpoints.down("lg")]: {},
+                        }}
+                      >
 
-              <Grid className="suspect_recapture_header" item md={7} sm={6}>
-                <Box
-                  sx={{
-                    ...flexCenter,
-                    // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
-                    width: "100%",
-                    height: "3.75rem",
-                    justifyContent: "flex-end",
-                    [theme.breakpoints.down("sm")]: {
-                      display: "none",
-                    },
-                    [theme.breakpoints.down("lg")]: {},
-                  }}
-                >
-
-                  {
-                    tabs && tabs["patient_dashboard_recapture_percentage"].active && tabs["patient_dashboard_suspect_percentage"].active ?
-                      <>
                         <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
                           <StyleText
                             sx={{
@@ -401,11 +400,10 @@ export const Header = ({ sessionObject }) => {
                                   fontSize: "0.875rem",
                                 }}
                               >
-                                {doctorDetail?.recapture_percentage || "-"}
+                                {doctorDetail?.recapture_percentage}
                               </StyleText>
                             </Box>
                           )}
-
                         {tabs &&
                           tabs["patient_dashboard_suspect_percentage"] && (
                             <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
@@ -427,34 +425,28 @@ export const Header = ({ sessionObject }) => {
                                   fontSize: "0.875rem",
                                 }}
                               >
-                                {doctorDetail?.suspects_addressed_percentage || "-"}
+                                {doctorDetail?.suspects_addressed_percentage}
                               </StyleText>
                             </Box>
-
                           )}
-                      </> : null
-                  }
+                        <Box>
+                          <StyleText
+                            sx={{
+                              fontWeight: 600,
+                              [theme.breakpoints.down("lg")]: {
+                                width: "10rem",
+                              },
+                            }}
+                          >
+                            {doctorDetail?.doctor_name && doctorDetail?.doctor_name}
+                          </StyleText>
+                        </Box>
+                      </Box>
+                    </Grid> : null
+                }
 
-                  <Box>
-                    <StyleText
-                      sx={{
-                        fontWeight: 600,
-                        [theme.breakpoints.down("lg")]: {
-                          width: "10rem",
-                        },
-                      }}
-                    >
-                      {doctorDetail?.doctor_name && doctorDetail?.doctor_name || ""}
-                    </StyleText>
-                  </Box>
-                </Box>
               </Grid>
-
-
-
-
-            </Grid>
-
+            </>
           </Container>
         </AppBar>
 
