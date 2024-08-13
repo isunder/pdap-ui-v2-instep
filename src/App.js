@@ -7,9 +7,7 @@ const App = () => {
     <>
      <Helmet>
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        {/* <meta http-equiv="Content-Security-Policy" content={`connect-src 'self' ${process.env.REACT_APP_BASE_URL};`} /> */}
         <meta http-equiv="X-Frame-Options" content="DENY" />
-  <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none';" />
   <meta name="referrer" content="no-referrer" />
         <meta name="server" content="Custom Server" />
         <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
