@@ -26,7 +26,6 @@ const App = () => {
     base-uri 'self';
     form-action 'self';
     upgrade-insecure-requests;
-    block-all-mixed-content;
 `} />
 
       </Helmet>
