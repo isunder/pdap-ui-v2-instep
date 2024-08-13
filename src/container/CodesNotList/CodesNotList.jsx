@@ -462,7 +462,6 @@ export const CodesNotList = ({ sessionObject }) => {
 
   const handleDelete = () => {
 
-
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -470,7 +469,7 @@ export const CodesNotList = ({ sessionObject }) => {
     if (rejectReason === "Other") {
       val = ReasonTextVal(otherText);
       setError(val);
-      return;
+
     }
     if (!val.isValid) {
       setError(val);
