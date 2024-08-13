@@ -13,11 +13,10 @@ const App = () => {
         <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
         <meta http-equiv="Content-Security-Policy" content={`
     default-src 'self';
-    connect-src 'self' ${process.env.REACT_APP_BASE_URL};
+    connect-src *;
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src 'self' data: ${process.env.REACT_APP_IMG_URL};
-    font-src 'self' ${process.env.REACT_APP_FONT_URL};
     frame-src 'self';
     object-src 'none';
     media-src 'self';
