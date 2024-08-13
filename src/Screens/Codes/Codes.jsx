@@ -57,6 +57,8 @@ import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import SubmitModal from "../../components/SubmitModal/SubmitModal";
+import { addAuditLog1, getAuditLog1, addAuditLog2, getAuditLog2 } from "../../utils/indexedDb";
+import fetchAuditLogs from "../../redux/userSlice/auditLogSlice";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -389,31 +391,29 @@ export const Codes = () => {
     fetchEventData();
   }, []);
 
-  useEffect(() => {
-    handleAddEventData('launch-success', 'launch-success');
-  }, [])
 
   const processEventData = async () => {
     for (const item of eventData) {
-      const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
-      if (!existingItem) {
-        try {
+      try {
+        const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
+
+        if (!existingItem) {
           dispatch(fetchAuditLogs([{ event_type: item.event_type, metadata: item.metadata }]));
           await addAuditLog2(item.event_type, item.metadata);
           const updatedEventData = await getAuditLog2();
           setNewEventData(updatedEventData);
-        } catch (error) {
-          console.error('Error processing event data:', error);
         }
+      } catch (error) {
+        console.error('Error processing event data:', error);
       }
     }
   };
 
   useEffect(() => {
-    if (eventData.length > 0) {
-      processEventData();
-    }
-  }, [eventData, newEventData])
+    processEventData();
+    console.log(eventData, "eventData");
+  }, [eventData]);
+
 
 
   const handleSubmitRedirect = async (tabs) => {
@@ -587,7 +587,7 @@ export const Codes = () => {
       code: "Existing conditions",
       codeCount: summary?.existing_codes_count,
       problemList: "Recapturing required",
-      container: <ExistingConditions sessionObject={sessionObject} />,
+      container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
     {
       key: 2,

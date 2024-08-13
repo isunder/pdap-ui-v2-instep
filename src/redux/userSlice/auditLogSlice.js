@@ -10,7 +10,8 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const fetchAuditLogs = createAsyncThunk('auditLogs/fetchAuditLogs', async (params, { rejectWithValue }) => {
     try {
-        await axios.post(`${baseUrl}/api/v1/events/log/slug=${slug}`, params); // Removed response handling
+        const response = await axios.post(`${baseUrl}/api/v1/events/log?slug=${slug}`, params);
+        return response.data;  // Return the data if you want to store it
     } catch (error) {
         console.error('Error fetching audit logs:', error.response ? error.response.data : error.message);
         return rejectWithValue(error.response ? error.response.data : error.message);
@@ -22,6 +23,7 @@ const auditLogSlice = createSlice({
     initialState: {
         status: 'idle',
         error: null,
+        data: [], // Assuming you want to store the fetched data
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -29,8 +31,9 @@ const auditLogSlice = createSlice({
             .addCase(fetchAuditLogs.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(fetchAuditLogs.fulfilled, (state) => {
+            .addCase(fetchAuditLogs.fulfilled, (state, action) => {
                 state.status = 'succeeded';
+                state.data = action.payload; // Save the data from the response
             })
             .addCase(fetchAuditLogs.rejected, (state, action) => {
                 state.status = 'failed';

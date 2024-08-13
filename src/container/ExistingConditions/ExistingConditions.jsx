@@ -51,7 +51,7 @@ import {
 } from "../Common/StyledMuiComponents";
 import { addAuditLog1 } from "../../utils/indexedDb";
 
-export const ExistingConditions = ({ sessionObject }) => {
+export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const tabs = TabsSlag();
@@ -221,7 +221,7 @@ export const ExistingConditions = ({ sessionObject }) => {
       }
     }
 
-    addAuditLog1("Existing-Codes-Remove-From-Summary", item?.code, item?.info?.value);
+    handleAddEventData("Existing-Codes-Add-In-Summary", item?.code, item?.info?.value);
   };
 
   const handleClose = () => {
