@@ -46,7 +46,7 @@ export const SelectField = (props) => {
         <Box
             sx={{
                 minWidth: "auto",
-                gap: "0.25rem",
+                gap: "8px",
                 display: 'flex',
                 flexDirection: 'column',
             }}
@@ -69,6 +69,7 @@ export const SelectField = (props) => {
                     labelId="option-label"
                     id="select-option"
                     sx={{
+                        gap: "10px",
                         "& div": {
                             width: "100%",
                         },

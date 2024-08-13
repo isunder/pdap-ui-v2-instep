@@ -9,7 +9,7 @@ const StyleDialog = styled(Dialog)(({ theme, width, minHeight }) => ({
     "& .MuiDialog-container": {
         "& .MuiPaper-root": {
             width: width ? width : "30rem",
-            minHeight: minHeight ? minHeight : '22.875',
+            minHeight: minHeight ? minHeight : '22.875px',
             position: "relative",
             borderRadius: "1rem",
             [theme.breakpoints.down("md")]: {
@@ -28,7 +28,7 @@ export const DialogModal = (props) => {
     const theme = useTheme()
 
     const handleClose = () => {
-        if(!removeCloseButton) {
+        if (!removeCloseButton) {
             setOpen(!open)
         }
     }
@@ -37,13 +37,13 @@ export const DialogModal = (props) => {
         <StyleDialog width={width} minHeight={minHeight} onClose={handleClose} open={open} onClick={handleClick}>
             <Box>
                 <DialogActions>
-                    <Grid container sx={{ justifyContent: !removeCloseButton ? "space-between" : "center", m: '0.9rem 1rem 0.5rem 0.8rem', textAlign: removeCloseButton? 'center':'inherit' }} >
+                    <Grid container sx={{ justifyContent: !removeCloseButton ? "space-between" : "center", m: '0.9rem 1rem 0.5rem 0.8rem', textAlign: removeCloseButton ? 'center' : 'inherit' }} >
                         <Grid item xs={10}>
                             <Box>
                                 {header}
                             </Box>
                         </Grid>
-                        {!removeCloseButton &&<Grid item xs={1}>
+                        {!removeCloseButton && <Grid item xs={1}>
                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <CloseButton onClick={handleClose} />
                             </Box>

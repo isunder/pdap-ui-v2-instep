@@ -36,6 +36,23 @@ export const StyleCode = styled(Box)(({ theme }) => ({
   },
 }));
 
+
+export const StyleCode2 = styled(Box)(({ theme }) => ({
+  color: "#131E5E",
+  fontWeight: 600,
+
+  padding: "0.225rem 0.875rem",
+  width: "auto",
+  display: "inline-block",
+  [theme.breakpoints.up("lg")]: {
+    fontSize: "85%",
+  },
+  [theme.breakpoints.down("lg")]: {
+    fontSize: "80%",
+  },
+}));
+
+
 export const StyledText = styled(Typography)(({ theme }) => ({
   color: theme.palette.black.main,
   fontSize: "0.875rem",
@@ -132,6 +149,6 @@ export const StyledButton1 = styled(PrimaryButton)(({ theme }) => ({
   textTransform: "inherit",
   border: "1px solid #C5CCF8",
   borderRadius: "0.3125rem",
-  width: "7.125rem",
-  height: "2rem",
+  width: "98px !important",
+  height: "32px",
 }));

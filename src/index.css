@@ -4,13 +4,90 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Proxima-nova", sans-serif;
   font-optical-sizing: auto;
 }
 
 @font-face {
-  font-family: 'proxima-nova', 'calibri', '-apple-system', 'BlinkMacSystemFont';
-  src: url('utils/proxima-nova-font.otf') format('opentype');
+  font-family: 'Proxima-nova', 'sans-serif', '-apple-system', 'BlinkMacSystemFont';
+  src: url('utils/font/ProximaNova-Regular.woff') format('opentype');
 }
 
+
+@font-face {
+  font-family: 'Proxima Nova Lt';
+  src: url('utils/font/ProximaNova-Light.woff2') format('woff2'),
+      url('utils/font/ProximaNova-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Bl';
+  src: url('utils/font/ProximaNova-Black.woff2') format('woff2'),
+      url('utils/font/ProximaNova-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Bl';
+  src: url('utils/font/ProximaNova-Black.woff2') format('woff2'),
+      url('utils/font/ProximaNova-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Bl';
+  src: url('utils/font/ProximaNova-BlackIt.woff2') format('woff2'),
+      url('utils/font/ProximaNova-BlackIt.woff') format('woff');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Rg';
+  src: url('utils/font/ProximaNova-BoldIt.woff2') format('woff2'),
+      url('utils/font/ProximaNova-BoldIt.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('utils/font/ProximaNova-ExtraBold.woff2') format('woff2'),
+      url('utils/font/ProximaNova-ExtraBold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Rg';
+  src: url('utils/font/ProximaNova-Bold.woff2') format('woff2'),
+      url('utils/font/ProximaNova-Bold.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Rg';
+  src: url('utils/font/ProximaNova-Regular.woff2') format('woff2'),
+      url('utils/font/ProximaNova-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+:root{
+  --font-medium:'Proxima-nova', 'sans-serif', '-apple-system', 'BlinkMacSystemFont';
+}
 /*  */

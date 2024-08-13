@@ -11,11 +11,19 @@
   background-color: #242424 !important;
 }
 
+.acc-content-header-item.css-18ytfro{
+  padding: 0 !important;
+}
+
+.acc-content-header-item .ct-code{
+  padding-left: 10px;
+}
+
 .MuiTypography-root.acc-content-header-item, .acc-content-header-item {
   flex-grow: 1;
   margin: auto 0;
   text-align: left;
-  padding-left: 12px;
+  padding-left: 10px;
   border-right: 2px solid rgba(0, 0, 0, 0.12);
   font-weight: 800;
 }
@@ -41,6 +49,7 @@
   overflow-wrap: break-word;
   min-width: 70px;
     text-align: center;
+    font-weight: 700 !important;
 }
 .MuiGrid-root.acc-content-header-item {
   border: none;
@@ -52,8 +61,8 @@
   margin-bottom: 6px;
 }
 .acc-content-header-item.ct-actions .acc-content-act-btn {
-  width: 45%;
-  font-size: 70%;
+  width: 92px;
+  font-size: 14px;
 }
 .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
   width: auto;
@@ -69,7 +78,6 @@
   height: 14px;
 }
 .MuiTypography-root.acc-content-collapse-see-less {
-  margin-top: 16px;
   width: 100%;
   display: block;
 }
@@ -78,12 +86,33 @@
   display: block;
   padding-left: 8px;
   font-weight: bold;
+  border-right: 2px solid rgba(0, 0, 0, 0.12);
+  font-weight: 800;
+}
+
+.MuiTypography-root.acc-content-cust-header1:nth-child(2),
+.MuiTypography-root.acc-content-cust-header1:nth-child(3) {
+  padding-left: 8px;
+}
+
+
+.acc-content-suspects-action{
+  width: 92px !important;
 }
 
 @media screen and (max-width: 968px) {
   .MuiDialog-paper {
     height: auto;
   }
+
+  .MuiGrid-grid-sm-2.acc-content-cust-header1{
+    border: none !important;
+  }
+
+  .cust_RAF_suspect{
+    border: none !important;
+  }
+
   .PopupDelete .MuiDialog-paper {
     height: auto !important;
   }
@@ -92,6 +121,7 @@
   }
   .acc-content-suspects-action {
     order: 2;
+    margin-bottom: 20px !important;
   }
 }
 
@@ -138,6 +168,20 @@
   }
 }
 
+
+@media screen and (max-width:400px){
+  .acc-content-header-item.ct-desc {
+    width: 50%;
+   
+  }
+
+  .acc-content-header-item.ct-raf {
+    width: 10%;
+    padding: 5px !important;
+
+  }
+}
+
 @media screen and (min-width: 969px) {
   .acc-content-header-item.ct-code {
     width: 17%;
@@ -151,9 +195,7 @@
   .acc-content-header-item.ct-actions {
     width: 32%;
   }
-  .MuiGrid-root.acc-content-header-item.ct-raf {
-    padding-top: 12px;
-  }
+  
 }
 
 @media screen and (min-width: 1280px) {

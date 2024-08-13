@@ -37,6 +37,7 @@ const StyledCodeTypography = styled(Typography)(({ theme }) => ({
 const StylePop = styled("Typography")(() => ({
   color: "#17236D",
   fontWeight: "600",
+
 }));
 
 const SubmitModal = ({
@@ -64,21 +65,25 @@ const SubmitModal = ({
   const [matchedValuesRecapture, setMatchedValuesRecapture] = useState([]);
   const [matchedValuesDuplicate, setMatchedValuesDuplicate] = useState([]);
 
+
+  const [combinedData, setCombinedData] = useState([]);
+  const [combinedData2, setCombinedData2] = useState([]);
+  const [inProblemList, setInProblemList] = useState([]);
+  const [notInProblemList, setNotInProblemList] = useState([]);
+
   useEffect(() => {
-    if (isModalOpen) {
-      if (duplicateCode.length > 0) {
-        const updatedValues = [];
-        duplicateCode.forEach((item) => {
-          const code = item.code;
-          if (duplicateCodeNew[code]) {
-            updatedValues.push(duplicateCodeNew[code]);
-          }
-        });
-        setMatchedValuesDuplicate(updatedValues);
-      }
+    if (duplicateCode && duplicateCodeNew) {
+      const updatedValues = [];
+      duplicateCode.forEach((item) => {
+        const code = item.code;
+        if (duplicateCodeNew[code]) {
+          updatedValues.push(duplicateCodeNew[code]);
+        }
+      });
+      setMatchedValuesDuplicate(updatedValues);
     }
 
-    if (recaptureCode.length > 0) {
+    if (recaptureCode && recaptureCodeNew) {
       const updatedValues = [];
       recaptureCode.forEach((item) => {
         const code = item.code;
@@ -89,7 +94,7 @@ const SubmitModal = ({
       setMatchedValuesRecapture(updatedValues);
     }
 
-    if (suspectCode.length > 0) {
+    if (suspectCode && suspectCodeNew) {
       const updatedValues = [];
       suspectCode.forEach((item) => {
         const code = item.code;
@@ -100,7 +105,7 @@ const SubmitModal = ({
       setMatchedValuesSuspect(updatedValues);
     }
 
-    if (existingCode.length > 0 && existingConditionNew) {
+    if (existingCode && existingConditionNew) {
       const updatedValues = [];
       existingCode.forEach((item) => {
         const code = item.code;
@@ -110,8 +115,72 @@ const SubmitModal = ({
       });
       setMatchedValuesExisting(updatedValues);
     }
-  }, [isModalOpen]);
-  console.log('switchModal:;::-', switchModal);
+  }, [isModalOpen, suspectCode, existingCode, recaptureCode, duplicateCode, duplicateCodeNew]);
+
+
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    // Handler to call on window resize
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  useEffect(() => {
+    const combined = [
+      ...existingCode,
+      ...suspectCode,
+      ...duplicateCode,
+      ...recaptureCode,
+    ].filter((item) => item.value !== "");
+
+    const combined2 = [
+      ...existingCode,
+      ...suspectCode,
+      ...duplicateCode,
+      ...recaptureCode,
+    ].filter((item) => item.value == "");
+
+    setCombinedData(combined);
+    setCombinedData2(combined2)
+  }, [existingCode, suspectCode, duplicateCode, recaptureCode]);
+
+
+  useEffect(() => {
+    const combined = [
+      ...matchedValuesExisting.filter(items => items.code_in_problem_list === true),
+      ...suspectCode.filter(items => items.value !== ''),
+      ...matchedValuesDuplicate.filter(items => items.code_in_problem_list === true),
+      ...matchedValuesRecapture.filter(items => items.code_in_problem_list === true)
+    ];
+
+    const combined2 = [
+      ...matchedValuesExisting.filter(items => items.code_in_problem_list === false),
+      ...matchedValuesDuplicate.filter(items => items.code_in_problem_list === false),
+      ...matchedValuesRecapture.filter(items => items.code_in_problem_list === false)
+    ];
+
+    setInProblemList(combined);
+    setNotInProblemList(combined2);
+  }, [matchedValuesExisting, suspectCode, matchedValuesDuplicate, matchedValuesRecapture]);
+
   return (
     <Dialog
       open={openSubmitModal}
@@ -132,6 +201,7 @@ const SubmitModal = ({
               spacing={2}
               display={"flex"}
               flexDirection={"column"}
+              gap={'10px'}
             >
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Box
@@ -148,10 +218,10 @@ const SubmitModal = ({
                   </Button>
                 </Box>
 
-                <Grid>
-                  <Card>
+                <Grid >
+                  <Card >
                     <CardContent sx={{ paddingInline: "0px" }}>
-                      <Box>
+                      <Box className="modalInner" sx={{ height: windowSize.height / 2, overflow: "auto" }}>
                         <Grid
                           container
                           sx={{
@@ -160,129 +230,47 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
+                            gap: "10px 0px !important"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Codes that would go in EHR
+                              Codes/Conditions that would go in EHR
                             </StyledCodeTypography>
                           </Grid>
-                          <>
-                            {existingCode?.length > 0 &&
-                              existingCode
-                                ?.filter((items) => items.value !== "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                            {suspectCode?.length > 0 &&
-                              suspectCode
-                                ?.filter((items) => items.value !== "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
 
-                            {duplicateCode?.length > 0 &&
-                              duplicateCode
-                                ?.filter((items) => items.value !== "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
+                          {combinedData.length == 0 ? (
+                            <>
+                              <div className="ItemsDivNew">
+                                <p>No applicable codes/conditions.</p>
+                              </div>
+                            </>
+                          ) :
 
-                            {recaptureCode?.length > 0 &&
-                              recaptureCode
-                                ?.filter((items) => items.value !== "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                          </>
+                            combinedData.map((item, index) => (
+                              <Stack
+                                direction="row"
+                                spacing={1}
+                                sx={{
+                                  px: 0,
+                                  ml: 0.08,
+                                  mt: 0.5,
+                                  cursor: "pointer",
+                                }}
+                                key={index}
+                              >
+                                <Tooltip title={item?.code + " : " + item?.value}>
+                                  <Typography>
+                                    <StylePop className="ChipSpan">
+                                      {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
+                                    </StylePop>
+                                  </Typography>
+                                </Tooltip>
+                              </Stack>
+                            ))
+
+                          }
+
                         </Grid>
 
                         <Grid
@@ -293,6 +281,7 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
+                            gap: "10px"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -300,122 +289,39 @@ const SubmitModal = ({
                               Actions to be taken in EHR{" "}
                             </StyledCodeTypography>
                           </Grid>
-                          <>
-                            {existingCode?.length > 0 &&
-                              existingCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                            {suspectCode?.length > 0 &&
-                              suspectCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
 
-                            {duplicateCode?.length > 0 &&
-                              duplicateCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
+                          {
+                            combinedData2.length == 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
 
-                            {recaptureCode?.length > 0 &&
-                              recaptureCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                          </>
+                              combinedData2.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                  key={index}
+                                >
+                                  <Tooltip title={item?.code + " : " + item?.value}>
+                                    <Typography>
+                                      <StylePop className="ChipSpan">
+                                        {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
+                                      </StylePop>
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))
+
+                          }
                         </Grid>
 
                         <Grid
@@ -426,6 +332,7 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
+                            gap: "10px"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -433,143 +340,156 @@ const SubmitModal = ({
                               Rejected codes/conditions from Doctustech{" "}
                             </StyledCodeTypography>
                           </Grid>
-                          <>
-                            {suspectCodeReject?.length > 0 &&
-                              suspectCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
 
-                            {existingCodeReject?.length > 0 &&
-                              existingCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
+                          {
+                            !(
+                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
 
-                            {recaptureCodeReject?.length > 0 &&
-                              recaptureCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
+                              <>
+                                {suspectCodeReject?.length > 0 &&
+                                  suspectCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" "}
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
 
-                            {duplicateCodeReject?.length > 0 &&
-                              duplicateCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                          </>
+                                {existingCodeReject?.length > 0 &&
+                                  existingCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" "}
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+
+                                {recaptureCodeReject?.length > 0 &&
+                                  recaptureCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" "}
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+
+                                {duplicateCodeReject?.length > 0 &&
+                                  duplicateCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" "}
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+                              </>
+                          }
+
                         </Grid>
                       </Box>
                     </CardContent>
@@ -620,6 +540,7 @@ const SubmitModal = ({
               spacing={2}
               display={"flex"}
               flexDirection={"column"}
+              gap={"10px"}
             >
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Box
@@ -636,10 +557,10 @@ const SubmitModal = ({
                   </Button>
                 </Box>
 
-                <Grid>
+                <Grid >
                   <Card>
                     <CardContent sx={{ paddingInline: "0px" }}>
-                      <Box>
+                      <Box className="modalInner" sx={{ height: windowSize.height / 2, overflow: "auto" }} >
                         <Grid
                           container
                           sx={{
@@ -648,138 +569,52 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
+                            gap: "10px"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Codes to be actioned in Care Everywhere
+                              Codes/Conditions to be actioned in Care everywhere.
                             </StyledCodeTypography>
                           </Grid>
-                          <>
-                            {matchedValuesExisting?.length > 0 &&
-                              matchedValuesExisting
-                                ?.filter(
-                                  (items) =>
-                                    items.code_in_problem_list === true
-                                )
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                            {suspectCode?.length > 0 &&
-                              suspectCode
-                                ?.filter((items) => items.value !== "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
 
-                            {matchedValuesDuplicate?.length > 0 &&
-                              matchedValuesDuplicate
-                                ?.filter(
-                                  (items) =>
-                                    items.code_in_problem_list === true
-                                )
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
+                          {
+                            (
+                              inProblemList.length) == 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
 
-                            {matchedValuesRecapture?.length > 0 &&
-                              matchedValuesRecapture
-                                ?.filter(
-                                  (items) =>
-                                    items.code_in_problem_list === true
-                                )
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
+                              <>
+                                {inProblemList.length > 0 &&
+                                  inProblemList.map((item, index) => (
+                                    <Stack
+                                      key={index}
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: 'pointer',
+                                      }}
                                     >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                          </>
+                                      <Tooltip title={`${item?.code} : ${item?.value}`}>
+                                        <Typography>
+                                          <StylePop className="ChipSpan">
+                                            {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
+                                            {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
+                                          </StylePop>{' '}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+                              </>
+                          }
+
                         </Grid>
 
                         <Grid
@@ -790,233 +625,92 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
+                            gap: "10px 0px !important"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Codes to be actioned in EHR
+                              Actions to be taken in EHR
                             </StyledCodeTypography>
                           </Grid>
 
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <Typography>Potential Recaptures:</Typography>
                           </Grid>
-                          <>
-                            {matchedValuesExisting?.length > 0 &&
-                              matchedValuesExisting
-                                ?.filter(
-                                  (items) =>
-                                    items.code_in_problem_list === false
-                                )
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
 
-                            {matchedValuesDuplicate?.length > 0 &&
-                              matchedValuesDuplicate
-                                ?.filter(
-                                  (items) =>
-                                    items.code_in_problem_list === false
-                                )
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
+                          {
+                            notInProblemList.length == 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
+                              <>
+                                {
+                                  notInProblemList.map((item, index) => (
+                                    <Stack
+                                      key={index}
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: 'pointer',
+                                      }}
                                     >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
+                                      <Tooltip title={`${item?.code} : ${item?.value}`}>
+                                        <Typography>
+                                          <StylePop className="ChipSpan">
+                                            {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
+                                            {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
+                                          </StylePop>{' '}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+                              </>
+                          }
 
-                            {matchedValuesRecapture?.length > 0 &&
-                              matchedValuesRecapture
-                                ?.filter(
-                                  (items) =>
-                                    items.code_in_problem_list === false
-                                )
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                          </>
+
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <Typography>Potential Actions:</Typography>
                           </Grid>
-                          <>
-                            {existingCode?.length > 0 &&
-                              existingCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                            {suspectCode?.length > 0 &&
-                              suspectCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
 
-                            {duplicateCode?.length > 0 &&
-                              duplicateCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
+                          {
+                            combinedData2.length == 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
 
-                            {recaptureCode?.length > 0 &&
-                              recaptureCode
-                                ?.filter((items) => items.value == "")
-                                .map((item, index) => (
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{
-                                      px: 0,
-                                      ml: 0.08,
-                                      mt: 0.5,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <Tooltip
-                                      title={item?.code + " : " + item?.value}
-                                    >
-                                      <Typography>
-                                        <StylePop className="ChipSpan">
-                                          {item?.code?.slice(0, 20)}{" "}
-                                          {item?.code.length > 20
-                                            ? "..."
-                                            : ""}
-                                        </StylePop>{" "}
-                                      </Typography>
-                                    </Tooltip>
-                                  </Stack>
-                                ))}
-                          </>
+                              combinedData2.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                  key={index}
+                                >
+                                  <Tooltip title={item?.code + " : " + item?.value}>
+                                    <Typography>
+                                      <StylePop className="ChipSpan">
+                                        {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
+                                      </StylePop>
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))
+
+                          }
+
                         </Grid>
 
                         <Grid
@@ -1027,6 +721,7 @@ const SubmitModal = ({
                             pb: 2,
                             mb: 2,
                             borderRadius: "5px",
+                            gap: "10px"
                           }}
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -1034,143 +729,185 @@ const SubmitModal = ({
                               Rejected codes/conditions from Doctustech{" "}
                             </StyledCodeTypography>
                           </Grid>
-                          <>
-                            {suspectCodeReject?.length > 0 &&
-                              suspectCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
 
-                            {existingCodeReject?.length > 0 &&
-                              existingCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
+                          {
+                            !(
+                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
 
-                            {recaptureCodeReject?.length > 0 &&
-                              recaptureCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
+                              <>
+                                {suspectCodeReject?.length > 0 &&
+                                  suspectCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" "}
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
 
-                            {duplicateCodeReject?.length > 0 &&
-                              duplicateCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography>
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                          </>
+                                {existingCodeReject?.length > 0 &&
+                                  existingCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+
+                                {recaptureCodeReject?.length > 0 &&
+                                  recaptureCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+
+                                {duplicateCodeReject?.length > 0 &&
+                                  duplicateCodeReject?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={
+                                          Object.keys(item) +
+                                          " : " +
+                                          item[Object.keys(item)].value
+                                        }
+                                      >
+                                        <Typography>
+                                          <StylePop className="ChipSpan rejected">
+                                            {Object.keys(item)
+                                              .toString()
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
+                                            {Object.keys(item).toString().length >
+                                              20
+                                              ? "..."
+                                              : ""}
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+                              </>
+                          }
+
+
+
                         </Grid>
                       </Box>
                     </CardContent>
@@ -1188,7 +925,7 @@ const SubmitModal = ({
             suspectCodeReject?.length > 0 ||
             duplicateCodeReject?.length > 0 ? (
             <button
-              style={{ cursor: "pointer", width: "98%", margin: "0 auto" }}
+              style={{ cursor: "pointer", width: "98%", margin: "0 auto", }}
               className="SubmitBtn"
               onClick={() => handleSubmit()}
             >

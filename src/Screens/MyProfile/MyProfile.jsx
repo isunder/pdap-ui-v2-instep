@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 
-
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
 }));

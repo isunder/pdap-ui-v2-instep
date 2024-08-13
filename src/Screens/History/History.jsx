@@ -16,7 +16,6 @@ import Collapse from "@mui/material/Collapse";
 import CircularProgress from '@mui/material/CircularProgress';
 import moment from 'moment';
 
-
 import { PrimaryButton } from "../../components/Button";
 import {
   HistoryIcon,
@@ -32,7 +31,6 @@ import { MuiAccordions } from "../../components";
 import { patientHistory } from "../../redux/userSlice/patientInfoSlice";
 import { patientSummaryBarSlice } from "../../redux/userSlice/patientSummaryBarSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
-
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -148,7 +146,6 @@ export const History = () => {
     if (slug) {
       dispatch(patientHistory());
       dispatch(patientSummaryBarSlice());
-    
     }
   }, []);
 

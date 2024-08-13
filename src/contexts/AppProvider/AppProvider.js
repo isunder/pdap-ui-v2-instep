@@ -5,6 +5,7 @@ export const AppContext = React.createContext();
 export const AppProvider = ({ children }) => {
   const [state, setState] = useState({
     top: false,
+    down: false,
   });
   const AppProviderValue = useMemo(
     () => ({ state, setState }),

@@ -1,21 +1,37 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-
+import { getApiHeaders } from '../../utils/helper';
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
+const importedHeader = getApiHeaders();
+
 // function for patient info
 export const patientInfo = createAsyncThunk("patientInfo", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-info/?slug=${slug}`);
+            const data = await axios.get(`${baseUrl}/api/v1/patient-info/?slug=${slug}`,
+                
+            );
             return data.data;
         }
     } catch (error) {
         console.log("error in patientInfo", error)
+    }
+});
+
+// function for patient Duplicate Codes
+export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
+    try {
+        if (slug) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}`);
+            return data.data;
+        }
+    } catch (error) {
+        console.log("error in patientDeletedCode", error)
     }
 });
 
@@ -47,7 +63,7 @@ export const patientAddressCode = createAsyncThunk("patientAddressCode", async (
 export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/?slug=${slug}`);
+            const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/?slug=${slug}`,);
             return data.data;
         }
     } catch (error) {
@@ -55,23 +71,12 @@ export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", asy
     }
 });
 
-// function for patient Duplicate Codes
-export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
-    try {
-        if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}`);
-            return data.data;
-        }
-    } catch (error) {
-        console.log("error in patientDeletedCode", error)
-    }
-});
 
 // function for patient suspect Codes
 export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/?slug=${slug}`);
+            const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/?slug=${slug}` );
             return data.data;
         }
     } catch (error) {
@@ -146,7 +151,7 @@ const slice = createSlice({
         });
         builder.addCase(patientInfo.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -160,7 +165,7 @@ const slice = createSlice({
         });
         builder.addCase(patientExistingConditions.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -174,7 +179,7 @@ const slice = createSlice({
         });
         builder.addCase(patientAddressCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -188,7 +193,7 @@ const slice = createSlice({
         });
         builder.addCase(patientDuplicateCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -202,7 +207,7 @@ const slice = createSlice({
             });
             builder.addCase(patientDeletedCode.rejected, (state, action) => {
                 state.isLoading = false;
-                console.log('Error', action.payload)
+                
                 state.isError = true;
             });
 
@@ -216,7 +221,7 @@ const slice = createSlice({
         });
         builder.addCase(patientSuspectedCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -230,7 +235,7 @@ const slice = createSlice({
         });
         builder.addCase(patientSummary.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -244,7 +249,7 @@ const slice = createSlice({
         });
         builder.addCase(patientRecaptureCode.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -258,7 +263,7 @@ const slice = createSlice({
         });
         builder.addCase(patientTabFlag.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
 
@@ -272,7 +277,7 @@ const slice = createSlice({
         });
         builder.addCase(patientHistory.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
+            
             state.isError = true;
         });
     }

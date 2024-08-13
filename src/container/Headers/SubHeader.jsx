@@ -23,10 +23,11 @@ import { patientInfo, patientSummary } from '../../redux/userSlice/patientInfoSl
 
 const StyledText = styled("span")(() => ({
   color: "#000000",
-  fontSize: "0.8125rem",
+  fontSize: "14px",
   lineHeight: "1.3rem",
   fontWeight: 500,
   paddingLeft: "0px",
+  fontWeight: "600"
 }));
 const StyledSubText = styled(Typography)(({ theme }) => ({
   color: "#00000099",
@@ -93,16 +94,23 @@ export const SubHeader = () => {
   return (
     <Box sx={{ flexGrow: 1 }} >
       <Box
+
+        className="subTop__header"
         sx={{
           backgroundColor: "white",
-          height: "4.5rem",
+          height: "50px",
           ...flexAlignCenter,
 
           [theme.breakpoints.down("md")]: {
-            zIndex: state["top"] && 9999,
-            position: state["top"] && "relative",
-            background: state["top"] && "#fff",
+            zIndex: state["top"] ? 1234 : (state["down"] ? 1234 : 'auto'),
+            position: state["top"] ? "relative" : (state["down"] ? "relative" : 'static'),
+            background: state["top"] ? "#fff" : (state["down"] ? "#fff" : '#fff'),
           },
+
+          [theme.breakpoints.down('sm')]: {
+            padding: "10px 0"
+          },
+
         }}
       >
         <Container
@@ -112,6 +120,15 @@ export const SubHeader = () => {
             [theme.breakpoints.down("md")]: {
               padding: "10px !important",
             },
+
+            [theme.breakpoints.down("md")]: {
+              display: "none",
+            },
+
+            [theme.breakpoints.down("sm")]: {
+              padding: "5px !important",
+            },
+
           }}
         >
           <Box sx={{ ...flexAlignCenter }}>
@@ -134,9 +151,9 @@ export const SubHeader = () => {
                       sx={
                         keys !== "MRN"
                           ? {
-                            // [theme.breakpoints.down("md")]: {
-                            //   display: "none",
-                            // },
+                            [theme.breakpoints.down("md")]: {
+                              display: "none",
+                            },
                             [theme.breakpoints.down('md')]: {
                               fontSize: '0.675rem',
                             }
@@ -149,7 +166,15 @@ export const SubHeader = () => {
                           }
                       }
                     >
-                      <Typography sx={{ p: 0.2, fontWeight:'bold' }}>  {keys}:</Typography>
+                      <Typography sx={(keys === "MRN") ? {
+                        p: 0.2, fontWeight: 'bold',
+                      } : {
+                        [theme.breakpoints.down("md")]: {
+                          display: "none",
+                        },
+                      }}>
+                        {keys}:
+                      </Typography>
                     </StyledSubText>
                     <StyledText
                       sx={
@@ -161,20 +186,31 @@ export const SubHeader = () => {
                               gap: 0.6,
                             },
                             [theme.breakpoints.down('md')]: {
-                              fontSize: '0.675rem'
+                              fontSize: '13px'
                             }
                           }
                           : (
                             keys === 'MRN' ? {
                               [theme.breakpoints.down("md")]: {
-                                fontSize: '0.675rem',
+                                fontSize: '13px',
                                 textOverflow: "ellipsis",
                                 overflow: "hidden",
                                 maxWidth: 'rem'
                               },
+
+                              [theme.breakpoints.down("sm")]: {
+                                display: "-webkit-box",
+                                overflow: "hidden",
+                                WebkitLineClamp: 3, // Capitalized as per CSS property standards
+                                WebkitBoxOrient: "vertical",
+                              },
+
                             } : keys === "DoB" && {
                               [theme.breakpoints.down("md")]: {
-                                fontSize: '0.675rem',
+                                fontSize: '13px',
+                              },
+                              [theme.breakpoints.down("md")]: {
+                                display: "none",
                               },
                             }
                           )
@@ -219,293 +255,131 @@ export const SubHeader = () => {
                 </>
               ))}
             </Box>
-            <Box
-              sx={{
-                ...flexAlignCenter,
-                [theme.breakpoints.up("md")]: {
-                  display: "none",
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  width: "0.0625rem",
-                  height: "2.75rem",
-                  background: "#D9D9D9",
-                  ml: 2,
-                  mr: 1,
+          </Box>
+        </Container>
 
-                }}
-              />
-              <Box sx={{
-                ...flexCenter, gap: "1.05rem", [theme.breakpoints.up("md")]: {
-                  display: "none",
-                },
-              }}>
-                <React.Fragment>
-                  <StyledText
-                    sx={{ ...flexCenter, gap: 1 }}
-                    onClick={toggleDrawer("top", !state["top"])}
-                  >
-                    Pending actions
-                    <Box
-                      sx={{
-                        borderRadius: " 1.875rem",
-                        background: theme.palette.error.A200,
-                        color: theme.palette.error.main,
-                        width: "2.375rem",
-                        height: "1.5625rem",
-                        ...flexCenter,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          textAlign: "center",
-                          lineHeight: "160%",
-                          fontWeight: 600,
-                        }}
-                      >
 
-                        {(summary?.recapture_codes_count + summary?.suspect_conditions_count + summary?.existing_codes_count) || 0}
-                      </Typography>
-                    </Box>
-                  </StyledText>
-                  {state["top"] ? (
-                    <ArrowDropUpIcon
-                      onClick={toggleDrawer("top", false)}
-                      width={" 0.75rem"}
-                      height={"0.5rem"}
-                      fill={"black"}
-                    />
-                  ) : (
-                    <ArrowDropDownIcon
-                      onClick={toggleDrawer("top", true)}
-                      width={" 0.75rem"}
-                      height={"0.5rem"}
-                      fill={"black"}
-                    />
-                  )}
+        <Container
+          maxWidth="xl"
+          sx={{
+            padding: "0px 50px !important",
+            [theme.breakpoints.down("md")]: {
+              padding: "10px !important",
+            },
 
-                  <Drawer
-                    anchor={"top"}
-                    open={state["top"]}
-                    onClose={toggleDrawer("top", false)}
-                    className="MuiDrawerTop"
+            [theme.breakpoints.up("md")]: {
+              display: "none",
+            },
+
+            [theme.breakpoints.down("sm")]: {
+              padding: "5px !important",
+            },
+
+          }}
+        >
+
+          {Object.entries(obj)?.map(([keys, value], index) => (
+            <>
+              <Box sx={{ ...flexAlignCenter, gap: { md: 0.6 }, marginBottom: "2px" }}>
+
+                <Typography sx={keys !== "Patient" ? { display: "none" } : { fontSize: "13px", color: " #00000099", fontWeight: "600" }} >
+                  {keys}:
+                </Typography>
+                <Typography sx={keys !== "Patient" ? { display: "none", color: " #000000" } : { fontSize: "13px", color: " #000000", marginLeft: "10px", fontWeight: "600" }} >
+                  {value}
+                </Typography>
+                {keys === "Patient" && (
+                  <Box
                     sx={{
-                      [theme.breakpoints.up("md")]: {
+                      borderRadius: "100%",
+                      height: "1.7rem",
+                      width: "1.7rem",
+                      ml: 2,
+                      ...flexCenter,
+                      [theme.breakpoints.down("md")]: {
                         display: "none",
-                      }
+                      },
                     }}
                   >
-                    <Box
-                      sx={{
-                        px: 2,
-                        py: 2,
-                      }}
-                    >
-                      <Grid container>
-                        <Grid item lg={2} md={2} sm={1.5} xs={3}>
-                          <PrimaryButton
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: "#F200001A",
-                              color: theme.palette.error.main,
-                              ":hover": {
-                                backgroundColor: "#F200001A",
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {summary?.existing_codes_count || 0}
-                          </PrimaryButton>
-                        </Grid>
-                        <Grid
-                          item
-                          lg={10}
-                          md={10}
-                          sm={10.5}
-                          xs={9}
-                          sx={{ pl: 1 }}
-                        >
-                          <Typography
-                            sx={{
-                              fontSize: "1rem",
-                              color: "rgba(0, 0, 0, 0.60);",
-                              fontWeight: "600",
-                              lineHeight: "1.375rem",
-                              textTransform: "initial",
-                            }}
-                          >
-                            You have { }
-                            <Typography
-                              sx={{
-                                color: "#000;",
-                              }}
-                            >
-                              {summary?.existing_codes_count || 0}
-                            </Typography>
-                            { } urgent existing conditions requiring recapturing.
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid container sx={{ my: 2 }}>
-                        <Grid item lg={2} md={2} sm={1.5} xs={3}>
-                          <PrimaryButton
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: "#F200001A",
-                              color: theme.palette.error.main,
-                              ":hover": {
-                                backgroundColor: "#F200001A",
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {summary?.suspect_conditions_count || 0}
-                          </PrimaryButton>
-                        </Grid>
-                        <Grid
-                          item
-                          lg={10}
-                          md={10}
-                          sm={10.5}
-                          xs={9}
-                          sx={{ pl: 1 }}
-                        >
-                          <Typography
-                            sx={{
-                              fontSize: "1rem",
-                              color: "rgba(0, 0, 0, 0.60);",
-                              fontWeight: "600",
-                              lineHeight: "1.375rem",
-                              textTransform: "initial",
-                            }}
-                          >
-                            You have { }
-                            <Typography
-                              sx={{
-                                color: "#000;",
-                              }}
-                            >
-                              {summary?.suspect_conditions_count || 0}
-                            </Typography>
-                            { }  urgent new suspects for review.
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid container sx={{ my: 2 }}>
-                        <Grid item lg={2} md={2} sm={1.5} xs={3}>
-                          <PrimaryButton
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: "#F200001A",
-                              color: theme.palette.error.main,
-                              ":hover": {
-                                backgroundColor: "#F200001A",
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {summary?.recapture_codes_count || 0}
-                          </PrimaryButton>
-                        </Grid>
-                        <Grid
-                          item
-                          lg={10}
-                          md={10}
-                          sm={10.5}
-                          xs={9}
-                          sx={{ pl: 1 }}
-                        >
-                          <Typography
-                            sx={{
-                              fontSize: "1rem",
-                              color: "rgba(0, 0, 0, 0.60);",
-                              fontWeight: "600",
-                              lineHeight: "1.375rem",
-                              textTransform: "initial",
-                            }}
-                          >
-                            You have { }
-                            <Typography
-                              sx={{
-                                color: "#000;",
-                                pr: 0.5,
-                              }}
-                            >
-                              {summary?.recapture_codes_count || 0}
-                            </Typography>
-                            { } existing conditions that are not in the problem list.
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                      {/* <Grid container >
-                        <Grid item lg={2} md={2} sm={1.5} xs={3} >
-                          <PrimaryButton
-
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: "#F200001A",
-                              color: theme.palette.error.main,
-                              ":hover": {
-                                backgroundColor: "#F200001A",
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {summary?.duplicate_codes_count || 0}
-                          </PrimaryButton>
-                        </Grid>
-                        <Grid
-                          item
-                          lg={10}
-                          md={10}
-                          sm={10.5}
-                          xs={9}
-                          sx={{ pl: 1 }}
-                        >
-                          <Typography
-                            sx={{
-                              fontSize: "1rem",
-                              color: "rgba(0, 0, 0, 0.60);",
-                              fontWeight: "600",
-                              lineHeight: "1.375rem",
-                              textTransform: "initial",
-                            }}
-                          >
-                            You have  { }
-                            <Typography
-                              sx={{
-                                color: "#000;",
-                              }}
-                            >
-                              {summary?.duplicate_codes_count || 0}
-                            </Typography>
-                            { } Duplicate Codes
-                          </Typography>
-                        </Grid>
-                      </Grid> */}
-                    </Box>
-                  </Drawer>
-                </React.Fragment>
+                    {(patientGender === 'Male') ? <Typography component='span' >
+                      (Male)
+                    </Typography> : <Typography component='span'>
+                      (Female)
+                    </Typography>
+                    }
+                  </Box>
+                )}
               </Box>
+            </>
+          ))}
+
+          <Box sx={{ ...flexAlignCenter }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row-reverse",
+
+
+              }}
+            >
+              {Object.entries(obj)?.map(([keys, value], index) => (
+                <>
+                  <Box sx={{ ...flexAlignCenter }}>
+
+                    <Typography sx={(keys === "MRN") ? {
+                      fontSize: "13px", color: " #00000099", fontWeight: "600"
+                    } : (keys === "DoB") ? {
+                      [theme.breakpoints.down("md")]: {
+                        fontSize: "13px", color: " #00000099", fontWeight: "600", marginLeft: "10px"
+                      },
+                    } : {
+                      [theme.breakpoints.down("md")]: {
+                        display: "none",
+                      }
+                    }}>
+                      {keys}:
+                    </Typography>
+                    <Typography sx={(keys === "MRN") ? {
+                      fontSize: "13px", color: " #000000", fontWeight: "600", marginLeft: "10px"
+                    } : (keys === "DoB") ? {
+                      [theme.breakpoints.down("md")]: {
+                        fontSize: "13px", color: " #000000", fontWeight: "600", marginLeft: "10px"
+                      },
+                    } : {
+                      [theme.breakpoints.down("md")]: {
+                        display: "none",
+                      }
+                    }}>
+                      {keys === "MRN" ?
+                        (value ? value.toString().substr(0, 8) : '') :
+                        (keys === 'DoB' ?
+                          (value ? `${value.toString()} (${patientAge || 'N/A'} yrs)` : '') :
+                          (value || ''))
+                      }
+
+                    </Typography>
+
+
+
+                    {Object.entries(obj)?.length - 1 !== index && (
+                      <Divider
+                        orientation="vertical"
+                        sx={{
+                          [theme.breakpoints.down("md")]: {
+                            display: "none",
+                          },
+                          mx: { sm: 1, md: 2, lg: 3 },
+                        }}
+                      />
+                    )}
+                  </Box>
+                </>
+              ))}
             </Box>
           </Box>
         </Container>
+
       </Box>
     </Box >
   );
