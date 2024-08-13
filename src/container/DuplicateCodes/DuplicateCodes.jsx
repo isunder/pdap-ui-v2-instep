@@ -306,7 +306,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
 
   const handleDelete = () => {
 
-   
+
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -314,7 +314,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
     if (rejectReason === "Other") {
       val = ReasonTextVal(otherText);
       setError(val);
-      
+
     }
     if (!val.isValid) {
       setError(val);
@@ -849,91 +849,91 @@ export const DuplicateCodes = ({ sessionObject }) => {
                             </StyledText>
                           </Grid>
                           {
-                           !item?.info['hide_noted_by_&_noted_date']  &&
-                              <>
-                                <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
-                                  <Box
+                            !item?.info['hide_noted_by_&_noted_date'] &&
+                            <>
+                              <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: "14px",
+                                    fontWeight: 400,
+                                    lineHeight: "25px",
+                                    letterSpacing: "0em",
+                                    display: "inline-block",
+                                  }}
+                                >
+                                  Noted by:
+                                  <Typography
                                     sx={{
                                       fontSize: "14px",
-                                      fontWeight: 400,
+                                      fontWeight: 700,
                                       lineHeight: "25px",
-                                      letterSpacing: "0em",
-                                      display: "inline-block",
+                                      letterSpacing: "0.02em",
+                                      padding: "0px",
+                                      margin: "0px"
                                     }}
                                   >
-                                    Noted by:
-                                    <Typography
-                                      sx={{
-                                        fontSize: "14px",
-                                        fontWeight: 700,
-                                        lineHeight: "25px",
-                                        letterSpacing: "0.02em",
-                                        padding: "0px",
-                                        margin: "0px"
-                                      }}
-                                    >
-                                      {item?.info?.noted_by}
-                                    </Typography>
-                                  </Box>
-                                </Grid>
+                                    {item?.info?.noted_by}
+                                  </Typography>
+                                </Box>
+                              </Grid>
 
 
-                                <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
-                                  <Box
+                              <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: "14px",
+                                    fontWeight: 500,
+                                    lineHeight: "25px",
+                                    letterSpacing: "0em",
+                                    display: "inline-block",
+
+                                  }}
+                                >
+                                  Date:
+                                  <Typography
                                     sx={{
                                       fontSize: "14px",
-                                      fontWeight: 500,
+                                      fontWeight: 700,
                                       lineHeight: "25px",
-                                      letterSpacing: "0em",
-                                      display: "inline-block",
-
+                                      letterSpacing: "0.02em",
+                                      paddingLeft: "4px",
                                     }}
                                   >
-                                    Date:
-                                    <Typography
-                                      sx={{
-                                        fontSize: "14px",
-                                        fontWeight: 700,
-                                        lineHeight: "25px",
-                                        letterSpacing: "0.02em",
-                                        paddingLeft: "4px",
-                                      }}
-                                    >
-                                      {item?.info?.noted_date}
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                              </>
+                                    {item?.info?.noted_date}
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </>
                           }
 
                           {
-                          item?.info?.hide_remarks && !item?.info?.hide_remarks && (
-                            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                              <Box
-                                sx={{
-
-                                  fontSize: "14px",
-                                  fontWeight: 400,
-                                  lineHeight: "25px",
-                                  letterSpacing: "0em",
-                                  display: "inline-block",
-                                }}
-                              >
-                                Remarks:
-                                <Typography
+                            !item?.info?.hide_remarks && (
+                              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                <Box
                                   sx={{
+
                                     fontSize: "14px",
-                                    fontWeight: 700,
+                                    fontWeight: 400,
                                     lineHeight: "25px",
-                                    letterSpacing: "0.02em",
-                                    paddingLeft: "4px",
+                                    letterSpacing: "0em",
+                                    display: "inline-block",
                                   }}
                                 >
-                                  {item?.info?.remarks}
-                                </Typography>
-                              </Box>
-                            </Grid>
-                          )}
+                                  Remarks:
+                                  <Typography
+                                    sx={{
+                                      fontSize: "14px",
+                                      fontWeight: 700,
+                                      lineHeight: "25px",
+                                      letterSpacing: "0.02em",
+                                      paddingLeft: "4px",
+                                    }}
+                                  >
+                                    {item?.info?.remarks}
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            )}
 
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <Box
