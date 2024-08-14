@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { getApiHeaders, postApiHeaders } from "../../utils/helper";
+import { postApiHeaders } from "../../utils/helper";
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
