@@ -8,10 +8,10 @@ const App = () => {
      <Helmet>
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
         <meta http-equiv="X-Frame-Options" content="DENY" />
-  <meta name="referrer" content="no-referrer" />
+        <meta name="referrer" content="no-referrer" />
         <meta name="server" content="Custom Server" />
         <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
-        <meta http-equiv="Content-Security-Policy" content={`
+        {/* <meta http-equiv="Content-Security-Policy" content={`
     default-src 'self';
     connect-src 'self' ${process.env.REACT_APP_BASE_URL} wss://*;
     script-src 'self' 'unsafe-inline';
@@ -26,7 +26,7 @@ const App = () => {
     base-uri 'self';
     form-action 'self';
     upgrade-insecure-requests;
-`} />
+`} /> */}
 
       </Helmet>
       <Routers />
