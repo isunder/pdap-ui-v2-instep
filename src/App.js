@@ -11,15 +11,13 @@ const App = () => {
         <meta name="referrer" content="no-referrer" />
         <meta name="server" content="Custom Server" />
         <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
-       
-
   <meta http-equiv="Content-Security-Policy" content={`
     default-src 'self';
-    connect-src 'self' ${process.env.REACT_APP_BASE_URL} wss://*;
+    connect-src 'self' ${process.env.REACT_APP_BASE_URL} ws://*.pdap.doctustech.com *.pdap.doctustech.com;
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
-    img-src 'self' data: ${process.env.REACT_APP_IMG_URL};
-    font-src 'self' ${process.env.REACT_APP_FONT_URL} ;
+    img-src 'self' data: ${process.env.REACT_APP_IMG_URL} ws://*.pdap.doctustech.com *.pdap.doctustech.com;
+    font-src 'self' ${process.env.REACT_APP_FONT_URL} ws://*.pdap.doctustech.com *.pdap.doctustech.com;
     frame-src 'self';
     object-src 'none';
     media-src 'self';

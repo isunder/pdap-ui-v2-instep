@@ -32,7 +32,6 @@ const theme = createTheme({
           px: 1,
         },
         variant: "suntilte2",
-        // textTransform: "capitalize",
         fontFamily: `"Proxima-nova", sans-serif`,
       },
     },
