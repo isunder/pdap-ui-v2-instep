@@ -340,7 +340,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                     </StyledText>
                                                 </Box>
                                             ) : (
-                                                <Grid sx={{ gap: '10px' }} container>
+                                                <Grid sx={{ gap: '10px', marginTop: "7px" }} container>
                                                     {/* Expanded view */}
                                                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                                         <StyledText
@@ -504,11 +504,11 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             },
                                                             [theme.breakpoints.only("md")]: {
                                                                 pl: "12px",
-                                                              },
-                                
-                                                              [theme.breakpoints.only("lg")]: {
+                                                            },
+
+                                                            [theme.breakpoints.only("lg")]: {
                                                                 pl: "12px",
-                                                              }
+                                                            }
 
                                                         }}
                                                     >

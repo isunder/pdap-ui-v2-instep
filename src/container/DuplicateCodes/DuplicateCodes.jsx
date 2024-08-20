@@ -830,7 +830,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid container sx={{ gap: "10px" }}>
+                        <Grid container sx={{ gap: "10px", marginTop: "7px" }}>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText
@@ -907,7 +907,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                           }
 
                           {
-                            !item?.info?.hide_remarks  && (
+                            !item?.info?.hide_remarks && (
                               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                 <Box
                                   sx={{
