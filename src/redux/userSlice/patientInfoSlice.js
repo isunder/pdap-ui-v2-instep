@@ -172,7 +172,7 @@ const slice = createSlice({
         });
         builder.addCase(patientAddressCode.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.data.adressCode = action.payload;
+            state.data.addressCode = action.payload;
         });
         builder.addCase(patientAddressCode.rejected, (state, action) => {
             state.isLoading = false;

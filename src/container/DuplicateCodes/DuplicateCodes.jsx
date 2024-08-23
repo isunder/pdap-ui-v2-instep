@@ -75,7 +75,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [duplicateCodes, setDoplicateCodes] = React.useState([]);
   const [open, setOpen] = React.useState(false);
-  const [Deleteopen, setDeleteOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [clinicalDoc, setClinicalDoc] = useState(null);
   const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
   const [rejectReason, setRejectReason] = useState("Insufficient Proof");
@@ -92,7 +92,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
     (state) => state?.reject?.duplicateReject
   );
   const [rejectDuplicateCode, setRejectDuplicateCode] = useState([]);
-  const [butttonDisable, setButtonDisable] = useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false)
   const duplicateRejectCode = useSelector(
     (state) => state?.summary?.duplicateRejectCode
   );
@@ -2993,7 +2993,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
       />
 
       <DialogModal
-        open={Deleteopen}
+        open={deleteOpen}
         setOpen={setDeleteOpen}
         header={<DeleteIcon style={{ width: 45, height: 45 }} />}
         width="25rem"
@@ -3072,7 +3072,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                 }
                 color="error"
                 sx={{}}
-                disabled={butttonDisable}
+                disabled={buttonDisable}
               >
                 Delete
               </StyleButton>
