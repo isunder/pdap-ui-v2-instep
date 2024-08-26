@@ -82,8 +82,6 @@ const StyleButton = styled(Button)(() => ({
   textTransform: "capitalize",
 }));
 
-console.log(isSlugOrJwt(), "njbjidcbvjbcxjbcvjnb");
-
 const slug = isSlugOrJwt();
 
 export const Header = ({ sessionObject }) => {
@@ -370,7 +368,7 @@ export const Header = ({ sessionObject }) => {
                         </Box>
 
                         {tabs &&
-                          tabs["patient_dashboard_recapture_percentage"] && !tabs["patient_dashboard_recapture_percentage"].active
+                          tabs["patient_dashboard_recapture_percentage"] && tabs["patient_dashboard_recapture_percentage"].active
                           && (
                             <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
                               <StyleText
@@ -400,7 +398,7 @@ export const Header = ({ sessionObject }) => {
                             </Box>
                           )}
                         {tabs &&
-                          tabs["patient_dashboard_suspect_percentage"] && !tabs["patient_dashboard_suspect_percentage"].active
+                          tabs["patient_dashboard_suspect_percentage"] && tabs["patient_dashboard_suspect_percentage"].active
 
                           && (
                             <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
