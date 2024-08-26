@@ -1,13 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { getApiHeaders } from '../../utils/helper';
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
-
-const importedHeader = getApiHeaders();
 
 // function for patient info
 export const patientInfo = createAsyncThunk("patientInfo", async () => {

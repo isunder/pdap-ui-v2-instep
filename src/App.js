@@ -5,37 +5,52 @@ import { Helmet } from 'react-helmet';
 const App = () => {
   return (
     <>
-     <Helmet>
+      <Helmet>
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        {/* <meta http-equiv="Content-Security-Policy" content={`connect-src 'self' ${process.env.REACT_APP_BASE_URL};`} /> */}
-        <meta http-equiv="X-Frame-Options" content="DENY" />
-  <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none';" />
-  <meta name="referrer" content="no-referrer" />
+        <meta httpEquiv="X-Frame-Options" content="DENY" />
+        <meta name="referrer" content="no-referrer" />
         <meta name="server" content="Custom Server" />
-        <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
-        <meta http-equiv="Content-Security-Policy" content={`
-    default-src 'self';
-    connect-src 'self' ${process.env.REACT_APP_BASE_URL};
-    script-src 'self' 'unsafe-inline';
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' data: ${process.env.REACT_APP_IMG_URL};
-    font-src 'self' ${process.env.REACT_APP_FONT_URL};
-    frame-src 'self';
-    object-src 'none';
-    media-src 'self';
-    child-src 'self';
-    frame-ancestors 'none';
-    base-uri 'self';
-    form-action 'self';
-    upgrade-insecure-requests;
-    block-all-mixed-content;
-`} />
-
+        <meta 
+          httpEquiv="Strict-Transport-Security" 
+          content="max-age=31536000; includeSubDomains" 
+        />
+        <meta 
+          httpEquiv="Content-Security-Policy" 
+          content={`
+            default-src 'self';
+            connect-src 
+              'self' 
+              ${process.env.REACT_APP_BASE_URL} 
+              https://dev-api.pdap.doctustech.com 
+              wss://*.pdap.doctustech.com 
+              https://*.pdap.doctustech.com 
+              wss://dev-app-v2.pdap.doctustech.com:3000;  // Include WebSocket URL with port
+            script-src 'self' 'unsafe-inline';
+            style-src 'self' 'unsafe-inline';
+            img-src 
+              'self' 
+              data: 
+              ${process.env.REACT_APP_IMG_URL} 
+              wss://*.pdap.doctustech.com 
+              https://*.pdap.doctustech.com;
+            font-src 
+              'self' 
+              ${process.env.REACT_APP_FONT_URL} 
+              wss://*.pdap.doctustech.com 
+              https://*.pdap.doctustech.com;
+            frame-src 'self';
+            object-src 'none';
+            media-src 'self';
+            child-src 'self';
+            base-uri 'self';
+            form-action 'self';
+            upgrade-insecure-requests;
+          `}
+        />
       </Helmet>
       <Routers />
     </>
- 
-)
-}
+  );
+};
 
 export default App

@@ -462,7 +462,6 @@ export const CodesNotList = ({ sessionObject }) => {
 
   const handleDelete = () => {
 
-
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
       isValid: true,
@@ -470,7 +469,7 @@ export const CodesNotList = ({ sessionObject }) => {
     if (rejectReason === "Other") {
       val = ReasonTextVal(otherText);
       setError(val);
-      return;
+
     }
     if (!val.isValid) {
       setError(val);
@@ -838,7 +837,7 @@ export const CodesNotList = ({ sessionObject }) => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid container sx={{ gap: "10px" }}>
+                        <Grid container sx={{ gap: "10px", marginTop: "7px" }}>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText

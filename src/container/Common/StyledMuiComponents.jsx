@@ -60,7 +60,6 @@ export const StyledText = styled(Typography)(({ theme }) => ({
   lineHeight: "175%",
   letterSpacing: "0.0175rem",
   padding: "0px",
-  marginTop: "10px",
   textTransform: "inherit",
 
   [theme.breakpoints.down("md")]: {

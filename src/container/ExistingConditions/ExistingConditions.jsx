@@ -774,11 +774,11 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
                             mr: 2,
                           },
                           [theme.breakpoints.down("md")]: {
-                            mt: 0.5,
+                            mt: "9px",
                           },
                           [theme.breakpoints.up("md")]: {
                             mr: 2,
-                            mt: 1.5,
+                            mt: "9px",
                           },
                         }}
                       >
@@ -817,7 +817,7 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
                               whiteSpace: "nowrap",
                               textTransform: "inherit",
                               display: "inline-block",
-                              verticalAlign: "bottom",
+
                               [theme.breakpoints.up("md")]: {
                                 fontSize: "90%",
                               },
@@ -851,7 +851,7 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid sx={{ gap: "10px !important" }} container>
+                        <Grid sx={{ gap: "10px !important", marginTop: "7px" }} container>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText
@@ -1047,6 +1047,7 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
                         {tabs && tabs["patient_dashboard_weights"]?.active && (
                           <StyledText
                             sx={{
+                              marginTop: "7px",
                               [theme.breakpoints.only("xl")]: {
                                 pr: 1,
                               },
