@@ -41,6 +41,7 @@ import {
   StyledBox,
   StyledButton,
 } from "../Common/StyledMuiComponents";
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyleHead = styled("h2")(() => ({
   fontSize: "16px",
@@ -338,7 +339,8 @@ export const Suspects = ({ sessionObject }) => {
   const params = window.location.pathname;
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get("slug");
+
+  const slug = isSlugOrJwt();
   useEffect(() => {
     if (slug) dispatch(patientSuspectedCode());
   }, []);

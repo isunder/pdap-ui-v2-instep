@@ -31,6 +31,7 @@ import { MuiAccordions } from "../../components";
 import { patientHistory } from "../../redux/userSlice/patientInfoSlice";
 import { patientSummaryBarSlice } from "../../redux/userSlice/patientSummaryBarSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -140,7 +141,7 @@ export const History = () => {
   const params = window.location.pathname
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  const slug = isSlugOrJwt();
 
   useEffect(() => {
     if (slug) {

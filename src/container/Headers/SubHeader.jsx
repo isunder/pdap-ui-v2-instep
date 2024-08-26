@@ -20,6 +20,7 @@ import Drawer from "@mui/material/Drawer";
 import "./SubHeader.css";
 import useAppContext from "../../hooks/useAppContext";
 import { patientInfo, patientSummary } from '../../redux/userSlice/patientInfoSlice';
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyledText = styled("span")(() => ({
   color: "#000000",
@@ -79,10 +80,10 @@ export const SubHeader = () => {
       }
     }
   }
-  const params = window.location.pathname
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  const params = window.location.pathname;
+
+  const slug = isSlugOrJwt();
+
   useEffect(() => {
     dispatch(patientInfo());
     if (slug) {

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -62,7 +63,7 @@ export const MyProfile = () => {
   const dispatch = useDispatch();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  const slug = isSlugOrJwt();
   const tabs = TabsSlag();
   const { doctorDetail } = useSelector(state => state.doctor.data);
 

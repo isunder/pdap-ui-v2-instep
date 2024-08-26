@@ -11,30 +11,38 @@ export function isSlugOrJwt() {
   } else if (jwt) {
     auth = {isJwt: true, token: jwt};
   }
-
+  
   return auth;
 }
 
-export function getApiHeaders(customHeaders = {}) {
+const auth = isSlugOrJwt();
+
+export function getSlug() {
+  return auth.isJwt ? undefined : auth.token;
+}
+
+export function getToken() {
+  return auth.isJwt ? auth.token : undefined;
+}
+
+export function getApiHeaders() {
 
   const defaultHeaders = {
-    'content-type': 'application/json',
+    'authorization':getToken() ,
   };
 
   return {
-    ...defaultHeaders,
-    ...customHeaders,
+    ...defaultHeaders
   };
 }
 
-export function postApiHeaders(customHeaders = {}) {
+export function postApiHeaders() {
   
   const defaultHeaders = {
-    'content-type': 'application/json',
+    'authorization':getToken() ,
   };
 
   return {
-    ...defaultHeaders,
-    ...customHeaders,
+    ...defaultHeaders
   };
 }

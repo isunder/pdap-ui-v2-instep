@@ -4,14 +4,8 @@ import Box from "@mui/material/Box";
 import { Container, Grid, Typography, styled, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
-
 import { PrimaryButton } from "../../components/Button";
 import "./Header.css";
 import useAppContext from "../../hooks/useAppContext";
@@ -20,6 +14,7 @@ import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { DTLogo, FlagIcon } from "../../components";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { patientTabFlag } from "../../redux/userSlice/patientInfoSlice";
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyleText = styled(Typography)(() => ({
   fontSize: "13px",
@@ -87,9 +82,9 @@ const StyleButton = styled(Button)(() => ({
   textTransform: "capitalize",
 }));
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const slug = urlParams.get("slug");
+console.log(isSlugOrJwt(), "njbjidcbvjbcxjbcvjnb");
+
+const slug = isSlugOrJwt();
 
 export const Header = ({ sessionObject }) => {
   const location = useLocation();
@@ -622,6 +617,8 @@ const routes = [
     path: `/my-profile/?slug=${slug}`,
   },
 ];
+
+
 const flexCenter = {
   display: "flex",
   alignItems: "center",
