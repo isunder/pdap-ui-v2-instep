@@ -63,7 +63,7 @@ export const ExistingConditions = ({ sessionObject }) => {
   const [otherText, setOtherText] = useState(null);
   const [error, setError] = useState({});
   const [open, setOpen] = useState(false);
-  const [Deleteopen, setDeleteOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [handleFunction, setHandleFunction] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [selectedRejectData, setSelectedRejectData] = useState();
@@ -86,7 +86,7 @@ export const ExistingConditions = ({ sessionObject }) => {
 
   const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
 
-  const [butttonDisable, setButtonDisable] = useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false)
 
 
 
@@ -2054,7 +2054,7 @@ export const ExistingConditions = ({ sessionObject }) => {
         clinicalDoc={clinicalDoc}
       />
       <DialogModal
-        open={Deleteopen}
+        open={deleteOpen}
         setOpen={setDeleteOpen}
         header={<DeleteIcon style={{ width: 45, height: 45 }} />}
         width="25rem"
@@ -2132,7 +2132,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                 onClick={() =>
                   handleFunction ? handleDeleteAll() : handleDelete()
                 }
-                disabled={butttonDisable}
+                disabled={buttonDisable}
                 color="error"
                 sx={{}}
               >

@@ -41,6 +41,7 @@ import {
   StyledBox,
   StyledButton,
 } from "../Common/StyledMuiComponents";
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyleHead = styled("h2")(() => ({
   fontSize: "16px",
@@ -54,7 +55,7 @@ export const Suspects = ({ sessionObject }) => {
   const dispatch = useDispatch();
   const tabs = TabsSlag();
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
-  const [Deleteopen, setDeleteOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [suspectCode, setSuspectCode] = useState([]);
@@ -136,7 +137,7 @@ export const Suspects = ({ sessionObject }) => {
     }
   };
 
-  const [butttonDisable, setButtonDisable] = useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false)
 
   const handleClickOpen = (item) => {
     setButtonDisable(false)
@@ -338,7 +339,8 @@ export const Suspects = ({ sessionObject }) => {
   const params = window.location.pathname;
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get("slug");
+
+  const slug = isSlugOrJwt();
   useEffect(() => {
     if (slug) dispatch(patientSuspectedCode());
   }, []);
@@ -798,7 +800,7 @@ export const Suspects = ({ sessionObject }) => {
       </Box>
 
       <DialogModal
-        open={Deleteopen}
+        open={deleteOpen}
         setOpen={setDeleteOpen}
         header={<DeleteIcon style={{ width: 45, height: 45 }} />}
         width="25rem"
@@ -875,7 +877,7 @@ export const Suspects = ({ sessionObject }) => {
                 onClick={() => handleDelete()}
                 color="error"
                 sx={{}}
-                disabled={butttonDisable}
+                disabled={buttonDisable}
               >
                 Delete
               </StyleButton>

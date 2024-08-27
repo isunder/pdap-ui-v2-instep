@@ -24,7 +24,7 @@ const App = () => {
               https://dev-api.pdap.doctustech.com 
               wss://*.pdap.doctustech.com 
               https://*.pdap.doctustech.com 
-              wss://dev-app-v2.pdap.doctustech.com:3000;  // Include WebSocket URL with port
+              wss://dev-app-v2.pdap.doctustech.com:3000; 
             script-src 'self' 'unsafe-inline';
             style-src 'self' 'unsafe-inline';
             img-src 
