@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { Box, Divider, Grid, Typography, styled, Tooltip } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -45,9 +45,7 @@ export const AddressedCodes = () => {
   const [open, setOpen] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const state = useSelector((state) => state?.user?.data?.adressCode);
-
-  let array = [];
+  const state = useSelector((state) => state?.user?.data?.addressCode);
 
   const result =
     state &&
@@ -75,7 +73,7 @@ export const AddressedCodes = () => {
 
   useEffect(() => {
     dispatch(patientAddressCode());
-  }, []);
+  }, [dispatch]);
 
   const handleClinicalDoc = async (item) => {
     let data = await dispatch(

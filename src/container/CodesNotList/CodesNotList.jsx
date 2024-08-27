@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import {
   Box,
-  Divider,
   Grid,
   Typography,
-  styled,
   ButtonGroup,
   Tooltip,
 } from "@mui/material";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContentText from "@mui/material/DialogContentText";
-import Dialog from "@mui/material/Dialog";
 import MenuItem from "@mui/material/MenuItem";
-import DialogActions from "@mui/material/DialogActions";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,11 +16,8 @@ import {
   ArrowDropDownIcon,
   CorrectIcon,
   CrossWhite,
-  PrimaryButton,
   MuiAccordions,
   DocIcon,
-  ArrowUpIcon,
-  InputBoxText,
   DeleteIcon,
 } from "../../components";
 import "../../Screens/Codes/Codes.css";
@@ -45,12 +31,9 @@ import { patientClinicalDocument } from "../../redux/userSlice/petientClinicalSl
 import { TabsSlag } from "../TabsSlag/TabsSlag";
 import { ReasonTextVal } from "../../components/Validation/ReasonTextVal";
 import DocumentModal from "../../components/DocumentModal/DocumentModal";
-import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { DialogModal } from "../../components/Modal/DialogModal";
-import Deletemodal from "../../components/DeleteModal/DeleteModal";
 import { SelectField } from "../../components/SelectField";
 import { InputField } from "../../components/InputField";
-
 
 import {
   StyleCircle,
@@ -73,7 +56,7 @@ export const CodesNotList = ({ sessionObject }) => {
 
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [Deleteopen, setDeleteOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
   const [selectedMainCode, setSelectedMainCode] = useState("");
@@ -85,18 +68,18 @@ export const CodesNotList = ({ sessionObject }) => {
   const [otherText, setOtherText] = useState(null);
   const [error, setError] = useState({});
   const recaptureCode = useSelector((state) => state?.summary?.recapture);
-  const [selectedRecapturecode, setSelectedRecapturecode] = useState([]);
+  const [selectedRecaptureCode, setSelectedRecaptureCode] = useState([]);
 
   const RejectedCodes = useSelector((state) => state?.reject?.recaptureReject);
   const [rejectRecaptureCode, setRejectRecaptureCode] = useState([]);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
-  const [butttonDisable, setButtonDisable] = useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false)
 
-  const recatupreRejectCode = useSelector(
+  const recaptureRejectCode = useSelector(
     (state) => state?.summary?.recaptureRejectCode
   );
   const [rejectRecaptureData, setRecaptureRejectData] =
-    useState(recatupreRejectCode);
+    useState(recaptureRejectCode);
 
   const state = useSelector((state) => state?.user?.data?.recaptureCode);
 
@@ -153,39 +136,6 @@ export const CodesNotList = ({ sessionObject }) => {
     return result;
   }
 
-  const handleClickAll = (index) => {
-    let value = result[index];
-    let allValue = [value, value?.info?.alternate_codes];
-    let allCodes = allValue?.flat(1);
-    let codeList = allCodes?.filter((item) => {
-      let isExist = selectedRecapturecode?.some((value, index) => {
-        if (item?.code === value?.code) {
-          return true;
-        }
-      });
-      if (!isExist) {
-        return {
-          code: item.code,
-          value: item?.value ? item?.value : item?.info?.value,
-          additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
-        };
-      }
-    });
-
-    let rejectedCodes = rejectRecaptureCode.filter((value) => {
-      let acceptedCodes = allCodes?.some(
-        (item) => item?.code === Object.keys(value)[0]
-      );
-      if (!acceptedCodes) {
-        return value;
-      }
-    });
-    setRejectRecaptureCode([...rejectedCodes]);
-    codeList?.length &&
-      setSelectedRecapturecode([...selectedRecapturecode, ...codeList]);
-
-  };
-
   const handleOtherText = (e) => {
     let value = e.target.value;
     let val = ReasonTextVal(value);
@@ -206,7 +156,7 @@ export const CodesNotList = ({ sessionObject }) => {
       setError(val);
     } else {
       let altCode = selectedRejectData?.info?.alternate_codes;
-      let recaptureCodes = selectedRecapturecode.filter((value) => {
+      let recaptureCodes = selectedRecaptureCode.filter((value) => {
         let altExist = altCode?.some((item) => item?.code === value?.code);
         if (!altExist) {
           if (selectedRejectData.code !== value?.code) {
@@ -262,7 +212,7 @@ export const CodesNotList = ({ sessionObject }) => {
         },
       };
 
-      setSelectedRecapturecode([...recaptureCodes]);
+      setSelectedRecaptureCode([...recaptureCodes]);
       setRecaptureRejectData([...rejectedData, rejectList]);
       setRejectRecaptureCode([
         ...rejectedAltData,
@@ -289,8 +239,8 @@ export const CodesNotList = ({ sessionObject }) => {
           : recaptureCode?.length > 0
             ? recaptureCode
             : sessionObject?.recaptureCode || [];
-      selectedRecapturecode?.length === 0 &&
-        setSelectedRecapturecode([...newRecapture]);
+      selectedRecaptureCode?.length === 0 &&
+        setSelectedRecaptureCode([...newRecapture]);
 
       let newRecaptureReject =
         rejectRecaptureCode?.length > 0 &&
@@ -309,14 +259,14 @@ export const CodesNotList = ({ sessionObject }) => {
 
   useEffect(() => {
     dispatch(recaptureReject(rejectRecaptureCode));
-    dispatch(recaptureValue(selectedRecapturecode));
+    dispatch(recaptureValue(selectedRecaptureCode));
     dispatch(recaptureRejectInfo(rejectRecaptureData));
-  }, [selectedRecapturecode, rejectRecaptureCode]);
+  }, [selectedRecaptureCode, rejectRecaptureCode]);
 
   useEffect(() => {
     let sessionExisting = recaptureCode?.length > 0 ? recaptureCode : [];
-    selectedRecapturecode?.length !== sessionExisting?.length &&
-      setSelectedRecapturecode([...sessionExisting]);
+    selectedRecaptureCode?.length !== sessionExisting?.length &&
+      setSelectedRecaptureCode([...sessionExisting]);
 
     let newExistingReject = RejectedCodes?.length > 0 ? RejectedCodes : [];
     rejectRecaptureCode?.length !== newExistingReject?.length &&
@@ -631,12 +581,12 @@ export const CodesNotList = ({ sessionObject }) => {
           additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
         };
         updateVal =
-          selectedRecapturecode?.length > 0
-            ? [...selectedRecapturecode, codeList]
+          selectedRecaptureCode?.length > 0
+            ? [...selectedRecaptureCode, codeList]
             : [codeList];
 
       }
-      setSelectedRecapturecode(updateVal);
+      setSelectedRecaptureCode(updateVal);
       sessionObject = {
         mrn: userDetail?.mrn,
         expiresAt: expirationDate,
@@ -1031,7 +981,7 @@ export const CodesNotList = ({ sessionObject }) => {
                             }}
                             className="acc-content-act-btns"
                           >
-                            {selectedRecapturecode?.some(
+                            {selectedRecaptureCode?.some(
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
@@ -1086,7 +1036,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                 Accept
                               </StyledButton>
                             ) : null}
-                            {!selectedRecapturecode?.some(
+                            {!selectedRecaptureCode?.some(
                               (ele) => ele?.code === item?.code
                             ) &&
                               (rejectRecaptureCode?.some((value, index) => {
@@ -1327,7 +1277,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                           justifyContent: "end",
                                         }}
                                       >
-                                        {selectedRecapturecode?.some(
+                                        {selectedRecaptureCode?.some(
                                           (ele) => ele?.code === value?.code
                                         ) ? (
                                           <StyledButton1
@@ -1387,7 +1337,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                             Accept
                                           </StyledButton>
                                         ) : null}
-                                        {!selectedRecapturecode?.some(
+                                        {!selectedRecaptureCode?.some(
                                           (ele) => ele?.code === value?.code
                                         ) &&
                                           (rejectRecaptureCode?.some(
@@ -1608,7 +1558,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       justifyContent: "start",
                                     }}
                                   >
-                                    {selectedRecapturecode?.some(
+                                    {selectedRecaptureCode?.some(
                                       (ele) => ele?.code === value?.code
                                     ) ? (
                                       <StyledButton1
@@ -1665,7 +1615,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                         Accept
                                       </StyledButton>
                                     ) : null}
-                                    {!selectedRecapturecode?.some(
+                                    {!selectedRecaptureCode?.some(
                                       (ele) => ele?.code === value?.code
                                     ) &&
                                       (rejectRecaptureCode?.some(
@@ -2021,7 +1971,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                           },
                                         }}
                                       >
-                                        {selectedRecapturecode?.some(
+                                        {selectedRecaptureCode?.some(
                                           (ele) => ele.code === value.code
                                         ) ? (
                                           <StyledButton1
@@ -2081,7 +2031,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                             Accept
                                           </StyledButton>
                                         ) : null}
-                                        {!selectedRecapturecode?.some(
+                                        {!selectedRecaptureCode?.some(
                                           (ele) => ele?.code === value?.code
                                         ) &&
                                           (rejectRecaptureCode?.some(
@@ -2472,7 +2422,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       },
                                     }}
                                   >
-                                    {selectedRecapturecode?.some(
+                                    {selectedRecaptureCode?.some(
                                       (ele) => ele?.code === value?.code
                                     ) ? (
                                       <StyledButton1
@@ -2529,7 +2479,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                         Accept
                                       </StyledButton>
                                     ) : null}
-                                    {!selectedRecapturecode?.some(
+                                    {!selectedRecaptureCode?.some(
                                       (ele) => ele.code === value.code
                                     ) &&
                                       (rejectRecaptureCode?.some(
@@ -2904,7 +2854,7 @@ export const CodesNotList = ({ sessionObject }) => {
       />
 
       <DialogModal
-        open={Deleteopen}
+        open={deleteOpen}
         setOpen={setDeleteOpen}
         header={<DeleteIcon style={{ width: 45, height: 45 }} />}
         width="25rem"
@@ -2984,7 +2934,7 @@ export const CodesNotList = ({ sessionObject }) => {
                 }
                 color="error"
                 sx={{}}
-                disabled={butttonDisable}
+                disabled={buttonDisable}
               >
                 Delete
               </StyleButton>

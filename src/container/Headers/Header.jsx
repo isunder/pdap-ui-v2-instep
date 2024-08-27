@@ -4,14 +4,8 @@ import Box from "@mui/material/Box";
 import { Container, Grid, Typography, styled, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
-
 import { PrimaryButton } from "../../components/Button";
 import "./Header.css";
 import useAppContext from "../../hooks/useAppContext";
@@ -20,6 +14,7 @@ import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { DTLogo, FlagIcon } from "../../components";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { patientTabFlag } from "../../redux/userSlice/patientInfoSlice";
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyleText = styled(Typography)(() => ({
   fontSize: "13px",
@@ -87,9 +82,7 @@ const StyleButton = styled(Button)(() => ({
   textTransform: "capitalize",
 }));
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const slug = urlParams.get("slug");
+const slug = isSlugOrJwt();
 
 export const Header = ({ sessionObject }) => {
   const location = useLocation();
@@ -326,7 +319,7 @@ export const Header = ({ sessionObject }) => {
                 </Grid>
 
                 {
-                  tabs && !(tabs?.patient_dashboard_recapture_percentage?.active && tabs?.patient_dashboard_suspect_percentage?.active) ?
+                  tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) ?
                     <Grid className="suspect_recapture_header" item md={7} sm={6}>
                       <Box
                         sx={{
@@ -375,7 +368,7 @@ export const Header = ({ sessionObject }) => {
                         </Box>
 
                         {tabs &&
-                          tabs["patient_dashboard_recapture_percentage"] && !tabs["patient_dashboard_recapture_percentage"].active
+                          tabs["patient_dashboard_recapture_percentage"] && tabs["patient_dashboard_recapture_percentage"].active
                           && (
                             <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
                               <StyleText
@@ -404,8 +397,9 @@ export const Header = ({ sessionObject }) => {
                               </StyleText>
                             </Box>
                           )}
+
                         {tabs &&
-                          tabs["patient_dashboard_suspect_percentage"] && !tabs["patient_dashboard_suspect_percentage"].active
+                          tabs["patient_dashboard_suspect_percentage"] && tabs["patient_dashboard_suspect_percentage"].active
 
                           && (
                             <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
@@ -622,6 +616,8 @@ const routes = [
     path: `/my-profile/?slug=${slug}`,
   },
 ];
+
+
 const flexCenter = {
   display: "flex",
   alignItems: "center",
