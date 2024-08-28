@@ -58,7 +58,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const [suspectCode, setSuspectCode] = useState([]);
   const [rejectReason, setRejectReason] = useState("Insufficient Proof");
   const [otherText, setOtherText] = useState(null);
@@ -70,6 +70,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const suspectedCode = useSelector((state) => state?.summary?.suspect);
   const [selectedSuspectcode, setSelectedSuspectcode] = useState([]);
+  const { user } = useSelector((state) => state);
 
   const state = useSelector((state) => state.user.data.suspectedCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
@@ -142,9 +143,28 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
   const [buttonDisable, setButtonDisable] = useState(false)
 
   const handleClickOpen = (item) => {
+
+    console.log(item, "bdhubsjhbvjb")
     setButtonDisable(false)
     setDeleteOpen(true);
     setSelectedRejectData(item);
+
+    const exampleMetadata = {
+      identifier: tabs?.["id_user"]?.value || "",
+      provider_name: doctorDetail?.doctor_name || "",
+      patient_id: user?.data?.userInfo?.mrn || "",
+      event_datetime: new Date().toISOString(),
+      code: item?.code,
+      description: item?.definition,
+      reasonForRejection: rejectReason,
+      raf: item?.total_weight,
+      alternateCodes: "",
+    };
+
+    handleAddEventData("SUSPECT_REJECTION_REASON_SELECTION", exampleMetadata);
+
+
+
   };
 
 
@@ -231,6 +251,19 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
         otherText?.length > 0 && setOtherText(null);
         setDeleteOpen(false);
 
+        const exampleMetadata = {
+          identifier: tabs?.["id_user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: new Date().toISOString(),
+          code: code,
+          // description: item?.definition,
+          reasonForRejection: rejectReason,
+          // raf: total_weight,
+          alternateCodes: "",
+        };
+
+        handleAddEventData("SUSPECT_REJECTION_REASON_DELETION", exampleMetadata);
       }
     }
     setButtonDisable(true);
@@ -283,20 +316,18 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
         updateVal = codeList;
 
         const exampleMetadata = {
-          identifier: 'provider-uuid-123',
-          provider_name: 'Dr. John Doe',
-          patient_id: 'patient-uuid-456',
-          encounterId: 'encounter-789',
+          identifier: tabs?.["id_user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
           event_datetime: new Date().toISOString(),
-          code: 'CODE123',
-          description: 'Sample description',
-          reasonForRejection: 'No reason',
-          raf: 'RAF456',
-          alternateCodes: ['ALT123'],
-          parentCodesCount: 5
+          code: code,
+          description: item?.definition,
+          reasonForRejection: rejectReason,
+          raf: item?.total_weight,
+          alternateCodes: "",
         };
 
-        handleAddEventData("Suspect-Codes-Removed-From-Summary", exampleMetadata);
+        handleAddEventData("SUSPECT_ACCEPT_CODE", exampleMetadata);
 
 
       } else {
@@ -312,20 +343,18 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
             : [codeList];
 
         const exampleMetadata = {
-          identifier: 'provider-uuid-123',
-          provider_name: 'Dr. John Doe',
-          patient_id: 'patient-uuid-456',
-          encounterId: 'encounter-789',
+          identifier: tabs?.["id_user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
           event_datetime: new Date().toISOString(),
-          code: 'CODE123',
-          description: 'Sample description',
-          reasonForRejection: 'No reason',
-          raf: 'RAF456',
-          alternateCodes: ['ALT123'],
-          parentCodesCount: 5
+          code: code,
+          description: item?.definition,
+          reasonForRejection: rejectReason,
+          raf: item?.total_weight,
+          alternateCodes: "",
         };
 
-        handleAddEventData("Suspect-Codes-Added-in-Summary", exampleMetadata);
+        handleAddEventData("SUSPECT_ACCEPT_CODE", exampleMetadata);
 
 
       }
@@ -346,7 +375,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
         JSON.stringify(sessionObject)
       );
       setSelectedSuspectcode(updateVal);
-      addAuditLog1(`Suspects-Codes-Remove-From-Summary`, itemCode?.code, value);
     }
   };
 
@@ -521,8 +549,10 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                     {index + 1}. {item.SuspectedCondition}
                     {item.definition?.length > 0 && (
                       <ReadMore
+                      tabs={tabs}
+                      user={user}
                         item={item}
-
+                        handleAddEventData={handleAddEventData}
                         length={0}
                         readMore={"Read More"}
                         showLess={"Show Less"}

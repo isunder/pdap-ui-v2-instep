@@ -373,73 +373,70 @@ export const Codes = () => {
     setState({ ...state, [anchor]: open });
   };
 
-
-
   const [eventData, setEventData] = useState([]);
   const [newEventData, setNewEventData] = useState([]);
 
-  const handleAddEventData = async (event_type, metadata) => {
-    await addAuditLog1(event_type, metadata);
-    const allEventData = await getAuditLog1();
-    setEventData(allEventData); // Update the state with the new data
-  };
-
+  // Fetch initial event data
   useEffect(() => {
     async function fetchEventData() {
-      const data = await getAuditLog1();
-      setEventData(data);
+      try {
+        const data = await getAuditLog1();
+        setEventData(data);
+      } catch (error) {
+        console.error('Error fetching event data:', error);
+      }
     }
     fetchEventData();
   }, []);
 
-
-  const processEventData = async () => {
-
-
-    for (const item of eventData) {
-
-      dispatch(fetchAuditLogs([{ event_type: item.event_type, metadata: item.metadata }]));
-
-      try {
-        const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
-
-        if (!existingItem) {
-          dispatch(fetchAuditLogs([{ event_type: item.event_type, metadata: item.metadata }]));
-          await addAuditLog2(item.event_type, item.metadata);
-          const updatedEventData = await getAuditLog2();
-          setNewEventData(updatedEventData);
-        }
-      } catch (error) {
-        console.error('Error processing event data:', error);
-      }
+  const handleAddEventData = async (event_type, metadata) => {
+    try {
+      await addAuditLog1(event_type, metadata);
+      const allEventData = await getAuditLog1();
+      setEventData(allEventData);
+    } catch (error) {
+      console.error('Error adding event data:', error);
     }
   };
 
+  // Process and update event data
+  useEffect(() => {
+    const processEventData = async () => {
+      for (const item of eventData) {
+        const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
+        if (!existingItem) {
+          try {
+            await dispatch(fetchAuditLogs([{ event_type: item.event_type, metadata: item.metadata }]));
+            await addAuditLog2(item);
+            const updatedEventData = await getAuditLog2();
+            setNewEventData(updatedEventData);
+          } catch (error) {
+            console.error('Error processing event data:', error);
+          }
+        }
+      }
+    };
+
+    if (eventData.length > 0) {
+      processEventData();
+    }
+  }, [eventData, newEventData]); // Added newEventData and dispatch to dependencies
+
+
+
   useEffect(() => {
     const payload = {
-      eventType: "LAUNCH_SUCCESS",
+      event_type: "LAUNCH_SUCCESS",
       metadata: {
         identifier: tabs?.["id_user"]?.value || "",
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
         event_datetime: new Date().toISOString(),
-        code: "J90I",
         description: "Launch Successfull",
-        reasonForRejection: "",
-        raf: "3.39",
-        alternateCodes: [],
       }
     }
     dispatch(fetchAuditLogs([payload]));
-  }, []); 
-
-
-  useEffect(() => {
-    processEventData();
- 
-  }, [eventData]);
-
-
+  }, []);
 
   const handleSubmitRedirect = async (tabs) => {
     setIsModalOpen(true);
@@ -451,8 +448,6 @@ export const Codes = () => {
     else {
       setSwitchModal(false);
     }
-
-
     const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
     if (isSummaryModal) {
       setOpenSubmitModal(true)

@@ -99,7 +99,7 @@ export function getAuditLog1() {
 }
 
 // Function to add an audit log to logs2 store
-export function addAuditLog2(event_type, metadata) {
+export function addAuditLog2(item) {
   if (!db) {
     console.error('Database not initialized');
     return;
@@ -108,7 +108,7 @@ export function addAuditLog2(event_type, metadata) {
   let transaction = db.transaction(['logs2'], 'readwrite');
   let objectStore = transaction.objectStore('logs2');
   let auditKey = uuidv4();
-  let request = objectStore.add({ key: auditKey, event_type, metadata });
+  let request = objectStore.put({...item });
 
   request.onsuccess = function() {
     console.log('Audit log added to logs2 successfully');

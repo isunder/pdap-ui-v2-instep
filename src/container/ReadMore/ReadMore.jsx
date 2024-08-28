@@ -1,17 +1,43 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
-import { addAuditLog1 } from "../../utils/indexedDb";
+import { useDispatch, useSelector } from "react-redux";
 
-export const ReadMore = ({ children, length, readMore, showLess, other, item }) => {
+
+export const ReadMore = ({ children, length, readMore, showLess, other, user, tabs, item, handleAddEventData }) => {
     const [isReadMore, setIsReadMore] = useState(false);
+    const { doctorDetail } = useSelector((state) => state?.doctor?.data);
+
     const toggleReadMore = () => {
         setIsReadMore(!isReadMore)
         if (!isReadMore) {
-            addAuditLog1('Suspect read more', item.SuspectedCondition, item.definition)
+            const exampleMetadata = {
+                identifier: tabs?.["id_user"]?.value || "",
+                provider_name: doctorDetail?.doctor_name || "",
+                patient_id: user?.data?.userInfo?.mrn || "",
+                event_datetime: new Date().toISOString(),
+                code: item?.code,
+                description: item?.definition,
+                raf: item?.total_weight,
+                alternateCodes: "",
+            };
+
+            handleAddEventData("SUSPECT_SEE_LESS_DETAILS", exampleMetadata);
         }
 
         else {
-            addAuditLog1('Suspect read less', item.SuspectedCondition, item.definition)
+            const exampleMetadata = {
+                identifier: tabs?.["id_user"]?.value || "",
+                provider_name: doctorDetail?.doctor_name || "",
+                patient_id: user?.data?.userInfo?.mrn || "",
+                event_datetime: new Date().toISOString(),
+                code: item?.code,
+                description: item?.definition,
+                reasonForRejection: "rejectReason",
+                raf: item?.total_weight,
+                alternateCodes: "",
+            };
+
+            handleAddEventData("SUSPECT_READ_MORE_DETAILS", exampleMetadata);
         }
 
     }
