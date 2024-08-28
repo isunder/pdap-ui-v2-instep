@@ -4,14 +4,16 @@ let db;
 const DB_NAME = 'audit_log';
 const DB_VERSION = 1;
 
-// Open the database
 const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-request.onupgradeneeded = function(event) {
+// Open the database
+
+request.onupgradeneeded = (event) => {
   db = event.target.result;
 
   // Create the first object store
-  let objectStore1 = db.createObjectStore('logs1', { keyPath: 'key' });
+  let objectStore1 = db.createObjectStore('logs1', { keyPath: 'id' });
+  if(!objectStore1) return;
 
   // Create indexes for objectStore1
   objectStore1.createIndex('event_type', 'event_type', { unique: false });
@@ -28,8 +30,8 @@ request.onupgradeneeded = function(event) {
   objectStore1.createIndex('metadata/parentCodesCount', 'metadata/parentCodesCount', { unique: false });
 
   // Create the second object store
-  let objectStore2 = db.createObjectStore('logs2', { keyPath: 'key' });
-
+  let objectStore2 = db.createObjectStore('logs2', { keyPath: 'id' });
+  if(!objectStore2) return;
   // Create indexes for objectStore2
   objectStore2.createIndex('event_type', 'event_type', { unique: false });
   objectStore2.createIndex('metadata/identifier', 'metadata/identifier', { unique: false });
