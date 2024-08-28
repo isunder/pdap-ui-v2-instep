@@ -31,7 +31,7 @@ import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { InputField } from "../../components/InputField";
 import { SelectField } from "../../components/SelectField";
-
+import handleAddEventData from "../../container/"
 import {
   StyleCircle,
   StyleButton,
@@ -51,7 +51,7 @@ const StyleHead = styled("h2")(() => ({
   color: "#000",
 }));
 
-export const Suspects = ({ sessionObject }) => {
+export const Suspects = ({ sessionObject, handleAddEventData }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const tabs = TabsSlag();
@@ -162,7 +162,7 @@ export const Suspects = ({ sessionObject }) => {
       if (rejectReason === "Other") {
         val = ReasonTextVal(otherText);
         setError(val);
-      
+
       }
       if (!val.isValid) {
         setError(val);
@@ -253,8 +253,6 @@ export const Suspects = ({ sessionObject }) => {
 
   const handleClickOpen1 = (key, item, allData) => {
 
-
-
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -284,6 +282,23 @@ export const Suspects = ({ sessionObject }) => {
         );
         updateVal = codeList;
 
+        const exampleMetadata = {
+          identifier: 'provider-uuid-123',
+          provider_name: 'Dr. John Doe',
+          patient_id: 'patient-uuid-456',
+          encounterId: 'encounter-789',
+          event_datetime: new Date().toISOString(),
+          code: 'CODE123',
+          description: 'Sample description',
+          reasonForRejection: 'No reason',
+          raf: 'RAF456',
+          alternateCodes: ['ALT123'],
+          parentCodesCount: 5
+        };
+
+        handleAddEventData("Suspect-Codes-Removed-From-Summary", exampleMetadata);
+
+
       } else {
         codeList = {
           code: itemCode,
@@ -295,6 +310,23 @@ export const Suspects = ({ sessionObject }) => {
           selectedSuspectcode?.length > 0
             ? [...selectedSuspectcode, codeList]
             : [codeList];
+
+        const exampleMetadata = {
+          identifier: 'provider-uuid-123',
+          provider_name: 'Dr. John Doe',
+          patient_id: 'patient-uuid-456',
+          encounterId: 'encounter-789',
+          event_datetime: new Date().toISOString(),
+          code: 'CODE123',
+          description: 'Sample description',
+          reasonForRejection: 'No reason',
+          raf: 'RAF456',
+          alternateCodes: ['ALT123'],
+          parentCodesCount: 5
+        };
+
+        handleAddEventData("Suspect-Codes-Added-in-Summary", exampleMetadata);
+
 
       }
       sessionObject = {
@@ -490,7 +522,7 @@ export const Suspects = ({ sessionObject }) => {
                     {item.definition?.length > 0 && (
                       <ReadMore
                         item={item}
-    
+
                         length={0}
                         readMore={"Read More"}
                         showLess={"Show Less"}

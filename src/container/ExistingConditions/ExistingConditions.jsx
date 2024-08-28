@@ -51,7 +51,7 @@ import {
 } from "../Common/StyledMuiComponents";
 import { addAuditLog1 } from "../../utils/indexedDb";
 
-export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
+export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const tabs = TabsSlag();
@@ -110,7 +110,6 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
 
   const handleRemoveDeletedCode = (item, id) => {
 
-    console.log(item, "bdjbdsubgdjbv")
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -221,7 +220,21 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
       }
     }
 
-    handleAddEventData("Existing-Codes-Add-In-Summary", item?.code, item?.info?.value);
+    const exampleMetadata = {
+      identifier: 'provider-uuid-123',
+      provider_name: 'Dr. John Doe',
+      patient_id: 'patient-uuid-456',
+      encounterId: 'encounter-789',
+      event_datetime: new Date().toISOString(),
+      code: 'CODE123',
+      description: 'Sample description',
+      reasonForRejection: 'No reason',
+      raf: 'RAF456',
+      alternateCodes: ['ALT123'],
+      parentCodesCount: 5
+    };
+
+    handleAddEventData("Existing-Codes-Removed-From-Summary", exampleMetadata);
   };
 
   const handleClose = () => {
@@ -259,6 +272,22 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
         updateVal = codeList;
         setSelectedExistingcode(codeList);
 
+        const exampleMetadata = {
+          identifier: 'provider-uuid-123',
+          provider_name: 'Dr. John Doe',
+          patient_id: 'patient-uuid-456',
+          encounterId: 'encounter-789',
+          event_datetime: new Date().toISOString(),
+          code: 'CODE123',
+          description: 'Sample description',
+          reasonForRejection: 'No reason',
+          raf: 'RAF456',
+          alternateCodes: ['ALT123'],
+          parentCodesCount: 5
+        };
+
+        handleAddEventData("Existing-Codes-Removed-From-Summary", exampleMetadata);
+
       } else {
 
         codeList = {
@@ -272,7 +301,21 @@ export const ExistingConditions = ({ sessionObject , handleAddEventData }) => {
             : [codeList];
         setSelectedExistingcode(updateVal);
 
-        addAuditLog1("Existing Code Accepted", item?.code, item?.value ? item?.value : item?.info?.value,);
+        const exampleMetadata = {
+          identifier: 'provider-uuid-123',
+          provider_name: tabs['patient_dashboard_summary_screen'],
+          patient_id: 'patient-uuid-456',
+          encounterId: 'encounter-789',
+          event_datetime: new Date().toISOString(),
+          code:  item?.code,
+          description: item?.value ? item?.value : item?.info?.value,
+          reasonForRejection: 'No reason',
+          raf: 'RAF456',
+          alternateCodes: ['ALT123'],
+          parentCodesCount: 5
+        };
+
+        handleAddEventData("Existing-Codes-Add-In-Summary", exampleMetadata);
       }
 
       sessionObject = {

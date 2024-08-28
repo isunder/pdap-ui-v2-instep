@@ -58,7 +58,7 @@ import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import SubmitModal from "../../components/SubmitModal/SubmitModal";
 import { addAuditLog1, getAuditLog1, addAuditLog2, getAuditLog2 } from "../../utils/indexedDb";
-import fetchAuditLogs from "../../redux/userSlice/auditLogSlice";
+import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
 import { isSlugOrJwt } from "../../utils/helper";
 
 const StyledText = styled("Box")(() => ({
@@ -121,14 +121,14 @@ export const Codes = () => {
   const urlParams = new URLSearchParams(queryString);
   const slug = isSlugOrJwt();
   const theme = useTheme();
-
+  const { user } = useSelector((state) => state);
   const [openSubmitModal, setOpenSubmitModal] = useState();
   const [closeSubmitModal, setCloseSubmitModal] = useState(false);
   const { state, setState } = useAppContext();
   const [codesDataLoaded, setCodesDataLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalSubmit, setIsModalSubmit] = useState(false);
-
+  const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
   const sessionObject = JSON.parse(
     localStorage.getItem(`sessionObject_${userDetail?.mrn}`)
@@ -394,7 +394,12 @@ export const Codes = () => {
 
 
   const processEventData = async () => {
+
+
     for (const item of eventData) {
+
+      dispatch(fetchAuditLogs([{ event_type: item.event_type, metadata: item.metadata }]));
+
       try {
         const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
 
@@ -409,6 +414,25 @@ export const Codes = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const payload = {
+      eventType: "LAUNCH_SUCCESS",
+      metadata: {
+        identifier: tabs?.["id_user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: new Date().toISOString(),
+        code: "J90I",
+        description: "Launch Successfull",
+        reasonForRejection: "",
+        raf: "3.39",
+        alternateCodes: [],
+      }
+    }
+    dispatch(fetchAuditLogs([payload]));
+  }, []); // Include dependencies if they might change
+
 
   useEffect(() => {
     processEventData();
@@ -576,6 +600,7 @@ export const Codes = () => {
   ]);
 
   const { summary } = useSelector((state) => state.user.data);
+
   // const localData =
   const existingConditionNew = useSelector((state) => state.user.data.existingCondition);
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
@@ -595,35 +620,38 @@ export const Codes = () => {
       code: "Suspects",
       codeCount: summary?.suspect_conditions_count,
       problemList: "Review Potential diagnoses",
-      container: <Suspects sessionObject={sessionObject} />,
+      container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
     {
       key: 3,
       code: "Codes not in problem list",
       codeCount: summary?.recapture_codes_count,
       problemList: "Update Problem List",
-      container: <CodesNotList sessionObject={sessionObject} />,
+      container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
     {
       key: 4,
       code: "Addressed Codes",
       codeCount: summary?.addressed_codes_count,
-      container: <AddressedCodes sessionObject={sessionObject} />,
+      container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
     {
       key: 5,
       code: "Additional diagnoses",
       codeCount: summary?.duplicate_codes_count,
-      container: <DuplicateCodes sessionObject={sessionObject} />,
+      container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
 
     {
       key: 6,
       code: "Deleted Codes / Conditions",
       codeCount: summary?.deleted_codes_count,
-      container: <DeletedCodes sessionObject={sessionObject} />,
+      container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
   ];
+
+
+  console.log(user, "bshfjdsjddfgdf")
 
   const handleDelete = (item, key) => {
     let newSessionObject = {};
@@ -2820,6 +2848,7 @@ export const Codes = () => {
             </Grid>
           </Grid>
         </Container>
+
       </Box>
 
       <SubmitModal
