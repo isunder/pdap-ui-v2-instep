@@ -431,12 +431,12 @@ export const Codes = () => {
       }
     }
     dispatch(fetchAuditLogs([payload]));
-  }, []); // Include dependencies if they might change
+  }, []); 
 
 
   useEffect(() => {
     processEventData();
-    console.log(eventData, "eventData");
+ 
   }, [eventData]);
 
 
@@ -650,8 +650,6 @@ export const Codes = () => {
     },
   ];
 
-
-  console.log(user, "bshfjdsjddfgdf")
 
   const handleDelete = (item, key) => {
     let newSessionObject = {};
