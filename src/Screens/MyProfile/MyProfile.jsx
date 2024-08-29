@@ -62,7 +62,6 @@ export const MyProfile = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
   const slug = isSlugOrJwt();
   const tabs = TabsSlag();
   const { doctorDetail } = useSelector(state => state.doctor.data);

@@ -415,7 +415,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const params = window.location.pathname;
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+ 
 
   const slug = isSlugOrJwt();
   useEffect(() => {

@@ -140,7 +140,7 @@ export const History = () => {
   const [open1, setOpen] = React.useState(true);
   const params = window.location.pathname
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+  
   const slug = isSlugOrJwt();
 
   useEffect(() => {

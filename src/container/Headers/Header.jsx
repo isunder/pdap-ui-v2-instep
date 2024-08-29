@@ -199,7 +199,7 @@ export const Header = ({ sessionObject }) => {
                     <StyleLogo
                       onClick={() => {
                         getActiveTab(0);
-                        navigate(`/?slug=${slug}`);
+                        navigate(`/`);
                       }}
                     >
                       <DTLogo width="100%" height="100%" />
@@ -608,12 +608,12 @@ export const Header = ({ sessionObject }) => {
   );
 };
 const routes = [
-  { name: "Codes", routesPath: "/", path: `/?slug=${slug}` },
-  { name: "History", routesPath: "/history/", path: `/history/?slug=${slug}` },
+  { name: "Codes", routesPath: "/", path: `/` },
+  { name: "History", routesPath: "/history", path: `/history` },
   {
     name: "My Profile",
-    routesPath: "/my-profile/",
-    path: `/my-profile/?slug=${slug}`,
+    routesPath: "/my-profile",
+    path: `/my-profile`,
   },
 ];
 

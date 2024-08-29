@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './NotFound.css'
 
 export const NotFound = () => {
+
+  useEffect(() => {
+    // Clear session storage when the component mounts
+    sessionStorage.clear();
+
+    // Optionally, you can add cleanup logic here if needed
+    return () => {
+      // Cleanup logic if any
+    };
+  }, []);
+
   return (
     <div id="notfound">
       <div className="notfound">

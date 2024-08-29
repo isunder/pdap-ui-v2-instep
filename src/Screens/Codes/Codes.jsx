@@ -118,7 +118,6 @@ export const Codes = () => {
   const tabs = TabsSlag();
   const dispatch = useDispatch();
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
   const slug = isSlugOrJwt();
   const theme = useTheme();
   const { user } = useSelector((state) => state);
@@ -361,6 +360,15 @@ export const Codes = () => {
   useEffect(() => {
 
   }, [setOpenSubmitModal])
+
+  useEffect(() => {
+    window.addEventListener('load', () => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('slug');
+      url.searchParams.delete('jwt');
+      window.history.replaceState({}, '', url);
+    });
+  }, [])
 
 
   const toggleDrawer = (anchor, open) => (event) => {

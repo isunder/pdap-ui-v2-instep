@@ -4,12 +4,19 @@ export function isSlugOrJwt() {
   const slug = urlParams.get("slug");
   const jwt = urlParams.get("jwt");
 
+  sessionStorage.setItem("newslug", slug);
+  sessionStorage.setItem("newjwt", jwt);
+  
+  const localslug = sessionStorage.getItem("newslug") || null;
+  const localjwt = sessionStorage.getItem("newjwt") || null;
+  
+
   let auth = {};
 
-  if (slug) {
-    auth = {isJwt: false, token: slug};
-  } else if (jwt) {
-    auth = {isJwt: true, token: jwt};
+  if (localslug) {
+    auth = {isJwt: false, token: localslug};
+  } else if (localjwt) {
+    auth = {isJwt: true, token: localjwt};
   }
   
   return auth;
@@ -19,7 +26,7 @@ const auth = isSlugOrJwt();
 
 export function getSlug() {
   return auth.isJwt ? undefined : auth.token;
-}
+} 
 
 export function getToken() {
   return auth.isJwt ? auth.token : undefined;
