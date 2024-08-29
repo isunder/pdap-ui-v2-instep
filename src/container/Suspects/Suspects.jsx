@@ -97,7 +97,14 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
     otherText?.length > 0 && setOtherText(null);
     setError({});
     setDeleteOpen(false);
-    addAuditLog1("Suspect Code Close", selectedRejectData, rejectReason);
+    const exampleMetadata = {event_type: "SUSPECT_REJECTION_REASON_CANCEL", metadata : {
+      identifier: tabs?.["id_user"]?.value || "",
+      provider_name: doctorDetail?.doctor_name || "",
+      patient_id: user?.data?.userInfo?.mrn || "",
+      event_datetime: new Date().toISOString(),
+    }};
+
+    handleAddEventData(exampleMetadata)
   };
 
   const handleRemoveDeletedCode = (item) => {
