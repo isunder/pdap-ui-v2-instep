@@ -51,7 +51,6 @@ request.onupgradeneeded = (event) => {
 
 request.onsuccess = function(event) {
   db = event.target.result;
-  console.log('Database opened successfully');
 };
 
 request.onerror = function(event) {
@@ -71,7 +70,6 @@ export function addAuditLog1(data) {
   let request = objectStore.add({ id: auditKey, ...data });
 
   request.onsuccess = function() {
-    console.log('Audit log added to logs1 successfully');
   };
 
   request.onerror = function(event) {
@@ -115,7 +113,6 @@ export function addAuditLog2(item) {
   let request = objectStore.put({...item });
 
   request.onsuccess = function() {
-    console.log('Audit log added to logs2 successfully');
   };
 
   request.onerror = function(event) {
