@@ -389,9 +389,11 @@ export const Codes = () => {
     fetchEventData();
   }, []);
 
-  const handleAddEventData = async (event_type, metadata) => {
+  console.log(eventData, " allEventData")
+
+  const handleAddEventData = async (data) => {
     try {
-      await addAuditLog1(event_type, metadata);
+      await addAuditLog1(data);
       const allEventData = await getAuditLog1();
       setEventData(allEventData);
     } catch (error) {
@@ -406,7 +408,8 @@ export const Codes = () => {
         const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
         if (!existingItem) {
           try {
-            await dispatch(fetchAuditLogs([{ event_type: item.event_type, metadata: item.metadata }]));
+            const { id, ...itemWithoutId } = item;
+            await dispatch(fetchAuditLogs([itemWithoutId]));
             await addAuditLog2(item);
             const updatedEventData = await getAuditLog2();
             setNewEventData(updatedEventData);

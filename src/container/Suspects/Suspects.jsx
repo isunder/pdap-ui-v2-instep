@@ -150,18 +150,20 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
     setSelectedRejectData(item);
 
     const exampleMetadata = {
-      identifier: tabs?.["id_user"]?.value || "",
-      provider_name: doctorDetail?.doctor_name || "",
-      patient_id: user?.data?.userInfo?.mrn || "",
-      event_datetime: new Date().toISOString(),
-      code: item?.code,
-      description: item?.definition,
-      reasonForRejection: rejectReason,
-      raf: item?.total_weight,
-      alternateCodes: "",
+      event_type: "SUSPECT_REJECTION_REASON_SELECTION", metadata: {
+        identifier: tabs?.["id_user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: new Date().toISOString(),
+        code: item?.code,
+        description: item?.definition,
+        reasonForRejection: rejectReason,
+        raf: item?.total_weight,
+        alternateCodes: "",
+      }
     };
 
-    handleAddEventData("SUSPECT_REJECTION_REASON_SELECTION", exampleMetadata);
+    handleAddEventData(exampleMetadata);
 
 
 
@@ -252,18 +254,20 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
         setDeleteOpen(false);
 
         const exampleMetadata = {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: code,
-          // description: item?.definition,
-          reasonForRejection: rejectReason,
-          // raf: total_weight,
-          alternateCodes: "",
+          event_type: "SUSPECT_REJECTION_REASON_DELETION", metadata: {
+            identifier: tabs?.["id_user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: new Date().toISOString(),
+            code: code,
+            // description: item?.definition,
+            reasonForRejection: rejectReason,
+            // raf: total_weight,
+            alternateCodes: "",
+          }
         };
 
-        handleAddEventData("SUSPECT_REJECTION_REASON_DELETION", exampleMetadata);
+        handleAddEventData(exampleMetadata);
       }
     }
     setButtonDisable(true);
@@ -316,18 +320,20 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
         updateVal = codeList;
 
         const exampleMetadata = {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: code,
-          description: item?.definition,
-          reasonForRejection: rejectReason,
-          raf: item?.total_weight,
-          alternateCodes: "",
+          event_type: "SUSPECT_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["id_user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: new Date().toISOString(),
+            code: code,
+            description: item?.definition,
+            reasonForRejection: rejectReason,
+            raf: item?.total_weight,
+            alternateCodes: "",
+          }
         };
 
-        handleAddEventData("SUSPECT_ACCEPT_CODE", exampleMetadata);
+        handleAddEventData(exampleMetadata);
 
 
       } else {
@@ -343,18 +349,20 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
             : [codeList];
 
         const exampleMetadata = {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: code,
-          description: item?.definition,
-          reasonForRejection: rejectReason,
-          raf: item?.total_weight,
-          alternateCodes: "",
+          event_type: "SUSPECT_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["id_user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: new Date().toISOString(),
+            code: code,
+            description: item?.definition,
+            reasonForRejection: rejectReason,
+            raf: item?.total_weight,
+            alternateCodes: "",
+          }
         };
 
-        handleAddEventData("SUSPECT_ACCEPT_CODE", exampleMetadata);
+        handleAddEventData(exampleMetadata);
 
 
       }
@@ -549,8 +557,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                     {index + 1}. {item.SuspectedCondition}
                     {item.definition?.length > 0 && (
                       <ReadMore
-                      tabs={tabs}
-                      user={user}
+                        tabs={tabs}
+                        user={user}
                         item={item}
                         handleAddEventData={handleAddEventData}
                         length={0}

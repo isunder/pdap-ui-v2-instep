@@ -98,7 +98,10 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
       let code = result[item];
       setHandleFunction(true);
       setSelectedRejectData(code);
-      const exampleMetadata = {
+
+      const exampleMetadata ={
+        event_type : "EXISTING_CONDITION_REJECT_ALL_CODES", 
+        metadata: {
         identifier: tabs?.["id_user"]?.value || "",
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
@@ -108,12 +111,14 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
         reasonForRejection: '',
         raf: item?.info?.total_weight,
         alternateCodes: item?.info?.alternate_codes,
-      };
+      }};
 
-      handleAddEventData("EXISTING_CONDITION_REJECT_ALL_CODES", exampleMetadata);
+      handleAddEventData(exampleMetadata);
     } else {
       setSelectedRejectData(item);
-      const exampleMetadata = {
+      const exampleMetadata = 
+      {event_type : "EXISTING_CONDITION_REJECT-CODE" ,
+      metadata: {
         identifier: tabs?.["id_user"]?.value || "",
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
@@ -123,9 +128,9 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
         reasonForRejection: '',
         raf: item?.info?.total_weight,
         alternateCodes: item?.info?.alternate_codes,
-      };
+      }};
 
-      handleAddEventData("EXISTING_CONDITION_REJECT-CODE", exampleMetadata);
+      handleAddEventData(exampleMetadata);
     }
     setSelectedMainCode(code);
     setDeleteOpen(true);
@@ -245,7 +250,8 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
     }
 
     const exampleMetadata = {
-      identifier: tabs?.["id_user"]?.value || "",
+      event_type : "EXISTING_CONDITION_REJECT-CODE" ,
+      metadata : {identifier: tabs?.["id_user"]?.value || "",
       provider_name: doctorDetail?.doctor_name || "",
       patient_id: user?.data?.userInfo?.mrn || "",
       event_datetime: new Date().toISOString(),
@@ -253,10 +259,10 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
       description: item?.value ? item?.value : item?.info?.value,
       reasonForRejection: '',
       raf: item?.info?.total_weight,
-      alternateCodes: item?.info?.alternate_codes,
+      alternateCodes: item?.info?.alternate_codes}
     };
 
-    handleAddEventData("EXISTING_CONDITION_REJECT-CODE", exampleMetadata);
+    handleAddEventData(exampleMetadata);
   };
 
   const handleClose = () => {
@@ -298,7 +304,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
         updateVal = codeList;
         setSelectedExistingcode(codeList);
 
-        const exampleMetadata = {
+        const exampleMetadata = {event_type: "EXISTING_CONDITION_ACCEPT_CODE", metadata : {
           identifier: tabs?.["id_user"]?.value || "",
           provider_name: doctorDetail?.doctor_name || "",
           patient_id: user?.data?.userInfo?.mrn || "",
@@ -308,9 +314,9 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
           reasonForRejection: '',
           raf: item?.info?.total_weight,
           alternateCodes: item?.info?.alternate_codes,
-        };
+        }};
 
-        handleAddEventData("EXISTING_CONDITION_ACCEPT_CODE", exampleMetadata);
+        handleAddEventData( exampleMetadata);
 
       } else {
 
@@ -325,7 +331,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
             : [codeList];
         setSelectedExistingcode(updateVal);
 
-        const exampleMetadata = {
+        const exampleMetadata = {event_type : "EXISTING_CONDITION_ACCEPT_CODE", metadata : {
           identifier: tabs?.["id_user"]?.value || "",
           provider_name: doctorDetail?.doctor_name || "",
           patient_id: user?.data?.userInfo?.mrn || "",
@@ -335,9 +341,9 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
           reasonForRejection: '',
           raf: item?.info?.total_weight,
           alternateCodes: item?.info?.alternate_codes,
-        };
+        }};
 
-        handleAddEventData("EXISTING_CONDITION_ACCEPT_CODE", exampleMetadata);
+        handleAddEventData(exampleMetadata);
       }
 
       sessionObject = {
@@ -499,7 +505,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
     });
     setExistingCondition(changeData);
 
-    const exampleMetadata = {
+    const exampleMetadata ={ event_type : changeData ? "EXISTING_CONDITION_SEE_ALL_DETAILS" : "EXISTING_CONDITION_SEE_LESS_DETAILS" , metadata: {
       identifier: tabs?.["id_user"]?.value || "",
       provider_name: doctorDetail?.doctor_name || "",
       patient_id: user?.data?.userInfo?.mrn || "",
@@ -509,9 +515,9 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
       reasonForRejection: '',
       raf: "",
       alternateCodes: "",
-    };
+    }};
 
-    handleAddEventData((changeData ? "EXISTING_CONDITION_SEE_ALL_DETAILS" : "EXISTING_CONDITION_SEE_LESS_DETAILS"), exampleMetadata);
+    handleAddEventData( exampleMetadata);
 
   };
 
@@ -529,7 +535,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
 
     setExistingCondition(changeData);
 
-    const exampleMetadata = {
+    const exampleMetadata = {event_type : "EXISTING_CONDITION_SEE_ALL_DETAILS", metadata : {
       identifier: tabs?.["id_user"]?.value || "",
       provider_name: doctorDetail?.doctor_name || "",
       patient_id: user?.data?.userInfo?.mrn || "",
@@ -539,9 +545,9 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
       reasonForRejection: '',
       raf: "",
       alternateCodes: "",
-    };
+    }};
 
-    handleAddEventData("EXISTING_CONDITION_SEE_ALL_DETAILS", exampleMetadata);
+    handleAddEventData( exampleMetadata);
 
   };
 
@@ -759,7 +765,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
         setRejectReason("Insufficient Proof");
       otherText?.length > 0 && setOtherText(null);
 
-      const exampleMetadata = {
+      const exampleMetadata = {event_type : "EXISTING_CONDITION_REJECTION_REASON_SELECTION", metadata : {
         identifier: tabs?.["id_user"]?.value || "",
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
@@ -769,9 +775,9 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
         reasonForRejection: reason,
         raf: "",
         alternateCodes: "",
-      };
+      }};
   
-      handleAddEventData("EXISTING_CONDITION_REJECTION_REASON_SELECTION", exampleMetadata);
+      handleAddEventData( exampleMetadata);
 
     }
     setButtonDisable(true);
