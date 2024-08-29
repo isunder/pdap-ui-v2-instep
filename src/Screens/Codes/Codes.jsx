@@ -1971,7 +1971,7 @@ export const Codes = () => {
                                     }}
                                     className="codes-act-header-count-text"
                                   >
-                                    {item?.codeCount}
+                                    {item?.codeCount || 0}
                                   </Typography>
                                 </Box>
                               </StyledText>
@@ -2566,7 +2566,7 @@ export const Codes = () => {
                     >
                       <Grid item lg={9} md={9} sm={10} xs={12}>
                         <Typography className="HeadSummary">
-                          Code not in problem list
+                          Codes not in problem list
                         </Typography>
                       </Grid>
                       {!(
