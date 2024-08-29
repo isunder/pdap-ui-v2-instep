@@ -389,8 +389,6 @@ export const Codes = () => {
     fetchEventData();
   }, []);
 
-  console.log(eventData, " allEventData")
-
   const handleAddEventData = async (data) => {
     try {
       await addAuditLog1(data);
@@ -405,7 +403,7 @@ export const Codes = () => {
   useEffect(() => {
     const processEventData = async () => {
       for (const item of eventData) {
-        const existingItem = newEventData.find(existingItem => existingItem.key === item.key);
+        const existingItem = newEventData.find(existingItem => existingItem.id === item.id);
         if (!existingItem) {
           try {
             const { id, ...itemWithoutId } = item;
@@ -1888,6 +1886,7 @@ export const Codes = () => {
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {!isModalSubmit && codesData?.map((item, i) => (
                     <MuiAccordions
+                      handleAddEventData={handleAddEventData}
                       tabs={tabs}
                       panel={item?.key}
                       name={item?.code}

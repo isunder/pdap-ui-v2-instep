@@ -277,7 +277,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
 
   const handleClickOpen1 = (item) => {
 
-    console.log(userDetail, item, "bjidbjfkjbdfbdfbf")
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)

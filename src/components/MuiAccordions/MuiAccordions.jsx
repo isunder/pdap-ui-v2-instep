@@ -4,6 +4,8 @@ import MuiAccordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -36,24 +38,103 @@ export const MuiAccordions = (props) => {
     header,
     expandIcon,
     children,
+    handleAddEventData
   } = props;
 
+  const { doctorDetail } = useSelector((state) => state?.doctor?.data);
+  const { user } = useSelector((state) => state);
+
+  const exampleMetadata1 = {
+    event_type: "EXISTING_CONDITION_EXPAND",
+    metadata: {
+      identifier: tabs?.["id_user"]?.value || "",
+      provider_name: doctorDetail?.doctor_name || "",
+      patient_id: user?.data?.userInfo?.mrn || "",
+      event_datetime: new Date().toISOString(),
+
+    }
+  }
+
+  const exampleMetadata2 = {
+    event_type: "SUSPECT_EXPAND",
+    metadata: {
+      identifier: tabs?.["id_user"]?.value || "",
+      provider_name: doctorDetail?.doctor_name || "",
+      patient_id: user?.data?.userInfo?.mrn || "",
+      event_datetime: new Date().toISOString(),
+
+    }
+  }
+
+  const exampleMetadata3 = {
+    event_type: "EXISTING_CONDITION_COLLAPSE",
+    metadata: {
+      identifier: tabs?.["id_user"]?.value || "",
+      provider_name: doctorDetail?.doctor_name || "",
+      patient_id: user?.data?.userInfo?.mrn || "",
+      event_datetime: new Date().toISOString(),
+
+    }
+  }
+
+  const exampleMetadata4 = {
+    event_type: "SUSPECT_COLLAPSE",
+    metadata: {
+      identifier: tabs?.["id_user"]?.value || "",
+      provider_name: doctorDetail?.doctor_name || "",
+      patient_id: user?.data?.userInfo?.mrn || "",
+      event_datetime: new Date().toISOString(),
+
+    }
+  }
+
   const handleChange = (panel) => (_, isExpanded) => {
+
+
+
     if (panel) {
       let codeValue = "";
       if (isExpanded) {
         if (code) codeValue = `${code}-`
-       
       }
       else {
-       
+
       }
       setExpanded(isExpanded ? panel : false);
+
     } else {
       setSingleExpand(!singleExpand);
     }
+
+
+    if (isExpanded == true && panel == 1) {
+      auditdata(exampleMetadata1);
+    }
+
+    else if (isExpanded == true && panel == 2) {
+      auditdata(exampleMetadata2);
+    }
+
+    else if (isExpanded == false && panel == 1) {
+      auditdata(exampleMetadata3);
+    }
+
+    else if (isExpanded == false && panel == 2) {
+      auditdata(exampleMetadata4);
+    }
+
   };
 
+  const auditdata = (data) => {
+
+    if (typeof handleAddEventData !== 'function') {
+      console.error('handleAddEventData is not a function');
+    }
+
+    else {
+      handleAddEventData(data);
+    }
+  }
 
   return (
     <Accordion

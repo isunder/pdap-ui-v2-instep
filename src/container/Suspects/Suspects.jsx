@@ -144,7 +144,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const handleClickOpen = (item) => {
 
-    console.log(item, "bdhubsjhbvjb")
     setButtonDisable(false)
     setDeleteOpen(true);
     setSelectedRejectData(item);
