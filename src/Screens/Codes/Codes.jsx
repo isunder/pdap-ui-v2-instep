@@ -187,7 +187,7 @@ export const Codes = () => {
     },
   ];
 
-  
+
   const objToArr = (state) => {
     let array = [];
     state &&
@@ -417,6 +417,7 @@ export const Codes = () => {
       await addAuditLog1(data);
       const allEventData = await getAuditLog1();
       setEventData(allEventData);
+      processEventData();
     } catch (error) {
       console.error('Error adding event data:', error);
     }
@@ -424,35 +425,33 @@ export const Codes = () => {
 
   localStorage.setItem("handleAddEventData", handleAddEventData)
 
-  useEffect(() => {
-    const processEventData = async () => {
-      console.log('eventData:----', eventData, 'newEventData:---', newEventData);
-      if (newEventData.length === 0) return;
-      for (const item of eventData) {
-        const exists = newEventData.find(existingItem => existingItem.id === item.id);
-        console.log(eventData, newEventData, "existingItem");
-        if (!exists) {
-          console.log(!exists, "!existingItem");
-          try {
-            const { id, ...itemWithoutId } = item;
 
-            await dispatch(fetchAuditLogs([itemWithoutId]));
-            await addAuditLog2(item);
+  const processEventData = async () => {
+    console.log('eventData:----', eventData, 'newEventData:---', newEventData);
+    if (newEventData.length === 0) return;
+    for (const item of eventData) {
+      const exists = newEventData.find(existingItem => existingItem.id === item.id);
+      console.log(eventData, newEventData, "existingItem");
+      if (!exists) {
+        console.log(!exists, "!existingItem");
+        try {
+          const { id, ...itemWithoutId } = item;
 
-            const updatedEventData = await getAuditLog2();
-            setNewEventData(updatedEventData);
-          } catch (error) {
-            console.error('Error processing event data:', error);
-          }
-        } else {
-          console.log(`Item with id ${item.id} already exists in newEventData, skipping API call.`);
+          await dispatch(fetchAuditLogs([itemWithoutId]));
+          await addAuditLog2(item);
+
+          const updatedEventData = await getAuditLog2();
+          setNewEventData(updatedEventData);
+        } catch (error) {
+          console.error('Error processing event data:', error);
         }
+      } else {
+        console.log(`Item with id ${item.id} already exists in newEventData, skipping API call.`);
       }
-    };
+    }
+  };
 
-    // Call the processEventData function
-    processEventData();
-  }, [eventData, newEventData]);
+
   // Added newEventData and dispatch to dependencies
 
 
