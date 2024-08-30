@@ -4,7 +4,6 @@ import { postApiHeaders } from "../../utils/helper";
 
 const queryString = window.location.search;
 
-
 const slug = sessionStorage.getItem("newslug") || null;
 const jwt = sessionStorage.getItem("newjwt") || null;
 

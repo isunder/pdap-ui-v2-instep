@@ -152,7 +152,7 @@ export const Codes = () => {
   );
 
   const [switchModal, setSwitchModal] = useState(true);
-
+  const { summary } = useSelector((state) => state.user.data);
   const [existingRejectCode, setExistingRejectCode] = useState([]);
   const [recaptureRejectCode, setRecaptureRejectCode] = useState([]);
   const [duplicateRejectCode, setDuplicateRejectCode] = useState([]);
@@ -186,6 +186,9 @@ export const Codes = () => {
       marginBottom: "8px",
     },
   ];
+
+
+
 
   const objToArr = (state) => {
     let array = [];
@@ -397,6 +400,20 @@ export const Codes = () => {
     fetchEventData();
   }, []);
 
+
+  // Fetch initial event data
+  useEffect(() => {
+    async function fetchEventData() {
+      try {
+        const data = await getAuditLog2();
+        setNewEventData(data);
+      } catch (error) {
+        console.error('Error fetching event data:', error);
+      }
+    }
+    fetchEventData();
+  }, []);
+
   const handleAddEventData = async (data) => {
     try {
       await addAuditLog1(data);
@@ -407,45 +424,74 @@ export const Codes = () => {
     }
   };
 
-  // Process and update event data
+  localStorage.setItem("handleAddEventData", handleAddEventData)
+
   useEffect(() => {
     const processEventData = async () => {
+      if (newEventData.length === 0) return;
       for (const item of eventData) {
-        const existingItem = newEventData.find(existingItem => existingItem.id === item.id);
-        if (!existingItem) {
+        const exists = newEventData.find(existingItem => existingItem.id === item.id);
+        if (!exists) {
           try {
             const { id, ...itemWithoutId } = item;
+
             await dispatch(fetchAuditLogs([itemWithoutId]));
             await addAuditLog2(item);
+
             const updatedEventData = await getAuditLog2();
             setNewEventData(updatedEventData);
           } catch (error) {
             console.error('Error processing event data:', error);
           }
+        } else {
         }
       }
     };
 
-    if (eventData.length > 0) {
-      processEventData();
-    }
-  }, [eventData, newEventData]); // Added newEventData and dispatch to dependencies
+    // Call the processEventData function
+    processEventData();
+  }, [eventData, newEventData]);
+  // Added newEventData and dispatch to dependencies
 
 
+  const currentUrl = window.location.href;
 
   useEffect(() => {
-    const payload = {
+    const identifier = tabs?.["id_user"]?.value || "";
+    const providerName = doctorDetail?.doctor_name || "";
+    const patientId = user?.data?.userInfo?.mrn || "";
+    const eventDateTime = new Date().toISOString();
+
+    const payloadSuccess = {
       event_type: "LAUNCH_SUCCESS",
       metadata: {
-        identifier: tabs?.["id_user"]?.value || "",
-        provider_name: doctorDetail?.doctor_name || "",
-        patient_id: user?.data?.userInfo?.mrn || "",
-        event_datetime: new Date().toISOString(),
-        description: "Launch Successfull",
+        identifier,
+        provider_name: providerName,
+        patient_id: patientId,
+        event_datetime: eventDateTime,
+        description: "Launch Successful",
       }
+    };
+
+    const payloadFailure = {
+      event_type: "LAUNCH_FAILURE",
+      metadata: {
+        identifier,
+        provider_name: providerName,
+        patient_id: patientId,
+        event_datetime: eventDateTime,
+        description: "Launch Failed",
+      }
+    };
+
+    if (currentUrl.includes("404")) {
+      dispatch(fetchAuditLogs([payloadFailure]));
+    } else if (currentUrl.includes("slug") || currentUrl.includes("jwt")) {
+      dispatch(fetchAuditLogs([payloadSuccess]));
     }
-    dispatch(fetchAuditLogs([payload]));
+
   }, []);
+
 
   const handleSubmitRedirect = async (tabs) => {
     setIsModalOpen(true);
@@ -603,7 +649,7 @@ export const Codes = () => {
     duplicateCodeReject,
   ]);
 
-  const { summary } = useSelector((state) => state.user.data);
+
 
   // const localData =
   const existingConditionNew = useSelector((state) => state.user.data.existingCondition);

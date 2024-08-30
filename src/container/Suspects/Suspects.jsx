@@ -97,12 +97,14 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
     otherText?.length > 0 && setOtherText(null);
     setError({});
     setDeleteOpen(false);
-    const exampleMetadata = {event_type: "SUSPECT_REJECTION_REASON_CANCEL", metadata : {
-      identifier: tabs?.["id_user"]?.value || "",
-      provider_name: doctorDetail?.doctor_name || "",
-      patient_id: user?.data?.userInfo?.mrn || "",
-      event_datetime: new Date().toISOString(),
-    }};
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECTION_REASON_CANCEL", metadata: {
+        identifier: tabs?.["id_user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: new Date().toISOString(),
+      }
+    };
 
     handleAddEventData(exampleMetadata)
   };
@@ -145,6 +147,24 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
       );
       setRejectSuspectCode(codeList);
     }
+
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECT_CONDITION",
+      metadata: {
+        identifier: tabs?.["id_user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: new Date().toISOString(),
+        code: item?.code,
+        description: item?.value ? item?.value : item?.info?.value,
+        reasonForRejection: '',
+        raf: item?.info?.total_weight,
+        alternateCodes: item?.info?.alternate_codes
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
+
   };
 
   const [buttonDisable, setButtonDisable] = useState(false)
@@ -415,7 +435,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const params = window.location.pathname;
   const queryString = window.location.search;
- 
+
 
   const slug = isSlugOrJwt();
   useEffect(() => {

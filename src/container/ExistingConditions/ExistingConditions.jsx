@@ -119,7 +119,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
       setSelectedRejectData(item);
       const exampleMetadata =
       {
-        event_type: "EXISTING_CONDITION_REJECT-CODE",
+        event_type: "EXISTING_CONDITION_REJECTION_REASON_SELECTION",
         metadata: {
           identifier: tabs?.["id_user"]?.value || "",
           provider_name: doctorDetail?.doctor_name || "",
@@ -788,7 +788,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
       otherText?.length > 0 && setOtherText(null);
 
       const exampleMetadata = {
-        event_type: "EXISTING_CONDITION_REJECTION_REASON_SELECTION", metadata: {
+        event_type: "EXISTING_CONDITION_REJECTION_REASON_DELETION", metadata: {
           identifier: tabs?.["id_user"]?.value || "",
           provider_name: doctorDetail?.doctor_name || "",
           patient_id: user?.data?.userInfo?.mrn || "",
