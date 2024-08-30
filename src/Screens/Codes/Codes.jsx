@@ -389,8 +389,9 @@ export const Codes = () => {
   useEffect(() => {
     async function fetchEventData() {
       try {
-        const data = await getAuditLog1();
-        setEventData(data);
+        const [data1, data2] = await Promise.all([getAuditLog1(), getAuditLog2()]);
+        setEventData(data1);
+        setNewEventData(data2);
       } catch (error) {
         console.error('Error fetching event data:', error);
       }
@@ -399,60 +400,48 @@ export const Codes = () => {
   }, []);
 
 
-  // Fetch initial event data
-  useEffect(() => {
-    async function fetchEventData() {
-      try {
-        const data = await getAuditLog2();
-        setNewEventData(data);
-      } catch (error) {
-        console.error('Error fetching event data:', error);
-      }
-    }
-    fetchEventData();
-  }, []);
+
 
   const handleAddEventData = async (data) => {
     try {
       await addAuditLog1(data);
       const allEventData = await getAuditLog1();
       setEventData(allEventData);
-      processEventData();
     } catch (error) {
       console.error('Error adding event data:', error);
     }
   };
 
-  localStorage.setItem("handleAddEventData", handleAddEventData)
+  const removeObjectById = (arr, id) => {
+    const index = arr.findIndex(item => item.id === id);
+    if (index !== -1) {
+      arr.splice(index, 1);
+    }
+  };
 
+  useEffect(() => {
+    const processEventData = async () => {
+      console.log('eventData:', eventData, 'newEventData:', newEventData);
+      const itemsToProcess = eventData.filter(item => !newEventData.some(existingItem => existingItem.id === item.id));
 
-  const processEventData = async () => {
-    console.log('eventData:----', eventData, 'newEventData:---', newEventData);
-    for (const item of eventData) {
-      const exists = newEventData.find(existingItem => existingItem.id === item.id);
-      console.log(eventData, newEventData, "existingItem");
-      if (!exists) {
-        console.log(!exists, "!existingItem");
+      for (const item of itemsToProcess) {
         try {
           const { id, ...itemWithoutId } = item;
-
           await dispatch(fetchAuditLogs([itemWithoutId]));
           await addAuditLog2(item);
-
+          removeObjectById(eventData, id)
           const updatedEventData = await getAuditLog2();
           setNewEventData(updatedEventData);
         } catch (error) {
           console.error('Error processing event data:', error);
         }
-      } else {
-        console.log(`Item with id ${item.id} already exists in newEventData, skipping API call.`);
       }
+    };
+
+    if (eventData.length > 0) {
+      processEventData();
     }
-  };
-
-
-  // Added newEventData and dispatch to dependencies
-
+  }, [eventData]);
 
 
   useEffect(() => {
