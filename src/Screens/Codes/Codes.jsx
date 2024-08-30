@@ -152,7 +152,7 @@ export const Codes = () => {
   );
 
   const [switchModal, setSwitchModal] = useState(true);
-  const { summary } = useSelector((state) => state.user.data);
+
   const [existingRejectCode, setExistingRejectCode] = useState([]);
   const [recaptureRejectCode, setRecaptureRejectCode] = useState([]);
   const [duplicateRejectCode, setDuplicateRejectCode] = useState([]);
@@ -187,9 +187,7 @@ export const Codes = () => {
     },
   ];
 
-
-
-
+  
   const objToArr = (state) => {
     let array = [];
     state &&
@@ -428,65 +426,50 @@ export const Codes = () => {
 
   useEffect(() => {
     const processEventData = async () => {
+      console.log('eventData:----', eventData, 'newEventData:---', newEventData);
+      if (newEventData.length === 0) return;
       for (const item of eventData) {
         const exists = newEventData.find(existingItem => existingItem.id === item.id);
+        console.log(eventData, newEventData, "existingItem");
         if (!exists) {
+          console.log(!exists, "!existingItem");
           try {
             const { id, ...itemWithoutId } = item;
+
             await dispatch(fetchAuditLogs([itemWithoutId]));
-            addAuditLog2(item);
+            await addAuditLog2(item);
+
             const updatedEventData = await getAuditLog2();
             setNewEventData(updatedEventData);
           } catch (error) {
             console.error('Error processing event data:', error);
           }
         } else {
+          console.log(`Item with id ${item.id} already exists in newEventData, skipping API call.`);
         }
       }
     };
 
+    // Call the processEventData function
     processEventData();
   }, [eventData, newEventData]);
+  // Added newEventData and dispatch to dependencies
 
 
-  const currentUrl = window.location.href;
 
   useEffect(() => {
-    const identifier = tabs?.["id_user"]?.value || "";
-    const providerName = doctorDetail?.doctor_name || "";
-    const patientId = user?.data?.userInfo?.mrn || "";
-    const eventDateTime = new Date().toISOString();
-
-    const payloadSuccess = {
+    const payload = {
       event_type: "LAUNCH_SUCCESS",
       metadata: {
-        identifier,
-        provider_name: providerName,
-        patient_id: patientId,
-        event_datetime: eventDateTime,
-        description: "Launch Successful",
+        identifier: tabs?.["id_user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: new Date().toISOString(),
+        description: "Launch Successfull",
       }
-    };
-
-    const payloadFailure = {
-      event_type: "LAUNCH_FAILURE",
-      metadata: {
-        identifier,
-        provider_name: providerName,
-        patient_id: patientId,
-        event_datetime: eventDateTime,
-        description: "Launch Failed",
-      }
-    };
-
-    if (currentUrl.includes("404")) {
-      handleAddEventData(payloadFailure);
-    } else if (currentUrl.includes("slug") || currentUrl.includes("jwt")) {
-      handleAddEventData(payloadSuccess);
     }
-
+    dispatch(fetchAuditLogs([payload]));
   }, []);
-
 
   const handleSubmitRedirect = async (tabs) => {
     setIsModalOpen(true);
@@ -644,7 +627,7 @@ export const Codes = () => {
     duplicateCodeReject,
   ]);
 
-
+  const { summary } = useSelector((state) => state.user.data);
 
   // const localData =
   const existingConditionNew = useSelector((state) => state.user.data.existingCondition);
