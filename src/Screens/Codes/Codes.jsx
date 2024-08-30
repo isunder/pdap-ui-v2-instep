@@ -428,16 +428,13 @@ export const Codes = () => {
 
   useEffect(() => {
     const processEventData = async () => {
-      if (newEventData.length === 0) return;
       for (const item of eventData) {
         const exists = newEventData.find(existingItem => existingItem.id === item.id);
         if (!exists) {
           try {
             const { id, ...itemWithoutId } = item;
-
             await dispatch(fetchAuditLogs([itemWithoutId]));
-            await addAuditLog2(item);
-
+            addAuditLog2(item);
             const updatedEventData = await getAuditLog2();
             setNewEventData(updatedEventData);
           } catch (error) {
@@ -448,10 +445,8 @@ export const Codes = () => {
       }
     };
 
-    // Call the processEventData function
     processEventData();
   }, [eventData, newEventData]);
-  // Added newEventData and dispatch to dependencies
 
 
   const currentUrl = window.location.href;
@@ -485,9 +480,9 @@ export const Codes = () => {
     };
 
     if (currentUrl.includes("404")) {
-      dispatch(fetchAuditLogs([payloadFailure]));
+      handleAddEventData(payloadFailure);
     } else if (currentUrl.includes("slug") || currentUrl.includes("jwt")) {
-      dispatch(fetchAuditLogs([payloadSuccess]));
+      handleAddEventData(payloadSuccess);
     }
 
   }, []);
