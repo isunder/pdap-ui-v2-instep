@@ -428,7 +428,6 @@ export const Codes = () => {
 
   const processEventData = async () => {
     console.log('eventData:----', eventData, 'newEventData:---', newEventData);
-    if (newEventData.length === 0) return;
     for (const item of eventData) {
       const exists = newEventData.find(existingItem => existingItem.id === item.id);
       console.log(eventData, newEventData, "existingItem");
