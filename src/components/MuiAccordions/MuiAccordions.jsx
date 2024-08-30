@@ -6,6 +6,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { convertDate } from "../../utils/helper";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -47,10 +48,10 @@ export const MuiAccordions = (props) => {
   const exampleMetadata1 = {
     event_type: "EXISTING_CONDITION_EXPAND",
     metadata: {
-      identifier: tabs?.["id_user"]?.value || "",
+      identifier: tabs?.["user"]?.value || "",
       provider_name: doctorDetail?.doctor_name || "",
       patient_id: user?.data?.userInfo?.mrn || "",
-      event_datetime: new Date().toISOString(),
+      event_datetime: convertDate(new Date().toISOString()),
 
     }
   }
@@ -58,10 +59,10 @@ export const MuiAccordions = (props) => {
   const exampleMetadata2 = {
     event_type: "SUSPECT_EXPAND",
     metadata: {
-      identifier: tabs?.["id_user"]?.value || "",
+      identifier: tabs?.["user"]?.value || "",
       provider_name: doctorDetail?.doctor_name || "",
       patient_id: user?.data?.userInfo?.mrn || "",
-      event_datetime: new Date().toISOString(),
+      event_datetime: convertDate(new Date().toISOString()),
 
     }
   }
@@ -69,10 +70,10 @@ export const MuiAccordions = (props) => {
   const exampleMetadata3 = {
     event_type: "EXISTING_CONDITION_COLLAPSE",
     metadata: {
-      identifier: tabs?.["id_user"]?.value || "",
+      identifier: tabs?.["user"]?.value || "",
       provider_name: doctorDetail?.doctor_name || "",
       patient_id: user?.data?.userInfo?.mrn || "",
-      event_datetime: new Date().toISOString(),
+      event_datetime: convertDate(new Date().toISOString()),
 
     }
   }
@@ -80,10 +81,10 @@ export const MuiAccordions = (props) => {
   const exampleMetadata4 = {
     event_type: "SUSPECT_COLLAPSE",
     metadata: {
-      identifier: tabs?.["id_user"]?.value || "",
+      identifier: tabs?.["user"]?.value || "",
       provider_name: doctorDetail?.doctor_name || "",
       patient_id: user?.data?.userInfo?.mrn || "",
-      event_datetime: new Date().toISOString(),
+      event_datetime: convertDate(new Date().toISOString()),
 
     }
   }

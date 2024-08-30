@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { convertDate } from "../../utils/helper";
 
 
 export const ReadMore = ({ children, length, readMore, showLess, other, user, tabs, item, handleAddEventData }) => {
@@ -12,10 +13,10 @@ export const ReadMore = ({ children, length, readMore, showLess, other, user, ta
         if (!isReadMore) {
             const exampleMetadata = {
                 event_type: "SUSPECT_SEE_LESS_DETAILS", metadata: {
-                    identifier: tabs?.["id_user"]?.value || "",
+                    identifier: tabs?.["user"]?.value || "",
                     provider_name: doctorDetail?.doctor_name || "",
                     patient_id: user?.data?.userInfo?.mrn || "",
-                    event_datetime: new Date().toISOString(),
+                    event_datetime: convertDate(new Date().toISOString()),
                     code: item?.code,
                     description: item?.definition,
                     raf: item?.total_weight,
@@ -29,10 +30,10 @@ export const ReadMore = ({ children, length, readMore, showLess, other, user, ta
         else {
             const exampleMetadata = {
                 event_type: "SUSPECT_READ_MORE_DETAILS", metadata: {
-                    identifier: tabs?.["id_user"]?.value || "",
+                    identifier: tabs?.["user"]?.value || "",
                     provider_name: doctorDetail?.doctor_name || "",
                     patient_id: user?.data?.userInfo?.mrn || "",
-                    event_datetime: new Date().toISOString(),
+                    event_datetime: convertDate(new Date().toISOString()),
                     code: item?.code,
                     description: item?.definition,
                     reasonForRejection: "rejectReason",

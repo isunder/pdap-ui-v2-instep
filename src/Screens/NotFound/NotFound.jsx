@@ -3,6 +3,7 @@ import './NotFound.css'
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
+import { convertDate } from '../../utils/helper';
 
 export const NotFound = () => {
 
@@ -16,10 +17,10 @@ export const NotFound = () => {
   useEffect(() => {
     sessionStorage.clear();
 
-    const identifier = tabs?.["id_user"]?.value || "";
+    const identifier = tabs?.["user"]?.value || "";
     const providerName = doctorDetail?.doctor_name || "";
     const patientId = user?.data?.userInfo?.mrn || "";
-    const eventDateTime = new Date().toISOString();
+    const eventDateTime = convertDate(new Date().toISOString());
 
 
     const payloadFailure = {

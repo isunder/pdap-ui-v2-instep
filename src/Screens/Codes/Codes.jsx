@@ -59,7 +59,7 @@ import { DialogModal } from "../../components/Modal/DialogModal";
 import SubmitModal from "../../components/SubmitModal/SubmitModal";
 import { addAuditLog1, getAuditLog1, addAuditLog2, getAuditLog2 } from "../../utils/indexedDb";
 import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
-import { isSlugOrJwt } from "../../utils/helper";
+import { convertDate, isSlugOrJwt } from "../../utils/helper";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -451,7 +451,7 @@ export const Codes = () => {
         identifier: tabs?.["id_user"]?.value || "",
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
-        event_datetime: new Date().toISOString(),
+        event_datetime: convertDate(new Date().toISOString()),
         description: "Launch Successfull",
       }
     }
