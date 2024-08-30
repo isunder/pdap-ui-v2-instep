@@ -22,7 +22,6 @@ export const NotFound = () => {
     const patientId = user?.data?.userInfo?.mrn || "";
     const eventDateTime = convertDate(new Date().toISOString());
 
-
     const payloadFailure = {
       event_type: "LAUNCH_FAILURE",
       metadata: {

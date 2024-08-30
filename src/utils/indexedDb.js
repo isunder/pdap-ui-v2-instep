@@ -68,7 +68,7 @@ export function addAuditLog1(data) {
   // Ensure data is well-structured
   let entry = { id: auditKey, ...data };
 
-  let request = objectStore.add(entry);
+  let request = objectStore.put(entry);
 
   request.onsuccess = function() {
     console.log('Audit log added to logs1 successfully');

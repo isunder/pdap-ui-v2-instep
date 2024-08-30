@@ -256,7 +256,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
       }
     }
 
-    console.log(item, id, "itemid")
 
     const exampleMetadata = {
       event_type: "EXISTING_CONDITION_REJECT-CODE",
@@ -522,7 +521,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
 
   const handleCollapse = (code) => {
 
-
     let val;
 
     let changeData = existingCondition?.map((value) => {
@@ -531,13 +529,9 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
         : value;
     });
 
-
-
     const changeData2 = existingCondition?.filter((value) => {
       return value?.code === code
     });
-
-    console.log(changeData2, "code")
 
     setExistingCondition(changeData);
 

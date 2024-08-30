@@ -113,7 +113,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const handleRemoveDeletedCode = (item) => {
 
-    console.log(rejectSuspectCode, "rejectSuspectCode")
 
     setButtonDisable(false)
     if (userDetail?.mrn) {
@@ -328,7 +327,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const handleClickOpen1 = (key, item, allData) => {
 
-    console.log(allData, item, "bsjbvjdbvjc")
 
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
