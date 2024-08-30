@@ -6,47 +6,43 @@ const DB_VERSION = 1;
 
 const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-// Open the database
-
 request.onupgradeneeded = (event) => {
   db = event.target.result;
 
   // Create the first object store
   let objectStore1 = db.createObjectStore('logs1', { keyPath: 'id' });
-  if(!objectStore1) return;
+  if (!objectStore1) return;
 
   // Create indexes for objectStore1
   objectStore1.createIndex('event_type', 'event_type', { unique: false });
-    objectStore1.createIndex('metadata/identifier', 'metadata.identifier', { unique: false });
-    objectStore1.createIndex('metadata/provider_name', 'metadata.provider_name', { unique: false });
-    objectStore1.createIndex('metadata/patient_id', 'metadata.patient_id', { unique: false });
-    objectStore1.createIndex('metadata/encounterId', 'metadata.encounterId', { unique: false });
-    objectStore1.createIndex('metadata/event_datetime', 'metadata.event_datetime', { unique: false });
-    objectStore1.createIndex('metadata/code', 'metadata.code', { unique: false });
-    objectStore1.createIndex('metadata/description', 'metadata.description', { unique: false });
-    objectStore1.createIndex('metadata/reasonForRejection', 'metadata.reasonForRejection', { unique: false });
-    objectStore1.createIndex('metadata/raf', 'metadata.raf', { unique: false });
-    objectStore1.createIndex('metadata/alternateCodes', 'metadata.alternateCodes', { unique: false });
-    objectStore1.createIndex('metadata/parentCodesCount', 'metadata.parentCodesCount', { unique: false });
-
+  objectStore1.createIndex('metadata/identifier', 'metadata.identifier', { unique: false });
+  objectStore1.createIndex('metadata/provider_name', 'metadata.provider_name', { unique: false });
+  objectStore1.createIndex('metadata/patient_id', 'metadata.patient_id', { unique: false });
+  objectStore1.createIndex('metadata/encounterId', 'metadata.encounterId', { unique: false });
+  objectStore1.createIndex('metadata/event_datetime', 'metadata.event_datetime', { unique: false });
+  objectStore1.createIndex('metadata/code', 'metadata.code', { unique: false });
+  objectStore1.createIndex('metadata/description', 'metadata.description', { unique: false });
+  objectStore1.createIndex('metadata/reasonForRejection', 'metadata.reasonForRejection', { unique: false });
+  objectStore1.createIndex('metadata/raf', 'metadata.raf', { unique: false });
+  objectStore1.createIndex('metadata/alternateCodes', 'metadata.alternateCodes', { unique: false });
+  objectStore1.createIndex('metadata/parentCodesCount', 'metadata.parentCodesCount', { unique: false });
 
   // Create the second object store
   let objectStore2 = db.createObjectStore('logs2', { keyPath: 'id' });
-  if(!objectStore2) return;
+  if (!objectStore2) return;
   // Create indexes for objectStore2
   objectStore2.createIndex('event_type', 'event_type', { unique: false });
-    objectStore2.createIndex('metadata/identifier', 'metadata.identifier', { unique: false });
-    objectStore2.createIndex('metadata/provider_name', 'metadata.provider_name', { unique: false });
-    objectStore2.createIndex('metadata/patient_id', 'metadata.patient_id', { unique: false });
-    objectStore2.createIndex('metadata/encounterId', 'metadata.encounterId', { unique: false });
-    objectStore2.createIndex('metadata/event_datetime', 'metadata.event_datetime', { unique: false });
-    objectStore2.createIndex('metadata/code', 'metadata.code', { unique: false });
-    objectStore2.createIndex('metadata/description', 'metadata.description', { unique: false });
-    objectStore2.createIndex('metadata/reasonForRejection', 'metadata.reasonForRejection', { unique: false });
-    objectStore2.createIndex('metadata/raf', 'metadata.raf', { unique: false });
-    objectStore2.createIndex('metadata/alternateCodes', 'metadata.alternateCodes', { unique: false });
-    objectStore2.createIndex('metadata/parentCodesCount', 'metadata.parentCodesCount', { unique: false });
-
+  objectStore2.createIndex('metadata/identifier', 'metadata.identifier', { unique: false });
+  objectStore2.createIndex('metadata/provider_name', 'metadata.provider_name', { unique: false });
+  objectStore2.createIndex('metadata/patient_id', 'metadata.patient_id', { unique: false });
+  objectStore2.createIndex('metadata/encounterId', 'metadata.encounterId', { unique: false });
+  objectStore2.createIndex('metadata/event_datetime', 'metadata.event_datetime', { unique: false });
+  objectStore2.createIndex('metadata/code', 'metadata.code', { unique: false });
+  objectStore2.createIndex('metadata/description', 'metadata.description', { unique: false });
+  objectStore2.createIndex('metadata/reasonForRejection', 'metadata.reasonForRejection', { unique: false });
+  objectStore2.createIndex('metadata/raf', 'metadata.raf', { unique: false });
+  objectStore2.createIndex('metadata/alternateCodes', 'metadata.alternateCodes', { unique: false });
+  objectStore2.createIndex('metadata/parentCodesCount', 'metadata.parentCodesCount', { unique: false });
 };
 
 request.onsuccess = function(event) {
@@ -68,7 +64,11 @@ export function addAuditLog1(data) {
   let transaction = db.transaction(['logs1'], 'readwrite');
   let objectStore = transaction.objectStore('logs1');
   let auditKey = uuidv4();
-  let request = objectStore.add({ id: auditKey, ...data });
+  
+  // Ensure data is well-structured
+  let entry = { id: auditKey, ...data };
+
+  let request = objectStore.add(entry);
 
   request.onsuccess = function() {
     console.log('Audit log added to logs1 successfully');
@@ -111,8 +111,11 @@ export function addAuditLog2(item) {
 
   let transaction = db.transaction(['logs2'], 'readwrite');
   let objectStore = transaction.objectStore('logs2');
-  let auditKey = uuidv4();
-  let request = objectStore.put({...item });
+  
+  // Ensure data is well-structured
+  let entry = { id: uuidv4(), ...item };
+
+  let request = objectStore.put(entry);
 
   request.onsuccess = function() {
     console.log('Audit log added to logs2 successfully');
