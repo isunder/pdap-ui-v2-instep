@@ -361,8 +361,8 @@ export const Codes = () => {
   useEffect(() => {
     if (openSubmitModal === false) {
 
-      
-    const isAthenaModal = tabs['type']?.value == "Athena"
+
+      const isAthenaModal = tabs['type']?.value == "Athena"
 
       const exampleMetadata = {
         event_type: "SUMMARY_ATHENA_MODAL_CLOSE",
@@ -390,7 +390,7 @@ export const Codes = () => {
         }
       };
 
-      handleAddEventData(isAthenaModal? exampleMetadata : exampleMetadata2);
+      handleAddEventData(isAthenaModal ? exampleMetadata : exampleMetadata2);
     }
 
   }, [setOpenSubmitModal])
@@ -2057,6 +2057,7 @@ export const Codes = () => {
                       setExpanded={setExpanded}
                       expanded={expanded}
                       key={item?.key}
+                      item={item}
                       sx={{
                         background:
                           expanded === item?.key

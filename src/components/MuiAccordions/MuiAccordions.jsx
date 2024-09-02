@@ -38,7 +38,8 @@ export const MuiAccordions = (props) => {
     header,
     expandIcon,
     children,
-    handleAddEventData
+    handleAddEventData,
+    item
   } = props;
 
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
@@ -90,7 +91,9 @@ export const MuiAccordions = (props) => {
 
   const handleChange = (panel) => (_, isExpanded) => {
 
-
+    if (item.codeCount === 0 && panel === item.key) {
+      return
+    }
 
     if (panel) {
       let codeValue = "";
