@@ -60,6 +60,8 @@ import SubmitModal from "../../components/SubmitModal/SubmitModal";
 import { addAuditLog1, getAuditLog1, addAuditLog2, getAuditLog2 } from "../../utils/indexedDb";
 import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
 import { convertDate, isSlugOrJwt } from "../../utils/helper";
+import { IdleModal } from "../../components/idleModal/IdleModal";
+import { refreshSSOToken } from "../../redux/userSlice/refreshToken";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -152,6 +154,7 @@ export const Codes = () => {
   );
 
   const [switchModal, setSwitchModal] = useState(true);
+  const [idleModal, setIdleModal] = useState(false);
 
   const [existingRejectCode, setExistingRejectCode] = useState([]);
   const [recaptureRejectCode, setRecaptureRejectCode] = useState([]);
@@ -186,6 +189,8 @@ export const Codes = () => {
       marginBottom: "8px",
     },
   ];
+
+
 
 
   const objToArr = (state) => {
@@ -362,6 +367,8 @@ export const Codes = () => {
 
   }, [setOpenSubmitModal])
 
+  // Application JWT and Slug remove  :-------------------------------------------------:
+
   useEffect(() => {
     window.addEventListener('load', () => {
       const url = new URL(window.location.href);
@@ -371,6 +378,58 @@ export const Codes = () => {
     });
   }, [])
 
+  // Application Inactivity Recorder  :-------------------------------------------------:
+
+  const [isInactive, setIsInactive] = useState(false);
+  let inactivityTimer;
+
+  useEffect(() => {
+    const handleActivity = () => {
+      setIsInactive(false);
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => setIsInactive(true), 15 * 60000);
+    };
+
+    window.addEventListener('mousemove', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+    inactivityTimer = setTimeout(() => setIsInactive(true), 15 * 60000);
+
+    return () => {
+      clearTimeout(inactivityTimer);
+      window.removeEventListener('mousemove', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isInactive) {
+      setIdleModal(true);
+    }
+  }, [isInactive]);
+
+
+  // Application Time Recorder and SSO token Refresh :-------------------------------------------------:
+
+  const [loadingTime, setLoadingTime] = useState(null);
+
+  useEffect(() => {
+    const startTime = new Date().getTime();
+    localStorage.setItem('appStartTime', startTime);
+    const intervalId = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const elapsedTime = currentTime - startTime;
+
+      if (elapsedTime >= 15 * 60 * 1000) {
+        setLoadingTime(elapsedTime);
+        clearInterval(intervalId);
+        dispatch(refreshSSOToken({ token: "" }))
+      }
+    }, 60 * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -387,6 +446,8 @@ export const Codes = () => {
 
   // Fetch initial event data
   useEffect(() => {
+    const payload = { token: "" }
+    dispatch(refreshSSOToken(payload))
     async function fetchEventData() {
       try {
         const [data1, data2] = await Promise.all([getAuditLog1(), getAuditLog2()]);
@@ -398,9 +459,6 @@ export const Codes = () => {
     }
     fetchEventData();
   }, []);
-
-
-
 
   const handleAddEventData = async (data) => {
     try {
@@ -421,7 +479,6 @@ export const Codes = () => {
 
   useEffect(() => {
     const processEventData = async () => {
-      console.log('eventData:', eventData, 'newEventData:', newEventData);
       const itemsToProcess = eventData.filter(item => !newEventData.some(existingItem => existingItem.id === item.id));
 
       for (const item of itemsToProcess) {
@@ -2946,6 +3003,13 @@ export const Codes = () => {
           </Box>
         </Box>
       </DialogModal>
+
+
+      <IdleModal open={idleModal}
+        setOpen={setIdleModal}
+        header={<GreenDoneIcon style={{ width: 45, height: 45, }} />}
+        width="26rem"
+        removeCloseButton={true} />
     </>
   );
 };

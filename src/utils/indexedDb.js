@@ -47,7 +47,6 @@ request.onupgradeneeded = (event) => {
 
 request.onsuccess = function(event) {
   db = event.target.result;
-  console.log('Database opened successfully');
 };
 
 request.onerror = function(event) {

@@ -1,3 +1,7 @@
+  
+const lcslug = sessionStorage.getItem("newslug") || null;
+const lcjwt = sessionStorage.getItem("newjwt") || null;
+
 export function isSlugOrJwt() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -10,7 +14,6 @@ export function isSlugOrJwt() {
   const localslug = sessionStorage.getItem("newslug") || null;
   const localjwt = sessionStorage.getItem("newjwt") || null;
   
-
   let auth = {};
 
   if (localslug) {
@@ -75,4 +78,10 @@ export function postApiHeaders() {
   return {
     ...defaultHeaders
   };
+}
+
+export function refreshTOken () {
+  if(lcjwt){
+
+  }
 }
