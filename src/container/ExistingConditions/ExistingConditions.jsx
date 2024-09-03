@@ -1262,12 +1262,12 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "#D5D5D5 ",
+                                    tabs?.is_read_only_mode_with_rejection_allowed?.active && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                      background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1276,7 +1276,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
-                                disabled={tabs?.read_only?.active}
+                                disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active}
                                 className="acc-content-act-btn"
                               >
                                 Accept
@@ -1295,6 +1295,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   onClick={() =>
                                     handleRemoveDeletedCode(item, item?.code)
                                   }
+                                  disabled={tabs?.is_read_only?.active}
                                   sx={{
                                     backgroundColor:
                                       theme.palette.error.active1,
@@ -1325,6 +1326,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   onClick={() =>
                                     handleClickOpen(item, item?.code)
                                   }
+                                  disabled={tabs?.is_read_only?.active}
                                   sx={{
                                     backgroundColor: theme.palette.primary.main,
                                     color: "#fff",
@@ -1826,13 +1828,13 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.read_only?.active &&
+                                                tabs?.is_read_only_mode_with_rejection_allowed?.active &&
                                                 "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1841,7 +1843,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                                 <CorrectIcon />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.read_only?.active}
+                                            disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active}
                                             className="acc-content-act-btn"
                                           >
                                             Accept
@@ -1899,6 +1901,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                                   value?.code
                                                 )
                                               }
+                                              disabled={tabs?.is_read_only?.active}
                                               sx={{
                                                 backgroundColor:
                                                   theme.palette.primary.main,
@@ -2019,12 +2022,12 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     width: "9.75rem",
                                     height: "2rem",
                                     background:
-                                      tabs?.read_only?.active && "#D5D5D5",
+                                      tabs?.is_read_only_mode_with_rejection_allowed?.active && "#D5D5D5",
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                        background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -2033,7 +2036,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       <CrossWhite />
                                     </StyleCircle>
                                   }
-                                  disabled={tabs?.read_only?.active}
+                                  disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active || tabs?.is_read_only?.active}
                                 >
                                   Reject All (
                                   {Object.keys(item?.info?.alternate_codes)
@@ -2153,12 +2156,12 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       textTransform: "inherit",
                                       padding: "5px 25px",
                                       background:
-                                        tabs?.read_only?.active && "#D5D5D5",
+                                        tabs?.is_read_only_mode_with_rejection_allowed?.active && "#D5D5D5",
                                     }}
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                          background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",
@@ -2167,7 +2170,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                         <CrossWhite />
                                       </StyleCircle>
                                     }
-                                    disabled={tabs?.read_only?.active}
+                                    disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active || tabs?.is_read_only?.active}
                                   >
                                     Reject All ({" "}
                                     {Object.keys(item?.info?.alternate_codes)
