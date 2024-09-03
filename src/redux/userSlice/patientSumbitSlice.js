@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getSlug, getToken, postApiHeaders } from "../../utils/helper";
 
 const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
+
 
 const slug = getSlug();
 const token = getToken();

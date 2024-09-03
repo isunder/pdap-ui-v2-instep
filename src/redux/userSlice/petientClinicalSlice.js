@@ -3,9 +3,10 @@ import axios from 'axios';
 import { postApiHeaders } from "../../utils/helper";
 
 const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
 
-const slug = urlParams.get('slug')
+const slug = sessionStorage.getItem("newslug") || null;
+const jwt = sessionStorage.getItem("newjwt") || null;
+
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const importedHeader = postApiHeaders();
 
@@ -19,7 +20,14 @@ export const patientClinicalDocument = createAsyncThunk(
             headers: importedHeader,
             data: data
         };
-        const response = await axios(config)
+
+        const config2 = {
+            
+            url: `${baseUrl}/api/v1/patient-clinical-document/`,
+            headers: importedHeader,
+            data: data
+        };
+        const response = await axios(slug? config : config2)
         return response.data
     }
 )

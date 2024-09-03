@@ -41,7 +41,7 @@ import {
   StyledBox,
   StyledButton,
 } from "../Common/StyledMuiComponents";
-import { isSlugOrJwt } from "../../utils/helper";
+import { convertDate, isSlugOrJwt } from "../../utils/helper";
 import { addAuditLog1 } from "../../utils/indexedDb";
 
 const StyleHead = styled("h2")(() => ({
@@ -97,17 +97,23 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
     otherText?.length > 0 && setOtherText(null);
     setError({});
     setDeleteOpen(false);
-    const exampleMetadata = {event_type: "SUSPECT_REJECTION_REASON_CANCEL", metadata : {
-      identifier: tabs?.["id_user"]?.value || "",
-      provider_name: doctorDetail?.doctor_name || "",
-      patient_id: user?.data?.userInfo?.mrn || "",
-      event_datetime: new Date().toISOString(),
-    }};
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECTION_REASON_CANCEL", metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        parentCodesCount: (suspectCode?.length)
+
+      }
+    };
 
     handleAddEventData(exampleMetadata)
   };
 
   const handleRemoveDeletedCode = (item) => {
+
+
     setButtonDisable(false)
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -145,11 +151,31 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
       );
       setRejectSuspectCode(codeList);
     }
+
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECT_CONDITION",
+      metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: item,
+        description: item,
+        reasonForRejection: rejectSuspectCode[0]?.[item].reason,
+        raf: item?.info?.total_weight,
+        alternateCodes: item?.info?.alternate_codes,
+        parentCodesCount: (suspectCode?.length)
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
+
   };
 
   const [buttonDisable, setButtonDisable] = useState(false)
 
   const handleClickOpen = (item) => {
+
 
     setButtonDisable(false)
     setDeleteOpen(true);
@@ -157,15 +183,16 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
     const exampleMetadata = {
       event_type: "SUSPECT_REJECTION_REASON_SELECTION", metadata: {
-        identifier: tabs?.["id_user"]?.value || "",
+        identifier: tabs?.["user"]?.value || "",
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
-        event_datetime: new Date().toISOString(),
+        event_datetime: convertDate(new Date().toISOString()),
         code: item?.code,
         description: item?.definition,
         reasonForRejection: rejectReason,
         raf: item?.total_weight,
         alternateCodes: "",
+        parentCodesCount: (suspectCode?.length)
       }
     };
 
@@ -178,6 +205,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
 
   const handleDelete = () => {
+
+
 
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -259,17 +288,19 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
         otherText?.length > 0 && setOtherText(null);
         setDeleteOpen(false);
 
+
         const exampleMetadata = {
           event_type: "SUSPECT_REJECTION_REASON_DELETION", metadata: {
-            identifier: tabs?.["id_user"]?.value || "",
+            identifier: tabs?.["user"]?.value || "",
             provider_name: doctorDetail?.doctor_name || "",
             patient_id: user?.data?.userInfo?.mrn || "",
-            event_datetime: new Date().toISOString(),
+            event_datetime: convertDate(new Date().toISOString()),
             code: code,
-            // description: item?.definition,
+            description: selectedRejectData.definition,
             reasonForRejection: rejectReason,
-            // raf: total_weight,
+            raf: selectedRejectData.total_weight,
             alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
           }
         };
 
@@ -295,6 +326,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
   };
 
   const handleClickOpen1 = (key, item, allData) => {
+
 
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -327,15 +359,16 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
         const exampleMetadata = {
           event_type: "SUSPECT_ACCEPT_CODE", metadata: {
-            identifier: tabs?.["id_user"]?.value || "",
+            identifier: tabs?.["user"]?.value || "",
             provider_name: doctorDetail?.doctor_name || "",
             patient_id: user?.data?.userInfo?.mrn || "",
-            event_datetime: new Date().toISOString(),
-            code: code,
-            description: item?.definition,
+            event_datetime: convertDate(new Date().toISOString()),
+            code: allData.SuspectedCondition,
+            description: allData.definition,
             reasonForRejection: rejectReason,
-            raf: item?.total_weight,
+            raf: allData.total_weight,
             alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
           }
         };
 
@@ -356,15 +389,16 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
         const exampleMetadata = {
           event_type: "SUSPECT_ACCEPT_CODE", metadata: {
-            identifier: tabs?.["id_user"]?.value || "",
+            identifier: tabs?.["user"]?.value || "",
             provider_name: doctorDetail?.doctor_name || "",
             patient_id: user?.data?.userInfo?.mrn || "",
-            event_datetime: new Date().toISOString(),
-            code: code,
-            description: item?.definition,
+            event_datetime: convertDate(new Date().toISOString()),
+            code: allData.SuspectedCondition,
+            description: allData.definition,
             reasonForRejection: rejectReason,
-            raf: item?.total_weight,
+            raf: allData.total_weight,
             alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
           }
         };
 
@@ -415,7 +449,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const params = window.location.pathname;
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+
 
   const slug = isSlugOrJwt();
   useEffect(() => {

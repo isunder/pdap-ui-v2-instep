@@ -59,7 +59,7 @@ import { DialogModal } from "../../components/Modal/DialogModal";
 import SubmitModal from "../../components/SubmitModal/SubmitModal";
 import { addAuditLog1, getAuditLog1, addAuditLog2, getAuditLog2 } from "../../utils/indexedDb";
 import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
-import { isSlugOrJwt } from "../../utils/helper";
+import { convertDate, isSlugOrJwt } from "../../utils/helper";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -118,7 +118,6 @@ export const Codes = () => {
   const tabs = TabsSlag();
   const dispatch = useDispatch();
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
   const slug = isSlugOrJwt();
   const theme = useTheme();
   const { user } = useSelector((state) => state);
@@ -187,6 +186,7 @@ export const Codes = () => {
       marginBottom: "8px",
     },
   ];
+
 
   const objToArr = (state) => {
     let array = [];
@@ -359,41 +359,18 @@ export const Codes = () => {
   };
 
   useEffect(() => {
-    if (openSubmitModal === false) {
-
-
-      const isAthenaModal = tabs['type']?.value == "Athena"
-
-      const exampleMetadata = {
-        event_type: "SUMMARY_ATHENA_MODAL_CLOSE",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: (suspectCode, suspectCodeReject, duplicateCodeReject, recaptureCodeReject, duplicateCode, recaptureCode, existingCode, existingCodeReject),
-          description: "SUMMARY_MODAL_CLOSE",
-
-        }
-      };
-
-      const exampleMetadata2 = {
-        event_type: "SUMMARY_EPIC_MODAL_CLOSE",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: (suspectCode, suspectCodeReject, duplicateCodeReject, recaptureCodeReject, duplicateCode, recaptureCode, existingCode, existingCodeReject),
-          description: "SUMMARY_MODAL_CLOSE",
-
-        }
-      };
-
-      handleAddEventData(isAthenaModal ? exampleMetadata : exampleMetadata2);
-    }
 
   }, [setOpenSubmitModal])
+
+  useEffect(() => {
+    window.addEventListener('load', () => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('slug');
+      url.searchParams.delete('jwt');
+      window.history.replaceState({}, '', url);
+    });
+  }, [])
+
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -412,14 +389,18 @@ export const Codes = () => {
   useEffect(() => {
     async function fetchEventData() {
       try {
-        const data = await getAuditLog1();
-        setEventData(data);
+        const [data1, data2] = await Promise.all([getAuditLog1(), getAuditLog2()]);
+        setEventData(data1);
+        setNewEventData(data2);
       } catch (error) {
         console.error('Error fetching event data:', error);
       }
     }
     fetchEventData();
   }, []);
+
+
+
 
   const handleAddEventData = async (data) => {
     try {
@@ -431,21 +412,28 @@ export const Codes = () => {
     }
   };
 
-  // Process and update event data
+  const removeObjectById = (arr, id) => {
+    const index = arr.findIndex(item => item.id === id);
+    if (index !== -1) {
+      arr.splice(index, 1);
+    }
+  };
+
   useEffect(() => {
     const processEventData = async () => {
-      for (const item of eventData) {
-        const existingItem = newEventData.find(existingItem => existingItem.id === item.id);
-        if (!existingItem) {
-          try {
-            const { id, ...itemWithoutId } = item;
-            await dispatch(fetchAuditLogs([itemWithoutId]));
-            await addAuditLog2(item);
-            const updatedEventData = await getAuditLog2();
-            setNewEventData(updatedEventData);
-          } catch (error) {
-            console.error('Error processing event data:', error);
-          }
+      console.log('eventData:', eventData, 'newEventData:', newEventData);
+      const itemsToProcess = eventData.filter(item => !newEventData.some(existingItem => existingItem.id === item.id));
+
+      for (const item of itemsToProcess) {
+        try {
+          const { id, ...itemWithoutId } = item;
+          await dispatch(fetchAuditLogs([itemWithoutId]));
+          await addAuditLog2(item);
+          removeObjectById(eventData, id)
+          const updatedEventData = await getAuditLog2();
+          setNewEventData(updatedEventData);
+        } catch (error) {
+          console.error('Error processing event data:', error);
         }
       }
     };
@@ -453,8 +441,7 @@ export const Codes = () => {
     if (eventData.length > 0) {
       processEventData();
     }
-  }, [eventData, newEventData]); // Added newEventData and dispatch to dependencies
-
+  }, [eventData]);
 
 
   useEffect(() => {
@@ -464,50 +451,22 @@ export const Codes = () => {
         identifier: tabs?.["id_user"]?.value || "",
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
-        event_datetime: new Date().toISOString(),
+        event_datetime: convertDate(new Date().toISOString()),
         description: "Launch Successfull",
       }
     }
     dispatch(fetchAuditLogs([payload]));
   }, []);
 
-
   const handleSubmitRedirect = async (tabs) => {
-
-
     setIsModalOpen(true);
     const isAthenaModal = tabs['type']?.value == "Athena";
 
     if (isAthenaModal) {
       setSwitchModal(true);
-      const exampleMetadata = {
-        event_type: "SUMMARY_SUBMIT_ATHENA_MODEL_OPEN",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-
-          description: "SUMMARY_SUBMIT_ATHENA_MODEL_OPEN",
-        }
-      };
-      handleAddEventData(exampleMetadata);
-
     }
     else {
       setSwitchModal(false);
-      const exampleMetadata = {
-        event_type: "SUMMARY_SUBMIT_EPIC_MODEL_OPEN",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-
-          description: "SUMMARY_SUBMIT_EPIC_MODEL_OPEN",
-        }
-      };
-      handleAddEventData(exampleMetadata);
     }
     const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
     if (isSummaryModal) {
@@ -629,38 +588,6 @@ export const Codes = () => {
         }
       }
     } catch (error) { }
-
-    const isAthenaModal = tabs['type']?.value == "Athena"
-
-    const exampleMetadata = {
-      event_type: "SUMMARY_ATHENA_MODAL_SUBMIT_AND_CLOSE",
-      metadata: {
-        identifier: tabs?.["id_user"]?.value || "",
-        provider_name: doctorDetail?.doctor_name || "",
-        patient_id: user?.data?.userInfo?.mrn || "",
-        event_datetime: new Date().toISOString(),
-        code: (suspectCode, suspectCodeReject, duplicateCodeReject, recaptureCodeReject, duplicateCode, recaptureCode, existingCode, existingCodeReject),
-        description: "SUMMARY_MODAL_SUBMIT_AND_CLOSE",
-
-      }
-    };
-
-    const exampleMetadata2 = {
-      event_type: "SUMMARY_EPIC_MODAL_SUBMIT_AND_CLOSE",
-      metadata: {
-        identifier: tabs?.["id_user"]?.value || "",
-        provider_name: doctorDetail?.doctor_name || "",
-        patient_id: user?.data?.userInfo?.mrn || "",
-        event_datetime: new Date().toISOString(),
-        code: (suspectCode, suspectCodeReject, duplicateCodeReject, recaptureCodeReject, duplicateCode, recaptureCode, existingCode, existingCodeReject),
-        description: "SUMMARY_MODAL_SUBMIT_AND_CLOSE",
-
-      }
-    };
-    handleAddEventData(isAthenaModal ? exampleMetadata : exampleMetadata2);
-
-
-
   };
 
   useEffect(() => {
@@ -818,23 +745,6 @@ export const Codes = () => {
         dispatch(existingValue(codeList));
       }
 
-      const exampleMetadata = {
-        event_type: "SUMMARY_EXISTING_CODE_REMOVED",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: item?.code,
-          description: item?.value ? item?.value : item?.info?.value,
-          reasonForRejection: '',
-          raf: item?.info?.total_weight,
-          alternateCodes: item?.info?.alternate_codes
-        }
-      };
-
-      handleAddEventData(exampleMetadata);
-
     } else if (key === "suspect") {
       if (item[Object.keys(item)]?.reason) {
         const codeList = suspectCodeReject.filter(
@@ -856,25 +766,6 @@ export const Codes = () => {
         dispatch(suspectValue(codeList));
       }
 
-      const exampleMetadata = {
-        event_type: "SUMMARY_SUSPECT_CODE_REMOVED",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: item?.code,
-          description: item?.value ? item?.value : item?.info?.value,
-          reasonForRejection: '',
-          raf: item?.info?.total_weight,
-          alternateCodes: item?.info?.alternate_codes
-        }
-      };
-
-      handleAddEventData(exampleMetadata);
-
-
-
     } else if (key === "recapture") {
       if (item?.reason) {
         const codeList = recaptureCodeReject.filter(
@@ -895,24 +786,6 @@ export const Codes = () => {
         };
         dispatch(recaptureValue(codeList));
       }
-      const exampleMetadata = {
-        event_type: "SUMMARY_RECAPTURE_CODE_REMOVED",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: item?.code,
-          description: item?.value ? item?.value : item?.info?.value,
-          reasonForRejection: '',
-          raf: item?.info?.total_weight,
-          alternateCodes: item?.info?.alternate_codes
-        }
-      };
-
-      handleAddEventData(exampleMetadata);
-
-
     } else if (key === "duplicate") {
       if (item?.reason) {
         const codeList = duplicateCodeReject.filter(
@@ -934,29 +807,11 @@ export const Codes = () => {
         dispatch(duplicateValue(codeList));
       }
 
-      const exampleMetadata = {
-        event_type: "SUMMARY_DUPLICATE_CODE_REMOVED",
-        metadata: {
-          identifier: tabs?.["id_user"]?.value || "",
-          provider_name: doctorDetail?.doctor_name || "",
-          patient_id: user?.data?.userInfo?.mrn || "",
-          event_datetime: new Date().toISOString(),
-          code: item?.code,
-          description: item?.value ? item?.value : item?.info?.value,
-          reasonForRejection: '',
-          raf: item?.info?.total_weight,
-          alternateCodes: item?.info?.alternate_codes
-        }
-      };
-
-      handleAddEventData(exampleMetadata);
     }
     localStorage.setItem(
       `sessionObject_${userDetail.mrn}`,
       JSON.stringify(newSessionObject)
     );
-
-
   };
 
 
@@ -2057,7 +1912,6 @@ export const Codes = () => {
                       setExpanded={setExpanded}
                       expanded={expanded}
                       key={item?.key}
-                      item={item}
                       sx={{
                         background:
                           expanded === item?.key
