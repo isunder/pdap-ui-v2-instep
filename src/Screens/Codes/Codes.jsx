@@ -410,26 +410,26 @@ export const Codes = () => {
 
   // Application Time Recorder and SSO token Refresh :-------------------------------------------------:
 
-  const [loadingTime, setLoadingTime] = useState(null);
+  // const [loadingTime, setLoadingTime] = useState(null);
 
-  useEffect(() => {
-    const startTime = new Date().getTime();
-    localStorage.setItem('appStartTime', startTime);
-    const intervalId = setInterval(() => {
-      const currentTime = new Date().getTime();
-      const elapsedTime = currentTime - startTime;
+  // useEffect(() => {
+  //   const startTime = new Date().getTime();
+  //   localStorage.setItem('appStartTime', startTime);
+  //   const intervalId = setInterval(() => {
+  //     const currentTime = new Date().getTime();
+  //     const elapsedTime = currentTime - startTime;
 
-      if (elapsedTime >= 15 * 60 * 1000) {
-        setLoadingTime(elapsedTime);
-        clearInterval(intervalId);
-        dispatch(refreshSSOToken({ token: "" }))
-      }
-    }, 60 * 1000);
+  //     if (elapsedTime >= 15 * 60 * 1000) {
+  //       setLoadingTime(elapsedTime);
+  //       clearInterval(intervalId);
+  //       dispatch(refreshSSOToken({ token: "" }))
+  //     }
+  //   }, 60 * 1000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
