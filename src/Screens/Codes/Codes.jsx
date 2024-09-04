@@ -421,7 +421,6 @@ export const Codes = () => {
 
   useEffect(() => {
     const processEventData = async () => {
-      console.log('eventData:', eventData, 'newEventData:', newEventData);
       const itemsToProcess = eventData.filter(item => !newEventData.some(existingItem => existingItem.id === item.id));
 
       for (const item of itemsToProcess) {
