@@ -838,6 +838,8 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
     setOtherText(e.target.value);
   };
 
+  console.log(existingCondition, "duplicateCodesduplicateCodes")
+
   return (
     <Box className="ContentBox">
       {/* Header for accordion body */}
@@ -1081,6 +1083,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                               </Grid>
                             </>
                           }
+
                           {
 
                             !item?.info?.hide_remarks && (

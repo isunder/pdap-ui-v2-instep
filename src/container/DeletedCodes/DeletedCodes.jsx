@@ -165,14 +165,23 @@ export const DeletedCodes = ({ sessionObject }) => {
                                     }}
                                     className="acc-content-header-items"
                                 >
-                                    <StyledText sx={{ paddingLeft: "6px !important" }} className="acc-content-header-item ct-code">
+                                    <StyledText sx={{
+                                        paddingLeft: "6px !important",
+                                        [theme.breakpoints.down("md")]: {
+                                            borderRight: "2px solid rgba(0, 0, 0, 0.12) !important",
+                                        },
+                                    }} className="acc-content-header-item ct-code">
                                         Code(s)
                                     </StyledText>
                                     <StyledText sx={{
+                                        [theme.breakpoints.down("md")]: {
+                                            borderRight: "2px solid rgba(0, 0, 0, 0.12) !important",
+                                        },
+
                                         width: {
                                             md: "68% !important",
                                             lg: "80% !important",  // width for large screens
-                                            xl: "80% !important",  // width for extra-large screens
+                                            xl: "80% !important",
                                         }
                                     }} className="acc-content-header-item ct-desc">
                                         Description
@@ -786,7 +795,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                         );
                     })}
             </Box>
-        </Box>
+        </Box >
     );
 };
 const flexAlignCenter = {

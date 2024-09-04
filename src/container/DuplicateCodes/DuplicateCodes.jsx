@@ -670,6 +670,8 @@ export const DuplicateCodes = ({ sessionObject }) => {
     setOtherText(e.target.value);
   };
 
+  console.log(duplicateCodes, "duplicateCodesduplicateCodes")
+
   return (
     <Box className="ContentBox">
       {/* Header for accordion body */}

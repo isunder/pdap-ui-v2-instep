@@ -131,7 +131,10 @@ export const AddressedCodes = () => {
                       md: "68% !important",
                       lg: "80% !important",  // width for large screens
                       xl: "80% !important",  // width for extra-large screens
-                    }
+                    },
+                    [theme.breakpoints.down("md")]: {
+                      borderRight: "2px solid rgba(0, 0, 0, 0.12) !important",
+                    },
                   }} className="acc-content-header-item ct-desc">
                     Description
                   </StyledText>

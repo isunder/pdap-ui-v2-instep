@@ -529,7 +529,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 className="acc-content-header-items"
               >
                 <Grid item xs={10} sm={10} md={7.5} lg={8.5} xl={8.5}>
-                  <StyledText className="acc-content-cust-header1">
+                  <StyledText className="acc-content-cust-header1 suspect_desc_head">
                     Description
                   </StyledText>
                 </Grid>
@@ -585,6 +585,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
               >
                 {/* Description contents */}
                 <Grid
+                  className="suspect_desc_content"
                   item
                   xs={10}
                   sm={10}
@@ -596,6 +597,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   <StyleHead sx={{ pr: 1 }}>
                     {index + 1}. {item.SuspectedCondition}
                     {item.definition?.length > 0 && (
+
                       <ReadMore
                         tabs={tabs}
                         user={user}
@@ -643,6 +645,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 {/* RAF Contents */}
                 {tabs && tabs["patient_dashboard_weights"]?.active && (
                   <Grid
+                    className="suspect_raf"
                     item
                     xs={2}
                     sm={2}
@@ -653,6 +656,9 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       textAlign: "start",
                       fontSize: "14px",
                       fontWeight: 600,
+                      [theme.breakpoints.down("sm")]: {
+                        display: "none"
+                      },
                     }}
 
                   >
@@ -681,7 +687,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       disabled={tabs?.is_read_only?.active}
                       sx={{
                         fontSize: "14px",
-                        width: "98px !important",
+                        width: "98px ",
                         justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
                         color: "#fff",
@@ -689,7 +695,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                           backgroundColor: theme.palette.error.main,
                         },
                         [theme.breakpoints.down("md")]: {
-                          width: "100%",
+                          width: "100% !important",
                         },
                         filter:
                           selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
@@ -723,14 +729,18 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       disabled={tabs?.is_read_only?.active}
                       sx={{
                         fontSize: "14px",
-                        width: "92px !important",
-                        justifyContent: "left",
+                        width: "92px ",
+                        justifyContent: "center",
                         backgroundColor: theme.palette.primary.main,
                         color: "#fff !important",
                         ":hover": {
                           backgroundColor: theme.palette.primary.main,
                         },
                         [theme.breakpoints.down("md")]: {
+                          width: "100% !important",
+                        },
+
+                        [theme.breakpoints.down("sm")]: {
                           width: "100%",
                         },
 

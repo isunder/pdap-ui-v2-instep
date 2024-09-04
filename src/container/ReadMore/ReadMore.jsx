@@ -54,11 +54,15 @@ export const ReadMore = ({ children, length, readMore, showLess, other, user, ta
                 fontWeight: 400,
                 lineHeight: "21px",
                 display: isReadMore ? "block" : "inline",
+
             }} >
                 {!isReadMore ? children.slice(0, length) : children}
-                <Typography component='span' sx={{ cursor: 'pointer', ...other }}
-
+                <Typography component='span' sx={{
+                    cursor: 'pointer', ...other,
+                    whiteSpace: isReadMore ? "pre" : null
+                }}
                 >
+                    {isReadMore ? <br /> : null}
                     {!isReadMore ? `${readMore}` : `${showLess}`}
                 </Typography>
             </Box>

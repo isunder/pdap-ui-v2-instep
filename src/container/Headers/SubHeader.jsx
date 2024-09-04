@@ -232,11 +232,18 @@ export const SubHeader = () => {
                             },
                           }}
                         >
-                          {(patientGender === 'Male') ? <Typography component='span' >
-                            (Male)
-                          </Typography> : <Typography component='span'>
-                            (Female)
-                          </Typography>
+                          {
+                            keys === "Patient" && patientGender && (
+                              (patientGender === 'Male') ? (
+                                <Typography component='span'>
+                                  (Male)
+                                </Typography>
+                              ) : (
+                                <Typography component='span'>
+                                  (Female)
+                                </Typography>
+                              )
+                            )
                           }
                         </Box>
                       )}

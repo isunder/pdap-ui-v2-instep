@@ -56,9 +56,9 @@
 .MuiGrid-root.acc-content-header-item {
   border: none;
 }
-.MuiGrid-root.acc-content-header-item.ct-actions {
+/* .MuiGrid-root.acc-content-header-item.ct-actions {
   padding-left: 6px;
-}
+} */
 .acc-content-inr {
   margin-bottom: 6px;
 }
@@ -67,7 +67,7 @@
   font-size: 14px;
 }
 .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
-  width: auto;
+  width: auto ;
 }
 .acc-content-act-btns-wrap-otr, .acc-content-act-btns {
   justify-content: flex-start;
@@ -103,16 +103,32 @@
 }
 
 @media screen and (max-width: 968px) {
+
+  .cust_RAF_suspect{
+    display: none !important;
+    border: none !important;
+  }
+
+  .suspect_raf{
+    display: none !important;
+  }
+
   .MuiDialog-paper {
     height: auto;
   }
 
   .MuiGrid-grid-sm-2.acc-content-cust-header1{
     border: none !important;
+    width: 100% !important;
   }
 
-  .cust_RAF_suspect{
-    border: none !important;
+  .MuiTypography-root.acc-content-cust-header1 {
+   border: none !important;
+}
+
+  .suspect_desc_content{
+    flex-basis: 100% !important;
+    max-width: 100% !important;
   }
 
   .PopupDelete .MuiDialog-paper {
@@ -128,6 +144,11 @@
 }
 
 @media screen and (max-width: 768px) {
+
+  .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
+    width: 100% !important;
+  }
+
   .MuiTypography-root.acc-content-header-item.ct-code, .acc-content-header-item.ct-code {
     width: 22%;
   }
@@ -161,6 +182,9 @@
   .acc-content-header-items .acc-content-header-item:nth-last-child(2) {
     border: none;
   }
+
+
+
 }
 
 .acc-content-body-desc {
