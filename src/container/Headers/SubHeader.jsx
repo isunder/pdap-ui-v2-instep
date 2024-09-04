@@ -60,12 +60,30 @@ export const SubHeader = () => {
     setState({ ...state, [anchor]: open });
   };
 
+
+
+
   const { summary } = useSelector(state => state?.user?.data);
   const { isLoading, user } = useSelector((state) => state);
+
+  const [genderDisp, setGenderDisp] = useState(user?.data?.userInfo);
+  
+  useEffect(() => {
+
+    console.log(genderDisp, "userInfo")
+    if (genderDisp?.patient_first_name == "" && genderDisp?.patient_last_name == "") {
+      setGenderDisp(false)
+    }
+    else {
+      setGenderDisp(true)
+      console.log(genderDisp?.patient_first_name, genderDisp?.patient_last_name, "sdhvbdhjcvbjc")
+    }
+  }, [])
+
   let obj = {};
   if (!isLoading) {
-    const { userInfo } = user?.data;
 
+    const { userInfo } = user?.data;
     if (Object.keys(userInfo || {})?.length) {
       const { mrn, patient_first_name, patient_last_name, get_gender_display, dob } = userInfo;
       patientGender !== get_gender_display && setPatientGender(get_gender_display);
@@ -233,7 +251,7 @@ export const SubHeader = () => {
                           }}
                         >
                           {
-                            keys === "Patient" && patientGender && (
+                            genderDisp && patientGender && (
                               (patientGender === 'Male') ? (
                                 <Typography component='span'>
                                   (Male)
@@ -309,11 +327,18 @@ export const SubHeader = () => {
                       },
                     }}
                   >
-                    {(patientGender === 'Male') ? <Typography component='span' >
-                      (Male)
-                    </Typography> : <Typography component='span'>
-                      (Female)
-                    </Typography>
+                    {
+                      genderDisp && patientGender && (
+                        (patientGender === 'Male') ? (
+                          <Typography component='span'>
+                            (Male)
+                          </Typography>
+                        ) : (
+                          <Typography component='span'>
+                            (Female)
+                          </Typography>
+                        )
+                      )
                     }
                   </Box>
                 )}
