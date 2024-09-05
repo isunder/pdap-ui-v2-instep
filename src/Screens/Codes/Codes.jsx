@@ -1500,7 +1500,7 @@ export const Codes = () => {
                       >
                         <Grid item lg={9} md={9} sm={10} xs={10}>
                           <Typography className="HeadSummary">
-                            New Suspects
+                            Suspects
                           </Typography>
                         </Grid>
 
@@ -1625,7 +1625,7 @@ export const Codes = () => {
                       >
                         <Grid item lg={9} md={9} sm={10} xs={10}>
                           <Typography className="HeadSummary">
-                            Existing Conditions (not in problem list)
+                            Codes not in problem list
                           </Typography>
                         </Grid>
 
