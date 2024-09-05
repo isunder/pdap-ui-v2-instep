@@ -49,6 +49,7 @@ export const SubHeader = () => {
   const { state, setState } = useAppContext();
   const [patientAge, setPatientAge] = useState(0);
   const [patientGender, setPatientGender] = useState(null);
+  const newPatientInfo = localStorage.getItem("patientInfo") || {};
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -60,24 +61,28 @@ export const SubHeader = () => {
     setState({ ...state, [anchor]: open });
   };
 
-
-
-
   const { summary } = useSelector(state => state?.user?.data);
   const { isLoading, user } = useSelector((state) => state);
 
-  const [genderDisp, setGenderDisp] = useState(user?.data?.userInfo);
-  
-  useEffect(() => {
+  const [genderDisp, setGenderDisp] = useState();
 
-    console.log(genderDisp, "userInfo")
-    if (genderDisp?.patient_first_name == "" && genderDisp?.patient_last_name == "") {
-      setGenderDisp(false)
-    }
-    else {
-      setGenderDisp(true)
-      console.log(genderDisp?.patient_first_name, genderDisp?.patient_last_name, "sdhvbdhjcvbjc")
-    }
+  useEffect(() => {
+    setTimeout(() => {
+
+      const { userInfo } = user?.data;
+
+      if (Object.keys(userInfo || {})?.length) {
+        const { patient_first_name, patient_last_name } = userInfo;
+
+        if (patient_first_name == "" && patient_last_name == "") {
+          setGenderDisp(false)
+        }
+        else {
+          setGenderDisp(true)
+        }
+      }
+
+    }, 5000)
   }, [])
 
   let obj = {};

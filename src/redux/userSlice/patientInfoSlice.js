@@ -18,6 +18,7 @@ export const patientInfo = createAsyncThunk("patientInfo", async () => {
             const data = await axios.get(`${baseUrl}/api/v1/patient-info/`, 
                { headers: getApiHeaders()}
             );
+            localStorage.setItem("patientInfo" , data.data)
             return data.data;
         }
     } catch (error) {
