@@ -360,6 +360,7 @@ export const Codes = () => {
 
   useEffect(() => {
 
+
   }, [setOpenSubmitModal])
 
   useEffect(() => {
@@ -463,9 +464,35 @@ export const Codes = () => {
 
     if (isAthenaModal) {
       setSwitchModal(true);
+
+      const exampleMetadata = {
+        event_type: "SUMMARY_SUBMIT_ATHENA_MODEL_OPEN", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          parentCodesCount: (suspectCode?.length)
+
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
     }
     else {
       setSwitchModal(false);
+
+      const exampleMetadata = {
+        event_type: "SUMMARY_SUBMIT_EPIC_MODEL_OPEN", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          parentCodesCount: (suspectCode?.length)
+
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
     }
     const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
     if (isSummaryModal) {
@@ -583,6 +610,40 @@ export const Codes = () => {
           setOpenSubmitModal(false);
           setDialog(true);
           setIsModalSubmit(true);
+
+          const isAthenaModal = tabs['type']?.value == "Athena";
+          if (isAthenaModal) {
+            const exampleMetadata = {
+              event_type: "SUMMARY_ATHENA_MODAL_SUBMIT_AND_CLOSE", metadata: {
+                identifier: tabs?.["user"]?.value || "",
+                provider_name: doctorDetail?.doctor_name || "",
+                patient_id: user?.data?.userInfo?.mrn || "",
+                event_datetime: convertDate(new Date().toISOString()),
+                code: (existingCode, existingCodeReject, suspectCodeReject, suspectCode, recaptureCode, recaptureCodeReject, duplicateCode, duplicateCodeReject),
+                reasonForRejection: '',
+                parentCodesCount: (existingCode?.length)
+              }
+            };
+
+            handleAddEventData(exampleMetadata)
+          }
+
+          else {
+            const exampleMetadata = {
+              event_type: "SUMMARY_EPIC_MODAL_SUBMIT_AND_CLOSE", metadata: {
+                identifier: tabs?.["user"]?.value || "",
+                provider_name: doctorDetail?.doctor_name || "",
+                patient_id: user?.data?.userInfo?.mrn || "",
+                event_datetime: convertDate(new Date().toISOString()),
+                code: (existingCode, existingCodeReject, suspectCodeReject, suspectCode, recaptureCode, recaptureCodeReject, duplicateCode, duplicateCodeReject),
+                reasonForRejection: '',
+                parentCodesCount: (existingCode?.length)
+              }
+            };
+
+            handleAddEventData(exampleMetadata)
+          }
+
           localStorage.removeItem(`sessionObject_${userDetail.mrn}`);
         }
       }
@@ -744,6 +805,23 @@ export const Codes = () => {
         dispatch(existingValue(codeList));
       }
 
+      const exampleMetadata = {
+        event_type: "SUMMARY_EXISTING_CODE_REMOVED", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          code: item?.code,
+          description: item?.value ? item?.value : item?.info?.value,
+          reasonForRejection: '',
+          raf: item?.info?.total_weight,
+          alternateCodes: item?.info?.alternate_codes,
+          parentCodesCount: (existingCode?.length)
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
+
     } else if (key === "suspect") {
       if (item[Object.keys(item)]?.reason) {
         const codeList = suspectCodeReject.filter(
@@ -765,6 +843,23 @@ export const Codes = () => {
         dispatch(suspectValue(codeList));
       }
 
+      const exampleMetadata = {
+        event_type: "SUMMARY_SUSPECT_CODE_REMOVED", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          code: item?.code,
+          description: item?.value ? item?.value : item?.info?.value,
+          reasonForRejection: '',
+          raf: item?.info?.total_weight,
+          alternateCodes: item?.info?.alternate_codes,
+          parentCodesCount: (existingCode?.length)
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
+
     } else if (key === "recapture") {
       if (item?.reason) {
         const codeList = recaptureCodeReject.filter(
@@ -785,6 +880,24 @@ export const Codes = () => {
         };
         dispatch(recaptureValue(codeList));
       }
+
+      const exampleMetadata = {
+        event_type: "SUMMARY_RECAPTURE_CODE_REMOVED", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          code: item?.code,
+          description: item?.value ? item?.value : item?.info?.value,
+          reasonForRejection: '',
+          raf: item?.info?.total_weight,
+          alternateCodes: item?.info?.alternate_codes,
+          parentCodesCount: (existingCode?.length)
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
+
     } else if (key === "duplicate") {
       if (item?.reason) {
         const codeList = duplicateCodeReject.filter(
@@ -805,6 +918,23 @@ export const Codes = () => {
         };
         dispatch(duplicateValue(codeList));
       }
+
+      const exampleMetadata = {
+        event_type: "SUMMARY_DUPLICATE_CODE_REMOVED", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          code: item?.code,
+          description: item?.value ? item?.value : item?.info?.value,
+          reasonForRejection: '',
+          raf: item?.info?.total_weight,
+          alternateCodes: item?.info?.alternate_codes,
+          parentCodesCount: (existingCode?.length)
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
 
     }
     localStorage.setItem(
@@ -2865,6 +2995,7 @@ export const Codes = () => {
       </Box>
 
       <SubmitModal
+        handleAddEventData={handleAddEventData}
         openSubmitModal={openSubmitModal}
         closeSubmitModal={closeSubmitModal}
         handleSubmit={handleSubmit}

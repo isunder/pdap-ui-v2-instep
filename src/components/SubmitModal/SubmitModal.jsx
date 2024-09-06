@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import { Card, CardContent, Stack, Tooltip } from "@mui/material";
 import { CrossIcon2 } from "../../../src/components/Icons";
-
+import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { styled } from "@mui/system";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { convertDate, isSlugOrJwt } from "../../utils/helper";
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   color: "#101828",
@@ -41,6 +43,7 @@ const StylePop = styled("Typography")(() => ({
 }));
 
 const SubmitModal = ({
+  handleAddEventData,
   openSubmitModal,
   setOpenSubmitModal,
   existingCode,
@@ -64,8 +67,9 @@ const SubmitModal = ({
   const [matchedValuesSuspect, setMatchedValuesSuspect] = useState([]);
   const [matchedValuesRecapture, setMatchedValuesRecapture] = useState([]);
   const [matchedValuesDuplicate, setMatchedValuesDuplicate] = useState([]);
-
-
+  const tabs = TabsSlag();
+  const { user } = useSelector((state) => state);
+  const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const [combinedData, setCombinedData] = useState([]);
   const [combinedData2, setCombinedData2] = useState([]);
   const [inProblemList, setInProblemList] = useState([]);
@@ -181,6 +185,40 @@ const SubmitModal = ({
     setNotInProblemList(combined2);
   }, [matchedValuesExisting, suspectCode, matchedValuesDuplicate, matchedValuesRecapture]);
 
+
+  const setOpenSubmitModalFunc = (key) => {
+    setOpenSubmitModal(false);
+
+    if (key === "athena") {
+      const exampleMetadata = {
+        event_type: "SUMMARY_ATHENA_MODAL_CLOSE", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          parentCodesCount: (suspectCode?.length)
+
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
+    }
+    else {
+      const exampleMetadata = {
+        event_type: "SUMMARY_EPIC_MODAL_CLOSE", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          parentCodesCount: (suspectCode?.length)
+
+        }
+      };
+
+      handleAddEventData(exampleMetadata)
+    }
+  }
+
   return (
     <Dialog
       open={openSubmitModal}
@@ -212,7 +250,7 @@ const SubmitModal = ({
                   <StyledTypography>Summary</StyledTypography>
                   <Button
                     sx={{ justifyContent: "end", width: "12px" }}
-                    onClick={() => setOpenSubmitModal(false)}
+                    onClick={() => setOpenSubmitModalFunc("athena")}
                   >
                     <CrossIcon2 width="12px" height="12px" />
                   </Button>
@@ -551,7 +589,7 @@ const SubmitModal = ({
                   <StyledTypography>Summary</StyledTypography>
                   <Button
                     sx={{ justifyContent: "end", width: "12px" }}
-                    onClick={() => setOpenSubmitModal(false)}
+                    onClick={() => setOpenSubmitModalFunc("epic")}
                   >
                     <CrossIcon2 width="12px" height="12px" />
                   </Button>
