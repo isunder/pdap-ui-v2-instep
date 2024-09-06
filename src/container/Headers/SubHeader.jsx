@@ -64,7 +64,7 @@ export const SubHeader = () => {
   const { summary } = useSelector(state => state?.user?.data);
   const { isLoading, user } = useSelector((state) => state);
 
-  const [genderDisp, setGenderDisp] = useState();
+  const [genderDisp, setGenderDisp] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
