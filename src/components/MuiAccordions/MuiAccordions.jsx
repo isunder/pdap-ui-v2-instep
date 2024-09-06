@@ -91,12 +91,9 @@ export const MuiAccordions = (props) => {
     }
   }
 
-
-  console.log(summary, "dbjdxbjv")
-
   const handleChange = (panel) => (_, isExpanded) => {
 
-    if (item.key === panel && item.codeCount === 0) {
+    if (item?.key === panel && item?.codeCount === 0) {
       return
     }
 
