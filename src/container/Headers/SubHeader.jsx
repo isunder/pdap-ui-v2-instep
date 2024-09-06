@@ -49,6 +49,7 @@ export const SubHeader = () => {
   const { state, setState } = useAppContext();
   const [patientAge, setPatientAge] = useState(0);
   const [patientGender, setPatientGender] = useState(null);
+  const newPatientInfo = localStorage.getItem("patientInfo") || {};
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -62,10 +63,32 @@ export const SubHeader = () => {
 
   const { summary } = useSelector(state => state?.user?.data);
   const { isLoading, user } = useSelector((state) => state);
+
+  const [genderDisp, setGenderDisp] = useState();
+
+  useEffect(() => {
+    setTimeout(() => {
+
+      const { userInfo } = user?.data;
+
+      if (Object.keys(userInfo || {})?.length) {
+        const { patient_first_name, patient_last_name } = userInfo;
+
+        if (patient_first_name == "" && patient_last_name == "") {
+          setGenderDisp(false)
+        }
+        else {
+          setGenderDisp(true)
+        }
+      }
+
+    }, 5000)
+  }, [])
+
   let obj = {};
   if (!isLoading) {
-    const { userInfo } = user?.data;
 
+    const { userInfo } = user?.data;
     if (Object.keys(userInfo || {})?.length) {
       const { mrn, patient_first_name, patient_last_name, get_gender_display, dob } = userInfo;
       patientGender !== get_gender_display && setPatientGender(get_gender_display);
@@ -232,11 +255,18 @@ export const SubHeader = () => {
                             },
                           }}
                         >
-                          {(patientGender === 'Male') ? <Typography component='span' >
-                            (Male)
-                          </Typography> : <Typography component='span'>
-                            (Female)
-                          </Typography>
+                          {
+                            genderDisp && patientGender && (
+                              (patientGender === 'Male') ? (
+                                <Typography component='span'>
+                                  (Male)
+                                </Typography>
+                              ) : (
+                                <Typography component='span'>
+                                  (Female)
+                                </Typography>
+                              )
+                            )
                           }
                         </Box>
                       )}
@@ -302,11 +332,18 @@ export const SubHeader = () => {
                       },
                     }}
                   >
-                    {(patientGender === 'Male') ? <Typography component='span' >
-                      (Male)
-                    </Typography> : <Typography component='span'>
-                      (Female)
-                    </Typography>
+                    {
+                      genderDisp && patientGender && (
+                        (patientGender === 'Male') ? (
+                          <Typography component='span'>
+                            (Male)
+                          </Typography>
+                        ) : (
+                          <Typography component='span'>
+                            (Female)
+                          </Typography>
+                        )
+                      )
                     }
                   </Box>
                 )}

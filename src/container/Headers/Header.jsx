@@ -175,9 +175,9 @@ export const Header = ({ sessionObject }) => {
           <Container
             maxWidth="xl"
             sx={{
-              padding: "0px 50px !important",
-              [theme.breakpoints.down("sm")]: {
-                padding: "0px 10px !important",
+              padding: "0px 50px ",
+              [theme.breakpoints.down("md")]: {
+                padding: "0px 10px",
               },
             }}
           >
