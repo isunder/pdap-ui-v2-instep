@@ -2105,6 +2105,8 @@ export const Codes = () => {
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {!isModalSubmit && codesData?.map((item, i) => (
                     <MuiAccordions
+                      item={item}
+                      summary={summary}
                       handleAddEventData={handleAddEventData}
                       tabs={tabs}
                       panel={item?.key}

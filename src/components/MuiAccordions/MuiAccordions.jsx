@@ -27,6 +27,8 @@ const StyledAccordionSummary = styled(AccordionSummary)(({ sx }) => ({
 
 export const MuiAccordions = (props) => {
   const {
+    item,
+    summary,
     tabs,
     panel,
     code,
@@ -89,9 +91,14 @@ export const MuiAccordions = (props) => {
     }
   }
 
+
+  console.log(summary, "dbjdxbjv")
+
   const handleChange = (panel) => (_, isExpanded) => {
 
-
+    if (item.key === panel && item.codeCount === 0) {
+      return
+    }
 
     if (panel) {
       let codeValue = "";
