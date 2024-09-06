@@ -59,7 +59,7 @@ import { DialogModal } from "../../components/Modal/DialogModal";
 import SubmitModal from "../../components/SubmitModal/SubmitModal";
 import { addAuditLog1, getAuditLog1, addAuditLog2, getAuditLog2 } from "../../utils/indexedDb";
 import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
-import { convertDate, convertDate, isSlugOrJwt } from "../../utils/helper";
+import { convertDate, isSlugOrJwt } from "../../utils/helper";
 import { IdleModal } from "../../components/idleModal/IdleModal";
 import { refreshSSOToken } from "../../redux/userSlice/refreshToken";
 
