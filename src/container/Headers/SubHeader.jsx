@@ -77,7 +77,7 @@ export const SubHeader = () => {
         if (patient_first_name == "" && patient_last_name == "") {
           setGenderDisp(false)
         }
-        else {
+        else if (patient_first_name !== "" && patient_last_name !== "") {
           setGenderDisp(true)
         }
       }
