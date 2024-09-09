@@ -59,7 +59,7 @@ export const ReadMore = ({ children, length, readMore, showLess, other, user, ta
                 {!isReadMore ? children.slice(0, length) : children}
                 <Typography component='span' sx={{
                     cursor: 'pointer', ...other,
-                    whiteSpace: isReadMore ? "pre" : null
+                    fontWeight: 700
                 }}
                 >
                     {isReadMore ? <br /> : null}

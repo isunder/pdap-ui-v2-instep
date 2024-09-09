@@ -865,11 +865,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
-                                      fontWeight: 700,
+                                      fontWeight: 500,
                                       lineHeight: "25px",
                                       letterSpacing: "0.02em",
                                       padding: "0px",
-                                      margin: "0px"
+                                      margin: "0px",
+                                      paddingLeft: "4px"
                                     }}
                                   >
                                     {item?.info?.noted_by}
@@ -893,7 +894,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
-                                      fontWeight: 700,
+                                      fontWeight: 500,
                                       lineHeight: "25px",
                                       letterSpacing: "0.02em",
                                       paddingLeft: "4px",
@@ -1884,6 +1885,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             fontWeight: 500,
                                             lineHeight: "25px",
                                             letterSpacing: "0.02em",
+                                            paddingLeft: "4px"
                                           }}
                                         >
                                           {value?.noted_by}
@@ -1902,7 +1904,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         sx={{
                                           my: 1,
                                           fontSize: "14px",
-                                          fontWeight: 400,
+                                          fontWeight: 500,
                                           lineHeight: "25px",
                                           letterSpacing: "0em",
                                           display: "inline-block",

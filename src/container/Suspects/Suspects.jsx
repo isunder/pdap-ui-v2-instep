@@ -908,7 +908,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                             <Typography
                               sx={{
                                 fontSize: "14px",
-                                fontWeight: 700,
+                                fontWeight: 500,
                                 lineHeight: "21px",
                                 color: "#000",
                                 textTransform: "inherit",

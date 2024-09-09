@@ -1041,11 +1041,12 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
-                                      fontWeight: 700,
+                                      fontWeight: 500,
                                       lineHeight: "25px",
                                       letterSpacing: "0.02em",
                                       padding: "0px",
-                                      margin: "0px"
+                                      margin: "0px",
+                                      paddingLeft:"4px"
                                     }}
                                   >
                                     {item?.info?.noted_by}
@@ -1069,7 +1070,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
-                                      fontWeight: 700,
+                                      fontWeight: 500,
                                       lineHeight: "25px",
                                       letterSpacing: "0.02em",
                                       paddingLeft: "4px",
