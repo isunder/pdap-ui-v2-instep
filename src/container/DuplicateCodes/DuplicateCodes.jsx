@@ -659,6 +659,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
     const value = event.target.value;
     if (value !== "Other") {
       setError({});
+      setOtherText("");
     }
     setRejectReason(value);
   };

@@ -314,6 +314,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
     const value = event.target.value;
     if (value !== "Other") {
       setError({});
+      setOtherText("");
     }
     setRejectReason(value);
   };

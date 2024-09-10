@@ -328,9 +328,9 @@ export const Header = ({ sessionObject }) => {
                           width: "100%",
                           height: "3.75rem",
                           justifyContent: "flex-end",
-                          [theme.breakpoints.down("sm")]: {
-                            display: "none",
-                          },
+                          // [theme.breakpoints.down("sm")]: {
+                          //   display: "none",
+                          // },
                           [theme.breakpoints.down("lg")]: {},
                         }}
                       >

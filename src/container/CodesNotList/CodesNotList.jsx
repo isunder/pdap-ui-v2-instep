@@ -543,6 +543,7 @@ export const CodesNotList = ({ sessionObject }) => {
     const value = event.target.value;
     if (value !== "Other") {
       setError({});
+      setOtherText("");
     }
     setRejectReason(value);
   };

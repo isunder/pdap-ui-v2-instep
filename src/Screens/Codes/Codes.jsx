@@ -421,26 +421,41 @@ export const Codes = () => {
 
   // Application Time Recorder and SSO token Refresh :-------------------------------------------------:
 
-  // const [loadingTime, setLoadingTime] = useState(null);
+  const [loadingTime, setLoadingTime] = useState(null);
 
-  // useEffect(() => {
-  //   const startTime = new Date().getTime();
-  //   localStorage.setItem('appStartTime', startTime);
-  //   const intervalId = setInterval(() => {
-  //     const currentTime = new Date().getTime();
-  //     const elapsedTime = currentTime - startTime;
+  useEffect(() => {
+    const startTime = new Date().getTime();
+    localStorage.setItem('appStartTime', startTime);
 
-  //     if (elapsedTime >= 15 * 60 * 1000) {
-  //       setLoadingTime(elapsedTime);
-  //       clearInterval(intervalId);
-  //       dispatch(refreshSSOToken({ token: "" }))
-  //     }
-  //   }, 60 * 1000);
+    const slug = isSlugOrJwt();
 
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, []);
+    if (!slug.isJwt) {
+      return
+    }
+
+    const intervalId = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const elapsedTime = currentTime - startTime;
+
+      if (tabs['Patient_Validity_Timeout']?.active) {
+        const patientTime = tabs['Patient_Validity_Timeout'].value * 1000;
+        setLoadingTime(patientTime);
+        clearInterval(intervalId);
+        dispatch(refreshSSOToken());
+      }
+
+      else if (elapsedTime >= 20 * 60 * 1000) {
+        setLoadingTime(elapsedTime);
+        clearInterval(intervalId);
+        dispatch(refreshSSOToken());
+      }
+    }, 60 * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [dispatch, tabs]); // Add necessary dependencies
+
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (

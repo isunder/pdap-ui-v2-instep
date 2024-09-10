@@ -8,14 +8,17 @@ const jwt = sessionStorage.getItem("newjwt") || null;
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const importedHeader = postApiHeaders();
 
-export const refreshSSOToken = createAsyncThunk("Refresh_Token", async (payload) => {
-    try {
-        let url = `${baseUrl}/api/v1/sso-refresh-token/`;
-        if (slug) {
-            url += `?slug=${slug}`;
-        }
+const payload = {
+    'token' : jwt
+}
 
-        const response = await axios.post(url, payload, { headers: importedHeader });
+export const refreshSSOToken = createAsyncThunk("Refresh_Token", async () => {
+    try {
+        let url = `${baseUrl}/sso-refresh-token/`;
+        const response = await axios.post(url, payload, { headers : {
+            'Authorization:' : jwt
+        }});
+        sessionStorage.setItem("newjwt", response.data)
         return response.data;
     } catch (error) {
         console.log("Error in refreshing token", error);

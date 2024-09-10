@@ -827,11 +827,13 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
     const value = event.target.value;
     if (value !== "Other") {
       setError({});
+      setOtherText("");
     }
     setRejectReason(value);
   };
 
   const handleOtherText = (e) => {
+
     let value = e.target.value;
     let val = ReasonTextVal(value);
     setError(val);
@@ -1046,7 +1048,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       letterSpacing: "0.02em",
                                       padding: "0px",
                                       margin: "0px",
-                                      paddingLeft:"4px"
+                                      paddingLeft: "4px"
                                     }}
                                   >
                                     {item?.info?.noted_by}

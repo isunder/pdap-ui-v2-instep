@@ -11,15 +11,15 @@ export function isSlugOrJwt() {
   sessionStorage.setItem("newslug", slug);
   sessionStorage.setItem("newjwt", jwt);
   
-  const localslug = sessionStorage.getItem("newslug") || null;
-  const localjwt = sessionStorage.getItem("newjwt") || null;
+  const localslug = sessionStorage.getItem("newslug");
+  const localjwt = sessionStorage.getItem("newjwt");
   
   let auth = {};
 
-  if (localslug) {
-    auth = {isJwt: false, token: localslug};
+  if (slug) {
+    auth = {isJwt: false, token: slug};
   } else if (localjwt) {
-    auth = {isJwt: true, token: localjwt};
+    auth = {isJwt: true, token: jwt};
   }
   
   return auth;
