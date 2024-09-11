@@ -314,7 +314,7 @@ export const SubHeader = () => {
                 <Typography sx={keys !== "Patient" ? { display: "none" } : { fontSize: "13px", color: " #00000099", fontWeight: "600" }} >
                   {keys}:
                 </Typography>
-                <Typography sx={keys !== "Patient" ? { display: "none", color: " #000000" } : { fontSize: "13px", color: " #000000", marginLeft: "10px", fontWeight: "600", marginRight: "5px" }} >
+                <Typography sx={keys !== "Patient" ? { display: "none", color: " #000000" } : { fontSize: "13px", color: " #000000", marginLeft: "10px", fontWeight: "600" }} >
                   {value}
                 </Typography>
                 {keys === "Patient" && (
@@ -331,11 +331,11 @@ export const SubHeader = () => {
                     {
                       genderDisp && patientGender && (
                         (patientGender === 'Male') ? (
-                          <Typography sx={{ fontSize: "13px", color: " #000000", marginLeft: "10px", fontWeight: "600" }} component='span'>
+                          <Typography sx={{ fontSize: "13px", color: " #000000", marginLeft: "8px", fontWeight: "600" }} component='span'>
                             (Male)
                           </Typography>
                         ) : (
-                          <Typography sx={{ fontSize: "13px", color: " #000000", marginLeft: "10px", fontWeight: "600" }} component='span'>
+                          <Typography sx={{ fontSize: "13px", color: " #000000", marginLeft: "8px", fontWeight: "600" }} component='span'>
                             (Female)
                           </Typography>
                         )
