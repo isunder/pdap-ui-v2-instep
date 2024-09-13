@@ -2763,8 +2763,6 @@ export const Codes = () => {
                               >
                                 <Tooltip
                                   title={
-                                    Object.keys(item) +
-                                    " : " +
                                     item[Object.keys(item)].value
                                   }
                                 >

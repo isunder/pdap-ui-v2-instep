@@ -64,7 +64,7 @@ export const SubHeader = () => {
   const { summary } = useSelector(state => state?.user?.data);
   const { isLoading, user } = useSelector((state) => state);
 
-  const [genderDisp, setGenderDisp] = useState(true);
+  const [genderDisp, setGenderDisp] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -78,6 +78,10 @@ export const SubHeader = () => {
           setGenderDisp(false)
         }
         else if (patient_first_name !== "" && patient_last_name !== "") {
+          setGenderDisp(true)
+        }
+
+        else {
           setGenderDisp(true)
         }
       }
