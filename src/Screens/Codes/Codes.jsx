@@ -486,9 +486,6 @@ export const Codes = () => {
     fetchEventData();
   }, []);
 
-
-
-
   const handleAddEventData = async (data) => {
     try {
       await addAuditLog1(data);
@@ -529,20 +526,33 @@ export const Codes = () => {
     }
   }, [eventData]);
 
+  const [currentURL, setCurrentURL] = useState("")
 
-  useEffect(() => {
+  const sendAuditLog = async () => {
+
+    console.log(user, tabs, "dnfkjdsngjbdfj")
     const payload = {
       event_type: "LAUNCH_SUCCESS",
       metadata: {
-        identifier: tabs?.["id_user"]?.value || "",
-        provider_name: doctorDetail?.doctor_name || "",
-        patient_id: user?.data?.userInfo?.mrn || "",
+        identifier: tabs?.["user"]?.value,
+        provider_name: doctorDetail?.doctor_name,
+        patient_id: user?.data?.userInfo?.mrn,
         event_datetime: convertDate(new Date().toISOString()),
-        description: "Launch Successfull",
+        description: "Launch Successful",
+      }
+    };
+
+    setCurrentURL(window.location.href);
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    if (!currentURL.includes("/404")) {
+      try {
+        await dispatch(fetchAuditLogs([payload]));
+      } catch (error) {
+        console.error("Failed to dispatch audit logs:", error);
       }
     }
-    dispatch(fetchAuditLogs([payload]));
-  }, []);
+  };
 
   const handleSubmitRedirect = async (tabs) => {
     setIsModalOpen(true);
@@ -739,7 +749,7 @@ export const Codes = () => {
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary());
-      // Set a timeout to update the code data loaded state
+      sendAuditLog();
       const timer = setTimeout(() => {
         setCodesDataLoaded(true);
       }, 2000);

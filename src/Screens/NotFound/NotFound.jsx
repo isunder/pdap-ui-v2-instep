@@ -17,9 +17,9 @@ export const NotFound = () => {
   useEffect(() => {
     sessionStorage.clear();
 
-    const identifier = tabs?.["user"]?.value || "";
-    const providerName = doctorDetail?.doctor_name || "";
-    const patientId = user?.data?.userInfo?.mrn || "";
+    const identifier = tabs?.["user"]?.value;
+    const providerName = doctorDetail?.doctor_name;
+    const patientId = user?.data?.userInfo?.mrn;
     const eventDateTime = convertDate(new Date().toISOString());
 
     const payloadFailure = {
