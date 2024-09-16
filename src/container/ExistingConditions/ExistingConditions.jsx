@@ -984,7 +984,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                           </StyledText>
                           <StyledText
                             sx={{
-                              fontWeight: 500,
+                              fontWeight: 600,
                               textDecorationLine: "underline",
                               color: theme.palette.secondary.main,
                               display: "inline-block",
@@ -1183,7 +1183,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                           <StyledText
                             className="acc-content-collapse-see-less"
                             sx={{
-                              fontWeight: 500,
+                              fontWeight: 600,
                               textDecorationLine: "underline",
                               color: "#3D4A8F",
 
@@ -1483,7 +1483,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       </StyledText>
                                       <StyledText
                                         sx={{
-                                          fontWeight: 500,
+                                          fontWeight: 600,
                                           textDecorationLine: "underline",
                                           color: theme.palette.secondary.main,
                                           display: "inline-block",
@@ -1704,7 +1704,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       <StyledText
                                         className="acc-content-collapse-see-less"
                                         sx={{
-                                          fontWeight: 500,
+                                          fontWeight: 600,
                                           textDecorationLine: "underline",
                                           color: "#3D4A8F",
                                           ml: 1,

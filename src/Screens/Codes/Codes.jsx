@@ -437,8 +437,8 @@ export const Codes = () => {
       const currentTime = new Date().getTime();
       const elapsedTime = currentTime - startTime;
 
-      if (tabs['Patient_Validity_Timeout']?.active) {
-        const patientTime = tabs['Patient_Validity_Timeout'].value * 1000;
+      if (tabs && tabs['Patient_Validity_Timeout']?.active) {
+        const patientTime = tabs['Patient_Validity_Timeout']?.value * 1000;
         setLoadingTime(patientTime);
         clearInterval(intervalId);
         dispatch(refreshSSOToken());
@@ -530,7 +530,6 @@ export const Codes = () => {
 
   const sendAuditLog = async () => {
 
-    console.log(user, tabs, "dnfkjdsngjbdfj")
     const payload = {
       event_type: "LAUNCH_SUCCESS",
       metadata: {

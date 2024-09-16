@@ -23,7 +23,7 @@ export const NotFound = () => {
     const eventDateTime = convertDate(new Date().toISOString());
 
     const payloadFailure = {
-      event_type: "LAUNCH_FAILURE",
+      event_type: "LAUNCH_PATIENT_UNAVAILABLE",
       metadata: {
         identifier,
         provider_name: providerName,

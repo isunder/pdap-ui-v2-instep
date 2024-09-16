@@ -66,29 +66,6 @@ export const SubHeader = () => {
 
   const [genderDisp, setGenderDisp] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-
-      const { userInfo } = user?.data;
-
-      if (Object.keys(userInfo || {})?.length) {
-        const { patient_first_name, patient_last_name } = userInfo;
-
-        if (patient_first_name == "" && patient_last_name == "") {
-          setGenderDisp(false)
-        }
-        else if (patient_first_name !== "" && patient_last_name !== "") {
-          setGenderDisp(true)
-        }
-
-        else {
-          setGenderDisp(true)
-        }
-      }
-
-    }, 5000)
-  }, [])
-
   let obj = {};
   if (!isLoading) {
 
@@ -112,7 +89,11 @@ export const SubHeader = () => {
   const slug = isSlugOrJwt();
 
   useEffect(() => {
-    dispatch(patientInfo());
+    dispatch(patientInfo()).then((res) => {
+      if (res?.payload?.patient_first_name !== "" && res?.payload?.patient_last_name !== "") {
+        setGenderDisp(true)
+      }
+    });
     if (slug) {
       dispatch(patientSummary());
     }
