@@ -449,7 +449,7 @@ export const Codes = () => {
         clearInterval(intervalId);
         dispatch(refreshSSOToken());
       }
-    }, 60 * 1000);
+    }, 15 * 60 * 1000);
 
     return () => {
       clearInterval(intervalId);
