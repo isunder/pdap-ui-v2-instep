@@ -925,7 +925,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
-                                      fontWeight: 700,
+                                      fontWeight: 500,
                                       lineHeight: "25px",
                                       letterSpacing: "0.02em",
                                       paddingLeft: "4px",
