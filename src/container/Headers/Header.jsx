@@ -354,7 +354,7 @@ export const Header = ({ sessionObject }) => {
                         }}
                       >
 
-                        <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                        <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
                           <StyleText
                             sx={{
                               fontWeight: 600,
@@ -389,7 +389,7 @@ export const Header = ({ sessionObject }) => {
                         {tabs &&
                           tabs["patient_dashboard_recapture_percentage"] && tabs["patient_dashboard_recapture_percentage"].active
                           && (
-                            <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                            <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
                               <StyleText
                                 sx={{
                                   fontWeight: 600,
@@ -421,7 +421,7 @@ export const Header = ({ sessionObject }) => {
                           tabs["patient_dashboard_suspect_percentage"] && tabs["patient_dashboard_suspect_percentage"].active
 
                           && (
-                            <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                            <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
                               <StyleText
                                 sx={{
                                   fontWeight: 600,
