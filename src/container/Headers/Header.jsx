@@ -182,8 +182,10 @@ export const Header = ({ sessionObject }) => {
             }}
           >
             <>
-              <Grid container sx={{ flexWrap: "nowrap" }} spacing={{ md: 2 }}>
-                <Grid item xs={12} md={5} sx={{ alignItems: "center" }} >
+              <Grid container className="header__container" spacing={{ md: 2 }}>
+                <Grid className="header__container_child1" item xs={12} md={5} sm={12} sx={{
+                  alignItems: "center",
+                }} >
                   <Box
                     sx={{
                       display: "flex",
@@ -194,6 +196,8 @@ export const Header = ({ sessionObject }) => {
                       [theme.breakpoints.down("sm")]: {
                         justifyContent: "space-between",
                       },
+
+
                     }}
                   >
                     <StyleLogo
@@ -320,16 +324,31 @@ export const Header = ({ sessionObject }) => {
 
                 {
                   tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name ?
-                    <Grid className="suspect_recapture_header" item md={7} sm={6}>
+                    <Grid item md={7} sm={12} className="suspect_recapture_header"
+                      sx={(theme) => ({
+                        ...(tabs &&
+                          (tabs?.patient_dashboard_recapture_percentage?.active ||
+                            tabs?.patient_dashboard_suspect_percentage?.active) &&
+                          doctorDetail?.doctor_name
+                          ? {
+                            [theme.breakpoints.down("sm")]: {
+                              display: "none"
+                            }
+                          }
+                          : null)
+                      })}
+
+                    >
                       <Box
+                        className="panel_metric_header"
                         sx={{
                           ...flexCenter,
                           // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
                           width: "100%",
                           height: "3.75rem",
-                          justifyContent: "flex-end",
+                          // justifyContent: "flex-end",
                           // [theme.breakpoints.down("sm")]: {
-                          //   display: "none",
+                          //   justifyContent: 'flex-start'
                           // },
                           [theme.breakpoints.down("lg")]: {},
                         }}
@@ -342,7 +361,7 @@ export const Header = ({ sessionObject }) => {
                               fontSize: "0.875rem",
                               color: "#000",
 
-                              [theme.breakpoints.only("md")]: {
+                              [theme.breakpoints.down("md")]: {
                                 p: 0,
                               },
                             }}
@@ -357,7 +376,7 @@ export const Header = ({ sessionObject }) => {
                               fontSize: "0.875rem",
                               color: "#000",
 
-                              [theme.breakpoints.only("md")]: {
+                              [theme.breakpoints.down("md")]: {
                                 p: 0,
                               },
                             }}
@@ -425,13 +444,13 @@ export const Header = ({ sessionObject }) => {
                               </StyleText>
                             </Box>
                           )}
-                        <Box>
+                        <Box className="header_patient_name" sx={{ whiteSpace: "nowrap" }}>
                           <StyleText
                             sx={{
                               fontWeight: 600,
-                              [theme.breakpoints.down("lg")]: {
-                                width: "10rem",
-                              },
+                              // [theme.breakpoints.down("lg")]: {
+                              //   width: "10rem",
+                              // },
                             }}
                           >
                             {doctorDetail?.doctor_name && doctorDetail?.doctor_name}

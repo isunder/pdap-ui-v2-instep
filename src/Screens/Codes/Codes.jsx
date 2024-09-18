@@ -1210,7 +1210,7 @@ export const Codes = () => {
                       anchor={"top"}
                       open={state["top"]}
                       onClose={toggleDrawer("top", false)}
-                      className="MuiDrawerTop"
+                      className={`MuiDrawerTop  ${(tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name) ? "responsiveMuiDrawerTop" : ''}`}
                       sx={{
 
                         [theme.breakpoints.up("md")]: {
@@ -1523,7 +1523,8 @@ export const Codes = () => {
                   anchor={"down"}
                   open={state["down"]}
                   onClose={toggleDrawer("down", false)}
-                  className="MuiDrawerDown"
+                  className={`MuiDrawerDown  ${(tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name) ? "responsiveMuiDrawerDown" : ''}`}
+
                   sx={{
                     [theme.breakpoints.up("md")]: {
                       display: "none",

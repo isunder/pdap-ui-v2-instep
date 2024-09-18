@@ -53,3 +53,13 @@
         font-weight: 600 !important;
     }
 } 
+
+@media only screen and (max-width:550px){
+    .responsiveMuiDrawerTop .MuiDrawer-paper {
+        top: 13.8rem;
+    }
+    
+    .responsiveMuiDrawerDown .MuiDrawer-paper {
+        top: 13.8rem;
+    }
+}

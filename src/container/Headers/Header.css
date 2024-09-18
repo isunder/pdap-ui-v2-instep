@@ -42,10 +42,59 @@
 }
  */
 
+/* 
+ .header__container{
+  flex-wrap: nowrap !important;
+ } */
 
-@media only screen and (max-width:550px){
-  .suspect_recapture_header{
+ .panel_metric_header{
+  justify-content: flex-start;
+ }
+
+@media only screen and (min-width:550px){
+
+  .header__container{
+    flex-wrap: nowrap !important;
+   }
+
+   .panel_metric_header{
+    justify-content: flex-end;
+   }
+   .header__container_child1::before{
     display: none;
+   }
+}
+
+.header__container_child1::before{
+    border-bottom: 1px solid #dddddd;
+    padding: 0;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 100%;
+    left: -2%
+  
+}
+.header__container_child1{
+  position: relative;
+}
+
+@media only screen and (max-width:767px){
+  .header_patient_name{
+    text-overflow: ellipsis; /* Adds ... if the text is too long */
+    max-width: 150px;     /* Adjust max width as necessary */
+    white-space: nowrap;
+    overflow: hidden; 
+  }
+  
+  .header_patient_name span {
+    white-space: nowrap;
+    margin-left: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    display: block;   /* Adjust max width based on your layout */
   }
 }
 
@@ -54,3 +103,5 @@
     display: none;
   }
 } */
+
+
