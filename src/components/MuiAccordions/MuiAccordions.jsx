@@ -44,8 +44,6 @@ export const MuiAccordions = (props) => {
     handleAddEventData
   } = props;
 
-  console.log(item, "nfkgnkfngkdfngkd")
-
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const { user } = useSelector((state) => state);
 

@@ -745,8 +745,6 @@ export const Codes = () => {
     } catch (error) { }
   };
 
-  console.log(tabData, "tabData")
-
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary());
@@ -1068,9 +1066,6 @@ export const Codes = () => {
   const open = Boolean(anchorEl);
   const [expanded, setExpanded] = React.useState(false);
   const [singleExpand, setSingleExpand] = React.useState(false);
-
-  console.log(codesData, "codesData");
-
 
   return (
     <>
