@@ -44,6 +44,8 @@ export const MuiAccordions = (props) => {
     handleAddEventData
   } = props;
 
+  console.log(item, "nfkgnkfngkdfngkd")
+
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const { user } = useSelector((state) => state);
 
@@ -93,7 +95,8 @@ export const MuiAccordions = (props) => {
 
   const handleChange = (panel) => (_, isExpanded) => {
 
-    if (item?.key === panel && item?.codeCount === 0) {
+    if ((item?.key === panel && item?.codeCount === 0) || item?.key === panel && item?.codeCount === undefined) {
+
       return
     }
 
@@ -143,6 +146,7 @@ export const MuiAccordions = (props) => {
 
   return (
     <Accordion
+      className={`${item.codeCount === 0 || item.codeCount === undefined ? 'accordian_not_Expand' : ''}`}
       expanded={panel ? expanded === panel : singleExpand}
       onChange={handleChange(panel || false)}
     >

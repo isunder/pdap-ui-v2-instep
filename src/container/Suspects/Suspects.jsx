@@ -677,6 +677,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   xl={1.5}
                   sx={{
                     display: "flex",
+                    justifyContent: 'center'
                   }}
                   className="acc-content-suspects-action"
                 >
