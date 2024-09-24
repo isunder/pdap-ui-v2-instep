@@ -62,6 +62,7 @@ import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
 import { convertDate, isSlugOrJwt } from "../../utils/helper";
 import { IdleModal } from "../../components/idleModal/IdleModal";
 import { refreshSSOToken } from "../../redux/userSlice/refreshToken";
+import { useNavigate } from "react-router-dom";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -117,6 +118,8 @@ const StyleButton = styled(Button)(() => ({
 }));
 
 export const Codes = () => {
+  const navigate = useNavigate();
+
   const tabs = TabsSlag();
   const dispatch = useDispatch();
   const queryString = window.location.search;
@@ -502,6 +505,15 @@ export const Codes = () => {
       arr.splice(index, 1);
     }
   };
+
+  console.log(slug, "ndjndknjfjnk")
+
+  useEffect(() => {
+    if (Object.keys(slug).length === 0 && slug.constructor === Object) {
+      navigate("/404")
+    }
+  }, [])
+
 
   useEffect(() => {
     const processEventData = async () => {
