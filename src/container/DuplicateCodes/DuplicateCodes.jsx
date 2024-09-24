@@ -1099,12 +1099,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.is_read_only_mode_with_rejection_allowed?.active && "#D5D5D5 ",
+                                    tabs?.is_read_only?.active && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#3D4A8F',
+                                      background: tabs?.is_read_only?.active ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1113,7 +1113,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
-                                disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active}
+                                disabled={tabs?.is_read_only?.active}
                                 className="acc-content-act-btn"
                               >
                                 Accept
@@ -1403,13 +1403,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.is_read_only_mode_with_rejection_allowed?.active &&
+                                                tabs?.is_read_only?.active &&
                                                 "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: tabs?.is_read_only?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1418,7 +1418,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active}
+                                            disabled={tabs?.is_read_only?.active}
                                           >
                                             Accept
                                           </StyledButton>
@@ -1681,12 +1681,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.is_read_only_mode_with_rejection_allowed?.active && "grey ",
+                                            tabs?.is_read_only?.active && "grey ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#3D4A8F',
+                                              background: tabs?.is_read_only?.active ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -1695,7 +1695,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
-                                        disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active}
+                                        disabled={tabs?.is_read_only?.active}
                                       >
                                         Accept
                                       </StyledButton>
@@ -2130,13 +2130,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.is_read_only_mode_with_rejection_allowed?.active &&
+                                                tabs?.is_read_only?.active &&
                                                 "grey ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: tabs?.is_read_only?.active ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -2145,7 +2145,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active}
+                                            disabled={tabs?.is_read_only?.active}
                                           >
                                             Accept
                                           </StyledButton>
@@ -2611,12 +2611,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.is_read_only_mode_with_rejection_allowed?.active && "#D5D5D5 ",
+                                            tabs?.is_read_only?.active && "#D5D5D5 ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: tabs?.is_read_only_mode_with_rejection_allowed?.active ? '#ADADAD' : '#3D4A8F',
+                                              background: tabs?.is_read_only?.active ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -2625,7 +2625,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
-                                        disabled={tabs?.is_read_only_mode_with_rejection_allowed?.active}
+                                        disabled={tabs?.is_read_only?.active}
                                       >
                                         Accept
                                       </StyledButton>

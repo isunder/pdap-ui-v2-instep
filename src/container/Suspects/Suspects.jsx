@@ -800,7 +800,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                               lg="auto"
                               xl="auto"
                               onClick={() => {
-                                if (tabs?.is_read_only_mode_with_rejection_allowed?.active) {
+                                if (tabs?.is_read_only?.active) {
                                   return;
                                 }
                                 if (!isConditionRejected(item)) {
@@ -815,13 +815,13 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                             >
                               <StyleCode
                                 sx={{
-                                  filter: isConditionRejected(item) || tabs?.is_read_only_mode_with_rejection_allowed?.active
+                                  filter: isConditionRejected(item) || tabs?.is_read_only?.active
                                     ? "opacity(0.5)"
                                     : "none",
-                                  cursor: isConditionRejected(item) || tabs?.is_read_only_mode_with_rejection_allowed?.active
+                                  cursor: isConditionRejected(item) || tabs?.is_read_only?.active
                                     ? "not-allowed"
                                     : "pointer",
-                                  pointerEvents: isConditionRejected(item) || tabs?.is_read_only_mode_with_rejection_allowed?.active
+                                  pointerEvents: isConditionRejected(item) || tabs?.is_read_only?.active
                                     ? "none"
                                     : "all",
                                 }}
