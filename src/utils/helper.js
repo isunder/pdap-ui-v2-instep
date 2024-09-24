@@ -18,7 +18,7 @@ export function isSlugOrJwt() {
 
   if (slug) {
     auth = {isJwt: false, token: slug};
-  } else if (jwt) {
+  } else if (localjwt) {
     auth = {isJwt: true, token: jwt};
   }
   

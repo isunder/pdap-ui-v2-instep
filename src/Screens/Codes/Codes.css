@@ -138,8 +138,3 @@ text-align: left;
     padding-left: 0px;
   }
 }
-
-.accordian_not_Expand .css-86lv0w-MuiButtonBase-root-MuiAccordionSummary-root ,.accordian_not_Expand  div{
-  cursor: not-allowed !important;
-}
-
