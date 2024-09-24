@@ -1070,7 +1070,7 @@ export const Codes = () => {
   return (
     <>
       <SubHeader />
-      {(tabs?.is_read_only?.active) && (
+      {(tabs?.read_only?.active) && (
         <Box
           sx={{
             backgroundColor: "#FDDECF",
