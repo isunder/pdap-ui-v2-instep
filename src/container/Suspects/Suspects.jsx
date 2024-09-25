@@ -644,29 +644,28 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 </Grid>
 
                 {/* RAF Contents */}
-                {tabs && tabs["patient_dashboard_weights"]?.active && (
-                  <Grid
-                    className="suspect_raf"
-                    item
-                    xs={2}
-                    sm={2}
-                    md={2}
-                    lg={2}
-                    xl={2}
-                    sx={{
-                      textAlign: "start",
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      [theme.breakpoints.down("sm")]: {
-                        display: "none"
-                      },
-                    }}
+                <Grid
+                  className="suspect_raf"
+                  item
+                  xs={2}
+                  sm={2}
+                  md={2}
+                  lg={2}
+                  xl={2}
+                  sx={{
+                    textAlign: "start",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    [theme.breakpoints.down("sm")]: {
+                      display: "none"
+                    },
+                  }}
 
-                  >
-                    {item?.total_weight ? item.total_weight : "--"}
-                  </Grid>
-                )}
-
+                >
+                  {tabs && tabs["patient_dashboard_weights"]?.active && (
+                    item?.total_weight ? item.total_weight : "--"
+                  )}
+                </Grid>
                 {/* Action btn contents */}
                 <Grid
                   item
@@ -775,7 +774,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
                 <div className="acc-content-suspects-code-selector">
                   {/* Code add selectors */}
-                  {Object.keys(item?.data)?.length &&
+                  {Object.keys(item?.data)?.length > 0 ?
                     Object.keys(item?.data).map((dataValue, index) => (
                       <Box sx={{ mt: 2 }} key={index}>
                         <Grid
@@ -918,7 +917,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                           </Grid>
                         </Grid>
                       </Box>
-                    ))}
+                    )) : null}
                 </div>
               </Grid>
             </Box>

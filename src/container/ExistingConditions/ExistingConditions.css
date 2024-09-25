@@ -102,6 +102,8 @@
   width: 92px !important;
 }
 
+
+
 @media screen and (max-width: 968px) {
 
   .cust_RAF_suspect{
@@ -136,6 +138,7 @@
   }
   .acc-content-suspects-code-selector {
     order: 1;
+    
   }
   .acc-content-suspects-action {
     order: 2;
