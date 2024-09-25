@@ -677,7 +677,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   xl={1.5}
                   sx={{
                     display: "flex",
-                    justifyContent: 'center'
                   }}
                   className="acc-content-suspects-action"
                 >
@@ -686,7 +685,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       onClick={() =>
                         handleRemoveDeletedCode(item?.SuspectedCondition)
                       }
-                      disabled={tabs?.is_read_only?.active}
+                      disabled={tabs?.read_only?.active}
                       sx={{
                         fontSize: "14px",
                         width: "98px ",
@@ -728,7 +727,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   ) : (
                     <StyledButton
                       onClick={() => handleClickOpen(item)}
-                      disabled={tabs?.is_read_only?.active}
+                      disabled={tabs?.read_only?.active}
                       sx={{
                         fontSize: "14px",
                         width: "92px ",
@@ -801,7 +800,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                               lg="auto"
                               xl="auto"
                               onClick={() => {
-                                if (tabs?.is_read_only_mode_with_rejection_allowed?.active) {
+                                if (tabs?.read_only?.active) {
                                   return;
                                 }
                                 if (!isConditionRejected(item)) {
@@ -816,13 +815,13 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                             >
                               <StyleCode
                                 sx={{
-                                  filter: isConditionRejected(item) || tabs?.is_read_only_mode_with_rejection_allowed?.active
+                                  filter: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "opacity(0.5)"
                                     : "none",
-                                  cursor: isConditionRejected(item) || tabs?.is_read_only_mode_with_rejection_allowed?.active
+                                  cursor: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "not-allowed"
                                     : "pointer",
-                                  pointerEvents: isConditionRejected(item) || tabs?.is_read_only_mode_with_rejection_allowed?.active
+                                  pointerEvents: isConditionRejected(item) || tabs?.read_only?.active
                                     ? "none"
                                     : "all",
                                 }}

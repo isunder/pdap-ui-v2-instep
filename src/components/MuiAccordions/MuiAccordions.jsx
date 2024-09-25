@@ -93,8 +93,7 @@ export const MuiAccordions = (props) => {
 
   const handleChange = (panel) => (_, isExpanded) => {
 
-    if ((item?.key === panel && item?.codeCount === 0) || item?.key === panel && item?.codeCount === undefined) {
-
+    if (item?.key === panel && item?.codeCount === 0) {
       return
     }
 
@@ -144,7 +143,6 @@ export const MuiAccordions = (props) => {
 
   return (
     <Accordion
-      className={`${item.codeCount === 0 || item.codeCount === undefined ? 'accordian_not_Expand' : ''}`}
       expanded={panel ? expanded === panel : singleExpand}
       onChange={handleChange(panel || false)}
     >
