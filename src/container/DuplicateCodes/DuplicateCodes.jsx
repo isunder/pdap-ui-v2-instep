@@ -1132,7 +1132,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   onClick={() =>
                                     handleRemoveDeletedCode(item, item?.code)
                                   }
-                                  disabled={tabs?.read_only?.active}
                                   sx={{
                                     backgroundColor:
                                       theme.palette.error.active1,
@@ -2165,7 +2164,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                   item?.code
                                                 )
                                               }
-                                              disabled={tabs?.read_only?.active}
                                               sx={{
                                                 backgroundColor:
                                                   theme.palette.error.active1,

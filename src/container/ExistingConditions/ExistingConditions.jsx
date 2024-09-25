@@ -1299,7 +1299,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   onClick={() =>
                                     handleRemoveDeletedCode(item, item?.code)
                                   }
-                                  disabled={tabs?.read_only?.active}
                                   sx={{
                                     backgroundColor:
                                       theme.palette.error.active1,
