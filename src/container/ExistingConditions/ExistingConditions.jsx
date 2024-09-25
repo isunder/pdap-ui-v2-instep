@@ -1330,7 +1330,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   onClick={() =>
                                     handleClickOpen(item, item?.code)
                                   }
-                                  disabled={tabs?.read_only?.active}
                                   sx={{
                                     backgroundColor: theme.palette.primary.main,
                                     color: "#fff",
@@ -1338,10 +1337,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       backgroundColor:
                                         theme.palette.primary.main,
                                     },
-                                    ...(tabs?.read_only?.active && {
-                                      backgroundColor: theme.palette.grey[500], 
-                                      color: "#fff", 
-                                    }),
+                                  
                                   }}
                                   startIcon={
                                     <StyleCircle
@@ -1909,7 +1905,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                                   value?.code
                                                 )
                                               }
-                                              disabled={tabs?.read_only?.active}
                                               sx={{
                                                 backgroundColor:
                                                   theme.palette.primary.main,
@@ -2029,8 +2024,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     },
                                     width: "9.75rem",
                                     height: "2rem",
-                                    background:
-                                      tabs?.read_only?.active && "#D5D5D5",
+                                   
                                   }}
                                   startIcon={
                                     <StyleCircle
@@ -2044,7 +2038,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       <CrossWhite />
                                     </StyleCircle>
                                   }
-                                  disabled={tabs?.read_only?.active || tabs?.read_only?.active}
                                 >
                                   Reject All (
                                   {Object.keys(item?.info?.alternate_codes)
@@ -2163,8 +2156,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                       fontWeight: 600,
                                       textTransform: "inherit",
                                       padding: "5px 25px",
-                                      background:
-                                        tabs?.read_only?.active && "#D5D5D5",
+                                     
                                     }}
                                     startIcon={
                                       <StyleCircle
@@ -2178,7 +2170,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                         <CrossWhite />
                                       </StyleCircle>
                                     }
-                                    disabled={tabs?.read_only?.active || tabs?.read_only?.active}
                                   >
                                     Reject All ({" "}
                                     {Object.keys(item?.info?.alternate_codes)

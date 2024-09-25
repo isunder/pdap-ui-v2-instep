@@ -62,6 +62,7 @@ import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
 import { convertDate, isSlugOrJwt } from "../../utils/helper";
 import { IdleModal } from "../../components/idleModal/IdleModal";
 import { refreshSSOToken } from "../../redux/userSlice/refreshToken";
+import { useNavigate } from "react-router-dom";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -152,6 +153,7 @@ export const Codes = () => {
   const duplicateCodeReject = useSelector(
     (state) => state?.reject.duplicateReject
   );
+  const navigate = useNavigate();
 
   const [switchModal, setSwitchModal] = useState(true);
   const [idleModal, setIdleModal] = useState(false);
@@ -495,6 +497,14 @@ export const Codes = () => {
       console.error('Error adding event data:', error);
     }
   };
+
+  console.log(slug, "sjfhdsgndif")
+
+  useEffect(() => {
+    if (Object.keys(slug).length === 0 && slug.constructor === Object) {
+      navigate("/404")
+    }
+  }, [])
 
   const removeObjectById = (arr, id) => {
     const index = arr.findIndex(item => item.id === id);
@@ -2232,6 +2242,7 @@ export const Codes = () => {
                               lg={8}
                               xl={8}
                               sx={{
+
                                 [theme.breakpoints.up("xl")]: {
                                   pl: 8,
                                 },
@@ -2248,7 +2259,7 @@ export const Codes = () => {
                                     gap: 0.5,
                                     fontWeight: 400,
                                     fontSize: "16px",
-
+                                    marginRight: 4,
                                     [theme.breakpoints.down("md")]: {
                                       py: 1,
                                     },

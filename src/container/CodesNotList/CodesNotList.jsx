@@ -1087,8 +1087,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       backgroundColor:
                                         theme.palette.primary.main,
                                     },
-                                    // background:
-                                    //   tabs?.read_only?.active && "#D5D5D5 ",
+                                   
                                   }}
                                   startIcon={
                                     <StyleCircle
@@ -1102,7 +1101,6 @@ export const CodesNotList = ({ sessionObject }) => {
                                       <CrossWhite />
                                     </StyleCircle>
                                   }
-                                  // disabled={tabs?.read_only?.active}
                                   className="acc-content-act-btn"
                                 >
                                   Reject
@@ -1396,14 +1394,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   backgroundColor:
                                                     theme.palette.primary.main,
                                                 },
-                                                background:
-                                                  tabs?.read_only?.active &&
-                                                  "#D5D5D5 ",
+                                               
                                               }}
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                                    background: '#434343',
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1412,7 +1408,6 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   <CrossWhite />
                                                 </StyleCircle>
                                               }
-                                              disabled={tabs?.read_only?.active}
                                             >
                                               Reject
                                             </StyledButton>
@@ -1674,14 +1669,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                               backgroundColor:
                                                 theme.palette.primary.main,
                                             },
-                                            background:
-                                              tabs?.read_only?.active &&
-                                              "#D5D5D5 ",
+                                        
                                           }}
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                                background: '#434343',
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -1690,7 +1683,6 @@ export const CodesNotList = ({ sessionObject }) => {
                                               <CrossWhite />
                                             </StyleCircle>
                                           }
-                                          disabled={tabs?.read_only?.active}
                                         >
                                           Reject
                                         </StyledButton>
@@ -2090,14 +2082,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   backgroundColor:
                                                     theme.palette.primary.main,
                                                 },
-                                                background:
-                                                  tabs?.read_only?.active &&
-                                                  "#D5D5D5 ",
+                                          
                                               }}
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                                    background: '#434343',
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2106,7 +2096,6 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   <CrossWhite />
                                                 </StyleCircle>
                                               }
-                                              disabled={tabs?.read_only?.active}
                                             >
                                               Reject
                                             </StyledButton>
@@ -2539,14 +2528,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                               backgroundColor:
                                                 theme.palette.primary.main,
                                             },
-                                            background:
-                                              tabs?.read_only?.active &&
-                                              "#D5D5D5 ",
+                                           
                                           }}
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                                background: '#434343',
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2555,7 +2542,6 @@ export const CodesNotList = ({ sessionObject }) => {
                                               <CrossWhite />
                                             </StyleCircle>
                                           }
-                                          disabled={tabs?.read_only?.active}
                                         >
                                           Reject
                                         </StyledButton>
@@ -2648,13 +2634,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                     },
                                     width: "9.75rem",
                                     height: "2rem",
-                                    background:
-                                      tabs?.read_only?.active && "#D5D5D5 ",
+                               
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                        background: '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -2663,7 +2648,6 @@ export const CodesNotList = ({ sessionObject }) => {
                                       <CrossWhite />
                                     </StyleCircle>
                                   }
-                                  disabled={tabs?.read_only?.active}
                                 >
                                   Reject All (
                                   {Object.keys(item?.info?.alternate_codes)
@@ -2781,13 +2765,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                       fontWeight: 600,
                                       textTransform: "inherit",
                                       padding: "5px 25px",
-                                      background:
-                                        tabs?.read_only?.active && "#D5D5D5 ",
+                                
                                     }}
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                          background:  '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",
@@ -2796,7 +2779,6 @@ export const CodesNotList = ({ sessionObject }) => {
                                         <CrossWhite />
                                       </StyleCircle>
                                     }
-                                    disabled={tabs?.read_only?.active}
                                   >
                                     Reject All ({" "}
                                     {Object.keys(item?.info?.alternate_codes)

@@ -685,7 +685,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       onClick={() =>
                         handleRemoveDeletedCode(item?.SuspectedCondition)
                       }
-                      disabled={tabs?.read_only?.active}
                       sx={{
                         fontSize: "14px",
                         width: "98px ",
@@ -727,7 +726,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   ) : (
                     <StyledButton
                       onClick={() => handleClickOpen(item)}
-                      disabled={tabs?.read_only?.active}
                       sx={{
                         fontSize: "14px",
                         width: "92px ",

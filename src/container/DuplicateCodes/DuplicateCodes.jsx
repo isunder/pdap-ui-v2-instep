@@ -1163,7 +1163,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   onClick={() =>
                                     handleClickOpen(item, item?.code)
                                   }
-                                  disabled={tabs?.read_only?.active}
                                   sx={{
                                     backgroundColor: theme.palette.primary.main,
                                     color: "#fff",
@@ -1473,7 +1472,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                   item?.code
                                                 )
                                               }
-                                              disabled={tabs?.read_only?.active}
                                               sx={{
                                                 backgroundColor:
                                                   theme.palette.primary.main,
@@ -1749,7 +1747,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           onClick={() =>
                                             handleClickOpen(value, item?.code)
                                           }
-                                          disabled={tabs?.read_only?.active}
                                           sx={{
                                             backgroundColor:
                                               theme.palette.primary.main,
@@ -2201,7 +2198,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                   item?.code
                                                 )
                                               }
-                                              disabled={tabs?.read_only?.active}
                                               sx={{
                                                 backgroundColor:
                                                   theme.palette.primary.main,
@@ -2703,7 +2699,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               <CrossWhite />
                                             </StyleCircle>
                                           }
-                                          disabled={tabs?.read_only?.active}                                        >
+                                        >
                                           Reject
                                         </StyledButton>
                                       ))}
@@ -2787,7 +2783,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   onClick={() =>
                                     handleClickOpen(index, item?.code)
                                   }
-                                  disabled={tabs?.read_only?.active}
                                   sx={{
                                     backgroundColor: theme.palette.primary.main,
                                     color: "#fff",
@@ -2921,7 +2916,6 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     onClick={() =>
                                       handleClickOpen(index, item?.code)
                                     }
-                                    disabled={tabs?.read_only?.active}
                                     sx={{
                                       borderRadius: "10px",
                                       height: "37px",
