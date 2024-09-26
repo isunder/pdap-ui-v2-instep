@@ -498,8 +498,6 @@ export const Codes = () => {
     }
   };
 
-  console.log(slug, "slug")
-
   useEffect(() => {
     if (Object.keys(slug).length === 0 && slug.constructor === Object) {
       navigate("/404")
