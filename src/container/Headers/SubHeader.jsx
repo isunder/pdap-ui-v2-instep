@@ -94,9 +94,6 @@ export const SubHeader = () => {
         setGenderDisp(true)
       }
     });
-    if (slug) {
-      dispatch(patientSummary());
-    }
   }, []);
 
 
