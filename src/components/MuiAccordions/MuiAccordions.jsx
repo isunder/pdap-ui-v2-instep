@@ -101,11 +101,10 @@ export const MuiAccordions = (props) => {
 
   const handleChange = (panel) => (_, isExpanded) => {
 
-    if (item?.key === panel && item?.codeCount === 0) {
-      if ((item?.key === panel && item?.codeCount === 0) || item?.key === panel && item?.codeCount === undefined) {
-        return
-      }
+    if ((item?.key === panel && item?.codeCount === 0) || item?.key === panel && item?.codeCount === undefined) {
+      return
     }
+
 
     if (panel) {
       let codeValue = "";
