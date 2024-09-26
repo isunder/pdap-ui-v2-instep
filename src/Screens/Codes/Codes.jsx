@@ -498,7 +498,7 @@ export const Codes = () => {
     }
   };
 
-  console.log(slug, "sjfhdsgndif")
+  console.log(slug, "slug")
 
   useEffect(() => {
     if (Object.keys(slug).length === 0 && slug.constructor === Object) {
@@ -2125,182 +2125,171 @@ export const Codes = () => {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} lg={9} md={8}>
-              {isLoading || !codesDataLoaded ? (
-                <>
-                  {codesSkeletonData.map((skData, index) => (
-                    <Skeleton
-                      key={index}
-                      sx={{ marginBottom: skData.marginBottom }}
-                      variant="rectangular"
-                      height={skData.height}
-                    />
-                  ))}
-                </>
-              ) : (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {!isModalSubmit && codesData?.map((item, i) => (
-                    <MuiAccordions
-                      item={item}
-                      summary={summary}
-                      handleAddEventData={handleAddEventData}
-                      tabs={tabs}
-                      panel={item?.key}
-                      name={item?.code}
-                      setExpanded={setExpanded}
-                      expanded={expanded}
-                      key={item?.key}
-                      sx={{
-                        background:
-                          expanded === item?.key
-                            ? theme.palette.black.main
-                            : "white",
-                        color:
+
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {!isModalSubmit && codesData?.map((item, i) => (
+                  <MuiAccordions
+                    item={item}
+                    summary={summary}
+                    handleAddEventData={handleAddEventData}
+                    tabs={tabs}
+                    panel={item?.key}
+                    name={item?.code}
+                    setExpanded={setExpanded}
+                    expanded={expanded}
+                    key={item?.key}
+                    sx={{
+                      background:
+                        expanded === item?.key
+                          ? theme.palette.black.main
+                          : "white",
+                      color:
+                        expanded === item?.key
+                          ? "white"
+                          : theme.palette.black.main,
+                      borderBottomLeftRadius: expanded === item.key && 0,
+                      borderBottomRightRadius: expanded === item.key && 0,
+                    }}
+                    expandIcon={
+                      <ArrowDropDownIcon
+                        width={12}
+                        height={12}
+                        fill={
                           expanded === item?.key
                             ? "white"
-                            : theme.palette.black.main,
-                        borderBottomLeftRadius: expanded === item.key && 0,
-                        borderBottomRightRadius: expanded === item.key && 0,
-                      }}
-                      expandIcon={
-                        <ArrowDropDownIcon
-                          width={12}
-                          height={12}
-                          fill={
-                            expanded === item?.key
-                              ? "white"
-                              : theme.palette.secondary.A400
-                          }
-                        />
-                      }
-                      header={
-                        <>
+                            : theme.palette.secondary.A400
+                        }
+                      />
+                    }
+                    header={
+                      <>
+                        <Grid
+                          container
+                          className="codes-act-header-container"
+                        >
                           <Grid
-                            container
-                            className="codes-act-header-container"
+                            item
+                            xs={7}
+                            sm={7}
+                            md={6}
+                            lg={4}
+                            xl={4}
+                            className="codes-act-header"
                           >
-                            <Grid
-                              item
-                              xs={7}
-                              sm={7}
-                              md={6}
-                              lg={4}
-                              xl={4}
-                              className="codes-act-header"
+                            <StyledText
+                              sx={{
+                                ...flexCenter,
+                                gap: 0.5,
+                                fontWeight: 500,
+                                fontSize: "18px",
+                              }}
+                              className="codes-act-header-title"
                             >
+                              {item?.code}
+                              <Box
+                                sx={{
+                                  background:
+                                    expanded === item.key
+                                      ? "#FFFFFF"
+                                      : "#3D4A8F",
+                                  color:
+                                    expanded === item.key
+                                      ? "#3D4A8F"
+                                      : "#FFFFFF",
+                                  borderRadius: "100%",
+                                  height: "1.3125rem",
+                                  width: "1.3125rem",
+                                  ...flexCenter,
+                                  justifyContent: "center",
+                                  [theme.breakpoints.only("xs")]: {
+                                    m: 0,
+                                  },
+                                  ml: 1,
+                                }}
+                                className="codes-act-header-count-wrap"
+                              >
+                                <Typography
+                                  variant="body2"
+                                  sx={{
+                                    textAlign: "center",
+                                    fontWeight: 600,
+                                    fontSize: "0.75rem",
+                                    lineHeight: "0.914rem",
+                                  }}
+                                  className="codes-act-header-count-text"
+                                >
+                                  {item?.codeCount || 0}
+                                </Typography>
+                              </Box>
+                            </StyledText>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={5}
+                            sm={5}
+                            md={6}
+                            lg={8}
+                            xl={8}
+                            sx={{
+
+                              [theme.breakpoints.up("xl")]: {
+                                pl: 8,
+                              },
+                              [theme.breakpoints.up("md")]: {
+                                pl: 6,
+                              },
+                            }}
+                            className="codes-act-header-plist-wrap"
+                          >
+                            {item.problemList && (
                               <StyledText
                                 sx={{
                                   ...flexCenter,
                                   gap: 0.5,
-                                  fontWeight: 500,
-                                  fontSize: "18px",
+                                  fontWeight: 400,
+                                  fontSize: "16px",
+                                  marginRight: 4,
+                                  [theme.breakpoints.down("md")]: {
+                                    py: 1,
+                                  },
                                 }}
-                                className="codes-act-header-title"
+                                className="codes-act-header-plist-wrap1"
                               >
-                                {item?.code}
                                 <Box
                                   sx={{
-                                    background:
-                                      expanded === item.key
-                                        ? "#FFFFFF"
-                                        : "#3D4A8F",
-                                    color:
-                                      expanded === item.key
-                                        ? "#3D4A8F"
-                                        : "#FFFFFF",
-                                    borderRadius: "100%",
-                                    height: "1.3125rem",
-                                    width: "1.3125rem",
                                     ...flexCenter,
                                     justifyContent: "center",
-                                    [theme.breakpoints.only("xs")]: {
-                                      m: 0,
-                                    },
-                                    ml: 1,
                                   }}
-                                  className="codes-act-header-count-wrap"
+                                  className="codes-act-header-plist-box"
                                 >
-                                  <Typography
-                                    variant="body2"
-                                    sx={{
-                                      textAlign: "center",
-                                      fontWeight: 600,
-                                      fontSize: "0.75rem",
-                                      lineHeight: "0.914rem",
-                                    }}
-                                    className="codes-act-header-count-text"
-                                  >
-                                    {item?.codeCount || 0}
-                                  </Typography>
+                                  <WarningIcon
+                                    width="1.3125rem"
+                                    height="1.3125rem"
+                                    fill={
+                                      expanded === item.key ? "white" : "red"
+                                    }
+                                    className="codes-act-header-plist-icon"
+                                  />
                                 </Box>
+                                {item.problemList}
                               </StyledText>
-                            </Grid>
-                            <Grid
-                              item
-                              xs={5}
-                              sm={5}
-                              md={6}
-                              lg={8}
-                              xl={8}
-                              sx={{
-
-                                [theme.breakpoints.up("xl")]: {
-                                  pl: 8,
-                                },
-                                [theme.breakpoints.up("md")]: {
-                                  pl: 6,
-                                },
-                              }}
-                              className="codes-act-header-plist-wrap"
-                            >
-                              {item.problemList && (
-                                <StyledText
-                                  sx={{
-                                    ...flexCenter,
-                                    gap: 0.5,
-                                    fontWeight: 400,
-                                    fontSize: "16px",
-                                    marginRight: 4,
-                                    [theme.breakpoints.down("md")]: {
-                                      py: 1,
-                                    },
-                                  }}
-                                  className="codes-act-header-plist-wrap1"
-                                >
-                                  <Box
-                                    sx={{
-                                      ...flexCenter,
-                                      justifyContent: "center",
-                                    }}
-                                    className="codes-act-header-plist-box"
-                                  >
-                                    <WarningIcon
-                                      width="1.3125rem"
-                                      height="1.3125rem"
-                                      fill={
-                                        expanded === item.key ? "white" : "red"
-                                      }
-                                      className="codes-act-header-plist-icon"
-                                    />
-                                  </Box>
-                                  {item.problemList}
-                                </StyledText>
-                              )}
-                            </Grid>
+                            )}
                           </Grid>
-                        </>
-                      }
-                    >
-                      {item.container}
-                    </MuiAccordions>
-                  ))}
+                        </Grid>
+                      </>
+                    }
+                  >
+                    {item.container}
+                  </MuiAccordions>
+                ))}
 
-                  {isModalSubmit &&
-                    <Container sx={{ height: '80vh' }}>
+                {isModalSubmit &&
+                  <Container sx={{ height: '80vh' }}>
 
-                    </Container>
-                  }
-                </Box>
-              )}
+                  </Container>
+                }
+              </Box>
+
             </Grid>
             <Grid item xs={12} lg={3} md={4}>
               {!isModalSubmit && <Card

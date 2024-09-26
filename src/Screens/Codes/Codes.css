@@ -138,3 +138,7 @@ text-align: left;
     padding-left: 0px;
   }
 }
+
+.my__accordian .css-86lv0w-MuiButtonBase-root-MuiAccordionSummary-root{
+  cursor: not-allowed !important;
+}
