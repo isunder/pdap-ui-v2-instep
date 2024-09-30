@@ -75,6 +75,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
   const state = useSelector((state) => state.user.data.suspectedCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
   const [aarr, setAarr] = useState([]);
+  const [suspectRaf, setSuspectRaf] = useState(tabs && tabs["patient_dashboard_weights"]?.active)
+
 
   let array = [];
   state &&
@@ -529,14 +531,19 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 }}
                 className="acc-content-header-items"
               >
-                <Grid item xs={10} sm={10} md={7.5} lg={8.5} xl={8.5}>
-                  <StyledText className="acc-content-cust-header1 suspect_desc_head">
+                <Grid item xs={10}
+                  sm={10}
+                  md={suspectRaf ? 8 : 10.5}
+                  lg={suspectRaf ? 8 : 10.5}
+                  xl={suspectRaf ? 8 : 10.5}>
+                  <StyledText className={`${tabs && !tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
                     Description
                   </StyledText>
                 </Grid>
 
-                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-                  {tabs && tabs["patient_dashboard_weights"]?.active && (
+                {tabs && tabs["patient_dashboard_weights"]?.active && (
+                  <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+
                     <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
                       sx={{
                         [theme.breakpoints.only("xs")]: {
@@ -547,23 +554,23 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                     >
                       RAF
                     </StyledText>
-                  )}
-                </Grid>
 
+                  </Grid>
+                )}
                 <Grid
                   item
-                  xs={12}
-                  sm={12}
-                  md={2.5}
-                  lg={1.5}
-                  xl={1.5}
+                  xs={2}
+                  sm={2}
+                  md={suspectRaf ? 2 : 1.5}
+                  lg={suspectRaf ? 2 : 1.5}
+                  xl={suspectRaf ? 2 : 1.5}
                   sx={{
                     [theme.breakpoints.down("md")]: {
                       display: "none",
                     },
                   }}
                 >
-                  <StyledText sx={{ border: "none !important" }} className="acc-content-cust-header1">
+                  <StyledText sx={{ border: "none !important" }} className={`${tabs && !tabs["patient_dashboard_weights"]?.active ? "suspect_action_custom_width acc-content-cust-header1" : "acc-content-cust-header1"}`}>
                     Actions
                   </StyledText>
                 </Grid>
@@ -590,9 +597,9 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   item
                   xs={10}
                   sm={10}
-                  md={7.5}
-                  lg={8.5}
-                  xl={8.5}
+                  md={suspectRaf ? 8 : 10.5}
+                  lg={suspectRaf ? 8 : 10.5}
+                  xl={suspectRaf ? 8 : 10.5}
                   sx={{ padding: "3px 0px" }}
                 >
                   <StyleHead sx={{ pr: 1 }}>
@@ -644,36 +651,40 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 </Grid>
 
                 {/* RAF Contents */}
-                <Grid
-                  className="suspect_raf"
-                  item
-                  xs={2}
-                  sm={2}
-                  md={2}
-                  lg={2}
-                  xl={2}
-                  sx={{
-                    textAlign: "start",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    [theme.breakpoints.down("sm")]: {
-                      display: "none"
-                    },
-                  }}
 
-                >
-                  {tabs && tabs["patient_dashboard_weights"]?.active && (
-                    item?.total_weight ? item.total_weight : "--"
-                  )}
-                </Grid>
+                {tabs && tabs["patient_dashboard_weights"]?.active && (
+                  <Grid
+                    className="suspect_raf"
+                    item
+                    xs={2}
+                    sm={2}
+                    md={2}
+                    lg={2}
+                    xl={2}
+                    sx={{
+                      textAlign: "start",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      [theme.breakpoints.down("sm")]: {
+                        display: "none"
+                      },
+                    }}
+
+                  >
+
+                    {item?.total_weight ? item.total_weight : "--"}
+                  </Grid>
+                )}
                 {/* Action btn contents */}
+
+
                 <Grid
                   item
                   xs={12}
                   sm={12}
-                  md={2.5}
-                  lg={1.5}
-                  xl={1.5}
+                  md={suspectRaf ? 2 : 1.5}
+                  lg={suspectRaf ? 2 : 1.5}
+                  xl={suspectRaf ? 2 : 1.5}
                   sx={{
                     display: "flex",
                   }}

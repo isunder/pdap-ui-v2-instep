@@ -102,7 +102,13 @@
   width: 92px !important;
 }
 
+/* .suspect_description_custom_width{
+  width: 85% !important;
+} */
 
+.suspect_action_custom_width{
+  width: 15% !important;
+}
 
 @media screen and (max-width: 968px) {
 
@@ -130,7 +136,7 @@
 
   .suspect_desc_content{
     flex-basis: 100% !important;
-    max-width: 100% !important;
+    max-width: 90% !important;
   }
 
   .PopupDelete .MuiDialog-paper {
