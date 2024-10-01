@@ -533,16 +533,16 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
               >
                 <Grid item xs={10}
                   sm={10}
-                  md={suspectRaf ? 8 : 10.5}
-                  lg={suspectRaf ? 8 : 10.5}
-                  xl={suspectRaf ? 8 : 10.5}>
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
+                  lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
+                  xl={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}>
                   <StyledText className={`${tabs && !tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
                     Description
                   </StyledText>
                 </Grid>
 
                 {tabs && tabs["patient_dashboard_weights"]?.active && (
-                  <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                  <Grid item xs={2} sm={2} md={1.5} lg={1.5} xl={1.5}>
 
                     <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
                       sx={{
@@ -561,9 +561,9 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   item
                   xs={2}
                   sm={2}
-                  md={suspectRaf ? 2 : 1.5}
-                  lg={suspectRaf ? 2 : 1.5}
-                  xl={suspectRaf ? 2 : 1.5}
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
+                  lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
+                  xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   sx={{
                     [theme.breakpoints.down("md")]: {
                       display: "none",
@@ -597,9 +597,9 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   item
                   xs={10}
                   sm={10}
-                  md={suspectRaf ? 8 : 10.5}
-                  lg={suspectRaf ? 8 : 10.5}
-                  xl={suspectRaf ? 8 : 10.5}
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
+                  lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
+                  xl={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
                   sx={{ padding: "3px 0px" }}
                 >
                   <StyleHead sx={{ pr: 1 }}>
@@ -658,9 +658,9 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                     item
                     xs={2}
                     sm={2}
-                    md={2}
-                    lg={2}
-                    xl={2}
+                    md={1.5}
+                    lg={1.5}
+                    xl={1.5}
                     sx={{
                       textAlign: "start",
                       fontSize: "14px",
@@ -682,9 +682,9 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   item
                   xs={12}
                   sm={12}
-                  md={suspectRaf ? 2 : 1.5}
-                  lg={suspectRaf ? 2 : 1.5}
-                  xl={suspectRaf ? 2 : 1.5}
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
+                  lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
+                  xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5: 1.5}
                   sx={{
                     display: "flex",
                   }}

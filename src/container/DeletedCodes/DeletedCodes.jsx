@@ -458,7 +458,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 margin: "0px !important"
                                                             }}
                                                         >
-                                                            Reason
+                                                            Reason:
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",
