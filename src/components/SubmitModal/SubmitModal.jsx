@@ -301,6 +301,7 @@ const SubmitModal = ({
                                   <Typography>
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
+                                      {item?.value?.slice(0, 20)} {item?.value?.length > 20 ? "..." : ""}
                                     </StylePop>
                                   </Typography>
                                 </Tooltip>
@@ -353,6 +354,7 @@ const SubmitModal = ({
                                     <Typography>
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
+                                        {item?.value?.slice(0, 20)} {item?.value?.length > 20 ? "..." : ""}
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
@@ -418,6 +420,8 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
+
+                                              
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -519,7 +523,8 @@ const SubmitModal = ({
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
-                                              : ""}
+                                              : ""}:
+                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -612,7 +617,8 @@ const SubmitModal = ({
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Codes/Conditions to be actioned in Care everywhere.
+                              
+                              Codes/Conditions that would go in EHR
                             </StyledCodeTypography>
                           </Grid>
 
