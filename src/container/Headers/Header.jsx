@@ -343,7 +343,7 @@ export const Header = ({ sessionObject }) => {
                         className="panel_metric_header"
                         sx={{
                           ...flexCenter,
-                          // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                           gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
                           width: "100%",
                           height: "3.75rem",
                           // justifyContent: "flex-end",

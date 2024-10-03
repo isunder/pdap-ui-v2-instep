@@ -199,17 +199,11 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
     };
 
     handleAddEventData(exampleMetadata);
-
-
-
   };
 
 
 
   const handleDelete = () => {
-
-
-
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -520,11 +514,13 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
               container
               spacing={0}
               className="ContentBody"
-              sx={{ padding: "0px 10px 5px", backgroundColor: "#fff", pl: 0, }}
+              sx={{ padding: "0px 10px 5px 0px", backgroundColor: "#fff", pl: 0, }}
             >
               <StyledBox
                 sx={{
+                  padding:"0 !important",
                   fontWeight: "800 !important",
+                  borderBottom:"1px solid #D9D9D999",
                   [theme.breakpoints.only("md")]: {
                     pl: 0,
                   },
@@ -533,10 +529,10 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
               >
                 <Grid item xs={10}
                   sm={10}
-                  md={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 8: 10}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}>
-                  <StyledText className={`${tabs && !tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
+                  <StyledText sx={{padding:"0 !important"}} className={`${tabs && !tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
                     Description
                   </StyledText>
                 </Grid>
@@ -561,7 +557,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   item
                   xs={2}
                   sm={2}
-                  md={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   sx={{
@@ -585,7 +581,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
               <Grid
                 container
                 sx={{
-                  paddingTop: "20px", borderBottom: "1px solid #D9D9D999",
+                  paddingTop: "20px", borderTop: "1px solid #D9D9D999",
                 }}
                 spacing={0}
                 className="ContentBody"
@@ -597,7 +593,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   item
                   xs={10}
                   sm={10}
-                  md={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 8 : 10}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
                   sx={{ padding: "3px 0px" }}
@@ -683,7 +679,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   item
                   xs={12}
                   sm={12}
-                  md={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
+                  md={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5: 1.5}
                   sx={{
@@ -698,7 +694,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       }
                       sx={{
                         fontSize: "14px",
-                        width: "98px ",
+                        width: "98px !important",
                         justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
                         color: "#fff",
@@ -739,7 +735,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       onClick={() => handleClickOpen(item)}
                       sx={{
                         fontSize: "14px",
-                        width: "92px ",
+                        width: "92px !important",
                         justifyContent: "center",
                         backgroundColor: theme.palette.primary.main,
                         color: "#fff !important",
@@ -904,6 +900,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                             lg={10}
                             xl={10}
                             sx={{
+                              mt: "3px",
                               [theme.breakpoints.up("lg")]: {
                                 ml: "10px",
                               },

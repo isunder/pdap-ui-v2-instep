@@ -1033,13 +1033,22 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 <Box
                                   sx={{
                                     fontSize: "14px",
+                                    
                                     fontWeight: 400,
                                     lineHeight: "25px",
                                     letterSpacing: "0em",
                                     display: "inline-block",
                                   }}
                                 >
-                                  Noted by:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                             Noted by:
+                                                            </Typography>
+                                  
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
@@ -1062,13 +1071,21 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   sx={{
                                     fontSize: "14px",
                                     fontWeight: 500,
+                                    opacity: 0.6,
                                     lineHeight: "25px",
                                     letterSpacing: "0em",
                                     display: "inline-block",
 
                                   }}
                                 >
+
+                                                  <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
                                   Date:
+                                  </Typography>
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
@@ -1094,16 +1111,26 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
 
                                     fontSize: "14px",
                                     fontWeight: 400,
+                                    opacity: 0.6,
                                     lineHeight: "25px",
                                     letterSpacing: "0em",
                                     display: "inline-block",
                                   }}
                                 >
+                                  
+
+                                  <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
                                   Remarks:
+                                  </Typography>
                                   <Typography
                                     sx={{
                                       fontSize: "14px",
                                       fontWeight: 700,
+                                      
                                       lineHeight: "25px",
                                       letterSpacing: "0.02em",
                                       paddingLeft: "4px",
@@ -1127,7 +1154,15 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 color: "#00000099",
                               }}
                             >
-                              Sources:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                  Sources:
+                                  </Typography>
+                              
                               {item?.info?.sources?.map((source, index) => (
                                 <Typography
                                   key={index}

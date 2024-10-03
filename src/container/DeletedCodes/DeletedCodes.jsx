@@ -379,14 +379,22 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 margin: "0px !important"
                                                             }}
                                                         >
-                                                            Deleted by:
+
+                                                            <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                                Deleted by: 
+                                                            </Typography>
+
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",
                                                                     fontWeight: 500,
                                                                     lineHeight: "25px",
                                                                     letterSpacing: "0.02em",
-                                                                     paddingLeft:"4px"
+                                                                    paddingLeft: "4px"
                                                                 }}
                                                             >
                                                                 {item?.info?.deleted_by}
@@ -403,7 +411,14 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 display: "inline-block",
                                                             }}
                                                         >
-                                                            Deleted On:
+                                                            <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                                Deleted On:
+                                                            </Typography>
+                                                            
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",
@@ -430,7 +445,14 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 margin: "0px !important"
                                                             }}
                                                         >
-                                                            Type of Code/Condition:
+                                                             <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                                Type of Code/Condition:
+                                                            </Typography>
+                                                            
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",
@@ -458,7 +480,16 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 margin: "0px !important"
                                                             }}
                                                         >
-                                                            Reason:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                              Reason:
+                                                            </Typography>
+                                                            
+                                                            
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",

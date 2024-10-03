@@ -862,6 +862,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     display: "inline-block",
                                   }}
                                 >
+                                  <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                    Date:
+                                  </Typography>
                                   Noted by:
                                   <Typography
                                     sx={{
@@ -891,6 +898,15 @@ export const DuplicateCodes = ({ sessionObject }) => {
 
                                   }}
                                 >
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                    Date:
+                                  </Typography>
+
                                   Date:
                                   <Typography
                                     sx={{
@@ -1875,7 +1891,15 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           display: "inline-block",
                                         }}
                                       >
-                                        Noted by:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                     Noted by:
+                                  </Typography>
+                                      
                                         <Typography
                                           sx={{
                                             fontSize: "14px",
@@ -1908,7 +1932,15 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           ml: 2,
                                         }}
                                       >
-                                        Date:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                    Date:
+                                  </Typography>
+                                       
                                         <Typography
                                           sx={{
                                             fontSize: "14px",
@@ -1940,7 +1972,16 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           display: "inline-block",
                                         }}
                                       >
-                                        Remarks:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                     Remarks:
+                                  </Typography>
+
+                                      
                                         <Typography
                                           sx={{
                                             fontSize: "14px",

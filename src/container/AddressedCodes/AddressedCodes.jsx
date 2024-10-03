@@ -304,7 +304,14 @@ export const AddressedCodes = () => {
                                 display: "inline-block",
                               }}
                             >
-                              Noted by:
+                              <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                   Noted by:
+                                  </Typography>
+                            
                               <Typography
                                 sx={{
                                   fontSize: "14px",
@@ -329,7 +336,15 @@ export const AddressedCodes = () => {
 
                               }}
                             >
-                              Date:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                    Date:
+                                  </Typography>
+                             
                               <Typography
                                 sx={{
                                   fontSize: "14px",

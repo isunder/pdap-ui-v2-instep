@@ -808,7 +808,7 @@ export const CodesNotList = ({ sessionObject }) => {
                           <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
                             <Box
                               sx={{
-
+                                
                                 fontSize: "14px",
                                 fontWeight: 400,
                                 lineHeight: "25px",
@@ -816,7 +816,11 @@ export const CodesNotList = ({ sessionObject }) => {
                                 display: "inline-block",
                               }}
                             >
-                              Noted by:
+                              <Typography
+                                sx={{
+                                  opacity: 0.6
+                                }}
+                              >Noted by: </Typography>
                               <Typography
                                 sx={{
                                   fontSize: "14px",
@@ -824,6 +828,8 @@ export const CodesNotList = ({ sessionObject }) => {
                                   lineHeight: "25px",
                                   letterSpacing: "0.02em",
                                   paddingLeft: "4px",
+                                  opacity: "1 !important",
+                                  color: "black"
                                 }}
                               >
                                 {item?.info?.noted_by}
@@ -841,7 +847,11 @@ export const CodesNotList = ({ sessionObject }) => {
 
                               }}
                             >
-                              Date:
+                             <Typography
+                                sx={{
+                                  opacity: 0.6
+                                }}
+                              >Date: </Typography>
                               <Typography
                                 sx={{
                                   fontSize: "14px",
@@ -867,7 +877,11 @@ export const CodesNotList = ({ sessionObject }) => {
                                 color: "#00000099",
                               }}
                             >
-                              Sources:
+                              <Typography
+                                sx={{
+                                  opacity: 1
+                                }}
+                              >Sources: </Typography>
                               {item?.info?.sources?.map((source, index) => (
                                 <Typography
                                   key={index}
@@ -1087,7 +1101,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       backgroundColor:
                                         theme.palette.primary.main,
                                     },
-                                   
+
                                   }}
                                   startIcon={
                                     <StyleCircle
@@ -1394,7 +1408,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   backgroundColor:
                                                     theme.palette.primary.main,
                                                 },
-                                               
+
                                               }}
                                               startIcon={
                                                 <StyleCircle
@@ -1669,7 +1683,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               backgroundColor:
                                                 theme.palette.primary.main,
                                             },
-                                        
+
                                           }}
                                           startIcon={
                                             <StyleCircle
@@ -2082,7 +2096,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                   backgroundColor:
                                                     theme.palette.primary.main,
                                                 },
-                                          
+
                                               }}
                                               startIcon={
                                                 <StyleCircle
@@ -2528,7 +2542,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               backgroundColor:
                                                 theme.palette.primary.main,
                                             },
-                                           
+
                                           }}
                                           startIcon={
                                             <StyleCircle
@@ -2634,7 +2648,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                     },
                                     width: "9.75rem",
                                     height: "2rem",
-                               
+
                                   }}
                                   startIcon={
                                     <StyleCircle
@@ -2765,12 +2779,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                       fontWeight: 600,
                                       textTransform: "inherit",
                                       padding: "5px 25px",
-                                
+
                                     }}
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background:  '#434343',
+                                          background: '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",
