@@ -1071,7 +1071,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   sx={{
                                     fontSize: "14px",
                                     fontWeight: 500,
-                                    opacity: 0.6,
+                                    
                                     lineHeight: "25px",
                                     letterSpacing: "0em",
                                     display: "inline-block",
@@ -1111,7 +1111,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
 
                                     fontSize: "14px",
                                     fontWeight: 400,
-                                    opacity: 0.6,
+                                    
                                     lineHeight: "25px",
                                     letterSpacing: "0em",
                                     display: "inline-block",
@@ -1154,14 +1154,8 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 color: "#00000099",
                               }}
                             >
-
-<Typography
-                                                                sx={{
-                                                                    opacity: 0.6
-                                                                }}
-                                                            >
                                   Sources:
-                                  </Typography>
+                                 
                               
                               {item?.info?.sources?.map((source, index) => (
                                 <Typography
