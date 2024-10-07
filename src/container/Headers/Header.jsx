@@ -324,7 +324,7 @@ export const Header = ({ sessionObject }) => {
                 </Grid>
 
                 {
-                  tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name ?
+                  tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name && ((doctorDetail?.recapture_percentage !== "-") || (doctorDetail?.suspects_addressed_percentage	 !== "-")	) ?
                     <Grid item md={7} sm={12} className="suspect_recapture_header"
                       sx={(theme) => ({
                         ...(tabs &&
