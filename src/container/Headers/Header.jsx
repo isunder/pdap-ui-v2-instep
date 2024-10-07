@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -131,7 +132,7 @@ export const Header = ({ sessionObject }) => {
     if (!slug) {
       return navigate(`/404`);
     } else {
-      dispatch(patientTabFlag());
+       dispatch(patientTabFlag());
       let result = await dispatch(doctorInfo());
       if (result?.payload?.response?.status === 404) {
         return navigate(`/404`);
@@ -343,7 +344,7 @@ export const Header = ({ sessionObject }) => {
                         className="panel_metric_header"
                         sx={{
                           ...flexCenter,
-                           gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                          // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
                           width: "100%",
                           height: "3.75rem",
                           // justifyContent: "flex-end",
@@ -387,7 +388,7 @@ export const Header = ({ sessionObject }) => {
                         </Box>
 
                         {tabs &&
-                          tabs["patient_dashboard_recapture_percentage"] && tabs["patient_dashboard_recapture_percentage"].active
+                          (tabs["patient_dashboard_recapture_percentage"] || tabs["patient_dashboard_recapture_percentage"].active)
                           && (
                             <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
                               <StyleText
@@ -412,13 +413,13 @@ export const Header = ({ sessionObject }) => {
                                   fontSize: "0.875rem",
                                 }}
                               >
-                                {doctorDetail?.recapture_percentage}
+                                {doctorDetail?.recapture_percentage || " - "}
                               </StyleText>
                             </Box>
                           )}
 
                         {tabs &&
-                          tabs["patient_dashboard_suspect_percentage"] && tabs["patient_dashboard_suspect_percentage"].active
+                          (tabs["patient_dashboard_suspect_percentage"] || tabs["patient_dashboard_suspect_percentage"].active)
 
                           && (
                             <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
@@ -440,7 +441,7 @@ export const Header = ({ sessionObject }) => {
                                   fontSize: "0.875rem",
                                 }}
                               >
-                                {doctorDetail?.suspects_addressed_percentage}
+                                {doctorDetail?.suspects_addressed_percentage || " - "}
                               </StyleText>
                             </Box>
                           )}
@@ -453,12 +454,56 @@ export const Header = ({ sessionObject }) => {
                               // },
                             }}
                           >
-                            {doctorDetail?.doctor_name && doctorDetail?.doctor_name}
+                            {doctorDetail?.doctor_name && doctorDetail?.doctor_name || " - "}
                           </StyleText>
                         </Box>
                       </Box>
-                    </Grid> : null
-                }
+                    </Grid> : 
+                     (doctorDetail?.doctor_name) ?
+                     <Grid item md={7} sm={12} className="suspect_recapture_header"
+                       sx={(theme) => ({
+                         ...(tabs &&
+                           (tabs?.patient_dashboard_recapture_percentage?.active ||
+                             tabs?.patient_dashboard_suspect_percentage?.active) &&
+                           doctorDetail?.doctor_name
+                           ? {
+                             [theme.breakpoints.down("sm")]: {
+                               display: "none"
+                             }
+                           }
+                           : null)
+                       })}
+ 
+                     >
+                       <Box
+                         className="panel_metric_header"
+                         sx={{
+                           ...flexCenter,
+                           // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                           width: "100%",
+                           height: "3.75rem",
+                           // justifyContent: "flex-end",
+                           // [theme.breakpoints.down("sm")]: {
+                           //   justifyContent: 'flex-start'
+                           // },
+                           [theme.breakpoints.down("lg")]: {},
+                         }}
+                       >
+                         <Box className="header_patient_name" sx={{ whiteSpace: "nowrap" }}>
+                           <StyleText
+                             sx={{
+                               fontWeight: 600,
+                               // [theme.breakpoints.down("lg")]: {
+                               //   width: "10rem",
+                               // },
+                             }}
+                           >
+                             {doctorDetail?.doctor_name && doctorDetail?.doctor_name || " - "}
+                           </StyleText>
+                         </Box>
+                       </Box>
+                     </Grid>
+                 : null}
 
               </Grid>
             </>
