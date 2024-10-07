@@ -257,3 +257,9 @@
 .acc-content-act-btns-wrap{
   width: 100%;
 }
+
+
+.text-container {
+  display: flex !important;
+  align-items: center;
+}
