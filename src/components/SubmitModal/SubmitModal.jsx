@@ -749,7 +749,9 @@ const SubmitModal = ({
                                   }}
                                   key={index}
                                 >
-                                  <Tooltip title={item?.code + " : " + item?.value}>
+                                  <Tooltip 
+                                  title={item?.code + ((item?.value)? (" : " + item?.value) : null)}
+                                  >
                                     <Typography>
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""} 
