@@ -2757,7 +2757,7 @@ export const Codes = () => {
                                 }}
                               >
                                 <Tooltip
-                                  title={item?.code + " : " + item?.value}
+                                  title={item?.code + ((item?.value)? (" : " + item?.value) : null)}
                                 >
                                   <Typography
                                     sx={
