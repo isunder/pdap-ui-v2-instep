@@ -2648,9 +2648,7 @@ export const Codes = () => {
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
 
-                                      :
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value.length > 20 ? "..." : ""}
+                                     
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
@@ -2688,9 +2686,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan rejected">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      :
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value.length > 20 ? "..." : ""}
+                                     
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
@@ -2777,9 +2773,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      :
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value.length > 20 ? "..." : ""}
+                                      
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
@@ -2825,8 +2819,8 @@ export const Codes = () => {
                                         : ""}
 
 
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value?.length > 20 ? "..." : ""}
+                                     
+                                      
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
@@ -2914,9 +2908,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                    : 
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value.length > 20 ? "..." : ""}
+                                    
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
@@ -2955,9 +2947,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan rejected">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-:
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value.length > 20 ? "..." : ""}
+
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
@@ -3042,9 +3032,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      :
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value.length > 20 ? "..." : ""}
+                                      
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon />{" "}
                                       </Typography>
@@ -3083,9 +3071,7 @@ export const Codes = () => {
                                     <StylePop className="ChipSpan rejected">
                                       {item?.code?.slice(0, 20)}{" "}
                                       {item?.code.length > 20 ? "..." : ""}
-                                      :
-                                      {item?.value?.slice(0, 20)}{" "}
-                                      {item?.value.length > 20 ? "..." : ""}
+                                     
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>

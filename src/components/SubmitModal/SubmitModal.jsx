@@ -420,8 +420,8 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                              :
-                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""}
+                                              {/* :
+                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
