@@ -577,7 +577,7 @@ export const Codes = () => {
 
       handleAddEventData(exampleMetadata)
     }
-    else {
+    else {      
       setSwitchModal(false);
 
       const exampleMetadata = {
