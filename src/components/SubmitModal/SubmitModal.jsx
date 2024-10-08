@@ -301,7 +301,8 @@ const SubmitModal = ({
                                   <Typography>
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
-                                      {item?.value?.slice(0, 20)} {item?.value?.length > 20 ? "..." : ""}
+                                      {": "}
+                                      { item?.value?.slice(0, 30)} { item?.value?.length > 30 ? "..." : " "}
                                     </StylePop>
                                   </Typography>
                                 </Tooltip>
@@ -353,8 +354,8 @@ const SubmitModal = ({
                                   <Tooltip title={item?.code + " : " + item?.value}>
                                     <Typography>
                                       <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
-                                        {item?.value?.slice(0, 20)} {item?.value?.length > 20 ? "..." : ""}
+                                        {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
+                                        
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
@@ -455,8 +456,8 @@ const SubmitModal = ({
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
-                                              : ""} : 
-                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""}
+                                              : ""}  {": "} 
+                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -491,8 +492,8 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                              :
-                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""}
+                                              {": "}
+                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -526,8 +527,8 @@ const SubmitModal = ({
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
-                                              : ""}:
-                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""}
+                                              : ""} {": "}
+                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -749,7 +750,7 @@ const SubmitModal = ({
                                   <Tooltip title={item?.code + " : " + item?.value}>
                                     <Typography>
                                       <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
+                                        {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""} 
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
@@ -854,6 +855,7 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
+                                              
 
                                             {item[Object.keys(item)[0]].value.length >
                                               30
@@ -897,7 +899,7 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-
+:
                                             {item[Object.keys(item)[0]].value.length >
                                               30
                                               ? "..."
@@ -935,7 +937,7 @@ const SubmitModal = ({
 
                                             {item[Object.keys(item)[0]].value
                                               .slice(0, 30)}{" "}
-
+:
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
