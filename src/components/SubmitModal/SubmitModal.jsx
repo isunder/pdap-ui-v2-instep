@@ -411,7 +411,8 @@ const SubmitModal = ({
                                         title={
                                           Object.keys(item) +
                                           " : " +
-                                          item[Object.keys(item)].value
+                                          ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
+
                                         }
                                       >
                                         <Typography>
