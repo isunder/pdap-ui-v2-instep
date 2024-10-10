@@ -273,7 +273,7 @@ const SubmitModal = ({
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Codes/Conditions that would go in EHR
+                              Codes/Conditions to be actioned in BPA
                             </StyledCodeTypography>
                           </Grid>
 
