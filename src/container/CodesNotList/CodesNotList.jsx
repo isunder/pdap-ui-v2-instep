@@ -1000,6 +1000,7 @@ export const CodesNotList = ({ sessionObject }) => {
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
+                              disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
                                   <StyleCircle
@@ -1031,12 +1032,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "#D5D5D5 ",
+                                  (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                      background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1045,7 +1046,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                     <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
-                                disabled={tabs?.read_only?.active}
+                                disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 className="acc-content-act-btn"
                               >
                                 Accept
@@ -1061,6 +1062,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                 }
                               }) ? (
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleRemoveDeletedCode(item, item?.code)
                                   }
@@ -1091,11 +1093,15 @@ export const CodesNotList = ({ sessionObject }) => {
                                 </StyledButton>
                               ) : (
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(item, item?.code)
                                   }
                                   sx={{
-                                    backgroundColor: theme.palette.primary.main,
+
+                                    backgroundColor:
+                                        (tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
+                                   
                                     color: "#fff",
                                     ":hover": {
                                       backgroundColor:
@@ -1106,10 +1112,11 @@ export const CodesNotList = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: '#434343',
+                                        background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
+                                        
                                       }}
                                     >
                                       <CrossWhite />
@@ -1294,6 +1301,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                           (ele) => ele?.code === value?.code
                                         ) ? (
                                           <StyledButton1
+                                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             onClick={() =>
                                               handleClickOpen1(value)
                                             }
@@ -1330,13 +1338,13 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.read_only?.active &&
+                                                (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) &&
                                                 "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1345,7 +1353,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 <CorrectIcon />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.read_only?.active}
+                                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                           >
                                             Accept
                                           </StyledButton>
@@ -1401,8 +1409,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 )
                                               }
                                               sx={{
-                                                backgroundColor:
-                                                  theme.palette.primary.main,
+                                                backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                                 color: "#fff",
                                                 ":hover": {
                                                   backgroundColor:
@@ -1413,7 +1420,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: '#434343',
+                                                    bbackground: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1572,6 +1579,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       (ele) => ele?.code === value?.code
                                     ) ? (
                                       <StyledButton1
+                                      disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 23,
@@ -1606,12 +1614,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.read_only?.active && "#D5D5D5 ",
+                                            (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "#D5D5D5 ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                              background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -1620,7 +1628,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                             <CorrectIcon />
                                           </StyleCircle>
                                         }
-                                        disabled={tabs?.read_only?.active}
+                                        disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                       >
                                         Accept
                                       </StyledButton>
@@ -1675,8 +1683,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                             handleClickOpen(value, item?.code)
                                           }
                                           sx={{
-                                            backgroundColor:
-                                              theme.palette.primary.main,
+                                            backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                             color: "#fff",
                                             width: "50%",
                                             ":hover": {
@@ -1688,7 +1695,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: '#434343',
+                                                background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -1982,6 +1989,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                           (ele) => ele.code === value.code
                                         ) ? (
                                           <StyledButton1
+                                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             onClick={() =>
                                               handleClickOpen1(value)
                                             }
@@ -2018,13 +2026,13 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.read_only?.active &&
+                                                (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) &&
                                                 "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -2033,7 +2041,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 <CorrectIcon />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.read_only?.active}
+                                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                           >
                                             Accept
                                           </StyledButton>
@@ -2082,6 +2090,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                             </StyledButton>
                                           ) : (
                                             <StyledButton
+                                            disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleClickOpen(
                                                   value,
@@ -2089,8 +2098,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                                 )
                                               }
                                               sx={{
-                                                backgroundColor:
-                                                  theme.palette.primary.main,
+                                                backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                                 color: "#fff",
                                                 ":hover": {
                                                   backgroundColor:
@@ -2101,7 +2109,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: '#434343',
+                                                    background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2430,6 +2438,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                       (ele) => ele?.code === value?.code
                                     ) ? (
                                       <StyledButton1
+                                      disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 23,
@@ -2464,12 +2473,12 @@ export const CodesNotList = ({ sessionObject }) => {
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.read_only?.active && "#D5D5D5 ",
+                                            (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "#D5D5D5 ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                              background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -2478,7 +2487,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                             <CorrectIcon />
                                           </StyleCircle>
                                         }
-                                        disabled={tabs?.read_only?.active}
+                                        disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                       >
                                         Accept
                                       </StyledButton>
@@ -2495,6 +2504,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                         }
                                       ) ? (
                                         <StyledButton
+                                        disabled={tabs?.read_only_mode?.active}
                                           onClick={() =>
                                             handleRemoveDeletedCode(
                                               value,
@@ -2530,6 +2540,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                         </StyledButton>
                                       ) : (
                                         <StyledButton
+                                        disabled={tabs?.read_only_mode?.active}
                                           onClick={() =>
                                             handleClickOpen(value, item?.code)
                                           }
@@ -2539,15 +2550,14 @@ export const CodesNotList = ({ sessionObject }) => {
                                             color: "#fff",
                                             width: "50%",
                                             ":hover": {
-                                              backgroundColor:
-                                                theme.palette.primary.main,
+                                              backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                             },
 
                                           }}
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: '#434343',
+                                                background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2606,6 +2616,7 @@ export const CodesNotList = ({ sessionObject }) => {
                               return false;
                             }) ? (
                               <StyledButton
+                              disabled={tabs?.read_only_mode?.active}
                                 sx={{
                                   backgroundColor: theme.palette.primary.main,
                                   color: "#fff",
@@ -2636,6 +2647,7 @@ export const CodesNotList = ({ sessionObject }) => {
                             ) : (
                               <>
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(index, item?.code)
                                   }
@@ -2673,6 +2685,7 @@ export const CodesNotList = ({ sessionObject }) => {
                         </Grid>
                       ) : (
                         <StyledButton2
+                        disabled={tabs?.read_only_mode?.active || tabs?.read_only_rejection_allowed?.active }
                           sx={{ mr: 2, width: "9.75rem", height: "2rem" }}
                           startIcon={
                             <StyleCircle
@@ -2773,7 +2786,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                     sx={{
                                       borderRadius: "10px",
                                       height: "37px",
-                                      backgroundColor: "#fff",
+                                      backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : "#fff",
                                       color: "#000000",
                                       fontSize: "14px",
                                       fontWeight: 600,
@@ -2784,7 +2797,7 @@ export const CodesNotList = ({ sessionObject }) => {
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: '#434343',
+                                          background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",
@@ -2804,6 +2817,7 @@ export const CodesNotList = ({ sessionObject }) => {
                           </Grid>
                         ) : (
                           <Button
+                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                             sx={{
                               borderRadius: "10px",
                               height: "37px",

@@ -1089,6 +1089,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
+                              disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 sx={{ width: "105px !important" }}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
@@ -1121,12 +1122,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "#D5D5D5 ",
+                                    (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                      background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1135,7 +1136,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
-                                disabled={tabs?.read_only?.active}
+                                disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 className="acc-content-act-btn"
                               >
                                 Accept
@@ -1151,6 +1152,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                 }
                               }) ? (
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleRemoveDeletedCode(item, item?.code)
                                   }
@@ -1181,11 +1183,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                 </StyledButton>
                               ) : (
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(item, item?.code)
                                   }
                                   sx={{
-                                    backgroundColor: theme.palette.primary.main,
+                                    backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                     color: "#fff",
                                     ":hover": {
                                       backgroundColor:
@@ -1196,7 +1199,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: '#434343',
+                                        background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1386,6 +1389,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           (ele) => ele?.code === value?.code
                                         ) ? (
                                           <StyledButton1
+                                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             sx={{ width: "105px !important" }}
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -1423,13 +1427,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.read_only?.active &&
+                                                (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) &&
                                                 "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1438,7 +1442,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.read_only?.active}
+                                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                           >
                                             Accept
                                           </StyledButton>
@@ -1455,6 +1459,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             }
                                           ) ? (
                                             <StyledButton
+                                            disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleRemoveDeletedCode(
                                                   value,
@@ -1487,6 +1492,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             </StyledButton>
                                           ) : (
                                             <StyledButton
+                                            disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleClickOpen(
                                                   value,
@@ -1494,8 +1500,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 )
                                               }
                                               sx={{
-                                                backgroundColor:
-                                                  theme.palette.primary.main,
+                                                backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                                 color: "#fff",
                                                 ":hover": {
                                                   backgroundColor:
@@ -1506,7 +1511,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: '#434343',
+                                                    background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1666,6 +1671,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                       (ele) => ele?.code === value?.code
                                     ) ? (
                                       <StyledButton1
+                                      disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 23,
@@ -1700,12 +1706,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.read_only?.active && "grey ",
+                                            (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "grey ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                              background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -1714,7 +1720,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
-                                        disabled={tabs?.read_only?.active}
+                                        disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                       >
                                         Accept
                                       </StyledButton>
@@ -1731,6 +1737,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         }
                                       ) ? (
                                         <StyledButton
+                                        disabled={tabs?.read_only_mode?.active}
                                           onClick={() =>
                                             handleRemoveDeletedCode(
                                               value,
@@ -1765,12 +1772,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         </StyledButton>
                                       ) : (
                                         <StyledButton
+                                        disabled={tabs?.read_only_mode?.active}
                                           onClick={() =>
                                             handleClickOpen(value, item?.code)
                                           }
                                           sx={{
-                                            backgroundColor:
-                                              theme.palette.primary.main,
+                                            backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                             color: "#fff",
                                             width: "50%",
                                             ":hover": {
@@ -1782,7 +1789,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: '#434343',
+                                                background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2135,6 +2142,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           (ele) => ele.code === value.code
                                         ) ? (
                                           <StyledButton1
+                                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             sx={{ width: "105px !important" }}
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -2173,13 +2181,13 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.read_only?.active &&
+                                                (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) &&
                                                 "grey ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -2188,7 +2196,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 <CorrectIcon state="white" />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.read_only?.active}
+                                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                           >
                                             Accept
                                           </StyledButton>
@@ -2205,6 +2213,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             }
                                           ) ? (
                                             <StyledButton
+                                            disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleRemoveDeletedCode(
                                                   value,
@@ -2237,6 +2246,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             </StyledButton>
                                           ) : (
                                             <StyledButton
+                                            disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleClickOpen(
                                                   value,
@@ -2244,8 +2254,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                                 )
                                               }
                                               sx={{
-                                                backgroundColor:
-                                                  theme.palette.primary.main,
+                                                backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                                 color: "#fff",
                                                 ":hover": {
                                                   backgroundColor:
@@ -2256,7 +2265,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: '#434343',
+                                                    background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2618,6 +2627,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                       (ele) => ele?.code === value?.code
                                     ) ? (
                                       <StyledButton1
+                                      disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                         onClick={() => handleClickOpen1(value)}
                                         sx={{
                                           mr: 23,
@@ -2652,12 +2662,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           mr: 2,
                                           width: "50%",
                                           background:
-                                            tabs?.read_only?.active && "#D5D5D5 ",
+                                            (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "#D5D5D5 ",
                                         }}
                                         startIcon={
                                           <StyleCircle
                                             sx={{
-                                              background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                              background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                               ...flexAlignCenter,
                                               justifyContent: "center",
                                               borderRadius: "100px",
@@ -2666,7 +2676,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                             <CorrectIcon state="white" />
                                           </StyleCircle>
                                         }
-                                        disabled={tabs?.read_only?.active}
+                                        disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                       >
                                         Accept
                                       </StyledButton>
@@ -2683,6 +2693,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         }
                                       ) ? (
                                         <StyledButton
+                                        disabled={tabs?.read_only_mode?.active}
                                           onClick={() =>
                                             handleRemoveDeletedCode(
                                               value,
@@ -2718,12 +2729,12 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                         </StyledButton>
                                       ) : (
                                         <StyledButton
+                                        disabled={tabs?.read_only_mode?.active}
                                           onClick={() =>
                                             handleClickOpen(value, item?.code)
                                           }
                                           sx={{
-                                            backgroundColor:
-                                              theme.palette.primary.main,
+                                            backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                                             color: "#fff",
                                             width: "50%",
                                             ":hover": {
@@ -2735,7 +2746,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                           startIcon={
                                             <StyleCircle
                                               sx={{
-                                                background: '#434343',
+                                                background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                 ...flexAlignCenter,
                                                 justifyContent: "center",
                                                 borderRadius: "100px",
@@ -2795,6 +2806,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                 return false;
                               }) ? (
                               <StyledButton
+                              disabled={tabs?.read_only_mode?.active}
                                 sx={{
                                   backgroundColor: theme.palette.error.active1,
                                   color: "#fff",
@@ -2825,6 +2837,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                             ) : (
                               <>
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(index, item?.code)
                                   }
@@ -2863,6 +2876,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                         </Grid>
                       ) : (
                         <StyledButton2
+                        disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                           sx={{ mr: 2, width: "9.75rem", height: "2rem" }}
                           startIcon={
                             <StyleCircle
@@ -2996,6 +3010,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                           </Grid>
                         ) : (
                           <Button
+                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                             sx={{
                               borderRadius: "10px",
                               height: "37px",

@@ -1074,7 +1074,7 @@ export const Codes = () => {
   return (
     <>
       <SubHeader />
-      {(tabs?.read_only?.active) && (
+      {(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && (
         <Box
           sx={{
             backgroundColor: "#FDDECF",
@@ -1232,18 +1232,24 @@ export const Codes = () => {
                         <Grid container>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                              sx={{
-                                width: "2.375rem",
-                                height: "1.5625rem",
-                                backgroundColor: "#F200001A",
-                                color: theme.palette.error.main,
-                                ":hover": {
-                                  backgroundColor: "#F200001A",
-                                },
-                                fontWeight: 600,
-                                minWidth: "inherit",
-                                fontSize: "0.875rem",
-                              }}
+                            onClick={() => setExpanded(expanded ? false : 1)}
+                            disabled={summary?.existing_codes_count === 0 || 0 }
+                            sx={{
+                              width: "2.375rem",
+                              height: "1.5625rem",
+                              backgroundColor: theme.palette.error.A200,
+                              color: theme.palette.error.main,
+                              ":hover": {
+                                backgroundColor: theme.palette.error.A200,
+                              },
+                              ":disabled": {
+                                backgroundColor: theme.palette.error.A200, // Same as normal state
+                                color: theme.palette.error.main, // Same as normal state
+                              },
+                              fontWeight: 600,
+                              minWidth: "inherit",
+                              fontSize: "0.875rem",
+                            }}
                             >
                               {summary?.existing_codes_count || 0}
                             </PrimaryButton>
@@ -1280,18 +1286,24 @@ export const Codes = () => {
                         <Grid container sx={{ my: 2 }}>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                              sx={{
-                                width: "2.375rem",
-                                height: "1.5625rem",
-                                backgroundColor: "#F200001A",
-                                color: theme.palette.error.main,
-                                ":hover": {
-                                  backgroundColor: "#F200001A",
-                                },
-                                fontWeight: 600,
-                                minWidth: "inherit",
-                                fontSize: "0.875rem",
-                              }}
+                            onClick={() => setExpanded(expanded ? false : 2)}
+                            disabled={summary?.suspect_conditions_count === 0 || 0 }
+                            sx={{
+                              width: "2.375rem",
+                              height: "1.5625rem",
+                              backgroundColor: theme.palette.error.A200,
+                              color: theme.palette.error.main,
+                              ":hover": {
+                                backgroundColor: theme.palette.error.A200,
+                              },
+                              ":disabled": {
+                                backgroundColor: theme.palette.error.A200, // Same as normal state
+                                color: theme.palette.error.main, // Same as normal state
+                              },
+                              fontWeight: 600,
+                              minWidth: "inherit",
+                              fontSize: "0.875rem",
+                            }}
                             >
                               {summary?.suspect_conditions_count || 0}
                             </PrimaryButton>
@@ -1328,18 +1340,24 @@ export const Codes = () => {
                         <Grid container sx={{ my: 2 }}>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                              sx={{
-                                width: "2.375rem",
-                                height: "1.5625rem",
-                                backgroundColor: "#F200001A",
-                                color: theme.palette.error.main,
-                                ":hover": {
-                                  backgroundColor: "#F200001A",
-                                },
-                                fontWeight: 600,
-                                minWidth: "inherit",
-                                fontSize: "0.875rem",
-                              }}
+                            onClick={() => setExpanded(expanded ? false : 3)}
+                            disabled={summary?.recapture_codes_count === 0 || 0 }
+                            sx={{
+                              width: "2.375rem",
+                              height: "1.5625rem",
+                              backgroundColor: theme.palette.error.A200,
+                              color: theme.palette.error.main,
+                              ":hover": {
+                                backgroundColor: theme.palette.error.A200,
+                              },
+                              ":disabled": {
+                                backgroundColor: theme.palette.error.A200, // Same as normal state
+                                color: theme.palette.error.main, // Same as normal state
+                              },
+                              fontWeight: 600,
+                              minWidth: "inherit",
+                              fontSize: "0.875rem",
+                            }}
                             >
                               {summary?.recapture_codes_count || 0}
                             </PrimaryButton>
@@ -2344,6 +2362,7 @@ export const Codes = () => {
                     <Grid item lg={2} md={2} sm={2} xs={12}>
                       <PrimaryButton
                         onClick={() => setExpanded(expanded ? false : 1)}
+                        disabled={summary?.existing_codes_count === 0 || 0 }
                         sx={{
                           width: "2.375rem",
                           height: "1.5625rem",
@@ -2351,6 +2370,10 @@ export const Codes = () => {
                           color: theme.palette.error.main,
                           ":hover": {
                             backgroundColor: theme.palette.error.A200,
+                          },
+                          ":disabled": {
+                            backgroundColor: theme.palette.error.A200, // Same as normal state
+                            color: theme.palette.error.main, // Same as normal state
                           },
                           fontWeight: 600,
                           minWidth: "inherit",
@@ -2390,18 +2413,23 @@ export const Codes = () => {
                   >
                     <Grid item lg={2} md={2} sm={2} xs={12}>
                       <PrimaryButton
-                        sx={{
-                          width: "2.375rem",
-                          height: "1.5625rem",
+                      disabled={summary?.suspect_conditions_count === 0 || 0 }
+                      sx={{
+                        width: "2.375rem",
+                        height: "1.5625rem",
+                        backgroundColor: theme.palette.error.A200,
+                        color: theme.palette.error.main,
+                        ":hover": {
                           backgroundColor: theme.palette.error.A200,
-                          color: theme.palette.error.main,
-                          ":hover": {
-                            backgroundColor: theme.palette.error.A200,
-                          },
-                          fontWeight: 600,
-                          minWidth: "inherit",
-                          fontSize: "0.875rem",
-                        }}
+                        },
+                        ":disabled": {
+                          backgroundColor: theme.palette.error.A200, // Same as normal state
+                          color: theme.palette.error.main, // Same as normal state
+                        },
+                        fontWeight: 600,
+                        minWidth: "inherit",
+                        fontSize: "0.875rem",
+                      }}
                         onClick={() => setExpanded(expanded ? false : 2)}
                       >
                         {summary?.suspect_conditions_count || 0}
@@ -2435,6 +2463,7 @@ export const Codes = () => {
                   <Grid container>
                     <Grid item lg={2} md={2} sm={2} xs={12}>
                       <PrimaryButton
+                      disabled={summary?.recapture_codes_count === 0 || 0 }
                         onClick={() => setExpanded(expanded ? false : 3)}
                         sx={{
                           width: "2.375rem",
@@ -2443,6 +2472,10 @@ export const Codes = () => {
                           color: theme.palette.error.main,
                           ":hover": {
                             backgroundColor: theme.palette.error.A200,
+                          },
+                          ":disabled": {
+                            backgroundColor: theme.palette.error.A200, // Same as normal state
+                            color: theme.palette.error.main, // Same as normal state
                           },
                           fontWeight: 600,
                           minWidth: "inherit",

@@ -873,7 +873,8 @@ const SubmitModal = ({
                                     </Stack>
                                   ))}
 
-                                {recaptureCodeReject?.length > 0 &&
+                                {
+                                recaptureCodeReject?.length > 0 &&
                                   recaptureCodeReject?.map((item, index) => (
                                     <Stack
                                       direction="row"
@@ -971,6 +972,7 @@ const SubmitModal = ({
               </Grid>
             </Grid>
           </DialogContentText>
+
           {existingCode?.length > 0 ||
             recaptureCode?.length > 0 ||
             duplicateCode?.length > 0 ||
@@ -998,6 +1000,7 @@ const SubmitModal = ({
               Submit & Close
             </button>
           )}
+
         </DialogContent>
       )}
     </Dialog>

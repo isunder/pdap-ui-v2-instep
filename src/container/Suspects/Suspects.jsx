@@ -687,7 +687,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                               lg="auto"
                               xl="auto"
                               onClick={() => {
-                                if (tabs?.read_only?.active) {
+                                if ((tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))) {
                                   return;
                                 }
                                 if (!isConditionRejected(item)) {
@@ -704,13 +704,13 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
                               className="text-container"
                                 sx={{
-                                  filter: isConditionRejected(item) || tabs?.read_only?.active
+                                  filter: isConditionRejected(item) || (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))
                                     ? "opacity(0.5)"
                                     : "none",
-                                  cursor: isConditionRejected(item) || tabs?.read_only?.active
+                                  cursor: isConditionRejected(item) || (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))
                                     ? "not-allowed"
                                     : "pointer",
-                                  pointerEvents: isConditionRejected(item) || tabs?.read_only?.active
+                                  pointerEvents: isConditionRejected(item) || (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))
                                     ? "none"
                                     : "all",
                                 }}
@@ -868,6 +868,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 >
                   {isConditionRejected(item) ? (
                     <StyledButton
+                    disabled={tabs?.read_only_mode?.active}
                       onClick={() =>
                         handleRemoveDeletedCode(item?.SuspectedCondition)
                       }
@@ -911,12 +912,13 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                     </StyledButton>
                   ) : (
                     <StyledButton
+                    disabled={tabs?.read_only_mode?.active}
                       onClick={() => handleClickOpen(item)}
                       sx={{
                         fontSize: "14px",
                         width: "92px !important",
                         justifyContent: "center",
-                        backgroundColor: theme.palette.primary.main,
+                        backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                         color: "#fff !important",
                         ":hover": {
                           backgroundColor: theme.palette.primary.main,
@@ -943,7 +945,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       startIcon={
                         <StyleCircle
                           sx={{
-                            background: "#434343",
+                            background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                             ...flexAlignCenter,
                             justifyContent: "center",
                             borderRadius: "100px",

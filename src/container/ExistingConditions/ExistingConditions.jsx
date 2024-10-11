@@ -1263,6 +1263,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
+                              disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 sx={{ border: "none !important", width: "105px !important" }}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
@@ -1295,12 +1296,12 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "#D5D5D5 ",
+                                    (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                      background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1309,7 +1310,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
-                                disabled={tabs?.read_only?.active}
+                                disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 className="acc-content-act-btn"
                               >
                                 Accept
@@ -1325,6 +1326,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 }
                               }) ? (
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleRemoveDeletedCode(item, item?.code)
                                   }
@@ -1355,11 +1357,14 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 </StyledButton>
                               ) : (
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(item, item?.code)
                                   }
                                   sx={{
-                                    backgroundColor: theme.palette.primary.main,
+                                    backgroundColor:
+                                    (tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
+                               
                                     color: "#fff",
                                     ":hover": {
                                       backgroundColor:
@@ -1370,7 +1375,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "#434343",
+                                        background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1822,6 +1827,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                           (ele) => ele?.code === value?.code
                                         ) ? (
                                           <StyledButton1
+                                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             sx={{ width: "105px !important" }}
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -1860,13 +1866,13 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.read_only?.active &&
+                                                (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) &&
                                                 "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1875,7 +1881,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                                 <CorrectIcon />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.read_only?.active}
+                                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             className="acc-content-act-btn"
                                           >
                                             Accept
@@ -1893,6 +1899,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                             }
                                           ) ? (
                                             <StyledButton
+                                            disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleRemoveDeletedCode(
                                                   value,
@@ -1927,6 +1934,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                             </StyledButton>
                                           ) : (
                                             <StyledButton
+                                            disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleClickOpen(
                                                   value,
@@ -1935,7 +1943,8 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                               }
                                               sx={{
                                                 backgroundColor:
-                                                  theme.palette.primary.main,
+                                    (tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
+                                           
                                                 color: "#fff",
                                                 ":hover": {
                                                   backgroundColor:
@@ -1945,7 +1954,8 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "#434343",
+                                                    
+                                                    background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -2010,8 +2020,10 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 return false;
                               }) ? (
                               <StyledButton
+                              disabled={tabs?.read_only_mode?.active}
                                 sx={{
-                                  backgroundColor: theme.palette.error.active1,
+                                  backgroundColor:
+                                    (tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.error.active1,
                                   color: "#fff",
                                   ":hover": {
                                     backgroundColor: theme.palette.error.main,
@@ -2040,6 +2052,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                             ) : (
                               <>
                                 <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(index, item?.code)
                                   }
@@ -2057,7 +2070,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                        background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -2077,6 +2090,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                         </Grid>
                       ) : (
                         <StyledButton2
+                        disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                           sx={{ mr: 2, width: "105px !important", height: "2rem" }}
                           startIcon={
                             <StyleCircle
@@ -2137,6 +2151,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                   return false;
                                 }) ? (
                                 <Button
+                                disabled={tabs?.read_only_mode?.active}
                                   sx={{
                                     borderRadius: "10px",
                                     height: "37px",
@@ -2172,6 +2187,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                               ) : (
                                 <>
                                   <Button
+                                  disabled={tabs?.read_only_mode?.active}
                                     onClick={() =>
                                       handleClickOpen(index, item?.code)
                                     }
@@ -2189,7 +2205,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                          background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",
@@ -2209,6 +2225,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                           </Grid>
                         ) : (
                           <Button
+                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                             sx={{
                               borderRadius: "10px",
                               height: "37px",
