@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
-import { PrimaryButton } from "../../components/Button";
 import "./Header.css";
 import useAppContext from "../../hooks/useAppContext";
 import { TabsSlag } from "../TabsSlag/TabsSlag";
@@ -411,6 +410,7 @@ export const Header = ({ sessionObject }) => {
                                   color: theme.palette.success.main,
                                   fontWeight: 600,
                                   fontSize: "0.875rem",
+                                  marginTop:"3px"
                                 }}
                               >
                                 {doctorDetail?.recapture_percentage || " - "}
@@ -439,6 +439,7 @@ export const Header = ({ sessionObject }) => {
                                   fontFamily: "Proxima nova",
                                   fontWeight: 600,
                                   fontSize: "0.875rem",
+                                   marginTop:"3px"
                                 }}
                               >
                                 {doctorDetail?.suspects_addressed_percentage || " - "}
@@ -449,9 +450,9 @@ export const Header = ({ sessionObject }) => {
                           <StyleText
                             sx={{
                               fontWeight: 600,
-                              // [theme.breakpoints.down("lg")]: {
-                              //   width: "10rem",
-                              // },
+                              [theme.breakpoints.down("md")]: {
+                                marginLeft:"50px"
+                              },
                             }}
                           >
                             {doctorDetail?.doctor_name && doctorDetail?.doctor_name || " - "}

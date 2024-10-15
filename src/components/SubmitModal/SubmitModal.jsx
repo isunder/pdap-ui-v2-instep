@@ -61,6 +61,7 @@ const SubmitModal = ({
   recaptureCodeNew,
   suspectCodeNew,
   isModalOpen,
+  toggleDrawer
 }) => {
   // State variables for different matched values
   const [matchedValuesExisting, setMatchedValuesExisting] = useState([]);
@@ -187,6 +188,10 @@ const SubmitModal = ({
 
 
   const setOpenSubmitModalFunc = (key) => {
+
+    toggleDrawer("top", false)
+    toggleDrawer("down", false)
+    
     setOpenSubmitModal(false);
 
     if (key === "athena") {

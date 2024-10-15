@@ -21,7 +21,6 @@ export const refreshSSOToken = createAsyncThunk("Refresh_Token", async () => {
         sessionStorage.setItem("newjwt", response.data)
         return response.data;
     } catch (error) {
-        console.log("Error in refreshing token", error);
         throw error;
     }
 });
@@ -44,7 +43,6 @@ const slice = createSlice({
         });
         builder.addCase(refreshSSOToken.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.error);
             state.isError = true;
         });
     }

@@ -541,8 +541,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 }}
                 className="acc-content-header-items"
               >
-                <Grid item xs={10}
-                  sm={10}
+                <Grid item xs={tabs && tabs?.patient_dashboard_weights?.active ? 8: 10}
+                  sm={tabs && tabs?.patient_dashboard_weights?.active ? 8: 10}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 8: 10}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}>
@@ -552,7 +552,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 </Grid>
 
                 {tabs && tabs["patient_dashboard_weights"]?.active && (
-                  <Grid item xs={2} sm={2} md={1.5} lg={1.5} xl={1.5}>
+                  <Grid item xs={2} sm={2} md={2} lg={1.5} xl={1.5}>
 
                     <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
                       sx={{
@@ -569,13 +569,13 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 )}
                 <Grid
                   item
-                  xs={2}
-                  sm={2}
+                  xs={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
+                  sm={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   sx={{
-                    [theme.breakpoints.down("md")]: {
+                    [theme.breakpoints.down("600")]: {
                       display: "none",
                     },
                   }}
@@ -605,8 +605,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 <Grid
                   className="suspect_desc_content"
                   item
-                  xs={10}
-                  sm={10}
+                  xs={tabs && tabs?.patient_dashboard_weights?.active ? 8 : 10}
+                  sm={tabs && tabs?.patient_dashboard_weights?.active ? 8 : 10}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 8 : 10}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
@@ -834,7 +834,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                     item
                     xs={2}
                     sm={2}
-                    md={1.5}
+                    md={2}
                     lg={1.5}
                     xl={1.5}
                     sx={{
@@ -856,8 +856,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
                 <Grid
                   item
-                  xs={12}
-                  sm={12}
+                  xs={tabs && tabs?.patient_dashboard_weights?.active ? 12 : 12}
+                  sm={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5: 1.5}

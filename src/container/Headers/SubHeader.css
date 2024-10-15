@@ -41,6 +41,22 @@
 } 
 
 
+@media (max-width: 374.95px) {
+    .css-1h2zfbv-MuiContainer-root {
+        padding: 5px !important;
+    }
+
+    .MuiDrawerTop .MuiDrawer-paper {
+        top:13.25rem;
+       
+    }
+    
+    .MuiDrawerDown .MuiDrawer-paper {
+        top:13.25rem;
+    }
+} 
+
+
 @media (max-width: 424.95px) {
 
     .pendingActions{

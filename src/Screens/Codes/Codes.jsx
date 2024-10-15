@@ -62,7 +62,8 @@ import { fetchAuditLogs } from "../../redux/userSlice/auditLogSlice";
 import { convertDate, isSlugOrJwt } from "../../utils/helper";
 import { IdleModal } from "../../components/idleModal/IdleModal";
 import { refreshSSOToken } from "../../redux/userSlice/refreshToken";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { History, NotFound, MyProfile } from "../../Screens";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -154,6 +155,7 @@ export const Codes = () => {
     (state) => state?.reject.duplicateReject
   );
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [switchModal, setSwitchModal] = useState(true);
   const [idleModal, setIdleModal] = useState(false);
@@ -362,30 +364,41 @@ export const Codes = () => {
     }
   };
 
-  useEffect(() => {
 
+
+
+  useEffect(() => {
 
   }, [setOpenSubmitModal])
 
-  useEffect(() => {
-    window.addEventListener('load', () => {
-      const url = new URL(window.location.href);
-      url.searchParams.delete('slug');
-      url.searchParams.delete('jwt');
-      window.history.replaceState({}, '', url);
-    });
-  }, [])
-
+ 
   // Application JWT and Slug remove  :-------------------------------------------------:
 
+const [newSlug, setNewSlug] = useState(isSlugOrJwt());
+
+console.log(newSlug ,"newSlug")
+
+useEffect(() => {
+  if(location.pathname === "/"){
+     const url = new URL(window.location.href);
+     url.searchParams.delete('slug');
+     url.searchParams.delete('jwt');
+     window.history.replaceState({}, '', url);
+   }
+ },[location.pathname])
+
+ useEffect(() => {
+   localStorage.setItem('lastVisitedRoute', location.pathname);
+ }, [location]);
+
+const lastLocation = localStorage.getItem("lastVisitedRoute");
+
   useEffect(() => {
-    window.addEventListener('load', () => {
-      const url = new URL(window.location.href);
-      url.searchParams.delete('slug');
-      url.searchParams.delete('jwt');
-      window.history.replaceState({}, '', url);
-    });
+    if (Object.keys(slug).length === 0 && slug.constructor === Object && lastLocation == "/") {
+      navigate("/404")
+    }
   }, [])
+
 
   // Application Inactivity Recorder  :-------------------------------------------------:
 
@@ -452,11 +465,13 @@ export const Codes = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [dispatch, tabs]); // Add necessary dependencies
+  }, [dispatch, tabs]); 
 
+  // Responsive design summary drwaer
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
+      event &&
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
     ) {
@@ -464,6 +479,8 @@ export const Codes = () => {
     }
     setState({ ...state, [anchor]: open });
   };
+
+// Indexed Db Code and Setup
 
   const [eventData, setEventData] = useState([]);
   const [newEventData, setNewEventData] = useState([]);
@@ -493,12 +510,6 @@ export const Codes = () => {
       console.error('Error adding event data:', error);
     }
   };
-
-  useEffect(() => {
-    if (Object.keys(slug).length === 0 && slug.constructor === Object) {
-      navigate("/404")
-    }
-  }, [])
 
   const removeObjectById = (arr, id) => {
     const index = arr.findIndex(item => item.id === id);
@@ -558,6 +569,14 @@ export const Codes = () => {
   };
 
   const handleSubmitRedirect = async (tabs) => {
+
+    const toggleTopDrawer = toggleDrawer("top", false);
+    const toggleBottomDrawer = toggleDrawer("down", false);
+  
+    // Call the returned functions to toggle the drawer states
+    toggleTopDrawer();
+    toggleBottomDrawer();
+   
     setIsModalOpen(true);
     const isAthenaModal = tabs['type']?.value == "Athena";
 
@@ -604,6 +623,10 @@ export const Codes = () => {
 
   const handleSubmit = async () => {
 
+
+    toggleDrawer("top", true)
+    toggleDrawer("down", true)
+   
     let requestBody;
     if (existingCode?.length > 0) {
       let mapped = existingCode?.map((item) => ({
@@ -2850,10 +2873,6 @@ export const Codes = () => {
                                       {Object.keys(item).toString().length > 20
                                         ? "..."
                                         : ""}
-
-
-                                     
-                                      
                                       <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                         <CrossIcon state="rejected" />{" "}
                                       </Typography>
@@ -3181,6 +3200,7 @@ export const Codes = () => {
         recaptureCodeNew={recaptureCodeNew}
         suspectCodeNew={suspectCodeNew}
         isModalOpen={isModalOpen}
+        toggleDrawer={toggleDrawer}
       />
 
       <DialogModal

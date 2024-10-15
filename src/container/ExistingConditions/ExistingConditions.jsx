@@ -921,20 +921,20 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                     <Grid item className="acc-content-header-item ct-code">
                       <StyleCode
                         sx={{
-                          verticalAlign: "top",
+                          // verticalAlign: "top",
                           ml: 0.5,
                           maxWidth: "100%",
                           textOverflow: "ellipsis",
-                          overflow: "hidden",
+                          // overflow: "hidden",
                           [theme.breakpoints.only("md")]: {
                             mr: 2,
                           },
                           [theme.breakpoints.down("md")]: {
-                            mt: "9px",
+                            // mt: "4px",
                           },
                           [theme.breakpoints.up("md")]: {
                             mr: 2,
-                            mt: "9px",
+                            // mt: 1.5,
                           },
                         }}
                       >
@@ -2324,6 +2324,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                   Insufficient Proof
                 </MenuItem>
                 <MenuItem value="Resolved">Resolved</MenuItem>
+                <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
               </SelectField>
               {rejectReason === "Other" && (

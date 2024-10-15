@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { isSlugOrJwt } from "../../utils/helper";
+import { useLocation } from "react-router-dom";
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -71,6 +72,12 @@ export const MyProfile = () => {
       dispatch(doctorInfo());
     }
   }, []);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    localStorage.setItem('lastVisitedRoute', location.pathname);
+  }, [location]);
 
   return (
     <div>

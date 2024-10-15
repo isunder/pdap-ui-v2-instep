@@ -24,7 +24,6 @@ export const patientSummaryBarSlice = createAsyncThunk("SummaryBar", async () =>
         return data.data;
        }
     } catch (error) {
-        console.log("error in patientSummaryBarSlice", error)
     }
 });
 
@@ -47,7 +46,6 @@ const slice = createSlice({
         });
         builder.addCase(patientSummaryBarSlice.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
             state.isError = true;
         });
     }

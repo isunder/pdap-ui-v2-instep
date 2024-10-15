@@ -230,20 +230,16 @@ export const DeletedCodes = ({ sessionObject }) => {
 
                                                     <StyleCode2
                                                         sx={{
-                                                            verticalAlign: "top",
                                                             ml: 0.5,
                                                             maxWidth: "100%",
                                                             textOverflow: "ellipsis",
-                                                            overflow: "hidden",
                                                             [theme.breakpoints.only("md")]: {
                                                                 mr: 2,
                                                             },
-                                                            [theme.breakpoints.down("md")]: {
-                                                                mt: 0.5,
-                                                            },
+                                                            
                                                             [theme.breakpoints.up("md")]: {
                                                                 mr: 2,
-                                                                mt: 1.5,
+                                                                
                                                             },
                                                         }}
                                                     >
@@ -269,7 +265,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             },
                                                             [theme.breakpoints.up("md")]: {
                                                                 mr: 2,
-                                                                mt: 1.5,
+                                                                
                                                             },
                                                         }}
                                                     >
@@ -349,7 +345,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                     </StyledText>
                                                 </Box>
                                             ) : (
-                                                <Grid sx={{ gap: '10px', marginTop: "7px" }} container>
+                                                <Grid sx={{ gap: '10px' }} container>
                                                     {/* Expanded view */}
                                                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                                         <StyledText

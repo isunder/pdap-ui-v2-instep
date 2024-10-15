@@ -42,7 +42,6 @@
 }
 .acc-content-header-item.ct-raf {
   width: 10%;
-  margin-top: 7px;
 }
 .acc-content-header-item.ct-actions {
   width: 25%;
@@ -110,16 +109,20 @@
   width: 15% !important;
 }
 
-@media screen and (max-width: 968px) {
-
+@media (max-width:600px) {
+  .suspect_raf{
+    display: none !important;
+  }
   .cust_RAF_suspect{
     display: none !important;
     border: none !important;
   }
+}
 
-  .suspect_raf{
-    display: none !important;
-  }
+@media screen and (max-width: 968px) {
+
+
+
 
   .MuiDialog-paper {
     height: auto;
@@ -130,14 +133,7 @@
     width: 100% !important;
   }
 
-  .MuiTypography-root.acc-content-cust-header1 {
-   border: none !important;
-}
 
-  .suspect_desc_content{
-    flex-basis: 100% !important;
-    max-width: 90% !important;
-  }
 
   .PopupDelete .MuiDialog-paper {
     height: auto !important;
@@ -153,6 +149,17 @@
 }
 
 @media screen and (max-width: 768px) {
+
+  .MuiTypography-root.acc-content-cust-header1 {
+    border: none !important;
+ }
+ 
+
+  
+  .suspect_desc_content{
+    flex-basis: 100% !important;
+    /* max-width: 90% !important; */
+  }
 
   .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
     width: 100% !important;
@@ -196,9 +203,9 @@
 
 }
 
-.acc-content-body-desc {
-  margin-top: 10px !important;
-}
+/* .acc-content-body-desc {
+  margin-top: 5px !important;
+} */
 
 @media screen and (min-width: 769px) {
   .acc-content-body-desc {
@@ -262,4 +269,19 @@
 .text-container {
   display: flex !important;
   align-items: center;
+}
+
+.ContentBody .css-758xe7,.ContentBody .acc-content-header ,.ContentBody .css-1ivb442{
+ margin-top: 0 !important;
+}
+.ContentBody .acc-content-header-item.ct-raf:first-of-type {
+color: red !important;}
+
+.ContentBody  .acc-content-header-item .css-1nr85iz-MuiGrid-root{
+  margin-top: 0 !important;
+}
+
+.ContentBody{
+  padding: 12px 10px !important;
+  min-height: unset !important;
 }

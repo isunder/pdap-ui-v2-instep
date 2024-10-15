@@ -745,20 +745,15 @@ export const DuplicateCodes = ({ sessionObject }) => {
                     <Grid item className="acc-content-header-item ct-code">
                       <StyleCode
                         sx={{
-                          verticalAlign: "top",
                           ml: 0.5,
                           maxWidth: "100%",
                           textOverflow: "ellipsis",
-                          overflow: "hidden",
                           [theme.breakpoints.only("md")]: {
                             mr: 2,
                           },
-                          [theme.breakpoints.down("md")]: {
-                            mt: 0.5,
-                          },
+                         
                           [theme.breakpoints.up("md")]: {
                             mr: 2,
-                            mt: 1.5,
                           },
                         }}
                       >
@@ -831,7 +826,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid container sx={{ gap: "10px", marginTop: "7px" }}>
+                        <Grid container sx={{ gap: "10px" }}>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText
@@ -3108,6 +3103,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                   Insufficient Proof
                 </MenuItem>
                 <MenuItem value="Resolved">Resolved</MenuItem>
+                <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
               </SelectField>
               {rejectReason === "Other" && (
