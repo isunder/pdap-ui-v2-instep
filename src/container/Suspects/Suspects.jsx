@@ -541,7 +541,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 }}
                 className="acc-content-header-items"
               >
-                <Grid item xs={tabs && tabs?.patient_dashboard_weights?.active ? 8: 10}
+                <Grid item xs={10}
                   sm={tabs && tabs?.patient_dashboard_weights?.active ? 8: 10}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 8: 10}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
@@ -552,7 +552,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 </Grid>
 
                 {tabs && tabs["patient_dashboard_weights"]?.active && (
-                  <Grid item xs={2} sm={2} md={2} lg={1.5} xl={1.5}>
+                  <Grid item xs={2} sm={2} md={1.5} lg={1.5} xl={1.5}>
 
                     <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
                       sx={{
@@ -569,14 +569,14 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 )}
                 <Grid
                   item
-                  xs={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
-                  sm={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
+                  xs={0}
+                  sm={0}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   sx={{
-                    [theme.breakpoints.down("600")]: {
-                      display: "none",
+                    [theme.breakpoints.down("969")]: {
+                      display: "none !important",
                     },
                   }}
                 >
@@ -605,8 +605,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 <Grid
                   className="suspect_desc_content"
                   item
-                  xs={tabs && tabs?.patient_dashboard_weights?.active ? 8 : 10}
-                  sm={tabs && tabs?.patient_dashboard_weights?.active ? 8 : 10}
+                  xs={10}
+                  sm={10}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 8 : 10}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 9 : 10.5}
@@ -834,7 +834,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                     item
                     xs={2}
                     sm={2}
-                    md={2}
+                    md={1.5}
                     lg={1.5}
                     xl={1.5}
                     sx={{
@@ -856,8 +856,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
                 <Grid
                   item
-                  xs={tabs && tabs?.patient_dashboard_weights?.active ? 12 : 12}
-                  sm={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
+                  xs={12}
+                  sm={12}
                   md={tabs && tabs?.patient_dashboard_weights?.active ? 2 : 2}
                   lg={tabs && tabs?.patient_dashboard_weights?.active ? 1.5 : 1.5}
                   xl={tabs && tabs?.patient_dashboard_weights?.active ? 1.5: 1.5}
@@ -881,7 +881,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                         ":hover": {
                           backgroundColor: theme.palette.error.main,
                         },
-                        [theme.breakpoints.down("md")]: {
+                        [theme.breakpoints.down("768")]: {
                           width: "100% !important",
                         },
                         filter:

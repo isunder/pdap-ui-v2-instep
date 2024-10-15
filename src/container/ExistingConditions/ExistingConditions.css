@@ -109,7 +109,7 @@
   width: 15% !important;
 }
 
-@media (max-width:600px) {
+/* @media (max-width:600px) {
   .suspect_raf{
     display: none !important;
   }
@@ -117,11 +117,21 @@
     display: none !important;
     border: none !important;
   }
-}
+} */
 
 @media screen and (max-width: 968px) {
 
+  .cust_RAF_suspect{
+    border: none !important;
+  }
 
+  .MuiTypography-root.acc-content-cust-header1 {
+    border: none !important;
+ }
+ 
+  .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
+    width: 100% !important;
+  }
 
 
   .MuiDialog-paper {
@@ -150,20 +160,7 @@
 
 @media screen and (max-width: 768px) {
 
-  .MuiTypography-root.acc-content-cust-header1 {
-    border: none !important;
- }
  
-
-  
-  .suspect_desc_content{
-    flex-basis: 100% !important;
-    /* max-width: 90% !important; */
-  }
-
-  .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
-    width: 100% !important;
-  }
 
   .MuiTypography-root.acc-content-header-item.ct-code, .acc-content-header-item.ct-code {
     width: 22%;
@@ -177,9 +174,9 @@
   .MuiGrid-root.ct-raf {
     padding-left: 0;
   }
-  .MuiTypography-root.acc-content-header-item.ct-actions {
+  /* .MuiTypography-root.acc-content-header-item.ct-actions {
     display: none;
-  }
+  } */
   .acc-content-header-item.ct-actions {
     width: 100%;
     padding-left: 0;
