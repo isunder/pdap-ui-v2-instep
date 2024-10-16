@@ -38,7 +38,7 @@ import { WarningIcon } from "../../components";
 import { PrimaryButton } from "../../components/Button";
 import { ArrowDropDownIcon, CrossIcon } from "../../../src/components/Icons";
 import "./Codes.css";
-import { patientSummary } from "../../redux/userSlice/patientInfoSlice";
+import { patientSummary, patientTabFlag } from "../../redux/userSlice/patientInfoSlice";
 import {
   existingRejectInfo,
   existingValue,
@@ -375,8 +375,6 @@ export const Codes = () => {
   // Application JWT and Slug remove  :-------------------------------------------------:
 
 const [newSlug, setNewSlug] = useState(isSlugOrJwt());
-
-console.log(newSlug ,"newSlug")
 
 useEffect(() => {
   if(location.pathname === "/"){
@@ -1093,6 +1091,21 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
   const open = Boolean(anchorEl);
   const [expanded, setExpanded] = React.useState(false);
   const [singleExpand, setSingleExpand] = React.useState(false);
+  const [isLoadingMain, setIsLoadingMain] = useState(true);
+  useEffect(() => {
+    // Dispatch the patientTabFlag thunk and update the loading state
+    dispatch(patientTabFlag())
+      .then(() => {
+        setIsLoadingMain(false); // Set loading to false even if there is an error
+      })
+      .catch(() => {
+        setIsLoadingMain(false); // Set loading to false even if there is an error
+      });
+  }, [dispatch]);
+
+  if (isLoadingMain) {
+    return null;
+  }
 
   return (
     <>
