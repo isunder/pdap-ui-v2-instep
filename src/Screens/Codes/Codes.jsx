@@ -468,6 +468,8 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
   // Responsive design summary drwaer
 
   const toggleDrawer = (anchor, open) => (event) => {
+
+    console.log(anchor, open, event ,"ssfsfsfsfs")
     if (
       event &&
       event.type === "keydown" &&
@@ -1107,6 +1109,21 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
     return null;
   }
 
+  // New Expand in mobile function
+
+  const respExpand = (event, panel) => {
+    if (expanded === panel) {
+      setExpanded(false);
+      toggleDrawer("top", !state["top"])(event); // Pass the event here
+
+    } else {
+      setExpanded(panel);
+         toggleDrawer("top", !state["top"])(event); // Pass the event here
+
+    }
+  };
+  
+
   return (
     <>
       <SubHeader />
@@ -1114,6 +1131,8 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
         <Box
           sx={{
             backgroundColor: "#FDDECF",
+            position:'relative',
+            zIndex:9999
           }}
           className="pdap-ui-codes-read-only-t1-wrap"
         >
@@ -1250,8 +1269,21 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                       anchor={"top"}
                       open={state["top"]}
                       onClose={toggleDrawer("top", false)}
-                      className={`MuiDrawerTop  ${(tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name) ? "responsiveMuiDrawerTop" : ''}`}
-                      sx={{
+                      className={`MuiDrawerTop ${
+                        (tabs &&
+                          (tabs?.patient_dashboard_recapture_percentage?.active ||
+                            tabs?.patient_dashboard_suspect_percentage?.active) &&
+                          doctorDetail?.doctor_name &&
+                          (tabs?.read_only_rejection_allowed?.active ||
+                            tabs?.read_only_mode?.active))
+                          ? "responsiveMuiDrawerTopwithreadonly"
+                          : (tabs &&
+                            (tabs?.patient_dashboard_recapture_percentage?.active ||
+                              tabs?.patient_dashboard_suspect_percentage?.active) &&
+                            doctorDetail?.doctor_name)
+                          ? "responsiveMuiDrawerTop"
+                          : ""
+                      }`}                      sx={{
 
                         [theme.breakpoints.up("md")]: {
                           display: "none",
@@ -1268,7 +1300,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                         <Grid container>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                            onClick={() => setExpanded(expanded ? false : 1)}
+                            onClick={(event) => respExpand(event, 1)}
                             disabled={summary?.existing_codes_count === 0 || 0 }
                             sx={{
                               width: "2.375rem",
@@ -1322,7 +1354,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                         <Grid container sx={{ my: 2 }}>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                            onClick={() => setExpanded(expanded ? false : 2)}
+                            onClick={(event) => respExpand(event,2)}
                             disabled={summary?.suspect_conditions_count === 0 || 0 }
                             sx={{
                               width: "2.375rem",
@@ -1376,7 +1408,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                         <Grid container sx={{ my: 2 }}>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                            onClick={() => setExpanded(expanded ? false : 3)}
+                            onClick={(event) => respExpand(event,3)}
                             disabled={summary?.recapture_codes_count === 0 || 0 }
                             sx={{
                               width: "2.375rem",
@@ -1581,8 +1613,21 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                   anchor={"down"}
                   open={state["down"]}
                   onClose={toggleDrawer("down", false)}
-                  className={`MuiDrawerDown  ${(tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name) ? "responsiveMuiDrawerDown" : ''}`}
-
+                  className={`MuiDrawerDown ${
+                    (tabs &&
+                      (tabs?.patient_dashboard_recapture_percentage?.active ||
+                        tabs?.patient_dashboard_suspect_percentage?.active) &&
+                      doctorDetail?.doctor_name &&
+                      (tabs?.read_only_rejection_allowed?.active ||
+                        tabs?.read_only_mode?.active))
+                      ? "responsiveMuiDrawerDownwithreadonly"
+                      : (tabs &&
+                        (tabs?.patient_dashboard_recapture_percentage?.active ||
+                          tabs?.patient_dashboard_suspect_percentage?.active) &&
+                        doctorDetail?.doctor_name)
+                      ? "responsiveMuiDrawerDown"
+                      : ""
+                  }`}
                   sx={{
                     [theme.breakpoints.up("md")]: {
                       display: "none",
@@ -2397,7 +2442,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                   >
                     <Grid item lg={2} md={2} sm={2} xs={12}>
                       <PrimaryButton
-                        onClick={() => setExpanded(expanded ? false : 1)}
+                        onClick={() => setExpanded(expanded==1? false : 1)}
                         disabled={summary?.existing_codes_count === 0 || 0 }
                         sx={{
                           width: "2.375rem",
@@ -2466,7 +2511,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                         minWidth: "inherit",
                         fontSize: "0.875rem",
                       }}
-                        onClick={() => setExpanded(expanded ? false : 2)}
+                        onClick={() => setExpanded(expanded==2 ? false : 2)}
                       >
                         {summary?.suspect_conditions_count || 0}
                       </PrimaryButton>
@@ -2500,7 +2545,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                     <Grid item lg={2} md={2} sm={2} xs={12}>
                       <PrimaryButton
                       disabled={summary?.recapture_codes_count === 0 || 0 }
-                        onClick={() => setExpanded(expanded ? false : 3)}
+                        onClick={() => setExpanded(expanded==3 ? false : 3)}
                         sx={{
                           width: "2.375rem",
                           height: "1.5625rem",

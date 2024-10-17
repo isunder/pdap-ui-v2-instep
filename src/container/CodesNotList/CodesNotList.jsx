@@ -663,7 +663,10 @@ export const CodesNotList = ({ sessionObject }) => {
                       RAF
                     </StyledText>
                   )}
-                  <StyledText className="acc-content-header-item ct-actions">
+                  <StyledText sx={{
+                      '@media (max-width:768px)': {
+                       display:'none'
+                      }}} className="acc-content-header-item ct-actions">
                     Actions
                   </StyledText>
                 </StyledBox>

@@ -169,21 +169,30 @@ export const patientRecaptureCode = createAsyncThunk("patientRecaptureCode", asy
 // for patient tabs
 export const patientTabFlag = createAsyncThunk("patientTabFlag", async () => {
     try {
+        let data;
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-tabs/?slug=${slug}`);
-            return data.data;
+            data = await axios.get(`${baseUrl}/api/v1/patient-tabs/?slug=${slug}`);
+        } else if (token) {
+            data = await axios.get(`${baseUrl}/api/v1/patient-tabs/`, 
+               { headers: getApiHeaders() }
+            );
         }
 
-        else if (token) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-tabs/`, 
-               { headers: getApiHeaders()}
+        // Manually set the active value for "7_patient_dashboard_weights"
+        if (data && data.data) {
+            data.data = data.data.map(tab => 
+                tab.name === "7_patient_dashboard_weights" 
+                ? { ...tab, active: true } 
+                : tab
             );
-            return data.data;
         }
+
+        return data ? data.data : [];
     } catch (error) {
-        console.log("error in patientTabFlag", error)
+        console.log("error in patientTabFlag", error);
     }
 });
+
 
 // for patient history
 export const patientHistory = createAsyncThunk("patientHistory", async () => {

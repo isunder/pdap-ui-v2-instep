@@ -112,10 +112,8 @@ export const MuiAccordions = (props) => {
         if (code) codeValue = `${code}-`
       }
       else {
-
       }
       setExpanded(isExpanded ? panel : false);
-
     } else {
       setSingleExpand(!singleExpand);
     }

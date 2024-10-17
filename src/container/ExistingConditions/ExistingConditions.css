@@ -121,13 +121,9 @@
 
 @media screen and (max-width: 968px) {
 
-  .cust_RAF_suspect{
-    border: none !important;
-  }
+ 
 
-  .MuiTypography-root.acc-content-cust-header1 {
-    border: none !important;
- }
+ 
  
   .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
     width: 100% !important;
@@ -257,6 +253,19 @@
   .acc-content-act-btns-wrap-otr, .acc-content-act-btns {
     justify-content: flex-start;
   }
+}
+
+@media (max-width:768px) {
+  .acc-content-suspects-action{
+   max-width: 100% !important;
+   flex-basis: 100% !important;
+  }
+  /* .MuiTypography-root.acc-content-cust-header1 {
+    border: none !important;
+ } */
+ .cust_RAF_suspect{
+  border: none !important;
+}
 }
 .acc-content-act-btns-wrap{
   width: 100%;

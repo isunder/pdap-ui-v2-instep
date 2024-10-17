@@ -92,7 +92,7 @@ export const StyledBox = styled(Box)(() => ({
   display: "flex",
   height: "2.4375rem",
   alignItems: "center",
-  padding: "0 0.5rem",
+ 
 }));
 
 export const StyledAccordingBox = styled(Box)(() => ({

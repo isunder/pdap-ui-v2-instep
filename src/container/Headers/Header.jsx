@@ -450,7 +450,7 @@ export const Header = ({ sessionObject }) => {
                           <StyleText
                             sx={{
                               fontWeight: 600,
-                              [theme.breakpoints.down("md")]: {
+                              [theme.breakpoints.up(967)]: {
                                 marginLeft:"50px"
                               },
                             }}

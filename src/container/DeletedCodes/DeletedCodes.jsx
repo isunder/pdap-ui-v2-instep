@@ -174,8 +174,8 @@ export const DeletedCodes = ({ sessionObject }) => {
                                         Code(s)
                                     </StyledText>
                                     <StyledText sx={{
-                                        [theme.breakpoints.down("md")]: {
-                                            borderRight: "2px solid rgba(0, 0, 0, 0.12) !important",
+                                        [theme.breakpoints.down("967")]: {
+                                            borderRight:  tabs && tabs["patient_dashboard_weights"]?.active ? "2px solid rgba(0, 0, 0, 0.12) !important" : "0px !important",
                                         },
 
                                         width: {

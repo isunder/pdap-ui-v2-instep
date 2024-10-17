@@ -79,3 +79,25 @@
         top: 13.8rem;
     }
 }
+
+
+@media only screen and (max-width:550px){
+    .responsiveMuiDrawerTopwithreadonly .MuiDrawer-paper {
+        top: 15.8rem;
+    }
+    
+    .responsiveMuiDrawerDownwithreadonly .MuiDrawer-paper {
+        top: 15.8rem;
+    }
+}
+
+
+@media only screen and (min-width: 550px) and (max-width: 969px) {
+    .responsiveMuiDrawerTopwithreadonly .MuiDrawer-paper {
+        top: 11.8rem;
+    }
+
+    .responsiveMuiDrawerDownwithreadonly .MuiDrawer-paper {
+        top: 11.8rem;
+    }
+}
