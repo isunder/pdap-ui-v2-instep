@@ -689,7 +689,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                           {!isCodeSelected(dataValue) ? (
                             <Grid
                               item
-                              sx={{ }}
+                              sx={{ maxWidth:"100% !important" }}
                               // xs="auto"
                               // sm="auto"
                               // md="auto"

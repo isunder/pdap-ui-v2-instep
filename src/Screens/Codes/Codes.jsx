@@ -1133,7 +1133,7 @@ export const Codes = () => {
           sx={{
             backgroundColor: "#FDDECF",
             position: 'relative',
-            zIndex: 1111
+            zIndex: 2000
           }}
           className="pdap-ui-codes-read-only-t1-wrap"
         >

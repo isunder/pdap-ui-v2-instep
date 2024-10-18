@@ -354,7 +354,7 @@ export const Header = ({ sessionObject }) => {
                         }}
                       >
 
-                        <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
+                        <Box sx={{ ...flexCenter, gap: 0.2, flexDirection: "column" }}>
                           <StyleText
                             sx={{
                               fontWeight: 600,
