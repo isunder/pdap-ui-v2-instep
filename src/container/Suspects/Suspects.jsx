@@ -584,7 +584,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 {/* Action */}
                 <Grid item xs={12} sm={2} md={2} lg={2} xl={2}
                   sx={{
-                    [theme.breakpoints.down("768")]: {
+                    [theme.breakpoints.down("769")]: {
                       display: "none !important",
                     },
                   }}
@@ -882,7 +882,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                         ":hover": {
                           backgroundColor: theme.palette.error.main,
                         },
-                        [theme.breakpoints.down("768")]: {
+                        [theme.breakpoints.down("769")]: {
                           width: "100% !important",
                         },
                         filter:

@@ -25,6 +25,8 @@ import moment from "moment";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAppContext from "../../hooks/useAppContext";
+import { ClipLoader } from 'react-spinners';
+
 import {
   AddressedCodes,
   CodesNotList,
@@ -371,25 +373,25 @@ export const Codes = () => {
 
   }, [setOpenSubmitModal])
 
- 
+
   // Application JWT and Slug remove  :-------------------------------------------------:
 
-const [newSlug, setNewSlug] = useState(isSlugOrJwt());
+  const [newSlug, setNewSlug] = useState(isSlugOrJwt());
 
-useEffect(() => {
-  if(location.pathname === "/"){
-     const url = new URL(window.location.href);
-     url.searchParams.delete('slug');
-     url.searchParams.delete('jwt');
-     window.history.replaceState({}, '', url);
-   }
- },[location.pathname])
+  useEffect(() => {
+    if (location.pathname === "/") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('slug');
+      url.searchParams.delete('jwt');
+      window.history.replaceState({}, '', url);
+    }
+  }, [location.pathname])
 
- useEffect(() => {
-   localStorage.setItem('lastVisitedRoute', location.pathname);
- }, [location]);
+  useEffect(() => {
+    localStorage.setItem('lastVisitedRoute', location.pathname);
+  }, [location]);
 
-const lastLocation = localStorage.getItem("lastVisitedRoute");
+  const lastLocation = localStorage.getItem("lastVisitedRoute");
 
   useEffect(() => {
     if (Object.keys(slug).length === 0 && slug.constructor === Object && lastLocation == "/") {
@@ -463,13 +465,13 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
     return () => {
       clearInterval(intervalId);
     };
-  }, [dispatch, tabs]); 
+  }, [dispatch, tabs]);
 
   // Responsive design summary drwaer
 
   const toggleDrawer = (anchor, open) => (event) => {
 
-    console.log(anchor, open, event ,"ssfsfsfsfs")
+    console.log(anchor, open, event, "ssfsfsfsfs")
     if (
       event &&
       event.type === "keydown" &&
@@ -480,7 +482,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
     setState({ ...state, [anchor]: open });
   };
 
-// Indexed Db Code and Setup
+  // Indexed Db Code and Setup
 
   const [eventData, setEventData] = useState([]);
   const [newEventData, setNewEventData] = useState([]);
@@ -572,11 +574,11 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
 
     const toggleTopDrawer = toggleDrawer("top", false);
     const toggleBottomDrawer = toggleDrawer("down", false);
-  
+
     // Call the returned functions to toggle the drawer states
     toggleTopDrawer();
     toggleBottomDrawer();
-   
+
     setIsModalOpen(true);
     const isAthenaModal = tabs['type']?.value == "Athena";
 
@@ -596,7 +598,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
 
       handleAddEventData(exampleMetadata)
     }
-    else {      
+    else {
       setSwitchModal(false);
 
       const exampleMetadata = {
@@ -626,7 +628,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
 
     toggleDrawer("top", true)
     toggleDrawer("down", true)
-   
+
     let requestBody;
     if (existingCode?.length > 0) {
       let mapped = existingCode?.map((item) => ({
@@ -772,9 +774,13 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
     } catch (error) { }
   };
 
+  const [loadingSummary, setLoadingSummary] = useState(true)
+
   useEffect(() => {
     if (slug && tabData) {
-      dispatch(patientSummary());
+      dispatch(patientSummary()).then(() => {
+        setLoadingSummary(false)
+      });
       sendAuditLog();
       const timer = setTimeout(() => {
         setCodesDataLoaded(true);
@@ -1105,24 +1111,19 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
       });
   }, [dispatch]);
 
-  if (isLoadingMain) {
-    return null;
-  }
-
   // New Expand in mobile function
 
   const respExpand = (event, panel) => {
     if (expanded === panel) {
       setExpanded(false);
-      toggleDrawer("top", !state["top"])(event); // Pass the event here
+      toggleDrawer("top", !state["top"])(event);
 
     } else {
       setExpanded(panel);
-         toggleDrawer("top", !state["top"])(event); // Pass the event here
+      toggleDrawer("top", !state["top"])(event);
 
     }
   };
-  
 
   return (
     <>
@@ -1131,8 +1132,8 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
         <Box
           sx={{
             backgroundColor: "#FDDECF",
-            position:'relative',
-            zIndex:9999
+            position: 'relative',
+            zIndex: 1111
           }}
           className="pdap-ui-codes-read-only-t1-wrap"
         >
@@ -1269,26 +1270,25 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                       anchor={"top"}
                       open={state["top"]}
                       onClose={toggleDrawer("top", false)}
-                      className={`MuiDrawerTop ${
-                        (tabs &&
+                      className={`MuiDrawerTop ${(tabs &&
+                        (tabs?.patient_dashboard_recapture_percentage?.active ||
+                          tabs?.patient_dashboard_suspect_percentage?.active) &&
+                        doctorDetail?.doctor_name &&
+                        (tabs?.read_only_rejection_allowed?.active ||
+                          tabs?.read_only_mode?.active))
+                        ? "responsiveMuiDrawerTopwithreadonly"
+                        : (tabs &&
                           (tabs?.patient_dashboard_recapture_percentage?.active ||
                             tabs?.patient_dashboard_suspect_percentage?.active) &&
-                          doctorDetail?.doctor_name &&
-                          (tabs?.read_only_rejection_allowed?.active ||
-                            tabs?.read_only_mode?.active))
-                          ? "responsiveMuiDrawerTopwithreadonly"
-                          : (tabs &&
-                            (tabs?.patient_dashboard_recapture_percentage?.active ||
-                              tabs?.patient_dashboard_suspect_percentage?.active) &&
-                            doctorDetail?.doctor_name)
+                          doctorDetail?.doctor_name)
                           ? "responsiveMuiDrawerTop"
                           : ""
-                      }`}                      sx={{
+                        }`} sx={{
 
-                        [theme.breakpoints.up("md")]: {
-                          display: "none",
-                        }
-                      }}
+                          [theme.breakpoints.up("md")]: {
+                            display: "none",
+                          }
+                        }}
                     >
                       <Box
                         sx={{
@@ -1300,24 +1300,24 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                         <Grid container>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                            onClick={(event) => respExpand(event, 1)}
-                            disabled={summary?.existing_codes_count === 0 || 0 }
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: theme.palette.error.A200,
-                              color: theme.palette.error.main,
-                              ":hover": {
+                              onClick={(event) => respExpand(event, 1)}
+                              disabled={summary?.existing_codes_count === 0 || 0}
+                              sx={{
+                                width: "2.375rem",
+                                height: "1.5625rem",
                                 backgroundColor: theme.palette.error.A200,
-                              },
-                              ":disabled": {
-                                backgroundColor: theme.palette.error.A200, // Same as normal state
-                                color: theme.palette.error.main, // Same as normal state
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
+                                color: theme.palette.error.main,
+                                ":hover": {
+                                  backgroundColor: theme.palette.error.A200,
+                                },
+                                ":disabled": {
+                                  backgroundColor: theme.palette.error.A200, // Same as normal state
+                                  color: theme.palette.error.main, // Same as normal state
+                                },
+                                fontWeight: 600,
+                                minWidth: "inherit",
+                                fontSize: "0.875rem",
+                              }}
                             >
                               {summary?.existing_codes_count || 0}
                             </PrimaryButton>
@@ -1354,24 +1354,24 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                         <Grid container sx={{ my: 2 }}>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                            onClick={(event) => respExpand(event,2)}
-                            disabled={summary?.suspect_conditions_count === 0 || 0 }
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: theme.palette.error.A200,
-                              color: theme.palette.error.main,
-                              ":hover": {
+                              onClick={(event) => respExpand(event, 2)}
+                              disabled={summary?.suspect_conditions_count === 0 || 0}
+                              sx={{
+                                width: "2.375rem",
+                                height: "1.5625rem",
                                 backgroundColor: theme.palette.error.A200,
-                              },
-                              ":disabled": {
-                                backgroundColor: theme.palette.error.A200, // Same as normal state
-                                color: theme.palette.error.main, // Same as normal state
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
+                                color: theme.palette.error.main,
+                                ":hover": {
+                                  backgroundColor: theme.palette.error.A200,
+                                },
+                                ":disabled": {
+                                  backgroundColor: theme.palette.error.A200, // Same as normal state
+                                  color: theme.palette.error.main, // Same as normal state
+                                },
+                                fontWeight: 600,
+                                minWidth: "inherit",
+                                fontSize: "0.875rem",
+                              }}
                             >
                               {summary?.suspect_conditions_count || 0}
                             </PrimaryButton>
@@ -1408,24 +1408,24 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                         <Grid container sx={{ my: 2 }}>
                           <Grid item lg={2} md={2} sm={1.5} xs={3}>
                             <PrimaryButton
-                            onClick={(event) => respExpand(event,3)}
-                            disabled={summary?.recapture_codes_count === 0 || 0 }
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: theme.palette.error.A200,
-                              color: theme.palette.error.main,
-                              ":hover": {
+                              onClick={(event) => respExpand(event, 3)}
+                              disabled={summary?.recapture_codes_count === 0 || 0}
+                              sx={{
+                                width: "2.375rem",
+                                height: "1.5625rem",
                                 backgroundColor: theme.palette.error.A200,
-                              },
-                              ":disabled": {
-                                backgroundColor: theme.palette.error.A200, // Same as normal state
-                                color: theme.palette.error.main, // Same as normal state
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
+                                color: theme.palette.error.main,
+                                ":hover": {
+                                  backgroundColor: theme.palette.error.A200,
+                                },
+                                ":disabled": {
+                                  backgroundColor: theme.palette.error.A200, // Same as normal state
+                                  color: theme.palette.error.main, // Same as normal state
+                                },
+                                fontWeight: 600,
+                                minWidth: "inherit",
+                                fontSize: "0.875rem",
+                              }}
                             >
                               {summary?.recapture_codes_count || 0}
                             </PrimaryButton>
@@ -1613,21 +1613,20 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                   anchor={"down"}
                   open={state["down"]}
                   onClose={toggleDrawer("down", false)}
-                  className={`MuiDrawerDown ${
-                    (tabs &&
+                  className={`MuiDrawerDown ${(tabs &&
+                    (tabs?.patient_dashboard_recapture_percentage?.active ||
+                      tabs?.patient_dashboard_suspect_percentage?.active) &&
+                    doctorDetail?.doctor_name &&
+                    (tabs?.read_only_rejection_allowed?.active ||
+                      tabs?.read_only_mode?.active))
+                    ? "responsiveMuiDrawerDownwithreadonly"
+                    : (tabs &&
                       (tabs?.patient_dashboard_recapture_percentage?.active ||
                         tabs?.patient_dashboard_suspect_percentage?.active) &&
-                      doctorDetail?.doctor_name &&
-                      (tabs?.read_only_rejection_allowed?.active ||
-                        tabs?.read_only_mode?.active))
-                      ? "responsiveMuiDrawerDownwithreadonly"
-                      : (tabs &&
-                        (tabs?.patient_dashboard_recapture_percentage?.active ||
-                          tabs?.patient_dashboard_suspect_percentage?.active) &&
-                        doctorDetail?.doctor_name)
+                      doctorDetail?.doctor_name)
                       ? "responsiveMuiDrawerDown"
                       : ""
-                  }`}
+                    }`}
                   sx={{
                     [theme.breakpoints.up("md")]: {
                       display: "none",
@@ -1776,7 +1775,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-:
+                                        :
                                         {item?.value?.slice(0, 20)}{" "}
                                         {item?.value?.length > 20 ? "..." : ""}
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
@@ -1941,7 +1940,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                                           20
                                           ? "..."
                                           : ""}
-                                          :
+                                        :
                                         {item?.value?.slice(0, 20)}{" "}
                                         {item?.value?.length > 20 ? "..." : ""}
 
@@ -2242,7 +2241,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
           }}
         >
           <Grid container spacing={2.5}>
-            <Grid item xs={12} lg={9} md={8} sx={{marginTop:"20px"}}>
+            <Grid item xs={12} lg={9} md={8} sx={{ marginTop: "20px" }}>
 
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 {!isModalSubmit && codesData?.map((item, i) => (
@@ -2333,10 +2332,13 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                                     fontWeight: 600,
                                     fontSize: "0.75rem",
                                     lineHeight: "0.914rem",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center"
                                   }}
                                   className="codes-act-header-count-text"
                                 >
-                                  {item?.codeCount || 0}
+                                  {item?.codeCount || <ClipLoader color="#ffffff" size={15} />}
                                 </Typography>
                               </Box>
                             </StyledText>
@@ -2409,7 +2411,7 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
               </Box>
 
             </Grid>
-            <Grid item xs={12} lg={3} md={4} sx={{marginTop:"20px "}}>
+            <Grid item xs={12} lg={3} md={4} sx={{ marginTop: "20px " }}>
               {!isModalSubmit && <Card
                 sx={{
                   minWidth: 275,
@@ -2435,213 +2437,194 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                   }}
                   title="Codes needing attention"
                 />
-                <CardContent>
-                  <Grid
-                    container
-                    sx={{ borderBottom: "1px solid #00000029", pb: 1, mb: 2 }}
-                  >
-                    <Grid item lg={2} md={2} sm={2} xs={12}>
-                      <PrimaryButton
-                        onClick={() => setExpanded(expanded==1? false : 1)}
-                        disabled={summary?.existing_codes_count === 0 || 0 }
-                        sx={{
-                          width: "2.375rem",
-                          height: "1.5625rem",
-                          backgroundColor: theme.palette.error.A200,
-                          color: theme.palette.error.main,
-                          ":hover": {
-                            backgroundColor: theme.palette.error.A200,
-                          },
-                          ":disabled": {
-                            backgroundColor: theme.palette.error.A200, // Same as normal state
-                            color: theme.palette.error.main, // Same as normal state
-                          },
-                          fontWeight: 600,
-                          minWidth: "inherit",
-                          fontSize: "0.875rem",
-                        }}
-                      >
-                        {summary?.existing_codes_count || 0}
-                      </PrimaryButton>
-                    </Grid>
-                    <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
-                      <Typography
-                        sx={{
-                          fontFamily: "Proxima Nova Rg",
-                          fontSize: "1rem",
-                          color: "rgba(0, 0, 0, 0.60);",
-                          fontWeight: "500",
-                          lineHeight: "1.375rem",
-                          textTransform: "initial",
-                        }}
-                      >
-                        You have { }
-                        <Typography
+                <CardContent sx={{ position: "relative" }}>
+                  {/* Content Wrapper */}
+                  <div style={{ filter: loadingSummary ? "blur(4px)" : "none", pointerEvents: loadingSummary ? "none" : "auto" }}>
+                    <Grid
+                      container
+                      sx={{ borderBottom: "1px solid #00000029", pb: 1, mb: 2 }}
+                    >
+                      <Grid item lg={2} md={2} sm={2} xs={12}>
+                        <PrimaryButton
+                          onClick={() => setExpanded(expanded == 1 ? false : 1)}
+                          disabled={summary?.existing_codes_count === 0 || 0}
                           sx={{
-                            color: "#000;",
-                            fontWeight: "800"
+                            width: "2.375rem",
+                            height: "1.5625rem",
+                            backgroundColor: theme.palette.error.A200,
+                            color: theme.palette.error.main,
+                            ":hover": {
+                              backgroundColor: theme.palette.error.A200,
+                            },
+                            ":disabled": {
+                              backgroundColor: theme.palette.error.A200,
+                              color: theme.palette.error.main,
+                            },
+                            fontWeight: 600,
+                            minWidth: "inherit",
+                            fontSize: "0.875rem",
                           }}
                         >
                           {summary?.existing_codes_count || 0}
-                        </Typography>
-                        { } urgent existing conditions requiring recapturing.
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    sx={{ borderBottom: "1px solid #00000029", pb: 1, mb: 2 }}
-                  >
-                    <Grid item lg={2} md={2} sm={2} xs={12}>
-                      <PrimaryButton
-                      disabled={summary?.suspect_conditions_count === 0 || 0 }
-                      sx={{
-                        width: "2.375rem",
-                        height: "1.5625rem",
-                        backgroundColor: theme.palette.error.A200,
-                        color: theme.palette.error.main,
-                        ":hover": {
-                          backgroundColor: theme.palette.error.A200,
-                        },
-                        ":disabled": {
-                          backgroundColor: theme.palette.error.A200, // Same as normal state
-                          color: theme.palette.error.main, // Same as normal state
-                        },
-                        fontWeight: 600,
-                        minWidth: "inherit",
-                        fontSize: "0.875rem",
-                      }}
-                        onClick={() => setExpanded(expanded==2 ? false : 2)}
-                      >
-                        {summary?.suspect_conditions_count || 0}
-                      </PrimaryButton>
-                    </Grid>
-                    <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
-                      <Typography
-                        sx={{
-                          fontFamily: "Proxima Nova Rg",
-                          fontWeight: 500,
-                          fontSize: "1rem",
-                          color: "rgba(0, 0, 0, 0.60);",
-                          lineHeight: "1.375rem",
-                          textTransform: "initial",
-                        }}
-                      >
-                        You have { }
+                        </PrimaryButton>
+                      </Grid>
+                      <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
                         <Typography
                           sx={{
-                            color: "#000;",
-                            fontWeight: "800"
+                            fontFamily: "Proxima Nova Rg",
+                            fontSize: "1rem",
+                            color: "rgba(0, 0, 0, 0.60)",
+                            fontWeight: "500",
+                            lineHeight: "1.375rem",
+                            textTransform: "initial",
                           }}
                         >
-                          {summary?.suspect_conditions_count || 0}
+                          You have{" "}
+                          <Typography
+                            component="span"
+                            sx={{
+                              color: "#000",
+                              fontWeight: "800",
+                            }}
+                          >
+                            {summary?.existing_codes_count || 0}
+                          </Typography>{" "}
+                          urgent existing conditions requiring recapturing.
                         </Typography>
-                        { } urgent new suspects for review.
-                      </Typography>
+                      </Grid>
                     </Grid>
-                  </Grid>
 
-                  <Grid container>
-                    <Grid item lg={2} md={2} sm={2} xs={12}>
-                      <PrimaryButton
-                      disabled={summary?.recapture_codes_count === 0 || 0 }
-                        onClick={() => setExpanded(expanded==3 ? false : 3)}
-                        sx={{
-                          width: "2.375rem",
-                          height: "1.5625rem",
-                          backgroundColor: theme.palette.error.A200,
-                          color: theme.palette.error.main,
-                          ":hover": {
-                            backgroundColor: theme.palette.error.A200,
-                          },
-                          ":disabled": {
-                            backgroundColor: theme.palette.error.A200, // Same as normal state
-                            color: theme.palette.error.main, // Same as normal state
-                          },
-                          fontWeight: 600,
-                          minWidth: "inherit",
-                          fontSize: "0.875rem",
-                        }}
-                      >
-                        {summary?.recapture_codes_count || 0}
-                      </PrimaryButton>
-                    </Grid>
                     <Grid
-                      item
-                      lg={10}
-                      md={10}
-                      sm={2}
-                      xs={12}
-                      sx={{ pl: 1, mt: 1 }}
+                      container
+                      sx={{ borderBottom: "1px solid #00000029", pb: 1, mb: 2 }}
                     >
-                      <Typography
-                        sx={{
-                          fontFamily: "Proxima Nova Rg",
-                          fontWeight: 500,
-                          fontSize: "1rem",
-                          color: "rgba(0, 0, 0, 0.60);",
-                          fontWeight: "600",
-                          lineHeight: "1.375rem",
-                          textTransform: "initial",
-                        }}
-                      >
-                        You have { }
+                      <Grid item lg={2} md={2} sm={2} xs={12}>
+                        <PrimaryButton
+                          disabled={summary?.suspect_conditions_count === 0 || 0}
+                          sx={{
+                            width: "2.375rem",
+                            height: "1.5625rem",
+                            backgroundColor: theme.palette.error.A200,
+                            color: theme.palette.error.main,
+                            ":hover": {
+                              backgroundColor: theme.palette.error.A200,
+                            },
+                            ":disabled": {
+                              backgroundColor: theme.palette.error.A200,
+                              color: theme.palette.error.main,
+                            },
+                            fontWeight: 600,
+                            minWidth: "inherit",
+                            fontSize: "0.875rem",
+                          }}
+                          onClick={() => setExpanded(expanded == 2 ? false : 2)}
+                        >
+                          {summary?.suspect_conditions_count || 0}
+                        </PrimaryButton>
+                      </Grid>
+                      <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1 }}>
                         <Typography
                           sx={{
-                            color: "#000;",
-                            fontWeight: "800"
+                            fontFamily: "Proxima Nova Rg",
+                            fontWeight: 500,
+                            fontSize: "1rem",
+                            color: "rgba(0, 0, 0, 0.60)",
+                            lineHeight: "1.375rem",
+                            textTransform: "initial",
+                          }}
+                        >
+                          You have{" "}
+                          <Typography
+                            component="span"
+                            sx={{
+                              color: "#000",
+                              fontWeight: "800",
+                            }}
+                          >
+                            {summary?.suspect_conditions_count || 0}
+                          </Typography>{" "}
+                          urgent new suspects for review.
+                        </Typography>
+                      </Grid>
+                    </Grid>
+
+                    <Grid container>
+                      <Grid item lg={2} md={2} sm={2} xs={12}>
+                        <PrimaryButton
+                          disabled={summary?.recapture_codes_count === 0 || 0}
+                          onClick={() => setExpanded(expanded == 3 ? false : 3)}
+                          sx={{
+                            width: "2.375rem",
+                            height: "1.5625rem",
+                            backgroundColor: theme.palette.error.A200,
+                            color: theme.palette.error.main,
+                            ":hover": {
+                              backgroundColor: theme.palette.error.A200,
+                            },
+                            ":disabled": {
+                              backgroundColor: theme.palette.error.A200,
+                              color: theme.palette.error.main,
+                            },
+                            fontWeight: 600,
+                            minWidth: "inherit",
+                            fontSize: "0.875rem",
                           }}
                         >
                           {summary?.recapture_codes_count || 0}
-                        </Typography>
-                        { } codes that are not in the problem list
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  {/* <Grid container>
-                    <Grid item lg={2} md={2} sm={2} xs={12}>
-                      <PrimaryButton
-                        onClick={() => setExpanded(expanded ? false : 5)}
-
-                        sx={{
-                          width: "2.375rem",
-                          height: "1.5625rem",
-                          backgroundColor: theme.palette.error.A200,
-                          color: theme.palette.error.main,
-                          ":hover": {
-                            backgroundColor: theme.palette.error.A200,
-                          },
-                          fontWeight: 600,
-                          minWidth: "inherit",
-                          fontSize: "0.875rem",
-                        }}
-                      >
-                        {summary?.duplicate_codes_count || 0}
-                      </PrimaryButton>
-                    </Grid>
-                    <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1, mt: 1 }}>
-                      <Typography
-                        sx={{
-                          fontSize: "1rem",
-                          color: "rgba(0, 0, 0, 0.60);",
-                          fontWeight: "600",
-                          lineHeight: "1.375rem",
-                          textTransform: "initial",
-                        }}
-                      >
-                        You have { }
+                        </PrimaryButton>
+                      </Grid>
+                      <Grid item lg={10} md={10} sm={2} xs={12} sx={{ pl: 1, mt: 1 }}>
                         <Typography
                           sx={{
-                            color: "#000;",
+                            fontFamily: "Proxima Nova Rg",
+                            fontWeight: 500,
+                            fontSize: "1rem",
+                            color: "rgba(0, 0, 0, 0.60)",
+                            fontWeight: "600",
+                            lineHeight: "1.375rem",
+                            textTransform: "initial",
                           }}
                         >
-                          {summary?.duplicate_codes_count || 0}
+                          You have{" "}
+                          <Typography
+                            component="span"
+                            sx={{
+                              color: "#000",
+                              fontWeight: "800",
+                            }}
+                          >
+                            {summary?.recapture_codes_count || 0}
+                          </Typography>{" "}
+                          codes that are not in the problem list.
                         </Typography>
-                        { } duplicate codes
-                      </Typography>
+                      </Grid>
                     </Grid>
-                  </Grid> */}
+                  </div>
+
+                  {/* Loader Overlay */}
+                  {loadingSummary && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Semi-transparent background for emphasis
+                      }}
+                    >
+                      <ClipLoader size={48} color="#17236D" cssOverride={{
+    borderWidth: '5px'
+  }} />
+
+
+                    </div>
+                  )}
                 </CardContent>
+
               </Card>
               }
 
@@ -2688,541 +2671,566 @@ const lastLocation = localStorage.getItem("lastVisitedRoute");
                     )
                   }
                 />
-                <CardContent>
-                  <Box>
-                    <Grid
-                      container
-                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
-                    >
-                      <Grid item lg={9} md={9} sm={10} xs={12}>
-                        <Typography className="HeadSummary">
-                          Existing Conditions (recapturing required)
-                        </Typography>
-                      </Grid>
-                      {!(existingCode?.length || existingRejectCode?.length) >
-                        0 ? (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>0</StyleSheetNumber>
-                          </Grid>
 
-                          <div className="ItemsDiv">
-                            <p>0 item</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>
-                              {(existingCode?.length || 0) +
-                                (existingRejectCode?.length || 0)}
-                            </StyleSheetNumber>
-                          </Grid>
-                          {existingCode?.length > 0 &&
-                            existingCode?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={item?.code + " : " + item?.value}
-                                >
-                                  <Typography
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                    onClick={() =>
-                                      handleDelete(item, "existing")
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan">
-                                      {item?.code?.slice(0, 20)}{" "}
-                                      {item?.code.length > 20 ? "..." : ""}
-
-                                     
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                          {existingRejectCode?.length > 0 &&
-                            existingRejectCode?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={item?.code + " : " + item?.value}
-                                >
-                                  <Typography
-                                    onClick={() =>
-                                      handleDelete(item, "existing")
-                                    }
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan rejected">
-                                      {item?.code?.slice(0, 20)}{" "}
-                                      {item?.code.length > 20 ? "..." : ""}
-                                     
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon state="rejected" />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                        </>
-                      )}
-                    </Grid>
-
-                    <Grid
-                      container
-                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
-                    >
-                      <Grid item lg={9} md={9} sm={10} xs={12}>
-                        <Typography className="HeadSummary">
-                          Suspects
-                        </Typography>
-                      </Grid>
-                      {!(
-                        Object?.keys(suspectCode)?.length ||
-                        0 + suspectCodeReject?.length ||
-                        0
-                      ) > 0 ? (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>0</StyleSheetNumber>
-                          </Grid>
-
-                          <div className="ItemsDiv">
-                            <p>0 item</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>
-                              {(suspectCode?.length || 0) +
-                                (suspectCodeReject?.length || 0)}
-                            </StyleSheetNumber>
-                          </Grid>
-                          {suspectCode && suspectCode?.length > 0 &&
-                            suspectCode?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={item?.code + ((item?.value)? (" : " + item?.value) : null)}
-                                >
-                                  <Typography
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                    onClick={() =>
-                                      handleDelete(item, "suspect")
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan">
-                                      {item?.code?.slice(0, 20)}{" "}
-                                      {item?.code.length > 20 ? "..." : ""}
-                                      
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                          {suspectCodeReject && suspectCodeReject?.length > 0 &&
-                            suspectCodeReject?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={
-                                    item[Object.keys(item)].value
-                                  }
-                                >
-                                  <Typography
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                    onClick={() =>
-                                      handleDelete(item, "suspect")
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan rejected">
-                                      {Object.keys(item)
-                                        .toString()
-                                        .slice(0, 20)}{" "}
-                                      {Object.keys(item).toString().length > 20
-                                        ? "..."
-                                        : ""}
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon state="rejected" />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                        </>
-                      )}
-                    </Grid>
-
-                    <Grid
-                      container
-                      sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
-                    >
-                      <Grid item lg={9} md={9} sm={10} xs={12}>
-                        <Typography className="HeadSummary">
-                          Codes not in problem list
-                        </Typography>
-                      </Grid>
-                      {!(
-                        recaptureCode?.length ||
-                        0 + recaptureRejectCode?.length ||
-                        0
-                      ) > 0 ? (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>0</StyleSheetNumber>
-                          </Grid>
-
-                          <div className="ItemsDiv">
-                            <p>0 item</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>
-                              {(recaptureCode?.length || 0) +
-                                (recaptureRejectCode?.length || 0)}
-                            </StyleSheetNumber>
-                          </Grid>
-                          {recaptureCode && recaptureCode?.length > 0 &&
-                            recaptureCode?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  position: "relative",
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={item?.code + " : " + item?.value}
-                                >
-                                  <Typography
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                    onClick={() =>
-                                      handleDelete(item, "recapture")
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan">
-                                      {item?.code?.slice(0, 20)}{" "}
-                                      {item?.code.length > 20 ? "..." : ""}
-                                    
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                          {recaptureRejectCode && recaptureRejectCode?.length > 0 &&
-                            recaptureRejectCode?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  position: "relative",
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={item?.code + " : " + item?.value}
-                                >
-                                  <Typography
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                    onClick={() =>
-                                      handleDelete(item, "recapture")
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan rejected">
-                                      {item?.code?.slice(0, 20)}{" "}
-                                      {item?.code.length > 20 ? "..." : ""}
-
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon state="rejected" />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                        </>
-                      )}
-                    </Grid>
-
-                    <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
-                      <Grid item lg={9} md={9} sm={10} xs={12}>
-                        <Typography className="HeadSummary">
-                          Additional diagnoses
-                        </Typography>
-                      </Grid>
-                      {!(
-                        duplicateCode?.length ||
-                        0 + duplicateRejectCode?.length ||
-                        0
-                      ) > 0 ? (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>0</StyleSheetNumber>
-                          </Grid>
-
-                          <div className="ItemsDiv">
-                            <p>0 item</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <Grid
-                            item
-                            lg={3}
-                            md={3}
-                            sm={2}
-                            xs={12}
-                            sx={{ textAlign: "end" }}
-                          >
-                            <StyleSheetNumber>
-                              {(duplicateCode?.length || 0) +
-                                (duplicateRejectCode?.length || 0)}
-                            </StyleSheetNumber>
-                          </Grid>
-                          {duplicateCode && duplicateCode?.length > 0 &&
-                            duplicateCode?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  position: "relative",
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={item?.code + " : " + item?.value}
-                                >
-                                  <Typography
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                    onClick={() =>
-                                      handleDelete(item, "duplicate")
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan">
-                                      {item?.code?.slice(0, 20)}{" "}
-                                      {item?.code.length > 20 ? "..." : ""}
-                                      
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                          {duplicateRejectCode?.length > 0 &&
-                            duplicateRejectCode?.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  position: "relative",
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Tooltip
-                                  title={item?.code + " : " + item?.value}
-                                >
-                                  <Typography
-                                    sx={
-                                      {
-                                        padding: "0px !important",
-                                        paddingRight: "8px !important"
-                                      }
-                                    }
-                                    onClick={() =>
-                                      handleDelete(item, "duplicate")
-                                    }
-                                  >
-                                    <StylePop className="ChipSpan rejected">
-                                      {item?.code?.slice(0, 20)}{" "}
-                                      {item?.code.length > 20 ? "..." : ""}
-                                     
-                                      <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                        <CrossIcon state="rejected" />{" "}
-                                      </Typography>
-                                    </StylePop>{" "}
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))}
-                        </>
-                      )}
-                    </Grid>
-
-                    {existingCode?.length > 0 ||
-                      recaptureCode?.length > 0 ||
-                      duplicateCode?.length > 0 ||
-                      Object?.keys(suspectCode)?.length > 0 ||
-                      existingCodeReject?.length > 0 ||
-                      recaptureCodeReject?.length > 0 ||
-                      duplicateCodeReject?.length > 0 ||
-                      suspectCodeReject?.length > 0 ? (
-                      <button
-                        style={{ cursor: "pointer" }}
-                        className="SubmitBtn"
-                        onClick={() => handleSubmitRedirect(tabs)}
+                <CardContent sx={{ position: "relative" }}>
+                  <div style={{ filter: loadingSummary ? "blur(4px)" : "none", pointerEvents: loadingSummary ? "none" : "auto" }}>
+                    <Box>
+                      <Grid
+                        container
+                        sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                       >
-                        Submit
-                      </button>
-                    ) : (
-                      <button
-                        style={{
-                          cursor: "pointer",
-                          backgroundColor: "#D3D3D3",
-                        }}
-                        className="SubmitBtn"
-                        disabled
+                        <Grid item lg={9} md={9} sm={10} xs={12}>
+                          <Typography className="HeadSummary">
+                            Existing Conditions (recapturing required)
+                          </Typography>
+                        </Grid>
+                        {!(existingCode?.length || existingRejectCode?.length) >
+                          0 ? (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>0</StyleSheetNumber>
+                            </Grid>
+
+                            <div className="ItemsDiv">
+                              <p>0 item</p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>
+                                {(existingCode?.length || 0) +
+                                  (existingRejectCode?.length || 0)}
+                              </StyleSheetNumber>
+                            </Grid>
+                            {existingCode?.length > 0 &&
+                              existingCode?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={item?.code + " : " + item?.value}
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={() =>
+                                        handleDelete(item, "existing")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan">
+                                        {item?.code?.slice(0, 20)}{" "}
+                                        {item?.code.length > 20 ? "..." : ""}
+
+
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                            {existingRejectCode?.length > 0 &&
+                              existingRejectCode?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={item?.code + " : " + item?.value}
+                                  >
+                                    <Typography
+                                      onClick={() =>
+                                        handleDelete(item, "existing")
+                                      }
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan rejected">
+                                        {item?.code?.slice(0, 20)}{" "}
+                                        {item?.code.length > 20 ? "..." : ""}
+
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon state="rejected" />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                          </>
+                        )}
+                      </Grid>
+
+                      <Grid
+                        container
+                        sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                       >
-                        Submit
-                      </button>
-                    )}
-                  </Box>
+                        <Grid item lg={9} md={9} sm={10} xs={12}>
+                          <Typography className="HeadSummary">
+                            Suspects
+                          </Typography>
+                        </Grid>
+                        {!(
+                          Object?.keys(suspectCode)?.length ||
+                          0 + suspectCodeReject?.length ||
+                          0
+                        ) > 0 ? (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>0</StyleSheetNumber>
+                            </Grid>
+
+                            <div className="ItemsDiv">
+                              <p>0 item</p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>
+                                {(suspectCode?.length || 0) +
+                                  (suspectCodeReject?.length || 0)}
+                              </StyleSheetNumber>
+                            </Grid>
+                            {suspectCode && suspectCode?.length > 0 &&
+                              suspectCode?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={() =>
+                                        handleDelete(item, "suspect")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan">
+                                        {item?.code?.slice(0, 20)}{" "}
+                                        {item?.code.length > 20 ? "..." : ""}
+
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                            {suspectCodeReject && suspectCodeReject?.length > 0 &&
+                              suspectCodeReject?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={
+                                      item[Object.keys(item)].value
+                                    }
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={() =>
+                                        handleDelete(item, "suspect")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan rejected">
+                                        {Object.keys(item)
+                                          .toString()
+                                          .slice(0, 20)}{" "}
+                                        {Object.keys(item).toString().length > 20
+                                          ? "..."
+                                          : ""}
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon state="rejected" />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                          </>
+                        )}
+                      </Grid>
+
+                      <Grid
+                        container
+                        sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
+                      >
+                        <Grid item lg={9} md={9} sm={10} xs={12}>
+                          <Typography className="HeadSummary">
+                            Codes not in problem list
+                          </Typography>
+                        </Grid>
+                        {!(
+                          recaptureCode?.length ||
+                          0 + recaptureRejectCode?.length ||
+                          0
+                        ) > 0 ? (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>0</StyleSheetNumber>
+                            </Grid>
+
+                            <div className="ItemsDiv">
+                              <p>0 item</p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>
+                                {(recaptureCode?.length || 0) +
+                                  (recaptureRejectCode?.length || 0)}
+                              </StyleSheetNumber>
+                            </Grid>
+                            {recaptureCode && recaptureCode?.length > 0 &&
+                              recaptureCode?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    position: "relative",
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={item?.code + " : " + item?.value}
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={() =>
+                                        handleDelete(item, "recapture")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan">
+                                        {item?.code?.slice(0, 20)}{" "}
+                                        {item?.code.length > 20 ? "..." : ""}
+
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                            {recaptureRejectCode && recaptureRejectCode?.length > 0 &&
+                              recaptureRejectCode?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    position: "relative",
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={item?.code + " : " + item?.value}
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={() =>
+                                        handleDelete(item, "recapture")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan rejected">
+                                        {item?.code?.slice(0, 20)}{" "}
+                                        {item?.code.length > 20 ? "..." : ""}
+
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon state="rejected" />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                          </>
+                        )}
+                      </Grid>
+
+                      <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
+                        <Grid item lg={9} md={9} sm={10} xs={12}>
+                          <Typography className="HeadSummary">
+                            Additional diagnoses
+                          </Typography>
+                        </Grid>
+                        {!(
+                          duplicateCode?.length ||
+                          0 + duplicateRejectCode?.length ||
+                          0
+                        ) > 0 ? (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>0</StyleSheetNumber>
+                            </Grid>
+
+                            <div className="ItemsDiv">
+                              <p>0 item</p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>
+                                {(duplicateCode?.length || 0) +
+                                  (duplicateRejectCode?.length || 0)}
+                              </StyleSheetNumber>
+                            </Grid>
+                            {duplicateCode && duplicateCode?.length > 0 &&
+                              duplicateCode?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    position: "relative",
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={item?.code + " : " + item?.value}
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={() =>
+                                        handleDelete(item, "duplicate")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan">
+                                        {item?.code?.slice(0, 20)}{" "}
+                                        {item?.code.length > 20 ? "..." : ""}
+
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                            {duplicateRejectCode?.length > 0 &&
+                              duplicateRejectCode?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    position: "relative",
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={item?.code + " : " + item?.value}
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={() =>
+                                        handleDelete(item, "duplicate")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan rejected">
+                                        {item?.code?.slice(0, 20)}{" "}
+                                        {item?.code.length > 20 ? "..." : ""}
+
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon state="rejected" />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+                          </>
+                        )}
+                      </Grid>
+
+                      {existingCode?.length > 0 ||
+                        recaptureCode?.length > 0 ||
+                        duplicateCode?.length > 0 ||
+                        Object?.keys(suspectCode)?.length > 0 ||
+                        existingCodeReject?.length > 0 ||
+                        recaptureCodeReject?.length > 0 ||
+                        duplicateCodeReject?.length > 0 ||
+                        suspectCodeReject?.length > 0 ? (
+                        <button
+                          style={{ cursor: "pointer" }}
+                          className="SubmitBtn"
+                          onClick={() => handleSubmitRedirect(tabs)}
+                        >
+                          Submit
+                        </button>
+                      ) : (
+                        <button
+                          style={{
+                            cursor: "pointer",
+                            backgroundColor: "#D3D3D3",
+                          }}
+                          className="SubmitBtn"
+                          disabled
+                        >
+                          Submit
+                        </button>
+                      )}
+                    </Box>
+                  </div>
+
+                  {loadingSummary && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "rgba(255, 255, 255, 0.7)", // Optional: Semi-transparent background for emphasis
+                      }}
+                    >
+                      <ClipLoader size={48} color="#17236D" cssOverride={{
+    borderWidth: '5px'
+  }} />
+                    </div>
+                  )}
                 </CardContent>
+
+
               </Card>
               }
             </Grid>
