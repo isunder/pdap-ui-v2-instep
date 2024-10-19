@@ -2920,11 +2920,11 @@ export const CodesNotList = ({ sessionObject }) => {
               </SelectField>
               {rejectReason === "Other" && (
                 <InputField
-                  // labelText='Please mention the reason for rejection'
-                  placeholder="Please mention the reason for rejection"
+                  // labelText='Please mention the Reason for Rejection'
+                  placeholder="Please mention the Reason for Rejection"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
-                  labelText="Please enter reject reason"
+                  labelText="Reason for Rejection"
                 />
               )}
             </Box>

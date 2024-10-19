@@ -1026,10 +1026,10 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
               </SelectField>
               {rejectReason === "Other" && (
                 <InputField
-                  placeholder="Please mention the reason for rejection"
+                  placeholder="Please mention the Reason for Rejection"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
-                  labelText="Please enter reject reason"
+                  labelText="Reason for Rejection"
                 />
               )}
             </Box>

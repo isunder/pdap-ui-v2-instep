@@ -1266,6 +1266,8 @@ export const Codes = () => {
                         </>
                       </Grid>
                     </Grid>
+
+                    
                     <Drawer
                       anchor={"top"}
                       open={state["top"]}
@@ -2221,13 +2223,8 @@ export const Codes = () => {
                     </Box>
                   </CardContent>
                 </Drawer>
-
-
               </Card>
             </Grid>
-
-
-
           </Grid>
         </Container>
 
@@ -2338,7 +2335,7 @@ export const Codes = () => {
                                   }}
                                   className="codes-act-header-count-text"
                                 >
-                                  {item?.codeCount || <ClipLoader color="#ffffff" size={15} />}
+                                  {item?.codeCount || (item.codeCount === 0 ? 0 : <ClipLoader color="#ffffff" size={15}/>)}
                                 </Typography>
                               </Box>
                             </StyledText>
@@ -2517,7 +2514,7 @@ export const Codes = () => {
                             minWidth: "inherit",
                             fontSize: "0.875rem",
                           }}
-                          onClick={() => setExpanded(expanded == 2 ? false : 2)}
+                          onClick={() => setExpanded(summary?.suspect_conditions_count === 0 ? false :expanded == 2 ? false : 2)}
                         >
                           {summary?.suspect_conditions_count || 0}
                         </PrimaryButton>
@@ -2551,7 +2548,7 @@ export const Codes = () => {
                     <Grid container>
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
-                          disabled={summary?.recapture_codes_count === 0 || 0}
+                          disabled={summary?.recapture_codes_count === 0}
                           onClick={() => setExpanded(expanded == 3 ? false : 3)}
                           sx={{
                             width: "2.375rem",

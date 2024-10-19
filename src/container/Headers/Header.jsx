@@ -90,6 +90,7 @@ export const Header = ({ sessionObject }) => {
   const dispatch = useDispatch();
   const tabs = TabsSlag();
   const theme = useTheme();
+  const [showheader, setShowHeader] = useState(false);
 
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
   const [value, setValue] = useState(0);
@@ -131,7 +132,9 @@ export const Header = ({ sessionObject }) => {
     if (!slug) {
       return navigate(`/404`);
     } else {
-       dispatch(patientTabFlag());
+       dispatch(patientTabFlag()).then(()=>{
+        setShowHeader(true);
+       });
       let result = await dispatch(doctorInfo());
       if (result?.payload?.response?.status === 404) {
         return navigate(`/404`);

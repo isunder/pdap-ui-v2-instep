@@ -18,6 +18,7 @@ export const StyleButton = styled(Button)(() => ({
   fontSize: "1rem",
   fontWeight: 600,
   borderRadius: "0.5rem",
+  textTransform: "capitalize"
 }));
 
 export const StyleCode = styled(Box)(({ theme }) => ({
