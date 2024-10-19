@@ -13,14 +13,18 @@ const StyledMain = styled("main")(() => ({
 export const Layouts = ({ children }) => {
   const variable = useLocation();
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
+  const setLoading = localStorage.getItem("setLoading");
   const sessionObject = JSON.parse(
     localStorage.getItem(`sessionObject_${userDetail?.mrn}`)
   );
+
+  const loading = true;
+
   return (
     <>
-      {variable.pathname === '/404' ?
+      {(variable.pathname === '/404' || variable.pathname === '/')?
         <StyledMain>{children}</StyledMain> : <>
-          <Header sessionObject={sessionObject} />
+        <Header sessionObject={sessionObject} /> 
           <StyledMain>{children}</StyledMain>
         </>}
 

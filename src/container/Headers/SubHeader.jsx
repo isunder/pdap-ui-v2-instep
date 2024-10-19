@@ -107,12 +107,6 @@ export const SubHeader = () => {
           height: "50px",
           ...flexAlignCenter,
 
-          [theme.breakpoints.down("md")]: {
-            zIndex: state["top"] ? 1234 : (state["down"] ? 1234 : 'auto'),
-            position: state["top"] ? "relative" : (state["down"] ? "relative" : 'static'),
-            background: state["top"] ? "#fff" : (state["down"] ? "#fff" : '#fff'),
-          },
-
           [theme.breakpoints.down('sm')]: {
             padding: "10px 0"
           },

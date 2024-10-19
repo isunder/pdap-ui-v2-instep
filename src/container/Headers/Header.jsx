@@ -132,9 +132,9 @@ export const Header = ({ sessionObject }) => {
     if (!slug) {
       return navigate(`/404`);
     } else {
-       dispatch(patientTabFlag()).then(()=>{
+      dispatch(patientTabFlag()).then(() => {
         setShowHeader(true);
-       });
+      });
       let result = await dispatch(doctorInfo());
       if (result?.payload?.response?.status === 404) {
         return navigate(`/404`);
@@ -160,11 +160,8 @@ export const Header = ({ sessionObject }) => {
   return (
     <>
       <Box
-        sx={{
-          zIndex: state["top"] ? 1234 : (state["down"] ? 1234 : 'auto'),
-          position: state["top"] ? "relative" : (state["down"] ? "relative" : 'static'),
-          background: state["top"] ? "#fff" : (state["down"] ? "#fff" : 'transparent'),
-        }}
+      className="header"
+      sx={{backgroundColor:"white"}}
       >
         <AppBar
           position="static"
@@ -326,7 +323,7 @@ export const Header = ({ sessionObject }) => {
                 </Grid>
 
                 {
-                  tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name && ((doctorDetail?.recapture_percentage !== "-") || (doctorDetail?.suspects_addressed_percentage	 !== "-")	) ?
+                  tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name && ((doctorDetail?.recapture_percentage !== "-") || (doctorDetail?.suspects_addressed_percentage !== "-")) ?
                     <Grid item md={7} sm={12} className="suspect_recapture_header"
                       sx={(theme) => ({
                         ...(tabs &&
@@ -413,7 +410,7 @@ export const Header = ({ sessionObject }) => {
                                   color: theme.palette.success.main,
                                   fontWeight: 600,
                                   fontSize: "0.875rem",
-                                  marginTop:"3px"
+                                  marginTop: "3px"
                                 }}
                               >
                                 {doctorDetail?.recapture_percentage || " - "}
@@ -442,7 +439,7 @@ export const Header = ({ sessionObject }) => {
                                   fontFamily: "Proxima nova",
                                   fontWeight: 600,
                                   fontSize: "0.875rem",
-                                   marginTop:"3px"
+                                  marginTop: "3px"
                                 }}
                               >
                                 {doctorDetail?.suspects_addressed_percentage || " - "}
@@ -454,7 +451,7 @@ export const Header = ({ sessionObject }) => {
                             sx={{
                               fontWeight: 600,
                               [theme.breakpoints.up(967)]: {
-                                marginLeft:"50px"
+                                marginLeft: "50px"
                               },
                             }}
                           >
@@ -462,52 +459,52 @@ export const Header = ({ sessionObject }) => {
                           </StyleText>
                         </Box>
                       </Box>
-                    </Grid> : 
-                     (doctorDetail?.doctor_name) ?
-                     <Grid item md={7} sm={12} className="suspect_recapture_header"
-                       sx={(theme) => ({
-                         ...(tabs &&
-                           (tabs?.patient_dashboard_recapture_percentage?.active ||
-                             tabs?.patient_dashboard_suspect_percentage?.active) &&
-                           doctorDetail?.doctor_name
-                           ? {
-                             [theme.breakpoints.down("sm")]: {
-                               display: "none"
-                             }
-                           }
-                           : null)
-                       })}
- 
-                     >
-                       <Box
-                         className="panel_metric_header"
-                         sx={{
-                           ...flexCenter,
-                           // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
-                           width: "100%",
-                           height: "3.75rem",
-                           // justifyContent: "flex-end",
-                           // [theme.breakpoints.down("sm")]: {
-                           //   justifyContent: 'flex-start'
-                           // },
-                           [theme.breakpoints.down("lg")]: {},
-                         }}
-                       >
-                         <Box className="header_patient_name" sx={{ whiteSpace: "nowrap" }}>
-                           <StyleText
-                             sx={{
-                               fontWeight: 600,
-                               // [theme.breakpoints.down("lg")]: {
-                               //   width: "10rem",
-                               // },
-                             }}
-                           >
-                             {doctorDetail?.doctor_name && doctorDetail?.doctor_name || " - "}
-                           </StyleText>
-                         </Box>
-                       </Box>
-                     </Grid>
-                 : null}
+                    </Grid> :
+                    (doctorDetail?.doctor_name) ?
+                      <Grid item md={7} sm={12} className="suspect_recapture_header"
+                        sx={(theme) => ({
+                          ...(tabs &&
+                            (tabs?.patient_dashboard_recapture_percentage?.active ||
+                              tabs?.patient_dashboard_suspect_percentage?.active) &&
+                            doctorDetail?.doctor_name
+                            ? {
+                              [theme.breakpoints.down("sm")]: {
+                                display: "none"
+                              }
+                            }
+                            : null)
+                        })}
+
+                      >
+                        <Box
+                          className="panel_metric_header"
+                          sx={{
+                            ...flexCenter,
+                            // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                            width: "100%",
+                            height: "3.75rem",
+                            // justifyContent: "flex-end",
+                            // [theme.breakpoints.down("sm")]: {
+                            //   justifyContent: 'flex-start'
+                            // },
+                            [theme.breakpoints.down("lg")]: {},
+                          }}
+                        >
+                          <Box className="header_patient_name" sx={{ whiteSpace: "nowrap" }}>
+                            <StyleText
+                              sx={{
+                                fontWeight: 600,
+                                // [theme.breakpoints.down("lg")]: {
+                                //   width: "10rem",
+                                // },
+                              }}
+                            >
+                              {doctorDetail?.doctor_name && doctorDetail?.doctor_name || " - "}
+                            </StyleText>
+                          </Box>
+                        </Box>
+                      </Grid>
+                      : null}
 
               </Grid>
             </>

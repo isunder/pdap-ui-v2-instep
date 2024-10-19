@@ -34,7 +34,8 @@ import {
   ExistingConditions,
   SubHeader,
   Suspects,
-  DeletedCodes
+  DeletedCodes,
+  Header
 } from "../../container";
 import { WarningIcon } from "../../components";
 import { PrimaryButton } from "../../components/Button";
@@ -467,22 +468,7 @@ export const Codes = () => {
     };
   }, [dispatch, tabs]);
 
-  // Responsive design summary drwaer
-
-  const toggleDrawer = (anchor, open) => (event) => {
-
-    console.log(anchor, open, event, "ssfsfsfsfs")
-    if (
-      event &&
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setState({ ...state, [anchor]: open });
-  };
-
-  // Indexed Db Code and Setup
+ // Indexed Db Code and Setup
 
   const [eventData, setEventData] = useState([]);
   const [newEventData, setNewEventData] = useState([]);
@@ -572,13 +558,6 @@ export const Codes = () => {
 
   const handleSubmitRedirect = async (tabs) => {
 
-    const toggleTopDrawer = toggleDrawer("top", false);
-    const toggleBottomDrawer = toggleDrawer("down", false);
-
-    // Call the returned functions to toggle the drawer states
-    toggleTopDrawer();
-    toggleBottomDrawer();
-
     setIsModalOpen(true);
     const isAthenaModal = tabs['type']?.value == "Athena";
 
@@ -625,9 +604,6 @@ export const Codes = () => {
 
   const handleSubmit = async () => {
 
-
-    toggleDrawer("top", true)
-    toggleDrawer("down", true)
 
     let requestBody;
     if (existingCode?.length > 0) {
@@ -1100,14 +1076,18 @@ export const Codes = () => {
   const [expanded, setExpanded] = React.useState(false);
   const [singleExpand, setSingleExpand] = React.useState(false);
   const [isLoadingMain, setIsLoadingMain] = useState(true);
+
+  localStorage.setItem("setLoading" , true);
+
   useEffect(() => {
     // Dispatch the patientTabFlag thunk and update the loading state
     dispatch(patientTabFlag())
       .then(() => {
-        setIsLoadingMain(false); // Set loading to false even if there is an error
+        setIsLoadingMain(false); 
+        localStorage.setItem("setLoading" , false)
       })
       .catch(() => {
-        setIsLoadingMain(false); // Set loading to false even if there is an error
+        localStorage.setItem("setLoading" , false)
       });
   }, [dispatch]);
 
@@ -1116,24 +1096,71 @@ export const Codes = () => {
   const respExpand = (event, panel) => {
     if (expanded === panel) {
       setExpanded(false);
-      toggleDrawer("top", !state["top"])(event);
-
     } else {
       setExpanded(panel);
-      toggleDrawer("top", !state["top"])(event);
-
     }
   };
 
+
+  const [topValue, setTopValue] = useState("");
+  const [arrowState, setArrowState] = useState(false);
+  const [arrowState2, setArrowState2] = useState(false);
+  
+   // Update topValue based on window width
+   useEffect(() => {
+    const handleResize = () => {
+      let baseValue;
+
+      if (window.innerWidth < 375) {
+        baseValue = "9.5rem"; // Example for widths below 375px
+      } else if (window.innerWidth >= 375 && window.innerWidth < 549) {
+        baseValue = "14rem"; // Example for widths between 375px and 549px
+      } else {
+        baseValue = "10rem"; // Example for widths 549px and above
+      }
+
+      // Check if either tab is active and add 30px
+      if (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active) {
+        // Convert baseValue to pixels, add 30px, and set as the new topValue
+        const baseValueInPx = parseFloat(baseValue) * 16; // Convert rem to px (1rem = 16px)
+        setTopValue(`${(baseValueInPx + 36) / 16}rem`); // Convert back to rem
+      } else {
+        setTopValue(baseValue);
+      }
+    };
+
+    // Set initial value and add resize event listener
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, [tabs]);
+
+  const styles = {
+    height: "max-content",
+    top: topValue,
+    cursor: "auto"
+  };
+
+  const offcanvasBody = {
+    padding: 0,
+    cursor: "auto"
+  }
+
+  if (isLoadingMain) {
+    return <div style={{ height: '100vh', backgroundColor: 'white' }}></div>; // Blank screen
+  }
+
   return (
     <>
+    <Header />
       <SubHeader />
       {(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && (
         <Box
           sx={{
             backgroundColor: "#FDDECF",
-            position: 'relative',
-            zIndex: 2000
+          
           }}
           className="pdap-ui-codes-read-only-t1-wrap"
         >
@@ -1175,7 +1202,7 @@ export const Codes = () => {
             display: "flex", mt: 0, pt: 0, mb: 0,
             [theme.breakpoints.down("md")]: {
               position: "relative",
-              zIndex: 1234
+              zIndex: 2000
             },
             // backgroundColor: "#17236D"
           }}>
@@ -1208,11 +1235,15 @@ export const Codes = () => {
                   },
                 }}>
                   <React.Fragment>
+
+
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                       <Grid item
-                        onClick={toggleDrawer("top", !state["top"])}
+                        onClick={()=>setArrowState(!arrowState)}
+                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
                         sx={{
                           display: "flex", justifyContent: "space-between", alignItems: "center",
+                          position: "relative",
                           [theme.breakpoints.down("xs")]: {
                             padding: "10px 5px"
                           }
@@ -1220,7 +1251,9 @@ export const Codes = () => {
                         }} xs={12} sm={12} md={4} lg={4}>
                         <StyledText className="pendingActions"
                           sx={{ ...flexCenter, gap: "4px" }}
-                          onClick={toggleDrawer("top", !state["top"])}
+                          type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+
+
                         >
                           Pending actions
                           <Box
@@ -1247,222 +1280,180 @@ export const Codes = () => {
                             </Typography>
                           </Box>
                         </StyledText>
-                        <>
-                          {state["top"] ? (
-                            <ArrowDropUpIcon
-                              onClick={toggleDrawer("top", false)}
-                              width={" 0.75rem"}
-                              height={"0.5rem"}
-                              fill={"white"}
-                            />
-                          ) : (
-                            <ArrowDropDownIcon
-                              onClick={toggleDrawer("top", true)}
-                              width={" 0.75rem"}
-                              height={"0.5rem"}
-                              fill={"white"}
-                            />
-                          )}
-                        </>
-                      </Grid>
-                    </Grid>
 
-                    
-                    <Drawer
-                      anchor={"top"}
-                      open={state["top"]}
-                      onClose={toggleDrawer("top", false)}
-                      className={`MuiDrawerTop ${(tabs &&
-                        (tabs?.patient_dashboard_recapture_percentage?.active ||
-                          tabs?.patient_dashboard_suspect_percentage?.active) &&
-                        doctorDetail?.doctor_name &&
-                        (tabs?.read_only_rejection_allowed?.active ||
-                          tabs?.read_only_mode?.active))
-                        ? "responsiveMuiDrawerTopwithreadonly"
-                        : (tabs &&
-                          (tabs?.patient_dashboard_recapture_percentage?.active ||
-                            tabs?.patient_dashboard_suspect_percentage?.active) &&
-                          doctorDetail?.doctor_name)
-                          ? "responsiveMuiDrawerTop"
-                          : ""
-                        }`} sx={{
-
-                          [theme.breakpoints.up("md")]: {
-                            display: "none",
-                          }
-                        }}
-                    >
-                      <Box
-                        sx={{
-                          backgroundColor: "#F2F4FF",
-                          px: 2,
-                          py: 2,
-                        }}
-                      >
-                        <Grid container>
-                          <Grid item lg={2} md={2} sm={1.5} xs={3}>
-                            <PrimaryButton
-                              onClick={(event) => respExpand(event, 1)}
-                              disabled={summary?.existing_codes_count === 0 || 0}
+                        <div style={styles} class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+                          <div style={offcanvasBody} class="offcanvas-body">
+                            <Box
                               sx={{
-                                width: "2.375rem",
-                                height: "1.5625rem",
-                                backgroundColor: theme.palette.error.A200,
-                                color: theme.palette.error.main,
-                                ":hover": {
-                                  backgroundColor: theme.palette.error.A200,
-                                },
-                                ":disabled": {
-                                  backgroundColor: theme.palette.error.A200, // Same as normal state
-                                  color: theme.palette.error.main, // Same as normal state
-                                },
-                                fontWeight: 600,
-                                minWidth: "inherit",
-                                fontSize: "0.875rem",
+                                backgroundColor: "#F2F4FF",
+                                px: 2,
+                                py: 2,
                               }}
                             >
-                              {summary?.existing_codes_count || 0}
-                            </PrimaryButton>
-                          </Grid>
-                          <Grid
-                            item
-                            lg={10}
-                            md={10}
-                            sm={10.5}
-                            xs={9}
-                            sx={{ pl: 1 }}
-                          >
-                            <Typography
-                              sx={{
-                                fontSize: "1rem",
-                                color: "rgba(0, 0, 0, 0.60);",
-                                fontWeight: "600",
-                                lineHeight: "1.375rem",
-                                textTransform: "initial",
-                              }}
-                            >
-                              You have { }
-                              <Typography
-                                sx={{
-                                  color: "#000;",
-                                }}
-                              >
-                                {summary?.existing_codes_count || 0}
-                              </Typography>
-                              { } urgent existing conditions requiring recapturing.
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                        <Grid container sx={{ my: 2 }}>
-                          <Grid item lg={2} md={2} sm={1.5} xs={3}>
-                            <PrimaryButton
-                              onClick={(event) => respExpand(event, 2)}
-                              disabled={summary?.suspect_conditions_count === 0 || 0}
-                              sx={{
-                                width: "2.375rem",
-                                height: "1.5625rem",
-                                backgroundColor: theme.palette.error.A200,
-                                color: theme.palette.error.main,
-                                ":hover": {
-                                  backgroundColor: theme.palette.error.A200,
-                                },
-                                ":disabled": {
-                                  backgroundColor: theme.palette.error.A200, // Same as normal state
-                                  color: theme.palette.error.main, // Same as normal state
-                                },
-                                fontWeight: 600,
-                                minWidth: "inherit",
-                                fontSize: "0.875rem",
-                              }}
-                            >
-                              {summary?.suspect_conditions_count || 0}
-                            </PrimaryButton>
-                          </Grid>
-                          <Grid
-                            item
-                            lg={10}
-                            md={10}
-                            sm={10.5}
-                            xs={9}
-                            sx={{ pl: 1 }}
-                          >
-                            <Typography
-                              sx={{
-                                fontSize: "1rem",
-                                color: "rgba(0, 0, 0, 0.60);",
-                                fontWeight: "600",
-                                lineHeight: "1.375rem",
-                                textTransform: "initial",
-                              }}
-                            >
-                              You have { }
-                              <Typography
-                                sx={{
-                                  color: "#000;",
-                                }}
-                              >
-                                {summary?.suspect_conditions_count || 0}
-                              </Typography>
-                              { }  urgent new suspects for review.
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                        <Grid container sx={{ my: 2 }}>
-                          <Grid item lg={2} md={2} sm={1.5} xs={3}>
-                            <PrimaryButton
-                              onClick={(event) => respExpand(event, 3)}
-                              disabled={summary?.recapture_codes_count === 0 || 0}
-                              sx={{
-                                width: "2.375rem",
-                                height: "1.5625rem",
-                                backgroundColor: theme.palette.error.A200,
-                                color: theme.palette.error.main,
-                                ":hover": {
-                                  backgroundColor: theme.palette.error.A200,
-                                },
-                                ":disabled": {
-                                  backgroundColor: theme.palette.error.A200, // Same as normal state
-                                  color: theme.palette.error.main, // Same as normal state
-                                },
-                                fontWeight: 600,
-                                minWidth: "inherit",
-                                fontSize: "0.875rem",
-                              }}
-                            >
-                              {summary?.recapture_codes_count || 0}
-                            </PrimaryButton>
-                          </Grid>
-                          <Grid
-                            item
-                            lg={10}
-                            md={10}
-                            sm={10.5}
-                            xs={9}
-                            sx={{ pl: 1 }}
-                          >
-                            <Typography
-                              sx={{
-                                fontSize: "1rem",
-                                color: "rgba(0, 0, 0, 0.60);",
-                                fontWeight: "600",
-                                lineHeight: "1.375rem",
-                                textTransform: "initial",
-                              }}
-                            >
-                              You have { }
-                              <Typography
-                                sx={{
-                                  color: "#000;",
-                                  pr: 0.5,
-                                }}
-                              >
-                                {summary?.recapture_codes_count || 0}
-                              </Typography>
-                              { } existing conditions that are not in the problem list.
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                        {/* <Grid container >
+                              <Grid container>
+                                <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                                  <PrimaryButton
+                                    onClick={(event) => respExpand(event, 1)}
+                                    disabled={summary?.existing_codes_count === 0 || 0}
+                                    sx={{
+                                      width: "2.375rem",
+                                      height: "1.5625rem",
+                                      backgroundColor: theme.palette.error.A200,
+                                      color: theme.palette.error.main,
+                                      ":hover": {
+                                        backgroundColor: theme.palette.error.A200,
+                                      },
+                                      ":disabled": {
+                                        backgroundColor: theme.palette.error.A200, // Same as normal state
+                                        color: theme.palette.error.main, // Same as normal state
+                                      },
+                                      fontWeight: 600,
+                                      minWidth: "inherit",
+                                      fontSize: "0.875rem",
+                                    }}
+                                  >
+                                    {summary?.existing_codes_count || 0}
+                                  </PrimaryButton>
+                                </Grid>
+                                <Grid
+                                  item
+                                  lg={10}
+                                  md={10}
+                                  sm={10.5}
+                                  xs={9}
+                                  sx={{ pl: 1 }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontSize: "1rem",
+                                      color: "rgba(0, 0, 0, 0.60);",
+                                      fontWeight: "600",
+                                      lineHeight: "1.375rem",
+                                      textTransform: "initial",
+                                    }}
+                                  >
+                                    You have { }
+                                    <Typography
+                                      sx={{
+                                        color: "#000;",
+                                      }}
+                                    >
+                                      {summary?.existing_codes_count || 0}
+                                    </Typography>
+                                    { } urgent existing conditions requiring recapturing.
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                              <Grid container sx={{ my: 2 }}>
+                                <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                                  <PrimaryButton
+                                    onClick={(event) => respExpand(event, 2)}
+                                    disabled={summary?.suspect_conditions_count === 0 || 0}
+                                    sx={{
+                                      width: "2.375rem",
+                                      height: "1.5625rem",
+                                      backgroundColor: theme.palette.error.A200,
+                                      color: theme.palette.error.main,
+                                      ":hover": {
+                                        backgroundColor: theme.palette.error.A200,
+                                      },
+                                      ":disabled": {
+                                        backgroundColor: theme.palette.error.A200, // Same as normal state
+                                        color: theme.palette.error.main, // Same as normal state
+                                      },
+                                      fontWeight: 600,
+                                      minWidth: "inherit",
+                                      fontSize: "0.875rem",
+                                    }}
+                                  >
+                                    {summary?.suspect_conditions_count || 0}
+                                  </PrimaryButton>
+                                </Grid>
+                                <Grid
+                                  item
+                                  lg={10}
+                                  md={10}
+                                  sm={10.5}
+                                  xs={9}
+                                  sx={{ pl: 1 }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontSize: "1rem",
+                                      color: "rgba(0, 0, 0, 0.60);",
+                                      fontWeight: "600",
+                                      lineHeight: "1.375rem",
+                                      textTransform: "initial",
+                                    }}
+                                  >
+                                    You have { }
+                                    <Typography
+                                      sx={{
+                                        color: "#000;",
+                                      }}
+                                    >
+                                      {summary?.suspect_conditions_count || 0}
+                                    </Typography>
+                                    { }  urgent new suspects for review.
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                              <Grid container sx={{ my: 2 }}>
+                                <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                                  <PrimaryButton
+                                    onClick={(event) => respExpand(event, 3)}
+                                    disabled={summary?.recapture_codes_count === 0 || 0}
+                                    sx={{
+                                      width: "2.375rem",
+                                      height: "1.5625rem",
+                                      backgroundColor: theme.palette.error.A200,
+                                      color: theme.palette.error.main,
+                                      ":hover": {
+                                        backgroundColor: theme.palette.error.A200,
+                                      },
+                                      ":disabled": {
+                                        backgroundColor: theme.palette.error.A200, // Same as normal state
+                                        color: theme.palette.error.main, // Same as normal state
+                                      },
+                                      fontWeight: 600,
+                                      minWidth: "inherit",
+                                      fontSize: "0.875rem",
+                                    }}
+                                  >
+                                    {summary?.recapture_codes_count || 0}
+                                  </PrimaryButton>
+                                </Grid>
+                                <Grid
+                                  item
+                                  lg={10}
+                                  md={10}
+                                  sm={10.5}
+                                  xs={9}
+                                  sx={{ pl: 1 }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontSize: "1rem",
+                                      color: "rgba(0, 0, 0, 0.60);",
+                                      fontWeight: "600",
+                                      lineHeight: "1.375rem",
+                                      textTransform: "initial",
+                                    }}
+                                  >
+                                    You have { }
+                                    <Typography
+                                      sx={{
+                                        color: "#000;",
+                                        pr: 0.5,
+                                      }}
+                                    >
+                                      {summary?.recapture_codes_count || 0}
+                                    </Typography>
+                                    { } existing conditions that are not in the problem list.
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                              {/* <Grid container >
                         <Grid item lg={2} md={2} sm={1.5} xs={3} >
                           <PrimaryButton
 
@@ -1511,8 +1502,36 @@ export const Codes = () => {
                           </Typography>
                         </Grid>
                       </Grid> */}
-                      </Box>
-                    </Drawer>
+                            </Box>
+                          </div>
+                        </div>
+
+                        <>
+                          {arrowState ? (
+                            <ArrowDropUpIcon
+                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+
+                              width={" 0.75rem"}
+                              height={"0.5rem"}
+                              fill={"white"}
+                            />
+                          ) : (
+                            <ArrowDropDownIcon
+                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+                              width={" 0.75rem"}
+                              height={"0.5rem"}
+                              fill={"white"}
+                            />
+                          )}
+                        </>
+
+
+
+                      </Grid>
+                    </Grid>
+
+
+
                   </React.Fragment>
                 </Box>
               </Box>
@@ -1538,13 +1557,16 @@ export const Codes = () => {
                   rowSpacing={1}
                   columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 >
-                  <Grid onClick={toggleDrawer("down", !state["down"])} sx={{
-                    display: "flex", justifyContent: "space-between", alignItems: "center",
-                    [theme.breakpoints.down("xs")]: {
-                      padding: "10px 5px"
-                    }
-                  }} item xs={12} sm={12} md={4} lg={4}>
-                    <StyledText className="summary-mobile" onClick={toggleDrawer("down", !state["down"])} sx={{ ...flexCenter, gap: 0.5 }}>
+                  <Grid
+                  onClick={()=>setArrowState2(!arrowState2)}
+                    type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+                    sx={{
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                      [theme.breakpoints.down("xs")]: {
+                        padding: "10px 5px"
+                      }
+                    }} item xs={12} sm={12} md={4} lg={4}>
+                    <StyledText className="summary-mobile"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{ ...flexCenter, gap: 0.5 }}>
                       Summary
                       {sumCount >= 0 && (
                         <Box
@@ -1579,651 +1601,639 @@ export const Codes = () => {
                       )}
                     </StyledText>
 
-                    {state["down"] ? (
+                    {arrowState2 ? (
                       <ArrowDropUpIcon
-                        onClick={toggleDrawer("down", false)}
+                      type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+
                         width={" 0.75rem"}
                         height={"0.5rem"}
                         fill={"black"}
                       />
                     ) : (
                       <ArrowDropDownIcon
-                        onClick={toggleDrawer("down", true)}
+                      type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+
                         width={" 0.75rem"}
                         height={"0.5rem"}
                         fill={"black"}
                       />
                     )}
+
+
+                    <div style={styles} class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop2" aria-labelledby="offcanvasTopLabel1">
+                      <div style={offcanvasBody} class="offcanvas-body" >
+
+
+                        <Card
+                          className="CardBox"
+                          sx={{
+                            [theme.breakpoints.up("md")]: {
+                              display: "none",
+                              minWidth: 275,
+                              borderRadius: "0.625rem 0.625rem 0.625rem 0.625rem",
+                              mt: 3,
+                            },
+                            [theme.breakpoints.down("md")]: {
+                              borderRadius: "0px",
+                            },
+                          }}
+                        >
+                          <CardContent>
+
+                            <Grid
+                              container
+                              rowSpacing={1}
+                              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                            >
+                              <Grid  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{
+                                display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px 0px",
+                                [theme.breakpoints.down("xs")]: {
+                                  padding: "10px 5px"
+                                }
+                              }} item xs={12} sm={12} md={4} lg={4}>
+                                <StyledText className="summary-mobile"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{ ...flexCenter, gap: 0.5 }}>
+                                  Summary
+                                  {sumCount >= 0 && (
+                                    <Box
+                                      sx={{
+                                        background: "#E6682D",
+                                        color: "#FFFFFF",
+                                        borderRadius: "100%",
+                                        height: "20px",
+                                        width: "20px",
+                                        ...flexCenter,
+                                        justifyContent: "center"
+                                      }}
+                                    >
+                                      <Typography
+                                        variant="body2"
+                                        sx={{
+                                          textAlign: "center",
+                                          fontSize: "0.75rem",
+                                          fontStyle: "normal",
+                                          fontWeight: "600",
+                                          lineHeight: "normal",
+
+                                          [theme.breakpoints.up("sm")]: {
+                                            p: '7px',
+                                          },
+
+                                        }}
+                                      >
+                                        {sumCount}
+                                      </Typography>
+                                    </Box>
+                                  )}
+                                </StyledText>
+
+                                {state["down"] ? (
+                                  <ArrowDropUpIcon
+                                  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+
+                                    width={" 0.75rem"}
+                                    height={"0.5rem"}
+                                    fill={"black"}
+                                  />
+                                ) : (
+                                  <ArrowDropDownIcon
+                                  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+
+                                    width={" 0.75rem"}
+                                    height={"0.5rem"}
+                                    fill={"black"}
+                                  />
+                                )}
+                              </Grid>
+                            </Grid>
+                            <Box>
+                              <Grid
+                                container
+                                sx={{
+                                  borderBottom: "1px solid #00000029",
+                                  pb: 2,
+                                  mb: 2,
+                                }}
+                              >
+                                <Grid item lg={9} md={9} sm={10} xs={10}>
+                                  <Typography className="HeadSummary">
+                                    Existing Conditions (recapturing required)
+                                  </Typography>
+                                </Grid>
+
+                                {!(
+                                  existingCode?.length ||
+                                  0 + existingRejectCode?.length ||
+                                  0
+                                ) > 0 ? (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>0</StyleSheetNumber>
+                                    </Grid>
+
+                                    <div className="ItemsDiv">
+                                      <p>0 item</p>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>
+                                        {(existingCode?.length || 0) +
+                                          (existingRejectCode?.length || 0)}
+                                      </StyleSheetNumber>
+                                    </Grid>
+                                    {existingCode?.length > 0 &&
+                                      existingCode?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          justifyContent={'start'}
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            sx={{ padding: " 0px !important" }}
+                                            title={item?.code + " : " + item?.value}
+                                          >
+                                            <Typography
+
+                                              onClick={() =>
+                                                handleDelete(item, "existing")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan">
+                                                {item?.code?.slice(0, 20)}{" "}
+                                                {item?.code.length > 20 ? "..." : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                    {existingRejectCode?.length > 0 &&
+                                      existingRejectCode?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            title={item?.code + " : " + item?.value}
+                                          >
+                                            <Typography
+                                              onClick={() =>
+                                                handleDelete(item, "existing")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan rejected">
+                                                {item?.code?.slice(0, 20)}{" "}
+                                                {item?.code.length > 20 ? "..." : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon state="rejected" />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                  </>
+                                )}
+                              </Grid>
+
+                              <Grid
+                                container
+                                sx={{
+                                  borderBottom: "1px solid #00000029",
+                                  pb: 2,
+                                  mb: 2,
+                                }}
+                              >
+                                <Grid item lg={9} md={9} sm={10} xs={10}>
+                                  <Typography className="HeadSummary">
+                                    Suspects
+                                  </Typography>
+                                </Grid>
+
+                                {!(
+                                  Object?.keys(suspectCode)?.length ||
+                                  0 + suspectCodeReject?.length ||
+                                  0
+                                ) > 0 ? (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>0</StyleSheetNumber>
+                                    </Grid>
+
+                                    <div className="ItemsDiv">
+                                      <p>0 item</p>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>
+                                        {(suspectCode?.length || 0) +
+                                          (suspectCodeReject?.length || 0)}
+                                      </StyleSheetNumber>
+                                    </Grid>
+                                    {suspectCode?.length > 0 &&
+                                      suspectCode?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            title={item?.code + " : " + item?.value}
+                                          >
+                                            <Typography
+                                              onClick={() =>
+                                                handleDelete(item, "suspect")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan">
+                                                {item?.code?.slice(0, 20)}{" "}
+                                                {item?.code.length > 20 ? "..." : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                    {suspectCodeReject?.length > 0 &&
+                                      suspectCodeReject?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            title={
+                                              Object.keys(item) +
+                                              " : " +
+                                              item[Object.keys(item)].value
+                                            }
+                                          >
+                                            <Typography
+                                              onClick={() =>
+                                                handleDelete(item, "suspect")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan rejected">
+                                                {Object.keys(item)
+                                                  .toString()
+                                                  .slice(0, 20)}{" "}
+                                                {Object.keys(item).toString().length >
+                                                  20
+                                                  ? "..."
+                                                  : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon state="rejected" />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                  </>
+                                )}
+                              </Grid>
+
+                              <Grid
+                                container
+                                sx={{
+                                  borderBottom: "1px solid #00000029",
+                                  pb: 2,
+                                  mb: 2,
+                                }}
+                              >
+                                <Grid item lg={9} md={9} sm={10} xs={10}>
+                                  <Typography className="HeadSummary">
+                                    Codes not in problem list
+                                  </Typography>
+                                </Grid>
+
+                                {!(
+                                  recaptureCode?.length ||
+                                  0 + recaptureRejectCode?.length ||
+                                  0
+                                ) > 0 ? (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>0</StyleSheetNumber>
+                                    </Grid>
+
+                                    <div className="ItemsDiv">
+                                      <p>0 item</p>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>
+                                        {(recaptureCode?.length || 0) +
+                                          (recaptureRejectCode?.length || 0)}
+                                      </StyleSheetNumber>
+                                    </Grid>
+                                    {recaptureCode?.length > 0 &&
+                                      recaptureCode?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            title={item?.code + " : " + item?.value}
+                                          >
+                                            <Typography
+                                              onClick={() =>
+                                                handleDelete(item, "recapture")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan">
+                                                {item?.code?.slice(0, 20)}{" "}
+                                                {item?.code.length > 20 ? "..." : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                    {recaptureRejectCode?.length > 0 &&
+                                      recaptureRejectCode?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            title={item?.code + " : " + item?.value}
+                                          >
+                                            <Typography
+                                              onClick={() =>
+                                                handleDelete(item, "recapture")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan rejected">
+                                                {item?.code?.slice(0, 20)}{" "}
+                                                {item?.code.length > 20 ? "..." : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon state="rejected" />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                  </>
+                                )}
+                              </Grid>
+                              <Grid container sx={{ pb: 2, mb: 0 }}>
+                                <Grid item lg={9} md={9} sm={10} xs={10}>
+                                  <Typography className="HeadSummary">
+                                    Additional diagnoses
+                                  </Typography>
+                                </Grid>
+
+                                {!(
+                                  duplicateCode?.length ||
+                                  0 + duplicateRejectCode?.length ||
+                                  0
+                                ) > 0 ? (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>0</StyleSheetNumber>
+                                    </Grid>
+
+                                    <div className="ItemsDiv">
+                                      <p>0 item</p>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Grid
+                                      item
+                                      lg={3}
+                                      md={2}
+                                      sm={2}
+                                      xs={12}
+                                      sx={{ textAlign: "end" }}
+                                    >
+                                      <StyleSheetNumber>
+                                        {(duplicateCode?.length || 0) +
+                                          (duplicateRejectCode?.length || 0)}
+                                      </StyleSheetNumber>
+                                    </Grid>
+                                    {duplicateCode?.length > 0 &&
+                                      duplicateCode?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            title={item?.code + " : " + item?.value}
+                                          >
+                                            <Typography
+                                              onClick={() =>
+                                                handleDelete(item, "duplicate")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan">
+                                                {item?.code?.slice(0, 20)}{" "}
+                                                {item?.code.length > 20 ? "..." : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                    {duplicateRejectCode?.length > 0 &&
+                                      duplicateRejectCode?.map((item, index) => (
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            px: 0,
+                                            ml: 0.08,
+                                            mt: 0.5,
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <Tooltip
+                                            title={item?.code + " : " + item?.value}
+                                          >
+                                            <Typography
+                                              onClick={() =>
+                                                handleDelete(item, "duplicate")
+                                              }
+                                            >
+                                              <StylePop className="ChipSpan rejected">
+                                                {item?.code?.slice(0, 20)}{" "}
+                                                {item?.code.length > 20 ? "..." : ""}
+                                                :
+                                                {item?.value?.slice(0, 20)}{" "}
+                                                {item?.value?.length > 20 ? "..." : ""}
+                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                  <CrossIcon state="rejected" />{" "}
+                                                </Typography>
+                                              </StylePop>{" "}
+                                            </Typography>
+                                          </Tooltip>
+                                        </Stack>
+                                      ))}
+                                  </>
+                                )}
+                              </Grid>
+                              {existingCode?.length > 0 ||
+                                recaptureCode?.length > 0 ||
+                                duplicateCode?.length > 0 ||
+                                Object?.keys(suspectCode)?.length > 0 ||
+                                existingCodeReject?.length > 0 ||
+                                recaptureCodeReject?.length > 0 ||
+                                suspectCodeReject?.length > 0 ||
+                                duplicateCodeReject?.length > 0 ? (
+                                <button
+                                  style={{ cursor: "pointer" }}
+                                  className="SubmitBtn"
+                                  onClick={() => handleSubmitRedirect(tabs)}
+                                >
+                                  Submit
+                                </button>
+                              ) : (
+                                <button
+                                  style={{
+                                    cursor: "pointer",
+                                    backgroundColor: "#D3D3D3",
+                                  }}
+                                  className="SubmitBtn"
+                                  disabled
+                                >
+                                  Submit
+                                </button>
+                              )}
+                            </Box>
+                          </CardContent>
+                        </Card>
+
+                      </div>
+                    </div>
                   </Grid>
                 </Grid>
               </>
-              <Card
-                className="CardBox"
-                sx={{
-                  [theme.breakpoints.up("md")]: {
-                    display: "none",
-                    minWidth: 275,
-                    borderRadius: "0.625rem 0.625rem 0.625rem 0.625rem",
-                    mt: 3,
-                  },
-                  [theme.breakpoints.down("md")]: {
-                    borderRadius: "0px",
-                  },
-                }}
-              >
-                <Drawer
-                  anchor={"down"}
-                  open={state["down"]}
-                  onClose={toggleDrawer("down", false)}
-                  className={`MuiDrawerDown ${(tabs &&
-                    (tabs?.patient_dashboard_recapture_percentage?.active ||
-                      tabs?.patient_dashboard_suspect_percentage?.active) &&
-                    doctorDetail?.doctor_name &&
-                    (tabs?.read_only_rejection_allowed?.active ||
-                      tabs?.read_only_mode?.active))
-                    ? "responsiveMuiDrawerDownwithreadonly"
-                    : (tabs &&
-                      (tabs?.patient_dashboard_recapture_percentage?.active ||
-                        tabs?.patient_dashboard_suspect_percentage?.active) &&
-                      doctorDetail?.doctor_name)
-                      ? "responsiveMuiDrawerDown"
-                      : ""
-                    }`}
-                  sx={{
-                    [theme.breakpoints.up("md")]: {
-                      display: "none",
-                    }
-                  }}
-                >
-                  <CardContent>
-
-                    <Grid
-                      container
-                      rowSpacing={1}
-                      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                    >
-                      <Grid onClick={toggleDrawer("down", !state["down"])} sx={{
-                        display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px 0px",
-                        [theme.breakpoints.down("xs")]: {
-                          padding: "10px 5px"
-                        }
-                      }} item xs={12} sm={12} md={4} lg={4}>
-                        <StyledText className="summary-mobile" onClick={toggleDrawer("down", !state["down"])} sx={{ ...flexCenter, gap: 0.5 }}>
-                          Summary
-                          {sumCount >= 0 && (
-                            <Box
-                              sx={{
-                                background: "#E6682D",
-                                color: "#FFFFFF",
-                                borderRadius: "100%",
-                                height: "20px",
-                                width: "20px",
-                                ...flexCenter,
-                                justifyContent: "center"
-                              }}
-                            >
-                              <Typography
-                                variant="body2"
-                                sx={{
-                                  textAlign: "center",
-                                  fontSize: "0.75rem",
-                                  fontStyle: "normal",
-                                  fontWeight: "600",
-                                  lineHeight: "normal",
-
-                                  [theme.breakpoints.up("sm")]: {
-                                    p: '7px',
-                                  },
-
-                                }}
-                              >
-                                {sumCount}
-                              </Typography>
-                            </Box>
-                          )}
-                        </StyledText>
-
-                        {state["down"] ? (
-                          <ArrowDropUpIcon
-                            onClick={toggleDrawer("down", false)}
-                            width={" 0.75rem"}
-                            height={"0.5rem"}
-                            fill={"black"}
-                          />
-                        ) : (
-                          <ArrowDropDownIcon
-                            onClick={toggleDrawer("down", true)}
-                            width={" 0.75rem"}
-                            height={"0.5rem"}
-                            fill={"black"}
-                          />
-                        )}
-                      </Grid>
-                    </Grid>
-                    <Box>
-                      <Grid
-                        container
-                        sx={{
-                          borderBottom: "1px solid #00000029",
-                          pb: 2,
-                          mb: 2,
-                        }}
-                      >
-                        <Grid item lg={9} md={9} sm={10} xs={10}>
-                          <Typography className="HeadSummary">
-                            Existing Conditions (recapturing required)
-                          </Typography>
-                        </Grid>
-
-                        {!(
-                          existingCode?.length ||
-                          0 + existingRejectCode?.length ||
-                          0
-                        ) > 0 ? (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>0</StyleSheetNumber>
-                            </Grid>
-
-                            <div className="ItemsDiv">
-                              <p>0 item</p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>
-                                {(existingCode?.length || 0) +
-                                  (existingRejectCode?.length || 0)}
-                              </StyleSheetNumber>
-                            </Grid>
-                            {existingCode?.length > 0 &&
-                              existingCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  justifyContent={'start'}
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    sx={{ padding: " 0px !important" }}
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-
-                                      onClick={() =>
-                                        handleDelete(item, "existing")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                            {existingRejectCode?.length > 0 &&
-                              existingRejectCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "existing")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan rejected">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon state="rejected" />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                          </>
-                        )}
-                      </Grid>
-
-                      <Grid
-                        container
-                        sx={{
-                          borderBottom: "1px solid #00000029",
-                          pb: 2,
-                          mb: 2,
-                        }}
-                      >
-                        <Grid item lg={9} md={9} sm={10} xs={10}>
-                          <Typography className="HeadSummary">
-                            Suspects
-                          </Typography>
-                        </Grid>
-
-                        {!(
-                          Object?.keys(suspectCode)?.length ||
-                          0 + suspectCodeReject?.length ||
-                          0
-                        ) > 0 ? (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>0</StyleSheetNumber>
-                            </Grid>
-
-                            <div className="ItemsDiv">
-                              <p>0 item</p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>
-                                {(suspectCode?.length || 0) +
-                                  (suspectCodeReject?.length || 0)}
-                              </StyleSheetNumber>
-                            </Grid>
-                            {suspectCode?.length > 0 &&
-                              suspectCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "suspect")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                            {suspectCodeReject?.length > 0 &&
-                              suspectCodeReject?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      Object.keys(item) +
-                                      " : " +
-                                      item[Object.keys(item)].value
-                                    }
-                                  >
-                                    <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "suspect")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan rejected">
-                                        {Object.keys(item)
-                                          .toString()
-                                          .slice(0, 20)}{" "}
-                                        {Object.keys(item).toString().length >
-                                          20
-                                          ? "..."
-                                          : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon state="rejected" />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                          </>
-                        )}
-                      </Grid>
-
-                      <Grid
-                        container
-                        sx={{
-                          borderBottom: "1px solid #00000029",
-                          pb: 2,
-                          mb: 2,
-                        }}
-                      >
-                        <Grid item lg={9} md={9} sm={10} xs={10}>
-                          <Typography className="HeadSummary">
-                            Codes not in problem list
-                          </Typography>
-                        </Grid>
-
-                        {!(
-                          recaptureCode?.length ||
-                          0 + recaptureRejectCode?.length ||
-                          0
-                        ) > 0 ? (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>0</StyleSheetNumber>
-                            </Grid>
-
-                            <div className="ItemsDiv">
-                              <p>0 item</p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>
-                                {(recaptureCode?.length || 0) +
-                                  (recaptureRejectCode?.length || 0)}
-                              </StyleSheetNumber>
-                            </Grid>
-                            {recaptureCode?.length > 0 &&
-                              recaptureCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "recapture")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                            {recaptureRejectCode?.length > 0 &&
-                              recaptureRejectCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "recapture")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan rejected">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon state="rejected" />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                          </>
-                        )}
-                      </Grid>
-                      <Grid container sx={{ pb: 2, mb: 0 }}>
-                        <Grid item lg={9} md={9} sm={10} xs={10}>
-                          <Typography className="HeadSummary">
-                            Additional diagnoses
-                          </Typography>
-                        </Grid>
-
-                        {!(
-                          duplicateCode?.length ||
-                          0 + duplicateRejectCode?.length ||
-                          0
-                        ) > 0 ? (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>0</StyleSheetNumber>
-                            </Grid>
-
-                            <div className="ItemsDiv">
-                              <p>0 item</p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <Grid
-                              item
-                              lg={3}
-                              md={2}
-                              sm={2}
-                              xs={12}
-                              sx={{ textAlign: "end" }}
-                            >
-                              <StyleSheetNumber>
-                                {(duplicateCode?.length || 0) +
-                                  (duplicateRejectCode?.length || 0)}
-                              </StyleSheetNumber>
-                            </Grid>
-                            {duplicateCode?.length > 0 &&
-                              duplicateCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "duplicate")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                            {duplicateRejectCode?.length > 0 &&
-                              duplicateRejectCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "duplicate")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan rejected">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        :
-                                        {item?.value?.slice(0, 20)}{" "}
-                                        {item?.value?.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon state="rejected" />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                          </>
-                        )}
-                      </Grid>
-                      {existingCode?.length > 0 ||
-                        recaptureCode?.length > 0 ||
-                        duplicateCode?.length > 0 ||
-                        Object?.keys(suspectCode)?.length > 0 ||
-                        existingCodeReject?.length > 0 ||
-                        recaptureCodeReject?.length > 0 ||
-                        suspectCodeReject?.length > 0 ||
-                        duplicateCodeReject?.length > 0 ? (
-                        <button
-                          style={{ cursor: "pointer" }}
-                          className="SubmitBtn"
-                          onClick={() => handleSubmitRedirect(tabs)}
-                        >
-                          Submit
-                        </button>
-                      ) : (
-                        <button
-                          style={{
-                            cursor: "pointer",
-                            backgroundColor: "#D3D3D3",
-                          }}
-                          className="SubmitBtn"
-                          disabled
-                        >
-                          Submit
-                        </button>
-                      )}
-                    </Box>
-                  </CardContent>
-                </Drawer>
-              </Card>
             </Grid>
           </Grid>
         </Container>
@@ -2335,7 +2345,7 @@ export const Codes = () => {
                                   }}
                                   className="codes-act-header-count-text"
                                 >
-                                  {item?.codeCount || (item.codeCount === 0 ? 0 : <ClipLoader color="#ffffff" size={15}/>)}
+                                  {item?.codeCount || (item.codeCount === 0 ? 0 : <ClipLoader color="#ffffff" size={15} />)}
                                 </Typography>
                               </Box>
                             </StyledText>
@@ -2514,7 +2524,7 @@ export const Codes = () => {
                             minWidth: "inherit",
                             fontSize: "0.875rem",
                           }}
-                          onClick={() => setExpanded(summary?.suspect_conditions_count === 0 ? false :expanded == 2 ? false : 2)}
+                          onClick={() => setExpanded(summary?.suspect_conditions_count === 0 ? false : expanded == 2 ? false : 2)}
                         >
                           {summary?.suspect_conditions_count || 0}
                         </PrimaryButton>
@@ -2614,8 +2624,8 @@ export const Codes = () => {
                       }}
                     >
                       <ClipLoader size={48} color="#17236D" cssOverride={{
-    borderWidth: '5px'
-  }} />
+                        borderWidth: '5px'
+                      }} />
 
 
                     </div>
@@ -3221,8 +3231,8 @@ export const Codes = () => {
                       }}
                     >
                       <ClipLoader size={48} color="#17236D" cssOverride={{
-    borderWidth: '5px'
-  }} />
+                        borderWidth: '5px'
+                      }} />
                     </div>
                   )}
                 </CardContent>
@@ -3263,7 +3273,7 @@ export const Codes = () => {
         recaptureCodeNew={recaptureCodeNew}
         suspectCodeNew={suspectCodeNew}
         isModalOpen={isModalOpen}
-        toggleDrawer={toggleDrawer}
+       
       />
 
       <DialogModal

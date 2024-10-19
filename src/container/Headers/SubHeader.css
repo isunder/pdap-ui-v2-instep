@@ -1,18 +1,3 @@
-.MuiDrawerTop .MuiDrawer-paper {
-    top: 10rem;
-    box-shadow: 0px 0px 7px 0px #17236D66;
-    background: #F9F9F9 !important;
-    border-top: 3px solid #D9D9D9;
-}
-
-.MuiDrawerDown .MuiDrawer-paper {
-    top: 10rem;
-    box-shadow: 0px 0px 7px 0px #17236D66;
-    background: #FFFFFF !important;
-    border-top: 3px solid #D9D9D9;
-    height: fit-content;
-    width: 100%;
-}
 
 .pendingActions{
 
