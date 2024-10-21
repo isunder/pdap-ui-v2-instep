@@ -1094,12 +1094,15 @@ export const Codes = () => {
   // New Expand in mobile function
 
   const respExpand = (event, panel) => {
+    console.log(event, panel)
     if (expanded === panel) {
       setExpanded(false);
     } else {
       setExpanded(panel);
     }
   };
+
+  console.log(expanded, "asdfghjkl")
 
 
   const [topValue, setTopValue] = useState("");
@@ -1200,10 +1203,7 @@ export const Codes = () => {
         >
           <Grid container sx={{
             display: "flex", mt: 0, pt: 0, mb: 0,
-            [theme.breakpoints.down("md")]: {
-              position: "relative",
-              zIndex: 2000
-            },
+           
             // backgroundColor: "#17236D"
           }}>
 
@@ -1222,11 +1222,6 @@ export const Codes = () => {
                   [theme.breakpoints.up("md")]: {
                     display: "none",
                   },
-
-                  [theme.breakpoints.down("md")]: {
-                    position: "relative",
-                    zIndex: 99999
-                  }
                 }}
               >
                 <Box sx={{
@@ -1294,7 +1289,7 @@ export const Codes = () => {
                                 <Grid item lg={2} md={2} sm={1.5} xs={3}>
                                   <PrimaryButton
                                     onClick={(event) => respExpand(event, 1)}
-                                    disabled={summary?.existing_codes_count === 0 || 0}
+                                    disabled={(summary?.existing_codes_count === undefined || summary?.existing_codes_count === 0) || 0}
                                     sx={{
                                       width: "2.375rem",
                                       height: "1.5625rem",
@@ -1348,7 +1343,7 @@ export const Codes = () => {
                                 <Grid item lg={2} md={2} sm={1.5} xs={3}>
                                   <PrimaryButton
                                     onClick={(event) => respExpand(event, 2)}
-                                    disabled={summary?.suspect_conditions_count === 0 || 0}
+                                    disabled={(summary?.suspect_conditions_count === undefined || summary?.suspect_conditions_count === 0) || 0}
                                     sx={{
                                       width: "2.375rem",
                                       height: "1.5625rem",
@@ -1402,7 +1397,7 @@ export const Codes = () => {
                                 <Grid item lg={2} md={2} sm={1.5} xs={3}>
                                   <PrimaryButton
                                     onClick={(event) => respExpand(event, 3)}
-                                    disabled={summary?.recapture_codes_count === 0 || 0}
+                                    disabled={ (summary?.recapture_codes_count === undefined || summary?.recapture_codes_count === 0) || 0}
                                     sx={{
                                       width: "2.375rem",
                                       height: "1.5625rem",
@@ -2345,7 +2340,7 @@ export const Codes = () => {
                                   }}
                                   className="codes-act-header-count-text"
                                 >
-                                  {item?.codeCount || (item.codeCount === 0 ? 0 : <ClipLoader color="#ffffff" size={15} />)}
+                                  {item?.codeCount || ((item.codeCount === 0 || item.codeCount === undefined) ? 0 : <ClipLoader color="#ffffff" size={15} />)}
                                 </Typography>
                               </Box>
                             </StyledText>
@@ -2454,7 +2449,7 @@ export const Codes = () => {
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
                           onClick={() => setExpanded(expanded == 1 ? false : 1)}
-                          disabled={summary?.existing_codes_count === 0 || 0}
+                          disabled={(summary?.existing_codes_count === undefined || summary?.existing_codes_count === 0) || 0}
                           sx={{
                             width: "2.375rem",
                             height: "1.5625rem",
@@ -2507,7 +2502,7 @@ export const Codes = () => {
                     >
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
-                          disabled={summary?.suspect_conditions_count === 0 || 0}
+                          disabled={(summary?.suspect_conditions_count || summary?.suspect_conditions_count === 0) || 0}
                           sx={{
                             width: "2.375rem",
                             height: "1.5625rem",
@@ -2524,7 +2519,7 @@ export const Codes = () => {
                             minWidth: "inherit",
                             fontSize: "0.875rem",
                           }}
-                          onClick={() => setExpanded(summary?.suspect_conditions_count === 0 ? false : expanded == 2 ? false : 2)}
+                          onClick={() => setExpanded((summary?.suspect_conditions_count === undefined && summary?.suspect_conditions_count === 0) ? false : expanded == 2 ? false : 2)}
                         >
                           {summary?.suspect_conditions_count || 0}
                         </PrimaryButton>
@@ -2558,7 +2553,7 @@ export const Codes = () => {
                     <Grid container>
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
-                          disabled={summary?.recapture_codes_count === 0}
+                          disabled={(summary?.recapture_codes_count === undefined || summary?.recapture_codes_count === 0) || 0}
                           onClick={() => setExpanded(expanded == 3 ? false : 3)}
                           sx={{
                             width: "2.375rem",

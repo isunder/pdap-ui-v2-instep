@@ -49,17 +49,7 @@ export const SubHeader = () => {
   const { state, setState } = useAppContext();
   const [patientAge, setPatientAge] = useState(0);
   const [patientGender, setPatientGender] = useState(null);
-  const newPatientInfo = localStorage.getItem("patientInfo") || {};
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setState({ ...state, [anchor]: open });
-  };
+  const newPatientInfo = localStorage.getItem("patientInfo") || {}; 
 
   const { summary } = useSelector(state => state?.user?.data);
   const { isLoading, user } = useSelector((state) => state);

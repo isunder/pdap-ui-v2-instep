@@ -61,7 +61,6 @@ const SubmitModal = ({
   recaptureCodeNew,
   suspectCodeNew,
   isModalOpen,
-  toggleDrawer
 }) => {
   // State variables for different matched values
   const [matchedValuesExisting, setMatchedValuesExisting] = useState([]);
@@ -189,9 +188,6 @@ const SubmitModal = ({
 
   const setOpenSubmitModalFunc = (key) => {
 
-    toggleDrawer("top", false)
-    toggleDrawer("down", false)
-    
     setOpenSubmitModal(false);
 
     if (key === "athena") {
@@ -309,7 +305,7 @@ const SubmitModal = ({
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
                                       {": "}
-                                      { item?.value?.slice(0, 30)} { item?.value?.length > 30 ? "..." : " "}
+                                      {item?.value?.slice(0, 30)} {item?.value?.length > 30 ? "..." : " "}
                                     </StylePop>
                                   </Typography>
                                 </Tooltip>
@@ -358,13 +354,13 @@ const SubmitModal = ({
                                   }}
                                   key={index}
                                 >
-                                  <Tooltip 
-                                  title={item?.code + ((item?.value)? (" : " + item?.value) : null)}
+                                  <Tooltip
+                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
                                   >
                                     <Typography>
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-                                        
+
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
@@ -417,8 +413,8 @@ const SubmitModal = ({
                                       <Tooltip
                                         title={
                                           Object.keys(item) +
-                                          " : " +
-                                          ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
+                                            " : " +
+                                            ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
 
                                         }
                                       >
@@ -431,7 +427,7 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                              {/* :
+                                            {/* :
                                               {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
                                           </StylePop>{" "}
                                         </Typography>
@@ -466,8 +462,8 @@ const SubmitModal = ({
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
-                                              : ""}  {": "} 
-                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                              : ""}  {": "}
+                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -502,8 +498,8 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                              {": "}
-                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                            {": "}
+                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -538,7 +534,7 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""} {": "}
-                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -584,8 +580,6 @@ const SubmitModal = ({
           )}
         </DialogContent>
       ) : (
-
-
         <DialogContent
           sx={{
             display: "flex",
@@ -599,7 +593,7 @@ const SubmitModal = ({
               spacing={2}
               display={"flex"}
               flexDirection={"column"}
-              gap={'10px'}
+              gap={"10px"}
             >
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Box
@@ -610,69 +604,16 @@ const SubmitModal = ({
                   <StyledTypography>Summary</StyledTypography>
                   <Button
                     sx={{ justifyContent: "end", width: "12px" }}
-                    onClick={() => setOpenSubmitModalFunc("athena")}
+                    onClick={() => setOpenSubmitModalFunc("epic")}
                   >
                     <CrossIcon2 width="12px" height="12px" />
                   </Button>
                 </Box>
 
                 <Grid >
-                  <Card >
+                  <Card>
                     <CardContent sx={{ paddingInline: "0px" }}>
-                      <Box className="modalInner" sx={{ height: windowSize.height / 2, overflow: "auto" }}>
-                        <Grid
-                          container
-                          sx={{
-                            border: "1px solid #E8E8E8",
-                            pt: 2,
-                            pb: 2,
-                            mb: 2,
-                            borderRadius: "5px",
-                            gap: "10px 0px !important"
-                          }}
-                        >
-                          <Grid item lg={12} md={12} sm={12} xs={12}>
-                            <StyledCodeTypography className="">
-                              Codes/Conditions to be actioned Everywhere.
-                            </StyledCodeTypography>
-                          </Grid>
-
-                          {combinedData.length == 0 ? (
-                            <>
-                              <div className="ItemsDivNew">
-                                <p>No applicable codes/conditions.</p>
-                              </div>
-                            </>
-                          ) :
-
-                            combinedData.map((item, index) => (
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                  px: 0,
-                                  ml: 0.08,
-                                  mt: 0.5,
-                                  cursor: "pointer",
-                                }}
-                                key={index}
-                              >
-                                <Tooltip title={item?.code + " : " + item?.value}>
-                                  <Typography>
-                                    <StylePop className="ChipSpan">
-                                      {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
-                                      {": "}
-                                      { item?.value?.slice(0, 30)} { item?.value?.length > 30 ? "..." : " "}
-                                    </StylePop>
-                                  </Typography>
-                                </Tooltip>
-                              </Stack>
-                            ))
-
-                          }
-
-                        </Grid>
-
+                      <Box className="modalInner" sx={{ height: windowSize.height / 2, overflow: "auto" }} >
                         <Grid
                           container
                           sx={{
@@ -686,8 +627,109 @@ const SubmitModal = ({
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                              Actions to be taken in EHR{" "}
+
+                              Codes/Conditions that would go in EHR
                             </StyledCodeTypography>
+                          </Grid>
+
+                          {
+                            (
+                              inProblemList.length) == 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
+
+                              <>
+                                {inProblemList.length > 0 &&
+                                  inProblemList.map((item, index) => (
+                                    <Stack
+                                      key={index}
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: 'pointer',
+                                      }}
+                                    >
+                                      <Tooltip title={`${item?.code} : ${item?.value}`}>
+                                        <Typography>
+                                          <StylePop className="ChipSpan">
+                                            {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
+                                            {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
+                                          </StylePop>{' '}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+                              </>
+                          }
+
+                        </Grid>
+
+                        <Grid
+                          container
+                          sx={{
+                            border: "1px solid #E8E8E8",
+                            pt: 2,
+                            pb: 2,
+                            mb: 2,
+                            borderRadius: "5px",
+                            gap: "10px 0px !important"
+                          }}
+                        >
+                          <Grid item lg={12} md={12} sm={12} xs={12}>
+                            <StyledCodeTypography className="">
+                              Actions to be taken in EHR
+                            </StyledCodeTypography>
+                          </Grid>
+
+                          <Grid item lg={12} md={12} sm={12} xs={12}>
+                            <Typography>Potential Recaptures:</Typography>
+                          </Grid>
+
+                          {
+                            notInProblemList.length == 0 ? (
+                              <>
+                                <div className="ItemsDivNew">
+                                  <p>No applicable codes/conditions.</p>
+                                </div>
+                              </>
+                            ) :
+                              <>
+                                {
+                                  notInProblemList.map((item, index) => (
+                                    <Stack
+                                      key={index}
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: 'pointer',
+                                      }}
+                                    >
+                                      <Tooltip title={`${item?.code} : ${item?.value}`}>
+                                        <Typography>
+                                          <StylePop className="ChipSpan">
+                                            {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
+                                            {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
+                                          </StylePop>{' '}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+                              </>
+                          }
+
+
+                          <Grid item lg={12} md={12} sm={12} xs={12}>
+                            <Typography>Potential Actions:</Typography>
                           </Grid>
 
                           {
@@ -711,13 +753,12 @@ const SubmitModal = ({
                                   }}
                                   key={index}
                                 >
-                                  <Tooltip 
-                                  title={item?.code + ((item?.value)? (" : " + item?.value) : null)}
+                                  <Tooltip
+                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
                                   >
                                     <Typography>
                                       <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-                                        
+                                        {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
@@ -725,6 +766,7 @@ const SubmitModal = ({
                               ))
 
                           }
+
                         </Grid>
 
                         <Grid
@@ -770,8 +812,8 @@ const SubmitModal = ({
                                       <Tooltip
                                         title={
                                           Object.keys(item) +
-                                          " : " +
-                                          ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
+                                            " : " +
+                                            ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
 
                                         }
                                       >
@@ -784,8 +826,6 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                              {/* :
-                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -815,19 +855,29 @@ const SubmitModal = ({
                                           <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
-                                              .slice(0, 20)}{" "}
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
-                                              : ""}  {": "} 
-                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                              : ""}
+
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
                                   ))}
 
-                                {recaptureCodeReject?.length > 0 &&
+                                {
+                                  recaptureCodeReject?.length > 0 &&
                                   recaptureCodeReject?.map((item, index) => (
                                     <Stack
                                       direction="row"
@@ -850,13 +900,20 @@ const SubmitModal = ({
                                           <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
-                                              .slice(0, 20)}{" "}
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
                                               : ""}
-                                              {": "}
-                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                            :
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -886,12 +943,20 @@ const SubmitModal = ({
                                           <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
-                                              .slice(0, 20)}{" "}
+                                              .slice(0, 20)}{" : "}
+
+                                            {item[Object.keys(item)[0]].value
+                                              .slice(0, 30)}{" "}
+                                            :
                                             {Object.keys(item).toString().length >
                                               20
                                               ? "..."
-                                              : ""} {": "}
-                                              {item[Object.keys(item)].value.slice(0, 30)} { item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                              : ""}
+
+                                            {item[Object.keys(item)[0]].value.length >
+                                              30
+                                              ? "..."
+                                              : ""}{" "}
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -899,6 +964,8 @@ const SubmitModal = ({
                                   ))}
                               </>
                           }
+
+
 
                         </Grid>
                       </Box>
@@ -908,6 +975,7 @@ const SubmitModal = ({
               </Grid>
             </Grid>
           </DialogContentText>
+
           {existingCode?.length > 0 ||
             recaptureCode?.length > 0 ||
             duplicateCode?.length > 0 ||
@@ -917,7 +985,7 @@ const SubmitModal = ({
             suspectCodeReject?.length > 0 ||
             duplicateCodeReject?.length > 0 ? (
             <button
-              style={{ cursor: "pointer", width: "98%", margin: "0 auto" }}
+              style={{ cursor: "pointer", width: "98%", margin: "0 auto", }}
               className="SubmitBtn"
               onClick={() => handleSubmit()}
             >
@@ -935,7 +1003,9 @@ const SubmitModal = ({
               Submit & Close
             </button>
           )}
+
         </DialogContent>
+
       )}
     </Dialog>
   );
@@ -944,430 +1014,4 @@ const SubmitModal = ({
 export default SubmitModal;
 
 
-//       (
-//         <DialogContent
-//           sx={{
-//             display: "flex",
-//             justifyContent: "space-between",
-//             flexDirection: "column",
-//           }}
-//         >
-//           <DialogContentText>
-//             <Grid
-//               container
-//               spacing={2}
-//               display={"flex"}
-//               flexDirection={"column"}
-//               gap={"10px"}
-//             >
-//               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-//                 <Box
-//                   display="flex"
-//                   justifyContent="space-between"
-//                   alignItems="center"
-//                 >
-//                   <StyledTypography>Summary</StyledTypography>
-//                   <Button
-//                     sx={{ justifyContent: "end", width: "12px" }}
-//                     onClick={() => setOpenSubmitModalFunc("epic")}
-//                   >
-//                     <CrossIcon2 width="12px" height="12px" />
-//                   </Button>
-//                 </Box>
-
-//                 <Grid >
-//                   <Card>
-//                     <CardContent sx={{ paddingInline: "0px" }}>
-//                       <Box className="modalInner" sx={{ height: windowSize.height / 2, overflow: "auto" }} >
-//                         <Grid
-//                           container
-//                           sx={{
-//                             border: "1px solid #E8E8E8",
-//                             pt: 2,
-//                             pb: 2,
-//                             mb: 2,
-//                             borderRadius: "5px",
-//                             gap: "10px"
-//                           }}
-//                         >
-//                           <Grid item lg={12} md={12} sm={12} xs={12}>
-//                             <StyledCodeTypography className="">
-                              
-//                               Codes/Conditions that would go in EHR
-//                             </StyledCodeTypography>
-//                           </Grid>
-
-//                           {
-//                             (
-//                               inProblemList.length) == 0 ? (
-//                               <>
-//                                 <div className="ItemsDivNew">
-//                                   <p>No applicable codes/conditions.</p>
-//                                 </div>
-//                               </>
-//                             ) :
-
-//                               <>
-//                                 {inProblemList.length > 0 &&
-//                                   inProblemList.map((item, index) => (
-//                                     <Stack
-//                                       key={index}
-//                                       direction="row"
-//                                       spacing={1}
-//                                       sx={{
-//                                         px: 0,
-//                                         ml: 0.08,
-//                                         mt: 0.5,
-//                                         cursor: 'pointer',
-//                                       }}
-//                                     >
-//                                       <Tooltip title={`${item?.code} : ${item?.value}`}>
-//                                         <Typography>
-//                                           <StylePop className="ChipSpan">
-//                                             {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
-//                                             {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
-//                                           </StylePop>{' '}
-//                                         </Typography>
-//                                       </Tooltip>
-//                                     </Stack>
-//                                   ))}
-//                               </>
-//                           }
-
-//                         </Grid>
-
-//                         <Grid
-//                           container
-//                           sx={{
-//                             border: "1px solid #E8E8E8",
-//                             pt: 2,
-//                             pb: 2,
-//                             mb: 2,
-//                             borderRadius: "5px",
-//                             gap: "10px 0px !important"
-//                           }}
-//                         >
-//                           <Grid item lg={12} md={12} sm={12} xs={12}>
-//                             <StyledCodeTypography className="">
-//                               Actions to be taken in EHR
-//                             </StyledCodeTypography>
-//                           </Grid>
-
-//                           <Grid item lg={12} md={12} sm={12} xs={12}>
-//                             <Typography>Potential Recaptures:</Typography>
-//                           </Grid>
-
-//                           {
-//                             notInProblemList.length == 0 ? (
-//                               <>
-//                                 <div className="ItemsDivNew">
-//                                   <p>No applicable codes/conditions.</p>
-//                                 </div>
-//                               </>
-//                             ) :
-//                               <>
-//                                 {
-//                                   notInProblemList.map((item, index) => (
-//                                     <Stack
-//                                       key={index}
-//                                       direction="row"
-//                                       spacing={1}
-//                                       sx={{
-//                                         px: 0,
-//                                         ml: 0.08,
-//                                         mt: 0.5,
-//                                         cursor: 'pointer',
-//                                       }}
-//                                     >
-//                                       <Tooltip title={`${item?.code} : ${item?.value}`}>
-//                                         <Typography>
-//                                           <StylePop className="ChipSpan">
-//                                             {item?.code?.slice(0, 20)}{' '} : {item?.value?.slice(0, 30)} {' '}
-//                                             {item?.code.length > 20 ? '...' : ''} {item?.value.length > 20 ? '...' : ''}
-//                                           </StylePop>{' '}
-//                                         </Typography>
-//                                       </Tooltip>
-//                                     </Stack>
-//                                   ))}
-//                               </>
-//                           }
-
-
-//                           <Grid item lg={12} md={12} sm={12} xs={12}>
-//                             <Typography>Potential Actions:</Typography>
-//                           </Grid>
-
-//                           {
-//                             combinedData2.length == 0 ? (
-//                               <>
-//                                 <div className="ItemsDivNew">
-//                                   <p>No applicable codes/conditions.</p>
-//                                 </div>
-//                               </>
-//                             ) :
-
-//                               combinedData2.map((item, index) => (
-//                                 <Stack
-//                                   direction="row"
-//                                   spacing={1}
-//                                   sx={{
-//                                     px: 0,
-//                                     ml: 0.08,
-//                                     mt: 0.5,
-//                                     cursor: "pointer",
-//                                   }}
-//                                   key={index}
-//                                 >
-//                                   <Tooltip 
-//                                   title={item?.code + ((item?.value)? (" : " + item?.value) : null)}
-//                                   >
-//                                     <Typography>
-//                                       <StylePop className="ChipSpan">
-//                                         {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""} 
-//                                       </StylePop>
-//                                     </Typography>
-//                                   </Tooltip>
-//                                 </Stack>
-//                               ))
-
-//                           }
-
-//                         </Grid>
-
-//                         <Grid
-//                           container
-//                           sx={{
-//                             border: "1px solid #E8E8E8",
-//                             pt: 2,
-//                             pb: 2,
-//                             mb: 2,
-//                             borderRadius: "5px",
-//                             gap: "10px"
-//                           }}
-//                         >
-//                           <Grid item lg={12} md={12} sm={12} xs={12}>
-//                             <StyledCodeTypography className="">
-//                               Rejected codes/conditions from Doctustech{" "}
-//                             </StyledCodeTypography>
-//                           </Grid>
-
-//                           {
-//                             !(
-//                               existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
-//                               <>
-//                                 <div className="ItemsDivNew">
-//                                   <p>No applicable codes/conditions.</p>
-//                                 </div>
-//                               </>
-//                             ) :
-
-//                               <>
-//                                 {suspectCodeReject?.length > 0 &&
-//                                   suspectCodeReject?.map((item, index) => (
-//                                     <Stack
-//                                       direction="row"
-//                                       spacing={1}
-//                                       sx={{
-//                                         px: 0,
-//                                         ml: 0.08,
-//                                         mt: 0.5,
-//                                         cursor: "pointer",
-//                                       }}
-//                                     >
-//                                       <Tooltip
-//                                         title={
-//                                           Object.keys(item) +
-//                                           " : " +
-//                                           ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
-                                          
-//                                         }
-//                                       >
-//                                         <Typography>
-//                                           <StylePop className="ChipSpan rejected">
-//                                             {Object.keys(item)
-//                                               .toString()
-//                                               .slice(0, 20)}{" "}
-//                                             {Object.keys(item).toString().length >
-//                                               20
-//                                               ? "..."
-//                                               : ""}
-//                                           </StylePop>{" "}
-//                                         </Typography>
-//                                       </Tooltip>
-//                                     </Stack>
-//                                   ))}
-
-//                                 {existingCodeReject?.length > 0 &&
-//                                   existingCodeReject?.map((item, index) => (
-//                                     <Stack
-//                                       direction="row"
-//                                       spacing={1}
-//                                       sx={{
-//                                         px: 0,
-//                                         ml: 0.08,
-//                                         mt: 0.5,
-//                                         cursor: "pointer",
-//                                       }}
-//                                     >
-//                                       <Tooltip
-//                                         title={
-//                                           Object.keys(item) +
-//                                           " : " +
-//                                           item[Object.keys(item)].value
-//                                         }
-//                                       >
-//                                         <Typography>
-//                                           <StylePop className="ChipSpan rejected">
-//                                             {Object.keys(item)
-//                                               .toString()
-//                                               .slice(0, 20)}{" : "}
-
-//                                             {item[Object.keys(item)[0]].value
-//                                               .slice(0, 30)}{" "}
-
-//                                             {Object.keys(item).toString().length >
-//                                               20
-//                                               ? "..."
-//                                               : ""}
-                                              
-
-//                                             {item[Object.keys(item)[0]].value.length >
-//                                               30
-//                                               ? "..."
-//                                               : ""}{" "}
-//                                           </StylePop>{" "}
-//                                         </Typography>
-//                                       </Tooltip>
-//                                     </Stack>
-//                                   ))}
-
-//                                 {
-//                                 recaptureCodeReject?.length > 0 &&
-//                                   recaptureCodeReject?.map((item, index) => (
-//                                     <Stack
-//                                       direction="row"
-//                                       spacing={1}
-//                                       sx={{
-//                                         px: 0,
-//                                         ml: 0.08,
-//                                         mt: 0.5,
-//                                         cursor: "pointer",
-//                                       }}
-//                                     >
-//                                       <Tooltip
-//                                         title={
-//                                           Object.keys(item) +
-//                                           " : " +
-//                                           item[Object.keys(item)].value
-//                                         }
-//                                       >
-//                                         <Typography>
-//                                           <StylePop className="ChipSpan rejected">
-//                                             {Object.keys(item)
-//                                               .toString()
-//                                               .slice(0, 20)}{" : "}
-
-//                                             {item[Object.keys(item)[0]].value
-//                                               .slice(0, 30)}{" "}
-
-//                                             {Object.keys(item).toString().length >
-//                                               20
-//                                               ? "..."
-//                                               : ""}
-// :
-//                                             {item[Object.keys(item)[0]].value.length >
-//                                               30
-//                                               ? "..."
-//                                               : ""}{" "}
-//                                           </StylePop>{" "}
-//                                         </Typography>
-//                                       </Tooltip>
-//                                     </Stack>
-//                                   ))}
-
-//                                 {duplicateCodeReject?.length > 0 &&
-//                                   duplicateCodeReject?.map((item, index) => (
-//                                     <Stack
-//                                       direction="row"
-//                                       spacing={1}
-//                                       sx={{
-//                                         px: 0,
-//                                         ml: 0.08,
-//                                         mt: 0.5,
-//                                         cursor: "pointer",
-//                                       }}
-//                                     >
-//                                       <Tooltip
-//                                         title={
-//                                           Object.keys(item) +
-//                                           " : " +
-//                                           item[Object.keys(item)].value
-//                                         }
-//                                       >
-//                                         <Typography>
-//                                           <StylePop className="ChipSpan rejected">
-//                                             {Object.keys(item)
-//                                               .toString()
-//                                               .slice(0, 20)}{" : "}
-
-//                                             {item[Object.keys(item)[0]].value
-//                                               .slice(0, 30)}{" "}
-// :
-//                                             {Object.keys(item).toString().length >
-//                                               20
-//                                               ? "..."
-//                                               : ""}
-
-//                                             {item[Object.keys(item)[0]].value.length >
-//                                               30
-//                                               ? "..."
-//                                               : ""}{" "}
-//                                           </StylePop>{" "}
-//                                         </Typography>
-//                                       </Tooltip>
-//                                     </Stack>
-//                                   ))}
-//                               </>
-//                           }
-
-
-
-//                         </Grid>
-//                       </Box>
-//                     </CardContent>
-//                   </Card>
-//                 </Grid>
-//               </Grid>
-//             </Grid>
-//           </DialogContentText>
-
-//           {existingCode?.length > 0 ||
-//             recaptureCode?.length > 0 ||
-//             duplicateCode?.length > 0 ||
-//             Object?.keys(suspectCode)?.length > 0 ||
-//             existingCodeReject?.length > 0 ||
-//             recaptureCodeReject?.length > 0 ||
-//             suspectCodeReject?.length > 0 ||
-//             duplicateCodeReject?.length > 0 ? (
-//             <button
-//               style={{ cursor: "pointer", width: "98%", margin: "0 auto", }}
-//               className="SubmitBtn"
-//               onClick={() => handleSubmit()}
-//             >
-//               Submit & Close
-//             </button>
-//           ) : (
-//             <button
-//               style={{
-//                 cursor: "pointer",
-//                 backgroundColor: "#D3D3D3",
-//               }}
-//               className="SubmitBtn"
-//               disabled
-//             >
-//               Submit & Close
-//             </button>
-//           )}
-
-//         </DialogContent>
 
