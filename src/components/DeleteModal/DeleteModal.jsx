@@ -60,7 +60,7 @@ const Deletemodal = ({
             },
           }}
         >
-          Close
+          Cancel
         </Button>
       </DialogActions>
 
@@ -116,7 +116,7 @@ const Deletemodal = ({
                   <>
                     <InputBoxText
                       handleChange={(e) => handleOtherText(e)}
-                      label="Please mention the Reason for Rejection"
+                      label="Add Reason"
                       style={{
                         mt: 2,
                       }}

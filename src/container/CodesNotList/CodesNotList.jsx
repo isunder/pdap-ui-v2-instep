@@ -2920,8 +2920,8 @@ export const CodesNotList = ({ sessionObject }) => {
               </SelectField>
               {rejectReason === "Other" && (
                 <InputField
-                  // labelText='Please mention the Reason for Rejection'
-                  placeholder="Please mention the Reason for Rejection"
+                  // labelText='Add Reason'
+                  placeholder="Add Reason"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
                   labelText="Reason for Rejection"
@@ -2936,7 +2936,7 @@ export const CodesNotList = ({ sessionObject }) => {
               }}
             >
               <StyleButton variant="outlined" onClick={handleClose} sx={{}}>
-                Close
+                Cancel
               </StyleButton>
               <StyleButton
                 variant="contained"
