@@ -754,6 +754,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                               md="auto"
                               lg="auto"
                               xl="auto"
+                              sx={{maxWidth:'100% !important'}}
                               onClick={() => {
                                 if (!isConditionRejected(item)) {
                                   handleClickOpen1(
@@ -771,6 +772,11 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                                   color: "#fff",
                                   justifyContent: "center",
                                   cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  textAlign: "left"
+                                 
                                 }}
                               >
                                 {dataValue}
@@ -783,7 +789,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                                     borderRadius: "100px",
                                     display: "inline-block",
                                     textAlign: "center",
-                                    alignItems: "center"
+                                    alignItems: "center",
+                                    flexShrink:0
                                   }}
                                 >
                                   <CorrectIcon fill={"#008F53"} />

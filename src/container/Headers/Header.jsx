@@ -331,9 +331,7 @@ export const Header = ({ sessionObject }) => {
                             tabs?.patient_dashboard_suspect_percentage?.active) &&
                           doctorDetail?.doctor_name
                           ? {
-                            [theme.breakpoints.down("sm")]: {
-                              display: "none"
-                            }
+                            
                           }
                           : null)
                       })}

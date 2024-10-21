@@ -1112,7 +1112,7 @@ export const Codes = () => {
       let baseValue;
 
       if (window.innerWidth < 375) {
-        baseValue = "9.5rem"; // Example for widths below 375px
+        baseValue = "13.2rem"; // Example for widths below 375px
       } else if (window.innerWidth >= 375 && window.innerWidth < 549) {
         baseValue = "14rem"; // Example for widths between 375px and 549px
       } else {
