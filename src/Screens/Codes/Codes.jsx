@@ -1125,7 +1125,7 @@ export const Codes = () => {
         const baseValueInPx = parseFloat(baseValue) * 16; // Convert rem to px (1rem = 16px)
         setTopValue(`${(baseValueInPx + 36) / 16}rem`); // Convert back to rem
       }
-       else if((tabs?.patient_dashboard_recapture_percentage.active && tabs?.patient_dashboard_suspect_percentage.active) || doctorDetail?.doctor_name){
+       else if((tabs && tabs?.patient_dashboard_recapture_percentage?.active && tabs?.patient_dashboard_suspect_percentage?.active) || doctorDetail?.doctor_name){
         const baseValueInPx = parseFloat(baseValue) * 16; // Convert rem to px (1rem = 16px)
        if( window.innerWidth < 549){
         setTopValue(`${(baseValueInPx + 66) / 16}rem`); // Convert back to rem
