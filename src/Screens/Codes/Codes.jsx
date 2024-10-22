@@ -1115,9 +1115,9 @@ export const Codes = () => {
       let baseValue;
 
       if (window.innerWidth < 375) {
-        baseValue = "13.2rem"; // Example for widths below 375px
+        baseValue = "9.2rem"; // Example for widths below 375px
       } else if (window.innerWidth >= 375 && window.innerWidth < 549) {
-        baseValue = "14rem"; // Example for widths between 375px and 549px
+        baseValue = "10rem"; // Example for widths between 375px and 549px
       } else {
         baseValue = "10rem"; // Example for widths 549px and above
       }
@@ -1127,7 +1127,17 @@ export const Codes = () => {
         // Convert baseValue to pixels, add 30px, and set as the new topValue
         const baseValueInPx = parseFloat(baseValue) * 16; // Convert rem to px (1rem = 16px)
         setTopValue(`${(baseValueInPx + 36) / 16}rem`); // Convert back to rem
-      } else {
+      }
+       else if((tabs?.patient_dashboard_recapture_percentage.active && tabs?.patient_dashboard_suspect_percentage.active) || doctorDetail?.doctor_name){
+        const baseValueInPx = parseFloat(baseValue) * 16; // Convert rem to px (1rem = 16px)
+       if( window.innerWidth < 549){
+        setTopValue(`${(baseValueInPx + 66) / 16}rem`); // Convert back to rem
+       }
+       else{
+        setTopValue(baseValue);
+       }
+      }
+      else {
         setTopValue(baseValue);
       }
     };
@@ -1139,6 +1149,8 @@ export const Codes = () => {
     // Clean up event listener on component unmount
     return () => window.removeEventListener("resize", handleResize);
   }, [tabs]);
+
+  console.log(tabs, "tabs1234")
 
   const styles = {
     height: "max-content",
@@ -1286,7 +1298,7 @@ export const Codes = () => {
                               }}
                             >
                               <Grid container>
-                                <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                                <Grid item lg={2} md={2} sm={1.5} xs={1.5}>
                                   <PrimaryButton
                                     onClick={(event) => respExpand(event, 1)}
                                     disabled={(summary?.existing_codes_count === undefined || summary?.existing_codes_count === 0) || 0}
@@ -1315,7 +1327,7 @@ export const Codes = () => {
                                   lg={10}
                                   md={10}
                                   sm={10.5}
-                                  xs={9}
+                                  xs={10.5}
                                   sx={{ pl: 1 }}
                                 >
                                   <Typography
@@ -1340,7 +1352,7 @@ export const Codes = () => {
                                 </Grid>
                               </Grid>
                               <Grid container sx={{ my: 2 }}>
-                                <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                                <Grid item lg={2} md={2} sm={1.5} xs={1.5}>
                                   <PrimaryButton
                                     onClick={(event) => respExpand(event, 2)}
                                     disabled={(summary?.suspect_conditions_count === undefined || summary?.suspect_conditions_count === 0) || 0}
@@ -1369,7 +1381,7 @@ export const Codes = () => {
                                   lg={10}
                                   md={10}
                                   sm={10.5}
-                                  xs={9}
+                                  xs={10.5}
                                   sx={{ pl: 1 }}
                                 >
                                   <Typography
@@ -1394,7 +1406,7 @@ export const Codes = () => {
                                 </Grid>
                               </Grid>
                               <Grid container sx={{ my: 2 }}>
-                                <Grid item lg={2} md={2} sm={1.5} xs={3}>
+                                <Grid item lg={2} md={2} sm={1.5} xs={1.5}>
                                   <PrimaryButton
                                     onClick={(event) => respExpand(event, 3)}
                                     disabled={ (summary?.recapture_codes_count === undefined || summary?.recapture_codes_count === 0) || 0}
@@ -1423,7 +1435,7 @@ export const Codes = () => {
                                   lg={10}
                                   md={10}
                                   sm={10.5}
-                                  xs={9}
+                                  xs={10.5}
                                   sx={{ pl: 1 }}
                                 >
                                   <Typography
@@ -2502,7 +2514,7 @@ export const Codes = () => {
                     >
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
-                          disabled={(summary?.suspect_conditions_count || summary?.suspect_conditions_count === 0) || 0}
+                          disabled={(summary?.suspect_conditions_count === 0) || 0}
                           sx={{
                             width: "2.375rem",
                             height: "1.5625rem",

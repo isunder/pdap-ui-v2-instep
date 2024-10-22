@@ -424,7 +424,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                     paddingLeft: "4px",
                                                                 }}
                                                             >
-                                                                {item?.info?.deleted_on.substring(0, 10)}
+                                                                {item?.info?.deleted_on.substring(0, 10).replace(/-/g, '/')}
                                                             </Typography>
                                                         </Box>
                                                     </Grid>

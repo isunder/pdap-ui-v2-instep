@@ -182,7 +182,7 @@ export const patientTabFlag = createAsyncThunk("patientTabFlag", async () => {
         if (data && data.data) {
             data.data = data.data.map(tab => 
                 tab.name === "7_patient_dashboard_weights" 
-                ? { ...tab, active: true } 
+                ? { ...tab} 
                 : tab
             );
         }
