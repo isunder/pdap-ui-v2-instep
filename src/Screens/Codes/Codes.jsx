@@ -2509,7 +2509,7 @@ export const Codes = () => {
                     >
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
-                          disabled={(summary?.suspect_conditions_count === 0) || 0}
+                          disabled={(summary?.suspect_conditions_count === undefined || summary?.suspect_conditions_count === 0) || 0}
                           sx={{
                             width: "2.375rem",
                             height: "1.5625rem",
