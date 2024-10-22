@@ -363,6 +363,39 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             {item?.info?.icd_code_description === "" ? item?.info?.icd_code : item?.info?.icd_code_description}
                                                         </StyledText>
                                                     </Grid>
+                                                   
+                                                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                                        <Box
+                                                            sx={{
+                                                                fontSize: "14px",
+                                                                fontWeight: 500,
+                                                                lineHeight: "25px",
+                                                                letterSpacing: "0em",
+                                                                display: "inline-block",
+                                                            }}
+                                                        >
+                                                            <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                                Deleted On:
+                                                            </Typography>
+                                                            
+                                                            <Typography
+                                                                sx={{
+                                                                    fontSize: "14px",
+                                                                    fontWeight: 500,
+                                                                    lineHeight: "25px",
+                                                                    letterSpacing: "0.02em",
+                                                                    paddingLeft: "4px",
+                                                                }}
+                                                            >
+                                                                {item?.info?.deleted_on.substring(0, 10).replace(/-/g, '/')}
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
+
                                                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                                         <Box
                                                             sx={{
@@ -394,37 +427,6 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 }}
                                                             >
                                                                 {item?.info?.deleted_by}
-                                                            </Typography>
-                                                        </Box>
-                                                    </Grid>
-                                                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                                                        <Box
-                                                            sx={{
-                                                                fontSize: "14px",
-                                                                fontWeight: 500,
-                                                                lineHeight: "25px",
-                                                                letterSpacing: "0em",
-                                                                display: "inline-block",
-                                                            }}
-                                                        >
-                                                            <Typography
-                                                                sx={{
-                                                                    opacity: 0.6
-                                                                }}
-                                                            >
-                                                                Deleted On:
-                                                            </Typography>
-                                                            
-                                                            <Typography
-                                                                sx={{
-                                                                    fontSize: "14px",
-                                                                    fontWeight: 500,
-                                                                    lineHeight: "25px",
-                                                                    letterSpacing: "0.02em",
-                                                                    paddingLeft: "4px",
-                                                                }}
-                                                            >
-                                                                {item?.info?.deleted_on.substring(0, 10).replace(/-/g, '/')}
                                                             </Typography>
                                                         </Box>
                                                     </Grid>
