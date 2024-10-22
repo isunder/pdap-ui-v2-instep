@@ -1094,15 +1094,12 @@ export const Codes = () => {
   // New Expand in mobile function
 
   const respExpand = (event, panel) => {
-    console.log(event, panel)
     if (expanded === panel) {
       setExpanded(false);
     } else {
       setExpanded(panel);
     }
   };
-
-  console.log(expanded, "asdfghjkl")
 
 
   const [topValue, setTopValue] = useState("");
@@ -1149,8 +1146,6 @@ export const Codes = () => {
     // Clean up event listener on component unmount
     return () => window.removeEventListener("resize", handleResize);
   }, [tabs]);
-
-  console.log(tabs, "tabs1234")
 
   const styles = {
     height: "max-content",
