@@ -1028,7 +1028,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 <MenuItem value="Insufficient Proof">
                   Insufficient Proof
                 </MenuItem>
-                <MenuItem value="A better, more accurate code exists">A better, more Accurate code exists</MenuItem>
+                <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
                 <MenuItem value="Resolved">Resolved</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
               </SelectField>
