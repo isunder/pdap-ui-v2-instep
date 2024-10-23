@@ -543,7 +543,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
               >
 
                 {/* Description */}
-                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
+                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
                   sx={{
                     '@media (max-width:768px)':{
                       maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
@@ -582,7 +582,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 )}
 
                 {/* Action */}
-                <Grid item xs={12} sm={2} md={2} lg={2} xl={2}
+                <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
                   sx={{
                     [theme.breakpoints.down("769")]: {
                       display: "none !important",
@@ -611,7 +611,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
               >
                 {/* Description contents */}
-                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
+                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
                   className="suspect_desc_content"
                   sx={{
                     '@media (max-width:768px)': {
@@ -865,7 +865,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 {/* Action btn contents */}
 
 
-                <Grid item xs={12} sm={2} md={2} lg={2} xl={2}
+                <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
                   sx={{
                     display: "flex",
                     '@media (min-width:768px)': {
