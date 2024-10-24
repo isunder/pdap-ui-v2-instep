@@ -62,12 +62,12 @@
   margin-bottom: 6px;
 }
 .acc-content-header-item.ct-actions .acc-content-act-btn {
-  width: 92px;
+  width: 105px;
   font-size: 14px;
 }
-.acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
+/* .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
   width: auto ;
-}
+} */
 .acc-content-act-btns-wrap-otr, .acc-content-act-btns {
   justify-content: flex-start;
 }

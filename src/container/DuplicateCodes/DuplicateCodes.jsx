@@ -1088,7 +1088,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
                             ) ? (
                               <StyledButton1
                               disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
-                                sx={{ width: "105px !important" }}
+                                sx={{ width: "105px !important" , border:"none" }}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
                                   <StyleCircle

@@ -67,6 +67,9 @@ import { IdleModal } from "../../components/idleModal/IdleModal";
 import { refreshSSOToken } from "../../redux/userSlice/refreshToken";
 import { useLocation, useNavigate } from "react-router-dom";
 import { History, NotFound, MyProfile } from "../../Screens";
+import { Visibility } from "@mui/icons-material";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import zIndex from "@mui/material/styles/zIndex";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -468,7 +471,7 @@ export const Codes = () => {
     };
   }, [dispatch, tabs]);
 
- // Indexed Db Code and Setup
+  // Indexed Db Code and Setup
 
   const [eventData, setEventData] = useState([]);
   const [newEventData, setNewEventData] = useState([]);
@@ -603,7 +606,6 @@ export const Codes = () => {
   }
 
   const handleSubmit = async () => {
-
 
     let requestBody;
     if (existingCode?.length > 0) {
@@ -755,6 +757,8 @@ export const Codes = () => {
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary()).then(() => {
+        setLoadingSummary(false)
+      }).catch((error) => {
         setLoadingSummary(false)
       });
       sendAuditLog();
@@ -1077,17 +1081,17 @@ export const Codes = () => {
   const [singleExpand, setSingleExpand] = React.useState(false);
   const [isLoadingMain, setIsLoadingMain] = useState(true);
 
-  localStorage.setItem("setLoading" , true);
+  localStorage.setItem("setLoading", true);
 
   useEffect(() => {
     // Dispatch the patientTabFlag thunk and update the loading state
     dispatch(patientTabFlag())
       .then(() => {
-        setIsLoadingMain(false); 
-        localStorage.setItem("setLoading" , false)
+        setIsLoadingMain(false);
+        localStorage.setItem("setLoading", false)
       })
       .catch(() => {
-        localStorage.setItem("setLoading" , false)
+        localStorage.setItem("setLoading", false)
       });
   }, [dispatch]);
 
@@ -1105,9 +1109,9 @@ export const Codes = () => {
   const [topValue, setTopValue] = useState("");
   const [arrowState, setArrowState] = useState(false);
   const [arrowState2, setArrowState2] = useState(false);
-  
-   // Update topValue based on window width
-   useEffect(() => {
+
+  // Update topValue based on window width
+  useEffect(() => {
     const handleResize = () => {
       let baseValue;
 
@@ -1125,14 +1129,14 @@ export const Codes = () => {
         const baseValueInPx = parseFloat(baseValue) * 16; // Convert rem to px (1rem = 16px)
         setTopValue(`${(baseValueInPx + 36) / 16}rem`); // Convert back to rem
       }
-       else if((tabs && tabs?.patient_dashboard_recapture_percentage?.active && tabs?.patient_dashboard_suspect_percentage?.active) || doctorDetail?.doctor_name){
+      else if ((tabs && tabs?.patient_dashboard_recapture_percentage?.active && tabs?.patient_dashboard_suspect_percentage?.active) || doctorDetail?.doctor_name) {
         const baseValueInPx = parseFloat(baseValue) * 16; // Convert rem to px (1rem = 16px)
-       if( window.innerWidth < 549){
-        setTopValue(`${(baseValueInPx + 66) / 16}rem`); // Convert back to rem
-       }
-       else{
-        setTopValue(baseValue);
-       }
+        if (window.innerWidth < 549) {
+          setTopValue(`${(baseValueInPx + 66) / 16}rem`); // Convert back to rem
+        }
+        else {
+          setTopValue(baseValue);
+        }
       }
       else {
         setTopValue(baseValue);
@@ -1147,15 +1151,48 @@ export const Codes = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [tabs]);
 
+  
+  const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(false);
+
   const styles = {
+    visibility: show ? "visible" : "hidden",
     height: "max-content",
-    top: topValue,
-    cursor: "auto"
+    top: '200%',
+    cursor: "auto",
+  transition: "all ease-in-out"
+  };
+
+  const styles2 = {
+    visibility: show2 ? "visible" : "hidden",
+    height: "max-content",
+    top: '200%',
+    cursor: "auto",
+    transition: "all ease-in-out"
   };
 
   const offcanvasBody = {
     padding: 0,
-    cursor: "auto"
+    cursor: "auto",
+    overflowY:'unset !important'
+  }
+
+  const backdropStyle = {
+    width:'100vw',
+    height:'100vh',
+    position:'absolute',
+    backdropFilter:'brightness(0.5)',
+    zIndex:'-1'
+  }
+
+  const handleShow = () => {
+    setShow(!show)
+    setArrowState(!arrowState)
+  }
+
+  const handleShow2 = () => {
+    setShow2(!show2)
+    setArrowState2(!arrowState2)
   }
 
   if (isLoadingMain) {
@@ -1164,13 +1201,13 @@ export const Codes = () => {
 
   return (
     <>
-    <Header />
+      <Header />
       <SubHeader />
       {(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && (
         <Box
           sx={{
             backgroundColor: "#FDDECF",
-          
+
           }}
           className="pdap-ui-codes-read-only-t1-wrap"
         >
@@ -1208,11 +1245,11 @@ export const Codes = () => {
             },
           }}
         >
-          <Grid container sx={{
-            display: "flex", mt: 0, pt: 0, mb: 0,
-           
-            // backgroundColor: "#17236D"
-          }}>
+          <Grid container position={'relative'} sx={isModalSubmit ?
+            { display: "none" } :
+            { display: "flex", mt: 0, pt: 0, mb: 0 }
+            
+          }>
 
             <Grid
               item xs={6}
@@ -1241,11 +1278,11 @@ export const Codes = () => {
 
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                       <Grid item
-                        onClick={()=>setArrowState(!arrowState)}
+                        onClick={() => handleShow()}
                         type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
                         sx={{
                           display: "flex", justifyContent: "space-between", alignItems: "center",
-                          position: "relative",
+                          position: "unset",
                           [theme.breakpoints.down("xs")]: {
                             padding: "10px 5px"
                           }
@@ -1283,8 +1320,8 @@ export const Codes = () => {
                           </Box>
                         </StyledText>
 
-                        <div style={styles} class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-                          <div style={offcanvasBody} class="offcanvas-body">
+                        <div style={styles} className="offcanvas offcanvas-top position-absolute" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+                          <div style={offcanvasBody} className="offcanvas-body ">
                             <Box
                               sx={{
                                 backgroundColor: "#F2F4FF",
@@ -1404,7 +1441,7 @@ export const Codes = () => {
                                 <Grid item lg={2} md={2} sm={1.5} xs={1.5}>
                                   <PrimaryButton
                                     onClick={(event) => respExpand(event, 3)}
-                                    disabled={ (summary?.recapture_codes_count === undefined || summary?.recapture_codes_count === 0) || 0}
+                                    disabled={(summary?.recapture_codes_count === undefined || summary?.recapture_codes_count === 0) || 0}
                                     sx={{
                                       width: "2.375rem",
                                       height: "1.5625rem",
@@ -1506,12 +1543,14 @@ export const Codes = () => {
                       </Grid> */}
                             </Box>
                           </div>
+
+                          <div style={backdropStyle} class="backdrop-filter"> </div>
                         </div>
 
                         <>
                           {arrowState ? (
                             <ArrowDropUpIcon
-                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+                              type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
 
                               width={" 0.75rem"}
                               height={"0.5rem"}
@@ -1519,7 +1558,7 @@ export const Codes = () => {
                             />
                           ) : (
                             <ArrowDropDownIcon
-                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+                              type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
                               width={" 0.75rem"}
                               height={"0.5rem"}
                               fill={"white"}
@@ -1559,8 +1598,7 @@ export const Codes = () => {
                   rowSpacing={1}
                   columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 >
-                  <Grid
-                  onClick={()=>setArrowState2(!arrowState2)}
+                  <Grid onClick={() => handleShow2()}
                     type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
                     sx={{
                       display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -1568,7 +1606,7 @@ export const Codes = () => {
                         padding: "10px 5px"
                       }
                     }} item xs={12} sm={12} md={4} lg={4}>
-                    <StyledText className="summary-mobile"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{ ...flexCenter, gap: 0.5 }}>
+                    <StyledText className="summary-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{ ...flexCenter, gap: 0.5 }}>
                       Summary
                       {sumCount >= 0 && (
                         <Box
@@ -1605,7 +1643,7 @@ export const Codes = () => {
 
                     {arrowState2 ? (
                       <ArrowDropUpIcon
-                      type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
 
                         width={" 0.75rem"}
                         height={"0.5rem"}
@@ -1613,7 +1651,7 @@ export const Codes = () => {
                       />
                     ) : (
                       <ArrowDropDownIcon
-                      type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
 
                         width={" 0.75rem"}
                         height={"0.5rem"}
@@ -1622,8 +1660,8 @@ export const Codes = () => {
                     )}
 
 
-                    <div style={styles} class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop2" aria-labelledby="offcanvasTopLabel1">
-                      <div style={offcanvasBody} class="offcanvas-body" >
+                    <div style={styles2} className="offcanvas offcanvas-top position-absolute" tabindex="-1" id="offcanvasTop2" aria-labelledby="offcanvasTopLabel1">
+                      <div style={offcanvasBody} className="offcanvas-body" >
 
 
                         <Card
@@ -1647,13 +1685,13 @@ export const Codes = () => {
                               rowSpacing={1}
                               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                             >
-                              <Grid  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{
+                              <Grid type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{
                                 display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px 0px",
                                 [theme.breakpoints.down("xs")]: {
                                   padding: "10px 5px"
                                 }
                               }} item xs={12} sm={12} md={4} lg={4}>
-                                <StyledText className="summary-mobile"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{ ...flexCenter, gap: 0.5 }}>
+                                <StyledText className="summary-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop" sx={{ ...flexCenter, gap: 0.5 }}>
                                   Summary
                                   {sumCount >= 0 && (
                                     <Box
@@ -1690,7 +1728,7 @@ export const Codes = () => {
 
                                 {state["down"] ? (
                                   <ArrowDropUpIcon
-                                  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+                                    type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
 
                                     width={" 0.75rem"}
                                     height={"0.5rem"}
@@ -1698,7 +1736,7 @@ export const Codes = () => {
                                   />
                                 ) : (
                                   <ArrowDropDownIcon
-                                  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+                                    type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
 
                                     width={" 0.75rem"}
                                     height={"0.5rem"}
@@ -2232,6 +2270,7 @@ export const Codes = () => {
                         </Card>
 
                       </div>
+                      <div style={backdropStyle} class="backdrop-filter"> </div>
                     </div>
                   </Grid>
                 </Grid>
@@ -2347,7 +2386,7 @@ export const Codes = () => {
                                   }}
                                   className="codes-act-header-count-text"
                                 >
-                                  {item?.codeCount || ((item.codeCount === 0 || item.codeCount === undefined) ? 0 : <ClipLoader color="#ffffff" size={15} />)}
+                                  {!loadingSummary ? (item.codeCount || 0) : <ClipLoader color="#ffffff" size={15} />}
                                 </Typography>
                               </Box>
                             </StyledText>
@@ -3275,7 +3314,7 @@ export const Codes = () => {
         recaptureCodeNew={recaptureCodeNew}
         suspectCodeNew={suspectCodeNew}
         isModalOpen={isModalOpen}
-       
+
       />
 
       <DialogModal
@@ -3309,25 +3348,28 @@ export const Codes = () => {
             >
               Your actions are successfully captured
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                marginTop: '5px',
-                color: "#5C6469",
-                textAlign: 'center'
-              }}
-            >
-              You can now close the DoctusTech window by
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                color: "#5C6469",
-                textAlign: 'center'
-              }}
-            >
-              clicking X button.
-            </Typography>
+            {
+              tabs['type']?.value == "Athena" ?
+                (<><Typography
+                  variant="body2"
+                  sx={{
+                    marginTop: '5px',
+                    color: "#5C6469",
+                    textAlign: 'center'
+                  }}
+                >
+                  You can now close the DoctusTech window by
+                </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "#5C6469",
+                      textAlign: 'center'
+                    }}
+                  >
+                    clicking X button.
+                  </Typography></>) : null
+            }
           </Box>
         </Box>
       </DialogModal>

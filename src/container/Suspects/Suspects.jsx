@@ -882,7 +882,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       }
                       sx={{
                         fontSize: "14px",
-                        width: "98px !important",
+                        width: "105px !important",
                         justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
                         color: "#fff",
@@ -924,19 +924,17 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                       onClick={() => handleClickOpen(item)}
                       sx={{
                         fontSize: "14px",
-                        width: "92px !important",
+                        width: "98px !important",
                         justifyContent: "center",
                         backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                         color: "#fff !important",
                         ":hover": {
                           backgroundColor: theme.palette.primary.main,
                         },
-                        [theme.breakpoints.down("md")]: {
-                          width: "100% !important",
-                        },
+                       
 
-                        [theme.breakpoints.down("sm")]: {
-                          width: "100%",
+                        [theme.breakpoints.down("769")]: {
+                          width: "100% !important",
                         },
 
                         filter:

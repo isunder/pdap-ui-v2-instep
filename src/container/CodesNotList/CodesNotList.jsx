@@ -999,6 +999,12 @@ export const CodesNotList = ({ sessionObject }) => {
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
+                              sx={{
+                                
+                                  width: "105px !important",
+                                  border:"none"
+                                
+                              }}
                               disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
