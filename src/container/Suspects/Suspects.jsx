@@ -545,7 +545,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 {/* Description */}
                 <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
                   sx={{
-                    '@media (max-width:768px)':{
+                    '@media (max-width:767px)':{
                       maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
                             flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
                     }
@@ -554,7 +554,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                   }}
                   >
                   <StyledText sx={{padding:"0 !important", 
-                      '@media (max-width:768px)':{
+                      '@media (max-width:767px)':{
                         borderRight: tabs && tabs["patient_dashboard_weights"]?.active ? "2px solid rgba(0, 0, 0, 0.12)" : "0px !important",
                         
                            
@@ -584,7 +584,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 {/* Action */}
                 <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
                   sx={{
-                    [theme.breakpoints.down("769")]: {
+                    [theme.breakpoints.down("768")]: {
                       display: "none !important",
                     },
                   }}
@@ -614,7 +614,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
                   className="suspect_desc_content"
                   sx={{
-                    '@media (max-width:768px)': {
+                    '@media (max-width:767px)': {
                       maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
                       flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
                     }
@@ -868,7 +868,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
                   sx={{
                     display: "flex",
-                    '@media (min-width:768px)': {
+                    '@media (min-width:767px)': {
                      paddingLeft:"10px"
                     }
                   }}
@@ -889,7 +889,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                         ":hover": {
                           backgroundColor: theme.palette.error.main,
                         },
-                        [theme.breakpoints.down("769")]: {
+                        [theme.breakpoints.down("768")]: {
                           width: "100% !important",
                         },
                         filter:
@@ -933,7 +933,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                         },
                        
 
-                        [theme.breakpoints.down("769")]: {
+                        [theme.breakpoints.down("768")]: {
                           width: "100% !important",
                         },
 

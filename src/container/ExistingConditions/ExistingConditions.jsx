@@ -882,7 +882,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                   )}
                   <StyledText sx={{
 
-                    '@media (max-width:768px)': {
+                    '@media (max-width:767px)': {
                       display: 'none'
                     }
 
@@ -1272,7 +1272,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 sx={{
                                   border: "none !important", width: "105px !important",
-                                  [theme.breakpoints.down("769")]: {
+                                  [theme.breakpoints.down("768")]: {
                                     width: "100% !important"
                                   },
 
