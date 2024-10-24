@@ -1351,7 +1351,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     },
 
 
-                                    [theme.breakpoints.down("769")]: {
+                                    [theme.breakpoints.down("768")]: {
                                       width: "100% !important"
                                     }
                                   }}
