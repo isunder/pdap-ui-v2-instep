@@ -3349,7 +3349,7 @@ export const Codes = () => {
               Your actions are successfully captured
             </Typography>
             {
-              tabs['type']?.value == "Athena" ?
+              tabs && tabs['type']?.value == "Athena" ?
                 (<><Typography
                   variant="body2"
                   sx={{
@@ -3368,7 +3368,25 @@ export const Codes = () => {
                     }}
                   >
                     clicking X button.
-                  </Typography></>) : null
+                  </Typography></>) : (<><Typography
+                  variant="body2"
+                  sx={{
+                    marginTop: '5px',
+                    color: "#5C6469",
+                    textAlign: 'center'
+                  }}
+                >
+                 
+                </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "#5C6469",
+                      textAlign: 'center'
+                    }}
+                  >
+                  
+                  </Typography></>)
             }
           </Box>
         </Box>
