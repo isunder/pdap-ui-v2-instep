@@ -1,22 +1,32 @@
 import React from 'react'
 import { Routers } from './routes';
 import { Helmet } from 'react-helmet';
+import CacheBuster from 'react-cache-buster';
+import packageJson from '../package.json';
 
 const App = () => {
+
+  const isProduction = process.env.NODE_ENV === 'production';
+
   return (
-    <>
-      <Helmet>
-        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="X-Frame-Options" content="DENY" />
-        <meta name="referrer" content="no-referrer" />
-        <meta name="server" content="Custom Server" />
-        <meta 
-          httpEquiv="Strict-Transport-Security" 
-          content="max-age=31536000; includeSubDomains" 
-        />
-        <meta 
-          httpEquiv="Content-Security-Policy" 
-          content={`
+    <CacheBuster
+      currentVersion={packageJson.version}
+      isEnabled={isProduction} // Enable only in production
+      isVerboseMode={!isProduction} // Logs info in non-production environments
+    >
+      <>
+        <Helmet>
+          <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+          <meta httpEquiv="X-Frame-Options" content="DENY" />
+          <meta name="referrer" content="no-referrer" />
+          <meta name="server" content="Custom Server" />
+          <meta
+            httpEquiv="Strict-Transport-Security"
+            content="max-age=31536000; includeSubDomains"
+          />
+          <meta
+            httpEquiv="Content-Security-Policy"
+            content={`
             default-src 'self';
             connect-src 
               'self' 
@@ -46,10 +56,11 @@ const App = () => {
             form-action 'self';
             upgrade-insecure-requests;
           `}
-        />
-      </Helmet>
-      <Routers />
-    </>
+          />
+        </Helmet>
+        <Routers />
+      </>
+    </CacheBuster>
   );
 };
 
