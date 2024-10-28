@@ -1549,22 +1549,25 @@ export const Codes = () => {
                         </div>
 
                         <>
-                          {arrowState ? (
-                            <ArrowDropUpIcon
-                              type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+                          {
+                            !loadingSummary ? (
+                              arrowState ? (
+                                <ArrowDropUpIcon
+                                  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
 
-                              width={" 0.75rem"}
-                              height={"0.5rem"}
-                              fill={"white"}
-                            />
-                          ) : (
-                            <ArrowDropDownIcon
-                              type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
-                              width={" 0.75rem"}
-                              height={"0.5rem"}
-                              fill={"white"}
-                            />
-                          )}
+                                  width={" 0.75rem"}
+                                  height={"0.5rem"}
+                                  fill={"white"}
+                                />
+                              ) : (
+                                <ArrowDropDownIcon
+                                  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+                                  width={" 0.75rem"}
+                                  height={"0.5rem"}
+                                  fill={"white"}
+                                />
+                              )) : null
+                          }
                         </>
 
 
@@ -1642,23 +1645,25 @@ export const Codes = () => {
                       )}
                     </StyledText>
 
-                    {arrowState2 ? (
-                      <ArrowDropUpIcon
-                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
+                    {
+                      !loadingSummary ? (
+                        arrowState2 ? (
+                          <ArrowDropUpIcon
+                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
 
-                        width={" 0.75rem"}
-                        height={"0.5rem"}
-                        fill={"black"}
-                      />
-                    ) : (
-                      <ArrowDropDownIcon
-                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop2" aria-controls="offcanvasTop"
-
-                        width={" 0.75rem"}
-                        height={"0.5rem"}
-                        fill={"black"}
-                      />
-                    )}
+                            width={" 0.75rem"}
+                            height={"0.5rem"}
+                            fill={"black"}
+                          />
+                        ) : (
+                          <ArrowDropDownIcon
+                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"
+                            width={" 0.75rem"}
+                            height={"0.5rem"}
+                            fill={"black"}
+                          />
+                        )) : null
+                    }
 
 
                     <div style={styles2} className="offcanvas offcanvas-top position-absolute" tabindex="-1" id="offcanvasTop2" aria-labelledby="offcanvasTopLabel1">
