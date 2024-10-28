@@ -11,8 +11,8 @@ const App = () => {
   return (
     <CacheBuster
       currentVersion={packageJson.version}
-      isEnabled={isProduction} // Enable only in production
-      isVerboseMode={!isProduction} // Logs info in non-production environments
+      // isEnabled={isProduction} // Enable only in production
+      // isVerboseMode={!isProduction} // Logs info in non-production environments
     >
       <>
         <Helmet>
