@@ -584,9 +584,9 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                 {/* Action */}
                 <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
                   sx={{
-                    [theme.breakpoints.down("768")]: {
-                      display: "none !important",
-                    },
+                    '@media (max-width:767px)': {
+                      display: 'none'
+                    }
                   }}
                 >
                   <StyledText sx={{ border: "none !important" }} className={`${tabs && !tabs["patient_dashboard_weights"]?.active ? "suspect_action_custom_width acc-content-cust-header1" : "acc-content-cust-header1"}`}>
@@ -932,9 +932,8 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                           backgroundColor: theme.palette.primary.main,
                         },
                        
-
-                        [theme.breakpoints.down("768")]: {
-                          width: "100% !important",
+                        '@media (max-width:767px)': {
+                          width:"100% !important"
                         },
 
                         filter:

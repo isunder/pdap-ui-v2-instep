@@ -1272,10 +1272,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                 disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 sx={{
                                   border: "none !important", width: "105px !important",
-                                  [theme.breakpoints.down("768")]: {
-                                    width: "100% !important"
-                                  },
-
+                                 
                                 }}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
@@ -1349,11 +1346,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
                                     ":hover": {
                                       backgroundColor: theme.palette.error.main,
                                     },
-
-
-                                    [theme.breakpoints.down("768")]: {
-                                      width: "100% !important"
-                                    }
                                   }}
                                   startIcon={
                                     <StyleCircle

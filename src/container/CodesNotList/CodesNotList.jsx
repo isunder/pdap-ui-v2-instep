@@ -664,7 +664,7 @@ export const CodesNotList = ({ sessionObject }) => {
                     </StyledText>
                   )}
                   <StyledText sx={{
-                      '@media (max-width:768px)': {
+                      '@media (max-width:767px)': {
                        display:'none'
                       }}} className="acc-content-header-item ct-actions">
                     Actions

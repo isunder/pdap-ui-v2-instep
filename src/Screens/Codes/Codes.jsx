@@ -1151,7 +1151,7 @@ export const Codes = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [tabs]);
 
-  
+
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
 
@@ -1160,7 +1160,7 @@ export const Codes = () => {
     height: "max-content",
     top: '200%',
     cursor: "auto",
-  transition: "all ease-in-out"
+    transition: "all ease-in-out"
   };
 
   const styles2 = {
@@ -1174,15 +1174,15 @@ export const Codes = () => {
   const offcanvasBody = {
     padding: 0,
     cursor: "auto",
-    overflowY:'unset !important'
+    overflowY: 'unset !important'
   }
 
   const backdropStyle = {
-    width:'100vw',
-    height:'100vh',
-    position:'absolute',
-    backdropFilter:'brightness(0.5)',
-    zIndex:'-1'
+    width: '100vw',
+    height: '100vh',
+    position: 'absolute',
+    backdropFilter: 'brightness(0.5)',
+    zIndex: '-1'
   }
 
   const handleShow = () => {
@@ -1248,7 +1248,7 @@ export const Codes = () => {
           <Grid container position={'relative'} sx={isModalSubmit ?
             { display: "none" } :
             { display: "flex", mt: 0, pt: 0, mb: 0 }
-            
+
           }>
 
             <Grid
@@ -1312,10 +1312,11 @@ export const Codes = () => {
                                 textAlign: "center",
                                 lineHeight: "160%",
                                 fontWeight: 600,
+                                ...flexCenter,
                               }}
                             >
 
-                              {(summary?.recapture_codes_count + summary?.suspect_conditions_count + summary?.existing_codes_count) || 0}
+                              {!loadingSummary ? ((summary?.recapture_codes_count + summary?.suspect_conditions_count + summary?.existing_codes_count) || 0) : <ClipLoader color="#000000" size={15} />}
                             </Typography>
                           </Box>
                         </StyledText>
@@ -1628,14 +1629,14 @@ export const Codes = () => {
                               fontStyle: "normal",
                               fontWeight: "600",
                               lineHeight: "normal",
-
+                              ...flexCenter,
                               [theme.breakpoints.up("sm")]: {
                                 p: '7px',
                               },
 
                             }}
                           >
-                            {sumCount}
+                            {!loadingSummary ? (sumCount || 0) : <ClipLoader color="#ffffff" size={15} />}
                           </Typography>
                         </Box>
                       )}
@@ -2386,7 +2387,7 @@ export const Codes = () => {
                                   }}
                                   className="codes-act-header-count-text"
                                 >
-                                  {!loadingSummary ? (item.codeCount || 0) : <ClipLoader color="#ffffff" size={15} />}
+                                  {!loadingSummary ? (item?.codeCount || 0) : <ClipLoader color="#ffffff" size={15} />}
                                 </Typography>
                               </Box>
                             </StyledText>
@@ -3369,24 +3370,24 @@ export const Codes = () => {
                   >
                     clicking X button.
                   </Typography></>) : (<><Typography
-                  variant="body2"
-                  sx={{
-                    marginTop: '5px',
-                    color: "#5C6469",
-                    textAlign: 'center'
-                  }}
-                >
-                 
-                </Typography>
-                  <Typography
                     variant="body2"
                     sx={{
+                      marginTop: '5px',
                       color: "#5C6469",
                       textAlign: 'center'
                     }}
                   >
-                  
-                  </Typography></>)
+
+                  </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#5C6469",
+                        textAlign: 'center'
+                      }}
+                    >
+
+                    </Typography></>)
             }
           </Box>
         </Box>
