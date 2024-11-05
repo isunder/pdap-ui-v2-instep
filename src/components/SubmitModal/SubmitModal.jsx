@@ -738,7 +738,7 @@ const SubmitModal = ({
                                     <Typography>
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-                                        {": "}
+                                        {item?.value ? ":" : ""}
                                         {item?.value?.slice(0, 30)} {item?.value?.length > 30 ? "..." : " "}
                                       </StylePop>
                                     </Typography>
