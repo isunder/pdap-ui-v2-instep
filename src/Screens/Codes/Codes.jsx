@@ -1825,7 +1825,7 @@ export const Codes = () => {
                                             <Typography
 
                                               onClick={(event) =>
-                                                handleDelete(event , item, "existing")
+                                                handleDelete(event, item, "existing")
                                               }
                                             >
                                               <StylePop className="ChipSpan">
@@ -1947,13 +1947,13 @@ export const Codes = () => {
                                           >
                                             <Typography
                                               onClick={(event) =>
-                                                handleDelete(event , item, "suspect")
+                                                handleDelete(event, item, "suspect")
                                               }
                                             >
                                               <StylePop className="ChipSpan">
                                                 {item?.code?.slice(0, 20)}{" "}
                                                 {item?.code.length > 20 ? "..." : ""}
-                                                :
+                                                {item?.value ? ":" : ""}
                                                 {item?.value?.slice(0, 20)}{" "}
                                                 {item?.value?.length > 20 ? "..." : ""}
                                                 <Typography sx={{ flexGrow: 1, ml: "10px" }}>
@@ -1996,7 +1996,7 @@ export const Codes = () => {
                                                   20
                                                   ? "..."
                                                   : ""}
-                                                :
+                                               {item?.value ? ":" : ""}
                                                 {item?.value?.slice(0, 20)}{" "}
                                                 {item?.value?.length > 20 ? "..." : ""}
 
@@ -2113,7 +2113,7 @@ export const Codes = () => {
                                           >
                                             <Typography
                                               onClick={(event) =>
-                                                handleDelete(event , item, "recapture")
+                                                handleDelete(event, item, "recapture")
                                               }
                                             >
                                               <StylePop className="ChipSpan rejected">
@@ -2803,8 +2803,6 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-
-
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
@@ -2842,7 +2840,6 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan rejected">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon state="rejected" />{" "}
                                         </Typography>
@@ -2929,7 +2926,6 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
@@ -3060,7 +3056,6 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
@@ -3099,7 +3094,6 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan rejected">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon state="rejected" />{" "}
                                         </Typography>
@@ -3184,7 +3178,6 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon />{" "}
                                         </Typography>
@@ -3223,7 +3216,6 @@ export const Codes = () => {
                                       <StylePop className="ChipSpan rejected">
                                         {item?.code?.slice(0, 20)}{" "}
                                         {item?.code.length > 20 ? "..." : ""}
-
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                           <CrossIcon state="rejected" />{" "}
                                         </Typography>

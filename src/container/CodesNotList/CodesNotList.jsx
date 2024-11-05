@@ -580,6 +580,7 @@ export const CodesNotList = ({ sessionObject }) => {
           code: item.code,
           value: item?.value ? item?.value : item?.info?.value,
           additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
+          code_in_problem_list: item?.code_in_problem_list ? item?.code_in_problem_list : item?.info?.code_in_problem_list
         };
         updateVal =
           selectedRecaptureCode?.length > 0

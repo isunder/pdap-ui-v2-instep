@@ -91,7 +91,6 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
   const [buttonDisable, setButtonDisable] = useState(false)
   const { user } = useSelector((state) => state);
 
-
   const handleClickOpen = (item, code) => {
     setButtonDisable(false);
 
@@ -348,6 +347,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
           code: item?.code,
           value: item?.value ? item?.value : item?.info?.value,
           additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
+          code_in_problem_list: item?.code_in_problem_list ? item?.code_in_problem_list : item?.info?.code_in_problem_list
         };
         updateVal =
           selectedExistingcode?.length > 0
@@ -455,6 +455,7 @@ export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
           code: item?.code,
           value: item?.value ? item?.value : item?.info?.value,
           additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
+          code_in_problem_list: item?.code_in_problem_list ? item?.code_in_problem_list : item?.info?.code_in_problem_list
         };
       }
     });

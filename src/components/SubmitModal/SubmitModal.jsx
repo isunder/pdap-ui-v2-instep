@@ -72,6 +72,8 @@ const SubmitModal = ({
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const [combinedData, setCombinedData] = useState([]);
   const [combinedData2, setCombinedData2] = useState([]);
+  const [combinedDatahoag, setCombinedDatahoag] = useState([]);
+  const [combinedData2hoag, setCombinedData2hoag] = useState([]);
   const [inProblemList, setInProblemList] = useState([]);
   const [notInProblemList, setNotInProblemList] = useState([]);
 
@@ -146,6 +148,9 @@ const SubmitModal = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  
+  // athena settings
+
 
   useEffect(() => {
     const combined = [
@@ -166,6 +171,27 @@ const SubmitModal = ({
     setCombinedData2(combined2)
   }, [existingCode, suspectCode, duplicateCode, recaptureCode]);
 
+  // hoag epic settings
+
+  useEffect(() => {
+
+    const combined = [
+    ...existingCode.filter((item) => item.code_in_problem_list === false),
+    ...suspectCode.filter((item) => item.value !== ""),
+    ...duplicateCode.filter((item) => item.code_in_problem_list === false),
+    ...recaptureCode.filter((item) => item.code_in_problem_list === false),
+  ];
+
+  const combined2 = [
+    ...existingCode.filter((item) => item.code_in_problem_list === true),
+    ...suspectCode.filter((item) => item.value === ""),
+    ...duplicateCode.filter((item) => item.code_in_problem_list === true),
+    ...recaptureCode.filter((item) => item.code_in_problem_list === true),
+  ];
+
+    setCombinedDatahoag(combined);
+    setCombinedData2hoag(combined2)
+  }, [existingCode, suspectCode, duplicateCode, recaptureCode]);
 
   useEffect(() => {
     const combined = [
@@ -184,6 +210,7 @@ const SubmitModal = ({
     setInProblemList(combined);
     setNotInProblemList(combined2);
   }, [matchedValuesExisting, suspectCode, matchedValuesDuplicate, matchedValuesRecapture]);
+
 
 
   const setOpenSubmitModalFunc = (key) => {
@@ -631,7 +658,7 @@ const SubmitModal = ({
                             </StyledCodeTypography>
                           </Grid>
 
-                          {combinedData.length == 0 ? (
+                          {combinedDatahoag.length == 0 ? (
                             <>
                               <div className="ItemsDivNew">
                                 <p>No applicable codes/conditions.</p>
@@ -639,7 +666,7 @@ const SubmitModal = ({
                             </>
                           ) :
 
-                            combinedData.map((item, index) => (
+                          combinedDatahoag.map((item, index) => (
                               <Stack
                                 direction="row"
                                 spacing={1}
@@ -685,7 +712,7 @@ const SubmitModal = ({
                           </Grid>
 
                           {
-                            combinedData2.length == 0 ? (
+                            combinedData2hoag.length == 0 ? (
                               <>
                                 <div className="ItemsDivNew">
                                   <p>No applicable codes/conditions.</p>
@@ -693,7 +720,7 @@ const SubmitModal = ({
                               </>
                             ) :
 
-                              combinedData2.map((item, index) => (
+                            combinedData2hoag.map((item, index) => (
                                 <Stack
                                   direction="row"
                                   spacing={1}
@@ -711,7 +738,8 @@ const SubmitModal = ({
                                     <Typography>
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-
+                                        {": "}
+                                        {item?.value?.slice(0, 30)} {item?.value?.length > 30 ? "..." : " "}
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
