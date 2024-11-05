@@ -834,7 +834,8 @@ export const Codes = () => {
   ];
 
 
-  const handleDelete = (item, key) => {
+  const handleDelete = (event, item, key) => {
+    event.stopPropagation()
     let newSessionObject = {};
     if (key === "existing") {
       if (item?.reason) {
@@ -1187,11 +1188,13 @@ export const Codes = () => {
 
   const handleShow = () => {
     setShow(!show)
+    setShow2(false)
     setArrowState(!arrowState)
   }
 
   const handleShow2 = () => {
     setShow2(!show2)
+    setShow(false)
     setArrowState2(!arrowState2)
   }
 
@@ -1821,8 +1824,8 @@ export const Codes = () => {
                                           >
                                             <Typography
 
-                                              onClick={() =>
-                                                handleDelete(item, "existing")
+                                              onClick={(event) =>
+                                                handleDelete(event , item, "existing")
                                               }
                                             >
                                               <StylePop className="ChipSpan">
@@ -1855,8 +1858,8 @@ export const Codes = () => {
                                             title={item?.code + " : " + item?.value}
                                           >
                                             <Typography
-                                              onClick={() =>
-                                                handleDelete(item, "existing")
+                                              onClick={(event) =>
+                                                handleDelete(event, item, "existing")
                                               }
                                             >
                                               <StylePop className="ChipSpan rejected">
@@ -1943,8 +1946,8 @@ export const Codes = () => {
                                             title={item?.code + " : " + item?.value}
                                           >
                                             <Typography
-                                              onClick={() =>
-                                                handleDelete(item, "suspect")
+                                              onClick={(event) =>
+                                                handleDelete(event , item, "suspect")
                                               }
                                             >
                                               <StylePop className="ChipSpan">
@@ -1981,8 +1984,8 @@ export const Codes = () => {
                                             }
                                           >
                                             <Typography
-                                              onClick={() =>
-                                                handleDelete(item, "suspect")
+                                              onClick={(event) =>
+                                                handleDelete(event, item, "suspect")
                                               }
                                             >
                                               <StylePop className="ChipSpan rejected">
@@ -2075,8 +2078,8 @@ export const Codes = () => {
                                             title={item?.code + " : " + item?.value}
                                           >
                                             <Typography
-                                              onClick={() =>
-                                                handleDelete(item, "recapture")
+                                              onClick={(event) =>
+                                                handleDelete(event, item, "recapture")
                                               }
                                             >
                                               <StylePop className="ChipSpan">
@@ -2109,8 +2112,8 @@ export const Codes = () => {
                                             title={item?.code + " : " + item?.value}
                                           >
                                             <Typography
-                                              onClick={() =>
-                                                handleDelete(item, "recapture")
+                                              onClick={(event) =>
+                                                handleDelete(event , item, "recapture")
                                               }
                                             >
                                               <StylePop className="ChipSpan rejected">
@@ -2189,8 +2192,8 @@ export const Codes = () => {
                                             title={item?.code + " : " + item?.value}
                                           >
                                             <Typography
-                                              onClick={() =>
-                                                handleDelete(item, "duplicate")
+                                              onClick={(event) =>
+                                                handleDelete(event, item, "duplicate")
                                               }
                                             >
                                               <StylePop className="ChipSpan">
@@ -2223,8 +2226,8 @@ export const Codes = () => {
                                             title={item?.code + " : " + item?.value}
                                           >
                                             <Typography
-                                              onClick={() =>
-                                                handleDelete(item, "duplicate")
+                                              onClick={(event) =>
+                                                handleDelete(event, item, "duplicate")
                                               }
                                             >
                                               <StylePop className="ChipSpan rejected">
@@ -2793,8 +2796,8 @@ export const Codes = () => {
                                           paddingRight: "8px !important"
                                         }
                                       }
-                                      onClick={() =>
-                                        handleDelete(item, "existing")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "existing")
                                       }
                                     >
                                       <StylePop className="ChipSpan">
@@ -2826,8 +2829,8 @@ export const Codes = () => {
                                     title={item?.code + " : " + item?.value}
                                   >
                                     <Typography
-                                      onClick={() =>
-                                        handleDelete(item, "existing")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "existing")
                                       }
                                       sx={
                                         {
@@ -2919,8 +2922,8 @@ export const Codes = () => {
                                           paddingRight: "8px !important"
                                         }
                                       }
-                                      onClick={() =>
-                                        handleDelete(item, "suspect")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "suspect")
                                       }
                                     >
                                       <StylePop className="ChipSpan">
@@ -2959,8 +2962,8 @@ export const Codes = () => {
                                           paddingRight: "8px !important"
                                         }
                                       }
-                                      onClick={() =>
-                                        handleDelete(item, "suspect")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "suspect")
                                       }
                                     >
                                       <StylePop className="ChipSpan rejected">
@@ -3050,8 +3053,8 @@ export const Codes = () => {
                                           paddingRight: "8px !important"
                                         }
                                       }
-                                      onClick={() =>
-                                        handleDelete(item, "recapture")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "recapture")
                                       }
                                     >
                                       <StylePop className="ChipSpan">
@@ -3089,8 +3092,8 @@ export const Codes = () => {
                                           paddingRight: "8px !important"
                                         }
                                       }
-                                      onClick={() =>
-                                        handleDelete(item, "recapture")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "recapture")
                                       }
                                     >
                                       <StylePop className="ChipSpan rejected">
@@ -3174,8 +3177,8 @@ export const Codes = () => {
                                           paddingRight: "8px !important"
                                         }
                                       }
-                                      onClick={() =>
-                                        handleDelete(item, "duplicate")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "duplicate")
                                       }
                                     >
                                       <StylePop className="ChipSpan">
@@ -3213,8 +3216,8 @@ export const Codes = () => {
                                           paddingRight: "8px !important"
                                         }
                                       }
-                                      onClick={() =>
-                                        handleDelete(item, "duplicate")
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "duplicate")
                                       }
                                     >
                                       <StylePop className="ChipSpan rejected">
