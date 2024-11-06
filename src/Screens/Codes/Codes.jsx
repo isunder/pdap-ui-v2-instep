@@ -10,6 +10,8 @@ import {
   Button,
   Tooltip,
   Skeleton,
+  DialogContent,
+  DialogContentText,
 } from "@mui/material";
 import {
   ArrowDropUpIcon
@@ -26,6 +28,8 @@ import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAppContext from "../../hooks/useAppContext";
 import { ClipLoader } from 'react-spinners';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import {
   AddressedCodes,
@@ -75,6 +79,17 @@ const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
   lineHeight: "1.3rem",
   fontWeight: 400,
+}));
+
+const StyledCodeTypography = styled(Typography)(({ theme }) => ({
+  fontSize: 16,
+  fontWeight: 700,
+  lineHeight: "20px",
+  textAlign: "left",
+  color: "#0D426A",
+  display: "block",
+  paddingLeft: "8px",
+  color: "#0D426A",
 }));
 
 const StyleSheetNumber1 = styled("Span")(({ theme }) => ({
@@ -139,6 +154,9 @@ export const Codes = () => {
   const [isModalSubmit, setIsModalSubmit] = useState(false);
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
+  const [combinedDatahoag, setCombinedDatahoag] = useState([]);
+  const [combinedData2hoag, setCombinedData2hoag] = useState([]);
+
   const sessionObject = JSON.parse(
     localStorage.getItem(`sessionObject_${userDetail?.mrn}`)
   );
@@ -163,8 +181,33 @@ export const Codes = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    // Handler to call on window resize
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [switchModal, setSwitchModal] = useState(true);
   const [idleModal, setIdleModal] = useState(false);
+  const [hoagmodalarrow, setHoagmodalarrow] = useState(false);
 
   const [existingRejectCode, setExistingRejectCode] = useState([]);
   const [recaptureRejectCode, setRecaptureRejectCode] = useState([]);
@@ -607,8 +650,26 @@ export const Codes = () => {
 
   const handleSubmit = async () => {
 
+    const tenetType = tabs['type']?.value;
+
+    const filteredExistingCode = tenetType === "EPIC"
+      ? existingCode?.filter(item => item.code_in_problem_list === false)
+      : existingCode;
+
+
+    const filteredRecaptureCode = tenetType === "EPIC"
+      ? recaptureCode?.filter(item => item.code_in_problem_list === false)
+      : recaptureCode;
+
+
+    const filteredDuplicateCode = tenetType === "EPIC"
+      ? duplicateCode?.filter(item => item.code_in_problem_list === false)
+      : duplicateCode;
+
     let requestBody;
-    if (existingCode?.length > 0) {
+
+
+    if (filteredExistingCode?.length > 0) {
       let mapped = existingCode?.map((item) => ({
         [item.code]: {
           value: item?.value,
@@ -635,7 +696,7 @@ export const Codes = () => {
         };
       }
     }
-    if (recaptureCode?.length > 0) {
+    if (filteredRecaptureCode?.length > 0) {
       let mapped = recaptureCode?.map((item) => ({
         [item.code]: {
           value: item?.value,
@@ -645,7 +706,7 @@ export const Codes = () => {
       let recapture_codes = Object.assign({}, ...mapped);
       requestBody = { ...requestBody, recapture_codes };
     }
-    if (duplicateCode?.length > 0) {
+    if (filteredDuplicateCode?.length > 0) {
       let mapped = duplicateCode?.map((item) => ({
         [item.code]: {
           value: item?.value,
@@ -753,7 +814,6 @@ export const Codes = () => {
   };
 
   const [loadingSummary, setLoadingSummary] = useState(true)
-
   useEffect(() => {
     if (slug && tabData) {
       dispatch(patientSummary()).then(() => {
@@ -1198,9 +1258,42 @@ export const Codes = () => {
     setArrowState2(!arrowState2)
   }
 
+  // handle hoag modal switch on final summary screen
+
+
+  const finalSummaryScreenHoag = () => {
+    setHoagmodalarrow(!hoagmodalarrow);
+
+  }
+
+
+  useEffect(() => {
+
+    const combined = [
+      ...existingCode.filter((item) => item.code_in_problem_list === false),
+      ...suspectCode.filter((item) => item.value !== ""),
+      ...duplicateCode.filter((item) => item.code_in_problem_list === false),
+      ...recaptureCode.filter((item) => item.code_in_problem_list === false),
+    ];
+
+    const combined2 = [
+      ...existingCode.filter((item) => item.code_in_problem_list === true),
+      ...suspectCode.filter((item) => item.value === ""),
+      ...duplicateCode.filter((item) => item.code_in_problem_list === true),
+      ...recaptureCode.filter((item) => item.code_in_problem_list === true),
+    ];
+
+    setCombinedDatahoag(combined);
+    setCombinedData2hoag(combined2)
+  }, [existingCode, suspectCode, duplicateCode, recaptureCode]);
+
+
   if (isLoadingMain) {
     return <div style={{ height: '100vh', backgroundColor: 'white' }}></div>; // Blank screen
   }
+
+
+
 
   return (
     <>
@@ -1996,7 +2089,7 @@ export const Codes = () => {
                                                   20
                                                   ? "..."
                                                   : ""}
-                                               {item?.value ? ":" : ""}
+                                                {item?.value ? ":" : ""}
                                                 {item?.value?.slice(0, 20)}{" "}
                                                 {item?.value?.length > 20 ? "..." : ""}
 
@@ -3324,6 +3417,7 @@ export const Codes = () => {
         header={<GreenDoneIcon style={{ width: 45, height: 45, }} />}
         width="26rem"
         removeCloseButton={true}
+        sx={{ padding: 0 }}
       >
         <Box
           sx={{
@@ -3370,24 +3464,405 @@ export const Codes = () => {
                   >
                     clicking X button.
                   </Typography></>) : (<><Typography
+                    onClick={() => finalSummaryScreenHoag()}
                     variant="body2"
                     sx={{
                       marginTop: '5px',
-                      color: "#5C6469",
-                      textAlign: 'center'
+                      color: "#0D426A",
+                      textAlign: 'center',
+                      cursor: "pointer",
+
                     }}
                   >
-
+                    Review actions that have been taken {!hoagmodalarrow ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
                   </Typography>
-                    <Typography
-                      variant="body2"
+
+                    {hoagmodalarrow ? <DialogContent
                       sx={{
-                        color: "#5C6469",
-                        textAlign: 'center'
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexDirection: "column",
+                        padding: "0px !important",
+                        overflowX: "hidden",
+                        height:'325px',
+                        overflowY:'auto'
                       }}
                     >
+                      <DialogContentText>
+                        <Grid
+                          container
+                          spacing={2}
+                          display={"flex"}
+                          flexDirection={"column"}
+                          gap={'10px'}
+                        >
+                          <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ margin: 0, padding: 0 }}>
+                            <Grid >
+                              <Card sx={{margin:'0px !important',padding:'0px !important'}}>
+                                <CardContent sx={{ paddingInline: "0px", marginRight: {xs:"0px",sm:"0px",md:"16px"} }}>
+                                  <Box className="modalInner" sx={{ overflow: "hidden", }}>
+                                    <Grid
+                                      container
+                                      sx={{
+                                        border: "1px solid #E8E8E8",
+                                        pt: 2,
+                                        pb: 2,
+                                        mb: 2,
+                                        borderRadius: "5px",
+                                        gap: "10px 0px !important"
+                                      }}
+                                    >
+                                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                                        <StyledCodeTypography className="">
+                                          Codes/Conditions to be actioned in Reconcile Outside Information tab
+                                        </StyledCodeTypography>
+                                      </Grid>
 
-                    </Typography></>)
+                                      {combinedDatahoag.length == 0 ? (
+                                        <>
+                                          <div className="ItemsDivNew">
+                                            <p>No applicable codes/conditions.</p>
+                                          </div>
+                                        </>
+                                      ) :
+
+                                        combinedDatahoag.map((item, index) => (
+                                          <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            sx={{
+                                              px: 0,
+                                              ml: 0.08,
+                                              mt: 0.5,
+                                              cursor: "pointer",
+                                            }}
+                                            key={index}
+                                          >
+                                            <Tooltip title={item?.code + " : " + item?.value}>
+                                              <Typography>
+                                                <StylePop className="ChipSpan">
+                                                  {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
+                                                  {": "}
+                                                  {
+                                                      windowSize.width > 967
+                                                        ? item?.value?.slice(0, 35) + (item?.value?.length > 35 ? "..." : "")
+                                                        : windowSize.width > 767
+                                                          ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                          : windowSize.width > 567
+                                                            ? item?.value?.slice(0, 18) + (item?.value?.length > 18 ? "..." : "")
+                                                            : windowSize.width > 367
+                                                              ? item?.value?.slice(0, 12) + (item?.value?.length > 12 ? "..." : "")
+                                                              : windowSize.width > 319
+                                                                ? item?.value?.slice(0, 8) + (item?.value?.length > 8 ? "..." : "")
+                                                                : item?.value
+                                                    }                                                 
+                                                    </StylePop>
+                                              </Typography>
+                                            </Tooltip>
+                                          </Stack>
+                                        ))
+
+                                      }
+
+                                    </Grid>
+
+                                    <Grid
+                                      container
+                                      sx={{
+                                        border: "1px solid #E8E8E8",
+                                        pt: 2,
+                                        pb: 2,
+                                        mb: 2,
+                                        borderRadius: "5px",
+                                        gap: "10px"
+                                      }}
+                                    >
+                                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                                        <StyledCodeTypography className="">
+                                          Actions to be taken in EHR{" "}
+                                        </StyledCodeTypography>
+                                      </Grid>
+
+                                      {
+                                        combinedData2hoag.length == 0 ? (
+                                          <>
+                                            <div className="ItemsDivNew">
+                                              <p>No applicable codes/conditions.</p>
+                                            </div>
+                                          </>
+                                        ) :
+
+                                          combinedData2hoag.map((item, index) => (
+                                            <Stack
+                                              direction="row"
+                                              spacing={1}
+                                              sx={{
+                                                px: 0,
+                                                ml: 0.08,
+                                                mt: 0.5,
+                                                cursor: "pointer",
+                                              }}
+                                              key={index}
+                                            >
+                                              <Tooltip
+                                                title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
+                                              >
+                                                <Typography>
+                                                  <StylePop className="ChipSpan">
+                                                    {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
+                                                    {item?.value ? ":" : ""}
+                                                    {
+                                                      windowSize.width > 967
+                                                        ? item?.value?.slice(0, 35) + (item?.value?.length > 35 ? "..." : "")
+                                                        : windowSize.width > 767
+                                                          ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                          : windowSize.width > 567
+                                                            ? item?.value?.slice(0, 18) + (item?.value?.length > 18 ? "..." : "")
+                                                            : windowSize.width > 367
+                                                              ? item?.value?.slice(0, 12) + (item?.value?.length > 12 ? "..." : "")
+                                                              : windowSize.width > 319
+                                                                ? item?.value?.slice(0, 8) + (item?.value?.length > 8 ? "..." : "")
+                                                                : item?.value
+                                                    }                                                  
+                                                    </StylePop>
+                                                </Typography>
+                                              </Tooltip>
+                                            </Stack>
+                                          ))
+
+                                      }
+                                    </Grid>
+
+                                    <Grid
+                                      container
+                                      sx={{
+                                        border: "1px solid #E8E8E8",
+                                        pt: 2,
+                                        pb: 2,
+                                        mb: 2,
+                                        borderRadius: "5px",
+                                        gap: "10px"
+                                      }}
+                                    >
+                                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                                        <StyledCodeTypography className="">
+                                          Rejected codes/conditions from Doctustech{" "}
+                                        </StyledCodeTypography>
+                                      </Grid>
+
+                                      {
+                                        !(
+                                          existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                                          <>
+                                            <div className="ItemsDivNew">
+                                              <p>No applicable codes/conditions.</p>
+                                            </div>
+                                          </>
+                                        ) :
+
+                                          <>
+                                            {suspectCodeReject?.length > 0 &&
+                                              suspectCodeReject?.map((item, index) => (
+                                                <Stack
+                                                  direction="row"
+                                                  spacing={1}
+                                                  sx={{
+                                                    px: 0,
+                                                    ml: 0.08,
+                                                    mt: 0.5,
+                                                    cursor: "pointer",
+                                                  }}
+                                                >
+                                                  <Tooltip
+                                                    title={
+                                                      Object.keys(item) +
+                                                        " : " +
+                                                        ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
+
+                                                    }
+                                                  >
+                                                    <Typography>
+                                                      <StylePop className="ChipSpan rejected">
+                                                        {Object.keys(item)
+                                                          .toString()
+                                                          .slice(0, 20)}{" "}
+                                                        {Object.keys(item).toString().length >
+                                                          20
+                                                          ? "..."
+                                                          : ""}
+                                                        {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 35) + (item[Object.keys(item)].value.length > 35 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 18) + (item[Object.keys(item)].value.length > 18 ? "..." : "")
+                                                                : windowSize.width > 367
+                                                                  ? item[Object.keys(item)].value.slice(0, 12) + (item[Object.keys(item)].value.length > 12 ? "..." : "")
+                                                                  : windowSize.width > 319
+                                                                    ? item[Object.keys(item)].value.slice(0, 8) + (item[Object.keys(item)].value.length > 8 ? "..." : "")
+                                                                    : item[Object.keys(item)].value
+                                                        }  
+                                                      </StylePop>{" "}
+                                                    </Typography>
+                                                  </Tooltip>
+                                                </Stack>
+                                              ))}
+
+                                            {existingCodeReject?.length > 0 &&
+                                              existingCodeReject?.map((item, index) => (
+                                                <Stack
+                                                  direction="row"
+                                                  spacing={1}
+                                                  sx={{
+                                                    px: 0,
+                                                    ml: 0.08,
+                                                    mt: 0.5,
+                                                    cursor: "pointer",
+                                                  }}
+                                                >
+                                                  <Tooltip
+                                                    title={
+                                                      Object.keys(item) +
+                                                      " : " +
+                                                      item[Object.keys(item)].value
+                                                    }
+                                                  >
+                                                    <Typography>
+                                                      <StylePop className="ChipSpan rejected">
+                                                        {Object.keys(item)
+                                                          .toString()
+                                                          .slice(0, 20)}{" "}
+                                                        {Object.keys(item).toString().length >
+                                                          20
+                                                          ? "..."
+                                                          : ""}  {": "}
+                                                        {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 35) + (item[Object.keys(item)].value.length > 35 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 18) + (item[Object.keys(item)].value.length > 18 ? "..." : "")
+                                                                : windowSize.width > 367
+                                                                  ? item[Object.keys(item)].value.slice(0, 12) + (item[Object.keys(item)].value.length > 12 ? "..." : "")
+                                                                  : windowSize.width > 319
+                                                                    ? item[Object.keys(item)].value.slice(0, 8) + (item[Object.keys(item)].value.length > 8 ? "..." : "")
+                                                                    : item[Object.keys(item)].value
+                                                        }                                                        
+                                                        </StylePop>{" "}
+                                                    </Typography>
+                                                  </Tooltip>
+                                                </Stack>
+                                              ))}
+
+                                            {recaptureCodeReject?.length > 0 &&
+                                              recaptureCodeReject?.map((item, index) => (
+                                                <Stack
+                                                  direction="row"
+                                                  spacing={1}
+                                                  sx={{
+                                                    px: 0,
+                                                    ml: 0.08,
+                                                    mt: 0.5,
+                                                    cursor: "pointer",
+                                                  }}
+                                                >
+                                                  <Tooltip
+                                                    title={
+                                                      Object.keys(item) +
+                                                      " : " +
+                                                      item[Object.keys(item)].value
+                                                    }
+                                                  >
+                                                    <Typography>
+                                                      <StylePop className="ChipSpan rejected">
+                                                        {Object.keys(item)
+                                                          .toString()
+                                                          .slice(0, 20)}{" "}
+                                                        {Object.keys(item).toString().length >
+                                                          20
+                                                          ? "..."
+                                                          : ""}
+                                                        {": "}
+                                                        {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 35) + (item[Object.keys(item)].value.length > 35 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 18) + (item[Object.keys(item)].value.length > 18 ? "..." : "")
+                                                                : windowSize.width > 367
+                                                                  ? item[Object.keys(item)].value.slice(0, 12) + (item[Object.keys(item)].value.length > 12 ? "..." : "")
+                                                                  : windowSize.width > 319
+                                                                    ? item[Object.keys(item)].value.slice(0, 8) + (item[Object.keys(item)].value.length > 8 ? "..." : "")
+                                                                    : item[Object.keys(item)].value
+                                                        }                                                       
+                                                        </StylePop>{" "}
+                                                    </Typography>
+                                                  </Tooltip>
+                                                </Stack>
+                                              ))}
+
+                                            {duplicateCodeReject?.length > 0 &&
+                                              duplicateCodeReject?.map((item, index) => (
+                                                <Stack
+                                                  direction="row"
+                                                  spacing={1}
+                                                  sx={{
+                                                    px: 0,
+                                                    ml: 0.08,
+                                                    mt: 0.5,
+                                                    cursor: "pointer",
+                                                  }}
+                                                >
+                                                  <Tooltip
+                                                    title={
+                                                      Object.keys(item) +
+                                                      " : " +
+                                                      item[Object.keys(item)].value
+                                                    }
+                                                  >
+                                                    <Typography>
+                                                      <StylePop className="ChipSpan rejected">
+                                                        {Object.keys(item)
+                                                          .toString()
+                                                          .slice(0, 20)}{" "}
+                                                        {Object.keys(item).toString().length >
+                                                          20
+                                                          ? "..."
+                                                          : ""} {": "}
+                                                        {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 35) + (item[Object.keys(item)].value.length > 35 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 18) + (item[Object.keys(item)].value.length > 18 ? "..." : "")
+                                                                : windowSize.width > 367
+                                                                  ? item[Object.keys(item)].value.slice(0, 12) + (item[Object.keys(item)].value.length > 12 ? "..." : "")
+                                                                  : windowSize.width > 319
+                                                                    ? item[Object.keys(item)].value.slice(0, 8) + (item[Object.keys(item)].value.length > 8 ? "..." : "")
+                                                                    : item[Object.keys(item)].value
+                                                        }                                                      </StylePop>{" "}
+                                                    </Typography>
+                                                  </Tooltip>
+                                                </Stack>
+                                              ))}
+                                          </>
+                                      }
+
+                                    </Grid>
+                                  </Box>
+                                </CardContent>
+                              </Card>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </DialogContentText>
+                    </DialogContent> : null}
+
+                  </>)
             }
           </Box>
         </Box>

@@ -148,7 +148,7 @@ const SubmitModal = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  
+
   // athena settings
 
 
@@ -176,18 +176,18 @@ const SubmitModal = ({
   useEffect(() => {
 
     const combined = [
-    ...existingCode.filter((item) => item.code_in_problem_list === false),
-    ...suspectCode.filter((item) => item.value !== ""),
-    ...duplicateCode.filter((item) => item.code_in_problem_list === false),
-    ...recaptureCode.filter((item) => item.code_in_problem_list === false),
-  ];
+      ...existingCode.filter((item) => item.code_in_problem_list === false),
+      ...suspectCode.filter((item) => item.value !== ""),
+      ...duplicateCode.filter((item) => item.code_in_problem_list === false),
+      ...recaptureCode.filter((item) => item.code_in_problem_list === false),
+    ];
 
-  const combined2 = [
-    ...existingCode.filter((item) => item.code_in_problem_list === true),
-    ...suspectCode.filter((item) => item.value === ""),
-    ...duplicateCode.filter((item) => item.code_in_problem_list === true),
-    ...recaptureCode.filter((item) => item.code_in_problem_list === true),
-  ];
+    const combined2 = [
+      ...existingCode.filter((item) => item.code_in_problem_list === true),
+      ...suspectCode.filter((item) => item.value === ""),
+      ...duplicateCode.filter((item) => item.code_in_problem_list === true),
+      ...recaptureCode.filter((item) => item.code_in_problem_list === true),
+    ];
 
     setCombinedDatahoag(combined);
     setCombinedData2hoag(combined2)
@@ -332,7 +332,19 @@ const SubmitModal = ({
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
                                       {": "}
-                                      {item?.value?.slice(0, 30)} {item?.value?.length > 30 ? "..." : " "}
+                                      {
+                                        windowSize.width > 967
+                                          ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                          : windowSize.width > 767
+                                            ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                            : windowSize.width > 567
+                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                              : windowSize.width > 367
+                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                : windowSize.width > 319
+                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                  : item?.value
+                                      }
                                     </StylePop>
                                   </Typography>
                                 </Tooltip>
@@ -387,7 +399,20 @@ const SubmitModal = ({
                                     <Typography>
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-
+                                        {": "}
+                                        {
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                : windowSize.width > 367
+                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                  : windowSize.width > 319
+                                                    ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                    : item?.value
+                                        }
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
@@ -454,8 +479,19 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                            {/* :
-                                              {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
+                                            {
+                                              windowSize.width > 967
+                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                : windowSize.width > 767
+                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                  : windowSize.width > 567
+                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                        : item[Object.keys(item)].value
+                                            }
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -490,8 +526,19 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}  {": "}
-                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
-                                          </StylePop>{" "}
+                                            {
+                                              windowSize.width > 967
+                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                : windowSize.width > 767
+                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                  : windowSize.width > 567
+                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                        : item[Object.keys(item)].value
+                                            }                                      </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -526,8 +573,19 @@ const SubmitModal = ({
                                               ? "..."
                                               : ""}
                                             {": "}
-                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
-                                          </StylePop>{" "}
+                                            {
+                                              windowSize.width > 967
+                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                : windowSize.width > 767
+                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                  : windowSize.width > 567
+                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                        : item[Object.keys(item)].value
+                                            }                                      </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -561,8 +619,19 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""} {": "}
-                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
-                                          </StylePop>{" "}
+                                            {
+                                              windowSize.width > 967
+                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                : windowSize.width > 767
+                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                  : windowSize.width > 567
+                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                        : item[Object.keys(item)].value
+                                            }                                        </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -654,7 +723,7 @@ const SubmitModal = ({
                         >
                           <Grid item lg={12} md={12} sm={12} xs={12}>
                             <StyledCodeTypography className="">
-                            Codes/Conditions to be actioned in Reconcile Outside Information tab
+                              Codes/Conditions to be actioned in Reconcile Outside Information tab
                             </StyledCodeTypography>
                           </Grid>
 
@@ -666,7 +735,7 @@ const SubmitModal = ({
                             </>
                           ) :
 
-                          combinedDatahoag.map((item, index) => (
+                            combinedDatahoag.map((item, index) => (
                               <Stack
                                 direction="row"
                                 spacing={1}
@@ -683,7 +752,20 @@ const SubmitModal = ({
                                     <StylePop className="ChipSpan">
                                       {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
                                       {": "}
-                                      {item?.value?.slice(0, 30)} {item?.value?.length > 30 ? "..." : " "}
+
+                                      {
+                                        windowSize.width > 967
+                                          ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                          : windowSize.width > 767
+                                            ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                            : windowSize.width > 567
+                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                              : windowSize.width > 367
+                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                : windowSize.width > 319
+                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                  : item?.value
+                                      }
                                     </StylePop>
                                   </Typography>
                                 </Tooltip>
@@ -720,7 +802,7 @@ const SubmitModal = ({
                               </>
                             ) :
 
-                            combinedData2hoag.map((item, index) => (
+                              combinedData2hoag.map((item, index) => (
                                 <Stack
                                   direction="row"
                                   spacing={1}
@@ -739,7 +821,19 @@ const SubmitModal = ({
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
                                         {item?.value ? ":" : ""}
-                                        {item?.value?.slice(0, 30)} {item?.value?.length > 30 ? "..." : " "}
+                                        {
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                : windowSize.width > 367
+                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                  : windowSize.width > 319
+                                                    ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                    : item?.value
+                                        }
                                       </StylePop>
                                     </Typography>
                                   </Tooltip>
@@ -842,7 +936,19 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}  {": "}
-                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                            {
+                                              windowSize.width > 967
+                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                : windowSize.width > 767
+                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                  : windowSize.width > 567
+                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                        : item[Object.keys(item)].value
+                                            }
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -878,7 +984,19 @@ const SubmitModal = ({
                                               ? "..."
                                               : ""}
                                             {": "}
-                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                            {
+                                              windowSize.width > 967
+                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                : windowSize.width > 767
+                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                  : windowSize.width > 567
+                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                        : item[Object.keys(item)].value
+                                            }
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -913,7 +1031,19 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""} {": "}
-                                            {item[Object.keys(item)].value.slice(0, 30)} {item[Object.keys(item)].value.length > 30 ? "..." : ""}
+                                            {
+                                              windowSize.width > 967
+                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                : windowSize.width > 767
+                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                  : windowSize.width > 567
+                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                        : item[Object.keys(item)].value
+                                            }
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
