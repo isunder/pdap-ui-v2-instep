@@ -648,29 +648,48 @@ export const Codes = () => {
     return;
   }
 
-  const handleSubmit = async () => {
 
+  const handleSubmit = async () => {
     const tenetType = tabs['type']?.value;
 
+    // Filtered codes based on the tenetType
     const filteredExistingCode = tenetType === "EPIC"
-      ? existingCode?.filter(item => item.code_in_problem_list === false)
+      ? existingCode?.every(item => item.code_in_problem_list === true)
+        ? []
+        : existingCode.filter(item => item.code_in_problem_list === false)
       : existingCode;
 
-
     const filteredRecaptureCode = tenetType === "EPIC"
-      ? recaptureCode?.filter(item => item.code_in_problem_list === false)
+      ? recaptureCode?.every(item => item.code_in_problem_list === true)
+        ? []
+        : recaptureCode.filter(item => item.code_in_problem_list === false)
       : recaptureCode;
 
-
     const filteredDuplicateCode = tenetType === "EPIC"
-      ? duplicateCode?.filter(item => item.code_in_problem_list === false)
+      ? duplicateCode?.every(item => item.code_in_problem_list === true)
+        ? []
+        : duplicateCode.filter(item => item.code_in_problem_list === false)
       : duplicateCode;
 
-    let requestBody;
 
+    // Check if all filtered arrays have items with `code_in_problem_list` set to true
+    const shouldSkipApiCall =
+      filteredExistingCode?.length === 0 &&
+      filteredRecaptureCode?.length === 0 &&
+      filteredDuplicateCode?.length === 0;
 
+    if (shouldSkipApiCall) {
+      setOpenSubmitModal(false);
+      setDialog(true);
+      setIsModalSubmit(true);
+      return; // Exit early if there are no valid codes to submit
+    }
+
+    let requestBody = {};
+
+    // Build the requestBody based on valid data
     if (filteredExistingCode?.length > 0) {
-      let mapped = existingCode?.map((item) => ({
+      let mapped = filteredExistingCode.map((item) => ({
         [item.code]: {
           value: item?.value,
           additional_info: item?.additional_info,
@@ -679,6 +698,7 @@ export const Codes = () => {
       let existing_codes = Object.assign({}, ...mapped);
       requestBody = { ...requestBody, existing_codes };
     }
+
     if (existingCodeReject.length > 0) {
       let object = existingRejectData.reduce((obj, item) => {
         let key = Object.keys(item);
@@ -686,18 +706,13 @@ export const Codes = () => {
       }, {});
       let mapped = { existing_codes: object };
       let existing_codes = Object.assign({}, mapped);
-      if (requestBody?.delete_codes) {
-        const deletedData = { ...requestBody.delete_codes, existing_codes };
-        requestBody = { ...requestBody, delete_codes: deletedData };
-      } else {
-        requestBody = {
-          ...requestBody,
-          delete_codes: existing_codes,
-        };
-      }
+      requestBody = requestBody.delete_codes
+        ? { ...requestBody, delete_codes: { ...requestBody.delete_codes, existing_codes } }
+        : { ...requestBody, delete_codes: existing_codes };
     }
+
     if (filteredRecaptureCode?.length > 0) {
-      let mapped = recaptureCode?.map((item) => ({
+      let mapped = filteredRecaptureCode.map((item) => ({
         [item.code]: {
           value: item?.value,
           additional_info: item?.additional_info,
@@ -706,8 +721,9 @@ export const Codes = () => {
       let recapture_codes = Object.assign({}, ...mapped);
       requestBody = { ...requestBody, recapture_codes };
     }
+
     if (filteredDuplicateCode?.length > 0) {
-      let mapped = duplicateCode?.map((item) => ({
+      let mapped = filteredDuplicateCode.map((item) => ({
         [item.code]: {
           value: item?.value,
           additional_info: item?.additional_info,
@@ -716,34 +732,25 @@ export const Codes = () => {
       let duplicate_codes = Object.assign({}, ...mapped);
       requestBody = { ...requestBody, duplicate_codes };
     }
+
     if (recaptureCodeReject?.length > 0) {
-      let mapped = recaptureCodeReject?.map((item) => item);
+      let mapped = recaptureCodeReject.map((item) => item);
       let recapture_codes = Object.assign({}, ...mapped);
-      if (requestBody?.delete_codes) {
-        const deletedData = { ...requestBody.delete_codes, recapture_codes };
-        requestBody = { ...requestBody, delete_codes: deletedData };
-      } else {
-        requestBody = {
-          ...requestBody,
-          delete_codes: { recapture_codes: recapture_codes },
-        };
-      }
+      requestBody = requestBody.delete_codes
+        ? { ...requestBody, delete_codes: { ...requestBody.delete_codes, recapture_codes } }
+        : { ...requestBody, delete_codes: { recapture_codes } };
     }
+
     if (duplicateCodeReject?.length > 0) {
-      let mapped = duplicateCodeReject?.map((item) => item);
+      let mapped = duplicateCodeReject.map((item) => item);
       let duplicate_codes = Object.assign({}, ...mapped);
-      if (requestBody?.delete_codes) {
-        const deletedData = { ...requestBody.delete_codes, duplicate_codes };
-        requestBody = { ...requestBody, delete_codes: deletedData };
-      } else {
-        requestBody = {
-          ...requestBody,
-          delete_codes: { duplicate_codes: duplicate_codes },
-        };
-      }
+      requestBody = requestBody.delete_codes
+        ? { ...requestBody, delete_codes: { ...requestBody.delete_codes, duplicate_codes } }
+        : { ...requestBody, delete_codes: { duplicate_codes } };
     }
+
     if (suspectCode?.length > 0) {
-      let mapped = suspectCode?.map((item) => ({
+      let mapped = suspectCode.map((item) => ({
         [item.code]: {
           value: item?.value,
           additional_info: item?.additional_info,
@@ -752,65 +759,43 @@ export const Codes = () => {
       let suspect_codes = Object.assign({}, ...mapped);
       requestBody = { ...requestBody, suspect_codes };
     }
+
     if (suspectCodeReject?.length > 0) {
-      let mapped = suspectCodeReject?.map((item) => item);
+      let mapped = suspectCodeReject.map((item) => item);
       let new_codes = Object.assign({}, ...mapped);
-      if (requestBody?.delete_codes) {
-        const deletedData = { ...requestBody?.delete_codes, new_codes };
-        requestBody = { ...requestBody, delete_codes: deletedData };
-      } else {
-        requestBody = {
-          ...requestBody,
-          delete_codes: { new_codes: new_codes },
-        };
-      }
+      requestBody = requestBody.delete_codes
+        ? { ...requestBody, delete_codes: { ...requestBody.delete_codes, new_codes } }
+        : { ...requestBody, delete_codes: { new_codes } };
     }
-    // post summary API call
+
+    // Post summary API call
     try {
       const result = await dispatch(patientSubmitData(requestBody));
-      if (result) {
-        if (result?.meta?.requestStatus === "fulfilled") {
-          setOpenSubmitModal(false);
-          setDialog(true);
-          setIsModalSubmit(true);
+      if (result?.meta?.requestStatus === "fulfilled") {
+        setOpenSubmitModal(false);
+        setDialog(true);
+        setIsModalSubmit(true);
 
-          const isAthenaModal = tabs['type']?.value == "Athena";
-          if (isAthenaModal) {
-            const exampleMetadata = {
-              event_type: "SUMMARY_ATHENA_MODAL_SUBMIT_AND_CLOSE", metadata: {
-                identifier: tabs?.["user"]?.value || "",
-                provider_name: doctorDetail?.doctor_name || "",
-                patient_id: user?.data?.userInfo?.mrn || "",
-                event_datetime: convertDate(new Date().toISOString()),
-                code: (existingCode, existingCodeReject, suspectCodeReject, suspectCode, recaptureCode, recaptureCodeReject, duplicateCode, duplicateCodeReject),
-                reasonForRejection: '',
-                parentCodesCount: (existingCode?.length)
-              }
-            };
-
-            handleAddEventData(exampleMetadata)
+        const isAthenaModal = tabs['type']?.value === "Athena";
+        const exampleMetadata = {
+          event_type: isAthenaModal ? "SUMMARY_ATHENA_MODAL_SUBMIT_AND_CLOSE" : "SUMMARY_EPIC_MODAL_SUBMIT_AND_CLOSE",
+          metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: { existingCode, existingCodeReject, suspectCodeReject, suspectCode, recaptureCode, recaptureCodeReject, duplicateCode, duplicateCodeReject },
+            reasonForRejection: '',
+            parentCodesCount: existingCode?.length,
           }
+        };
 
-          else {
-            const exampleMetadata = {
-              event_type: "SUMMARY_EPIC_MODAL_SUBMIT_AND_CLOSE", metadata: {
-                identifier: tabs?.["user"]?.value || "",
-                provider_name: doctorDetail?.doctor_name || "",
-                patient_id: user?.data?.userInfo?.mrn || "",
-                event_datetime: convertDate(new Date().toISOString()),
-                code: (existingCode, existingCodeReject, suspectCodeReject, suspectCode, recaptureCode, recaptureCodeReject, duplicateCode, duplicateCodeReject),
-                reasonForRejection: '',
-                parentCodesCount: (existingCode?.length)
-              }
-            };
-
-            handleAddEventData(exampleMetadata)
-          }
-
-          localStorage.removeItem(`sessionObject_${userDetail.mrn}`);
-        }
+        handleAddEventData(exampleMetadata);
+        localStorage.removeItem(`sessionObject_${userDetail.mrn}`);
       }
-    } catch (error) { }
+    } catch (error) {
+      // Handle error if needed
+    }
   };
 
   const [loadingSummary, setLoadingSummary] = useState(true)
@@ -3544,20 +3529,20 @@ export const Codes = () => {
                                                   {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
                                                   {": "}
                                                   {
-                                          windowSize.width > 967
-                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                            : windowSize.width > 767
-                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                              : windowSize.width > 567
-                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                                : windowSize.width > 467
-                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                  : windowSize.width > 367
-                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                    : windowSize.width > 319
-                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                      : item?.value
-                                        }
+                                                    windowSize.width > 967
+                                                      ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                                      : windowSize.width > 767
+                                                        ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                        : windowSize.width > 567
+                                                          ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                          : windowSize.width > 467
+                                                            ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                            : windowSize.width > 367
+                                                              ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                              : windowSize.width > 319
+                                                                ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                                : item?.value
+                                                  }
                                                 </StylePop>
                                               </Typography>
                                             </Tooltip>
@@ -3614,20 +3599,20 @@ export const Codes = () => {
                                                     {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
                                                     {item?.value ? ":" : ""}
                                                     {
-                                          windowSize.width > 967
-                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                            : windowSize.width > 767
-                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                              : windowSize.width > 567
-                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                                : windowSize.width > 467
-                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                  : windowSize.width > 367
-                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                    : windowSize.width > 319
-                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                      : item?.value
-                                        }
+                                                      windowSize.width > 967
+                                                        ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                                        : windowSize.width > 767
+                                                          ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                          : windowSize.width > 567
+                                                            ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                            : windowSize.width > 467
+                                                              ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                              : windowSize.width > 367
+                                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                                : windowSize.width > 319
+                                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                                  : item?.value
+                                                    }
                                                   </StylePop>
                                                 </Typography>
                                               </Tooltip>
@@ -3694,7 +3679,7 @@ export const Codes = () => {
                                                           20
                                                           ? "..."
                                                           : ""}
-                                                          {
+                                                        {
                                                           windowSize.width > 967
                                                             ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
                                                             : windowSize.width > 767
@@ -3743,7 +3728,7 @@ export const Codes = () => {
                                                           20
                                                           ? "..."
                                                           : ""}  {": "}
-                                                          {
+                                                        {
                                                           windowSize.width > 967
                                                             ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
                                                             : windowSize.width > 767
@@ -3842,7 +3827,7 @@ export const Codes = () => {
                                                           20
                                                           ? "..."
                                                           : ""} {": "}
-                                                          {
+                                                        {
                                                           windowSize.width > 967
                                                             ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
                                                             : windowSize.width > 767
