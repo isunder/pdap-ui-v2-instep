@@ -151,7 +151,6 @@ const SubmitModal = ({
 
   // athena settings
 
-
   useEffect(() => {
     const combined = [
       ...existingCode,
@@ -333,18 +332,20 @@ const SubmitModal = ({
                                       {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
                                       {": "}
                                       {
-                                        windowSize.width > 967
-                                          ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                          : windowSize.width > 767
-                                            ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                            : windowSize.width > 567
-                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                              : windowSize.width > 367
-                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                : windowSize.width > 319
-                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                  : item?.value
-                                      }
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                : windowSize.width > 467
+                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                      : item?.value
+                                        }
                                     </StylePop>
                                   </Typography>
                                 </Tooltip>
@@ -406,12 +407,14 @@ const SubmitModal = ({
                                             : windowSize.width > 767
                                               ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
                                               : windowSize.width > 567
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 367
-                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                  : windowSize.width > 319
-                                                    ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                    : item?.value
+                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                : windowSize.width > 467
+                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                      : item?.value
                                         }
                                       </StylePop>
                                     </Typography>
@@ -479,19 +482,22 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                    : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
+                                              {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
+                                                                    ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
+
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -526,19 +532,23 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}  {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                    : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }                                      </StylePop>{" "}
+                                               {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
+                                                                    ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
+
+                                          </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -574,18 +584,21 @@ const SubmitModal = ({
                                               : ""}
                                             {": "}
                                             {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                    : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }                                      </StylePop>{" "}
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
+                                                                    ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
+                                          </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -619,19 +632,21 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""} {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                    : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }                                        </StylePop>{" "}
+                                              {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
+                                                                    ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }                                  </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -754,18 +769,20 @@ const SubmitModal = ({
                                       {": "}
 
                                       {
-                                        windowSize.width > 967
-                                          ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                          : windowSize.width > 767
-                                            ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                            : windowSize.width > 567
-                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                              : windowSize.width > 367
-                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                : windowSize.width > 319
-                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                  : item?.value
-                                      }
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                : windowSize.width > 467
+                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                      : item?.value
+                                        }
                                     </StylePop>
                                   </Typography>
                                 </Tooltip>
@@ -827,12 +844,14 @@ const SubmitModal = ({
                                             : windowSize.width > 767
                                               ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
                                               : windowSize.width > 567
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 367
-                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                  : windowSize.width > 319
-                                                    ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                    : item?.value
+                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                : windowSize.width > 467
+                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                      : item?.value
                                         }
                                       </StylePop>
                                     </Typography>
@@ -936,19 +955,21 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}  {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                    : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
+                                               {
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
+                                                                    ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -985,18 +1006,21 @@ const SubmitModal = ({
                                               : ""}
                                             {": "}
                                             {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                    : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
+                                                                    ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
+
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
@@ -1032,18 +1056,20 @@ const SubmitModal = ({
                                               ? "..."
                                               : ""} {": "}
                                             {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                    : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
+                                                          windowSize.width > 967
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
+                                                                    ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
                                           </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>

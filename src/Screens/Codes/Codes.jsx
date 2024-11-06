@@ -3484,8 +3484,8 @@ export const Codes = () => {
                         flexDirection: "column",
                         padding: "0px !important",
                         overflowX: "hidden",
-                        height:'325px',
-                        overflowY:'auto'
+                        height: '325px',
+                        overflowY: 'auto'
                       }}
                     >
                       <DialogContentText>
@@ -3498,8 +3498,8 @@ export const Codes = () => {
                         >
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ margin: 0, padding: 0 }}>
                             <Grid >
-                              <Card sx={{margin:'0px !important',padding:'0px !important'}}>
-                                <CardContent sx={{ paddingInline: "0px", marginRight: {xs:"0px",sm:"0px",md:"16px"} }}>
+                              <Card sx={{ margin: '0px !important', padding: '0px !important' }}>
+                                <CardContent sx={{ paddingInline: "0px", marginRight: { xs: "0px", sm: "0px", md: "16px" } }}>
                                   <Box className="modalInner" sx={{ overflow: "hidden", }}>
                                     <Grid
                                       container
@@ -3544,19 +3544,21 @@ export const Codes = () => {
                                                   {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
                                                   {": "}
                                                   {
-                                                      windowSize.width > 967
-                                                        ? item?.value?.slice(0, 38) + (item?.value?.length > 38 ? "..." : "")
-                                                        : windowSize.width > 767
-                                                          ? item?.value?.slice(0, 28) + (item?.value?.length > 28 ? "..." : "")
-                                                          : windowSize.width > 567
-                                                            ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                            : windowSize.width > 367
-                                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                              : windowSize.width > 319
-                                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                                : item?.value
-                                                    }                                                 
-                                                    </StylePop>
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                : windowSize.width > 467
+                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                      : item?.value
+                                        }
+                                                </StylePop>
                                               </Typography>
                                             </Tooltip>
                                           </Stack>
@@ -3612,19 +3614,21 @@ export const Codes = () => {
                                                     {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
                                                     {item?.value ? ":" : ""}
                                                     {
-                                                      windowSize.width > 967
-                                                        ? item?.value?.slice(0, 38) + (item?.value?.length > 38 ? "..." : "")
-                                                        : windowSize.width > 767
-                                                          ? item?.value?.slice(0, 28) + (item?.value?.length > 28 ? "..." : "")
-                                                          : windowSize.width > 567
-                                                            ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                            : windowSize.width > 367
-                                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                              : windowSize.width > 319
-                                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                                : item?.value
-                                                    }                                                  
-                                                    </StylePop>
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                : windowSize.width > 467
+                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                      : item?.value
+                                        }
+                                                  </StylePop>
                                                 </Typography>
                                               </Tooltip>
                                             </Stack>
@@ -3690,19 +3694,21 @@ export const Codes = () => {
                                                           20
                                                           ? "..."
                                                           : ""}
-                                                        {
+                                                          {
                                                           windowSize.width > 967
-                                                            ? item[Object.keys(item)].value.slice(0, 38) + (item[Object.keys(item)].value.length > 38 ? "..." : "")
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
                                                             : windowSize.width > 767
-                                                              ? item[Object.keys(item)].value.slice(0, 28) + (item[Object.keys(item)].value.length > 28 ? "..." : "")
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
                                                               : windowSize.width > 567
                                                                 ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                                : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 319
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
                                                                     ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
-                                                        }  
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
                                                       </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
@@ -3737,20 +3743,22 @@ export const Codes = () => {
                                                           20
                                                           ? "..."
                                                           : ""}  {": "}
-                                                        {
+                                                          {
                                                           windowSize.width > 967
-                                                            ? item[Object.keys(item)].value.slice(0, 38) + (item[Object.keys(item)].value.length > 38 ? "..." : "")
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
                                                             : windowSize.width > 767
-                                                              ? item[Object.keys(item)].value.slice(0, 28) + (item[Object.keys(item)].value.length > 28 ? "..." : "")
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
                                                               : windowSize.width > 567
                                                                 ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                                : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 319
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
                                                                     ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
-                                                        }                                                      
-                                                        </StylePop>{" "}
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
+                                                      </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
                                                 </Stack>
@@ -3787,18 +3795,20 @@ export const Codes = () => {
                                                         {": "}
                                                         {
                                                           windowSize.width > 967
-                                                            ? item[Object.keys(item)].value.slice(0, 38) + (item[Object.keys(item)].value.length > 38 ? "..." : "")
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
                                                             : windowSize.width > 767
-                                                              ? item[Object.keys(item)].value.slice(0, 28) + (item[Object.keys(item)].value.length > 28 ? "..." : "")
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
                                                               : windowSize.width > 567
                                                                 ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                                : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 319
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
                                                                     ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
-                                                        }                                                     
-                                                        </StylePop>{" "}
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }
+                                                      </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
                                                 </Stack>
@@ -3832,19 +3842,21 @@ export const Codes = () => {
                                                           20
                                                           ? "..."
                                                           : ""} {": "}
-                                                        {
+                                                          {
                                                           windowSize.width > 967
-                                                            ? item[Object.keys(item)].value.slice(0, 38) + (item[Object.keys(item)].value.length > 38 ? "..." : "")
+                                                            ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
                                                             : windowSize.width > 767
-                                                              ? item[Object.keys(item)].value.slice(0, 28) + (item[Object.keys(item)].value.length > 28 ? "..." : "")
+                                                              ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
                                                               : windowSize.width > 567
                                                                 ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                                : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 319
+                                                                : windowSize.width > 467
+                                                                  ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 367
                                                                     ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
-                                                        }                                                     </StylePop>{" "}
+                                                                    : windowSize.width > 319
+                                                                      ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                      : item[Object.keys(item)].value
+                                                        }                                         </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
                                                 </Stack>
