@@ -22,6 +22,7 @@
   display: block;
 }
 .ChipSpan {
+  display: block !;
   color: #17236d !important;
   font-size: 0.875rem !important;
   font-weight: 700;
@@ -31,10 +32,21 @@
   height: 1.4375rem !important;
   padding: 0.125rem 0.5rem !important;
   padding-right: 10px !important;
+  width: 500px;
+  overflow: hidden;
 }
 .ChipSpan.rejected {
   color: #F20000 !important;
   background: #FEE5E5 !important;
+  width: 500px;
+  overflow: hidden;
+}
+
+.ChipSpanModal{
+  width: 400px !important;
+  overflow: hidden;
+  display: flex !important;
+
 }
 
 .MuiChip-label {

@@ -1,3 +1,11 @@
+.subTop__header{
+     position: fixed;
+     top: 61px;
+     left: 0;
+     right: 0;
+     z-index: 99999;
+}
+
 
 .pendingActions{
 
@@ -55,11 +63,21 @@
     }
 } 
 
+@media (max-width: 549px) {
+    .subTop__header{
+        position: fixed;
+        top: 121px;
+      
+   }
+}
+
 @media only screen and (max-width:550px){
     .responsiveMuiDrawerTop .MuiDrawer-paper {
         top: 13.8rem;
     }
     
+    
+
     .responsiveMuiDrawerDown .MuiDrawer-paper {
         top: 13.8rem;
     }
