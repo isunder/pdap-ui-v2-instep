@@ -1285,36 +1285,38 @@ export const Codes = () => {
 
   return (
     <>
+    <div className="sticky-header">
       <Header />
       <SubHeader />
       {(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && (
         <Box
           sx={{
             backgroundColor: "#FDDECF",
-            marginTop: "121px",
+          //  position:'sticky',
 
-            '@media (max-width: 549px)': {
-              marginTop: "171px",
+      '@media (max-width: 549px)': {
+        // marginTop: "171px",
             }
 
           }}
-          className="pdap-ui-codes-read-only-t1-wrap"
+      className="pdap-ui-codes-read-only-t1-wrap"
         >
-          <Container maxWidth="xl" className="pdap-ui-codes-read-only-t1-ctr">
-            <Typography
-              sx={{
-                fontSize: "0.75rem",
-                fontStyle: "normal",
-                fontWeight: "600",
-                lineHeight: "normal",
-              }}
-              className="pdap-ui-codes-read-only-t1"
-            >
-              This page is loaded in read-only mode.
-            </Typography>
-          </Container>
-        </Box>
+      <Container maxWidth="xl" className="pdap-ui-codes-read-only-t1-ctr">
+        <Typography
+          sx={{
+            fontSize: "0.75rem",
+            fontStyle: "normal",
+            fontWeight: "600",
+            lineHeight: "normal",
+          }}
+          className="pdap-ui-codes-read-only-t1"
+        >
+          This page is loaded in read-only mode.
+        </Typography>
+      </Container>
+    </Box >
       )}
+      </div>
       <ToastContainer
         position="top-center"
         transition={Zoom}
@@ -1327,20 +1329,20 @@ export const Codes = () => {
           sx={{
             marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
               ? undefined
-              : "100px !important",
+              : "0px !important",
             padding: "0px 50px !important",
             [theme.breakpoints.down("md")]: {
               padding: "0px !important",
 
               marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
                 ? "0"
-                : "125px !important",
+                : "0px !important",
             },
 
             [theme.breakpoints.down("550")]: {
               marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
                 ? "0"
-                : "185px !important",
+                : "0px !important",
             },
 
             [theme.breakpoints.up("md")]: {
@@ -2393,7 +2395,7 @@ export const Codes = () => {
           sx={{
             marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
               ? undefined
-              : "100px !important",
+              : "0px !important",
             padding: "8px 50px !important",
             [theme.breakpoints.down("md")]: {
               padding: "10px !important",
@@ -3498,8 +3500,12 @@ export const Codes = () => {
                         flexDirection: "column",
                         padding: "0px !important",
                         overflowX: "hidden",
-                        height: '325px',
-                        overflowY: 'auto'
+                        height: '225px',
+                        overflowY: 'auto',
+                        '@media (max-widht:567px)': {
+                          height: '175px',
+                        }
+
                       }}
                     >
                       <DialogContentText>
