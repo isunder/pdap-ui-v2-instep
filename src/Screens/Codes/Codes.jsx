@@ -679,7 +679,7 @@ export const Codes = () => {
       setOpenSubmitModal(false);
       setDialog(true);
       setIsModalSubmit(true);
-      return; 
+      return;
     }
 
     let requestBody = {};
@@ -868,6 +868,13 @@ export const Codes = () => {
 
     {
       key: 6,
+      code: "Deleted Codes / Conditions",
+      codeCount: summary?.deleted_codes_count,
+      container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+    },
+
+    {
+      key: 7,
       code: "Deleted Codes / Conditions",
       codeCount: summary?.deleted_codes_count,
       container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
@@ -1284,11 +1291,16 @@ export const Codes = () => {
         <Box
           sx={{
             backgroundColor: "#FDDECF",
+            marginTop: "121px",
+
+            '@media (max-width: 549px)': {
+              marginTop: "171px",
+            }
 
           }}
           className="pdap-ui-codes-read-only-t1-wrap"
         >
-          <Container sx={{margintTop: "90px"}} maxWidth="xl" className="pdap-ui-codes-read-only-t1-ctr">
+          <Container maxWidth="xl" className="pdap-ui-codes-read-only-t1-ctr">
             <Typography
               sx={{
                 fontSize: "0.75rem",
@@ -1309,18 +1321,26 @@ export const Codes = () => {
         autoClose={2000}
       />
       <Box sx={{ flexGrow: 1, }}>
+
         <Container
           maxWidth="xl"
           sx={{
-           margintTop: "100px !important",
+            marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
+              ? undefined
+              : "100px !important",
             padding: "0px 50px !important",
             [theme.breakpoints.down("md")]: {
               padding: "0px !important",
-              marginTop: "125px"
+
+              marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
+                ? "0"
+                : "125px !important",
             },
 
             [theme.breakpoints.down("550")]: {
-              marginTop: "185px !important"
+              marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
+                ? "0"
+                : "185px !important",
             },
 
             [theme.breakpoints.up("md")]: {
@@ -2371,14 +2391,17 @@ export const Codes = () => {
         <Container
           maxWidth="xl"
           sx={{
-            marginTop:"100px !important",
+            marginTop: (tabs?.read_only_rejection_allowed?.active || tabs?.read_only_mode?.active)
+              ? undefined
+              : "100px !important",
             padding: "8px 50px !important",
             [theme.breakpoints.down("md")]: {
               padding: "10px !important",
             },
-            '@media (max-width : 968px)' : {
-              marginTop:"0 !important",
-             }
+
+            '@media (max-width: 968px)': {
+              marginTop: "0 !important",
+            },
           }}
         >
           <Grid container spacing={2.5}>
@@ -3544,12 +3567,12 @@ export const Codes = () => {
                                                           : windowSize.width > 437
                                                             ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
                                                             : windowSize.width > 407
-                                                            ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                            : windowSize.width > 367
-                                                            ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                            : windowSize.width > 319
-                                                              ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                              : item?.value
+                                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                              : windowSize.width > 367
+                                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                                : windowSize.width > 319
+                                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                                  : item?.value
                                                   }
                                                 </StylePop>
                                               </Typography>
@@ -3616,12 +3639,12 @@ export const Codes = () => {
                                                             : windowSize.width > 437
                                                               ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
                                                               : windowSize.width > 407
-                                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                              : windowSize.width > 367
-                                                              ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                              : windowSize.width > 319
-                                                                ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                                : item?.value
+                                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                                : windowSize.width > 367
+                                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                                  : windowSize.width > 319
+                                                                    ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                                    : item?.value
                                                     }
                                                   </StylePop>
                                                 </Typography>
@@ -3699,12 +3722,12 @@ export const Codes = () => {
                                                                 : windowSize.width > 437
                                                                   ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                                   : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                  : windowSize.width > 319
-                                                                    ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
+                                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                                    : windowSize.width > 367
+                                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                      : windowSize.width > 319
+                                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                        : item[Object.keys(item)].value
                                                         }
                                                       </StylePop>{" "}
                                                     </Typography>
@@ -3750,12 +3773,12 @@ export const Codes = () => {
                                                                 : windowSize.width > 437
                                                                   ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                                   : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                  : windowSize.width > 319
-                                                                    ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
+                                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                                    : windowSize.width > 367
+                                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                      : windowSize.width > 319
+                                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                        : item[Object.keys(item)].value
                                                         }
                                                       </StylePop>{" "}
                                                     </Typography>
@@ -3802,12 +3825,12 @@ export const Codes = () => {
                                                                 : windowSize.width > 437
                                                                   ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                                   : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                  : windowSize.width > 319
-                                                                    ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
+                                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                                    : windowSize.width > 367
+                                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                      : windowSize.width > 319
+                                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                        : item[Object.keys(item)].value
                                                         }
                                                       </StylePop>{" "}
                                                     </Typography>
@@ -3853,12 +3876,12 @@ export const Codes = () => {
                                                                 : windowSize.width > 437
                                                                   ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                                   : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                                  : windowSize.width > 367
-                                                                  ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                                  : windowSize.width > 319
-                                                                    ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                                    : item[Object.keys(item)].value
+                                                                    ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                                    : windowSize.width > 367
+                                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                                      : windowSize.width > 319
+                                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                                        : item[Object.keys(item)].value
                                                         }                                         </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
