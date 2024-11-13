@@ -246,6 +246,51 @@ const SubmitModal = ({
     }
   }
 
+  function formatItemText(item, useDynamicKey = false) {
+    const code = item?.code || Object.keys(item)[0] || '';
+    const value = useDynamicKey
+      ? item[Object.keys(item)[0]]?.value
+      : item?.value;
+  
+    if (!value) return ''; // Return empty if value is undefined or null
+  
+    let widthInRem = 10; // Default width (10rem)
+    
+    if (windowSize.width > 967) {
+      widthInRem = 22; // 32rem for large screens
+    } else if (windowSize.width > 767) {
+      widthInRem = 17; // 30rem for medium screens
+    } else if (windowSize.width > 567) {
+      widthInRem = 17; // 28rem for smaller tablets
+    } else if (windowSize.width > 437) {
+      widthInRem = 16; // 24rem for small tablets or larger mobile screens
+    } else if (windowSize.width > 407) {
+      widthInRem = 16; // 22rem for mobile screens
+    } else if (windowSize.width > 367) {
+      widthInRem = 13; // 20rem for smaller mobile screens
+    } else if (windowSize.width > 319) {
+      widthInRem = 9; // 18rem for very small screens
+    } else {
+      widthInRem = 8; // 16rem for extra small screens
+    }
+  
+    return (
+      <StylePop
+        className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
+        style={{
+          display: 'block',
+          whiteSpace: 'nowrap',  // Prevent text from wrapping
+          overflow: 'hidden',    // Hide overflow text
+          textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
+          width: `${widthInRem}rem`,  // Set dynamic width in rem
+        }}
+      >
+        {`${code}: ${value}`}
+      </StylePop>
+    );
+  }
+  
+  
   return (
     <Dialog
       open={openSubmitModal}
@@ -329,27 +374,8 @@ const SubmitModal = ({
                               >
                                 <Tooltip title={item?.code + " : " + item?.value}>
                                   <Typography>
-                                    <StylePop className="ChipSpan">
-                                      {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
-                                      {": "}
-                                      {
-                                        windowSize.width > 967
-                                          ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                          : windowSize.width > 767
-                                            ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                            : windowSize.width > 567
-                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                              : windowSize.width > 437
-                                                ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                : windowSize.width > 407
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 367
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 319
-                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                  : item?.value
-                                      }
-                                    </StylePop>
+
+                                      {formatItemText(item)}
                                   </Typography>
                                 </Tooltip>
                               </Stack>
@@ -401,27 +427,7 @@ const SubmitModal = ({
                                     title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
                                   >
                                     <Typography>
-                                      <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-                                        {": "}
-                                        {
-                                          windowSize.width > 967
-                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                            : windowSize.width > 767
-                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                              : windowSize.width > 567
-                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                                : windowSize.width > 437
-                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                  : windowSize.width > 407
-                                                  ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                  : windowSize.width > 367
-                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                  : windowSize.width > 319
-                                                    ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                    : item?.value
-                                        }
-                                      </StylePop>
+                                        {formatItemText(item)}
                                     </Typography>
                                   </Tooltip>
                                 </Stack>
@@ -479,33 +485,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
-
-                                          </StylePop>{" "}
+                                            {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -531,33 +511,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""}  {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
-
-                                          </StylePop>{" "}
+                                            {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -583,33 +537,8 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""}
-                                            {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
-                                          </StylePop>{" "}
+
+                                            {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -635,31 +564,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""} {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }                                  </StylePop>{" "}
+                                            {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -777,28 +682,7 @@ const SubmitModal = ({
                               >
                                 <Tooltip title={item?.code + " : " + item?.value}>
                                   <Typography>
-                                    <StylePop className="ChipSpan">
-                                      {item?.code?.slice(0, 20)} {item?.code.length > 20 ? "..." : ""}
-                                      {": "}
-
-                                      {
-                                        windowSize.width > 967
-                                          ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                          : windowSize.width > 767
-                                            ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                            : windowSize.width > 567
-                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                              : windowSize.width > 437
-                                                ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                : windowSize.width > 407
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 367
-                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                : windowSize.width > 319
-                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                  : item?.value
-                                      }
-                                    </StylePop>
+                                      {formatItemText(item)}
                                   </Typography>
                                 </Tooltip>
                               </Stack>
@@ -850,27 +734,8 @@ const SubmitModal = ({
                                     title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
                                   >
                                     <Typography>
-                                      <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-                                        {item?.value ? ":" : ""}
-                                        {
-                                          windowSize.width > 967
-                                            ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
-                                            : windowSize.width > 767
-                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                              : windowSize.width > 567
-                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
-                                                : windowSize.width > 437
-                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
-                                                  : windowSize.width > 407
-                                                  ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                  : windowSize.width > 367
-                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                    : windowSize.width > 319
-                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                      : item?.value
-                                        }
-                                      </StylePop>
+
+                                        {formatItemText(item)}
                                     </Typography>
                                   </Tooltip>
                                 </Stack>
@@ -928,7 +793,6 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
                                               .slice(0, 20)}{" "}
@@ -938,7 +802,6 @@ const SubmitModal = ({
                                               : ""}
                                             {/* :
                                               {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
-                                          </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -964,32 +827,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""}  {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                        ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                        : windowSize.width > 319
-                                                          ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                          : item[Object.keys(item)].value
-                                            }
-                                          </StylePop>{" "}
+                                            {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -1015,34 +853,8 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""}
-                                            {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
+                                            {formatItemText(item, true)}
 
-                                          </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -1068,32 +880,8 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""} {": "}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
-                                            }
-                                          </StylePop>{" "}
+
+                                            {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
