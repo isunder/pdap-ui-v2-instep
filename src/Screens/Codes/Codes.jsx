@@ -872,6 +872,13 @@ export const Codes = () => {
       codeCount: summary?.deleted_codes_count,
       container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
+
+    {
+      key: 7,
+      code: "Deleted Codes / Conditions",
+      codeCount: summary?.deleted_codes_count,
+      container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+    },
   ];
 
 
