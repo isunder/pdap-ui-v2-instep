@@ -3546,7 +3546,7 @@ export const Codes = () => {
                         flexDirection: "column",
                         padding: "0px !important",
                         overflowX: "hidden",
-                        height: '225px',
+                        height:windowSize.height<600?'135px':'225px',
                         overflowY: 'auto',
                         '@media (max-widht:567px)': {
                           height: '175px',
