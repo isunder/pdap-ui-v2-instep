@@ -74,6 +74,7 @@ import { History, NotFound, MyProfile } from "../../Screens";
 import { Visibility } from "@mui/icons-material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import zIndex from "@mui/material/styles/zIndex";
+import { MorData } from "../../container/MorData/MorData";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -873,12 +874,12 @@ export const Codes = () => {
       container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
 
-    // {
-    //   key: 7,
-    //   code: "Deleted Codes / Conditions",
-    //   codeCount: summary?.deleted_codes_count,
-    //   container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    // },
+    {
+      key: 7,
+      code: "MOR Data Insights",
+      codeCount: summary?.deleted_codes_count,
+      container: <MorData sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+    },
   ];
 
 
