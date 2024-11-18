@@ -247,8 +247,6 @@ const SubmitModal = ({
   }
 
   function formatItemText(item, useDynamicKey = false) {
-
-    console.log(item, "sdfghjkl")
     const code = item?.code || Object.keys(item)[0] || '';
     const value = useDynamicKey
       ? item[Object.keys(item)[0]]?.value
