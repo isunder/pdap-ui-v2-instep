@@ -290,6 +290,45 @@ const SubmitModal = ({
     );
   }
   
+
+  function formatItemText2(item, useDynamicKey = false) {
+
+    const value = item[Object.keys(item)].value ;
+    let widthInRem = 10; 
+    
+    if (windowSize.width > 967) {
+      widthInRem = 21; 
+    } else if (windowSize.width > 767) {
+      widthInRem = 16; 
+    } else if (windowSize.width > 567) {
+      widthInRem = 16; 
+    } else if (windowSize.width > 437) {
+      widthInRem = 15; 
+    } else if (windowSize.width > 407) {
+      widthInRem = 14; 
+    } else if (windowSize.width > 367) {
+      widthInRem = 12; 
+    } else if (windowSize.width > 319) {
+      widthInRem = 8; 
+    } else {
+      widthInRem = 7; 
+    }
+  
+    return (
+      <StylePop
+        className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
+        style={{
+          display: 'block',
+          whiteSpace: 'nowrap',  // Prevent text from wrapping
+          overflow: 'hidden',    // Hide overflow text
+          textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
+          width: `${widthInRem}rem`,  // Set dynamic width in rem
+        }}
+      >
+        {`${value}`}
+      </StylePop>
+    );
+  }
   
   return (
     <Dialog
@@ -794,13 +833,7 @@ const SubmitModal = ({
                                       >
                                         <Typography> 
                                           <StylePop className="ChipSpan rejected">
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""}
+                                          {formatItemText2(item , true)}
                                             {/* :
                                               {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
                                         </StylePop>
