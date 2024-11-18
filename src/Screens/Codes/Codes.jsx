@@ -673,7 +673,11 @@ export const Codes = () => {
     const shouldSkipApiCall =
       filteredExistingCode?.length === 0 &&
       filteredRecaptureCode?.length === 0 &&
-      filteredDuplicateCode?.length === 0;
+      filteredDuplicateCode?.length === 0 &&
+      existingCodeReject?.length === 0 &&
+      recaptureCodeReject?.length === 0 &&
+      duplicateCodeReject?.length === 0 &&
+      suspectCodeReject?.length === 0;
 
     if (shouldSkipApiCall) {
       setOpenSubmitModal(false);
