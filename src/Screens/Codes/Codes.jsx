@@ -3549,7 +3549,7 @@ export const Codes = () => {
                         height:windowSize.height<600?'135px':'225px',
                         overflowY: 'auto',
                         '@media (max-widht:567px)': {
-                          height: '175px',
+                          height: '175px', 
                         }
 
                       }}

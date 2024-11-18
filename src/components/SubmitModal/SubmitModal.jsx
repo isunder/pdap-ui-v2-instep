@@ -247,6 +247,8 @@ const SubmitModal = ({
   }
 
   function formatItemText(item, useDynamicKey = false) {
+
+    console.log(item, "sdfghjkl")
     const code = item?.code || Object.keys(item)[0] || '';
     const value = useDynamicKey
       ? item[Object.keys(item)[0]]?.value
@@ -792,7 +794,8 @@ const SubmitModal = ({
 
                                         }
                                       >
-                                        <Typography>
+                                        <Typography> 
+                                          <StylePop className="ChipSpan rejected">
                                             {Object.keys(item)
                                               .toString()
                                               .slice(0, 20)}{" "}
@@ -802,6 +805,7 @@ const SubmitModal = ({
                                               : ""}
                                             {/* :
                                               {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
+                                        </StylePop>
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
