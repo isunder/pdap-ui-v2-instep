@@ -247,15 +247,16 @@ const SubmitModal = ({
   }
 
   function formatItemText(item, useDynamicKey = false) {
+
     const code = item?.code || Object.keys(item)[0] || '';
     const value = useDynamicKey
       ? item[Object.keys(item)[0]]?.value
       : item?.value;
-  
-    if (!value) return ''; // Return empty if value is undefined or null
-  
+
+    // Return empty if value is undefined or null
+
     let widthInRem = 10; // Default width (10rem)
-    
+
     if (windowSize.width > 967) {
       widthInRem = 22; // 32rem for large screens
     } else if (windowSize.width > 767) {
@@ -273,7 +274,25 @@ const SubmitModal = ({
     } else {
       widthInRem = 8; // 16rem for extra small screens
     }
-  
+
+
+    if (!value)
+
+      return (
+        <StylePop
+          className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
+          style={{
+            display: 'block',
+            whiteSpace: 'nowrap',  // Prevent text from wrapping
+            overflow: 'hidden',    // Hide overflow text
+            textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
+            width: `${widthInRem}rem`,  // Set dynamic width in rem
+          }}
+        >
+          {`${code}`}
+        </StylePop>
+      );
+
     return (
       <StylePop
         className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
@@ -289,47 +308,7 @@ const SubmitModal = ({
       </StylePop>
     );
   }
-  
 
-  function formatItemText2(item, useDynamicKey = false) {
-
-    const value = item[Object.keys(item)].value ;
-    let widthInRem = 10; 
-    
-    if (windowSize.width > 967) {
-      widthInRem = 21; 
-    } else if (windowSize.width > 767) {
-      widthInRem = 16; 
-    } else if (windowSize.width > 567) {
-      widthInRem = 16; 
-    } else if (windowSize.width > 437) {
-      widthInRem = 15; 
-    } else if (windowSize.width > 407) {
-      widthInRem = 14; 
-    } else if (windowSize.width > 367) {
-      widthInRem = 12; 
-    } else if (windowSize.width > 319) {
-      widthInRem = 8; 
-    } else {
-      widthInRem = 7; 
-    }
-  
-    return (
-      <StylePop
-        className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
-        style={{
-          display: 'block',
-          whiteSpace: 'nowrap',  // Prevent text from wrapping
-          overflow: 'hidden',    // Hide overflow text
-          textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
-          width: `${widthInRem}rem`,  // Set dynamic width in rem
-        }}
-      >
-        {`${value}`}
-      </StylePop>
-    );
-  }
-  
   return (
     <Dialog
       open={openSubmitModal}
@@ -414,7 +393,7 @@ const SubmitModal = ({
                                 <Tooltip title={item?.code + " : " + item?.value}>
                                   <Typography>
 
-                                      {formatItemText(item)}
+                                    {formatItemText(item)}
                                   </Typography>
                                 </Tooltip>
                               </Stack>
@@ -466,7 +445,7 @@ const SubmitModal = ({
                                     title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
                                   >
                                     <Typography>
-                                        {formatItemText(item)}
+                                      {formatItemText(item)}
                                     </Typography>
                                   </Tooltip>
                                 </Stack>
@@ -524,7 +503,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -550,7 +529,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -577,7 +556,7 @@ const SubmitModal = ({
                                       >
                                         <Typography>
 
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -603,7 +582,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -721,7 +700,7 @@ const SubmitModal = ({
                               >
                                 <Tooltip title={item?.code + " : " + item?.value}>
                                   <Typography>
-                                      {formatItemText(item)}
+                                    {formatItemText(item)}
                                   </Typography>
                                 </Tooltip>
                               </Stack>
@@ -774,7 +753,7 @@ const SubmitModal = ({
                                   >
                                     <Typography>
 
-                                        {formatItemText(item)}
+                                      {formatItemText(item)}
                                     </Typography>
                                   </Tooltip>
                                 </Stack>
@@ -831,12 +810,12 @@ const SubmitModal = ({
 
                                         }
                                       >
-                                        <Typography> 
+                                        <Typography>
                                           <StylePop className="ChipSpan rejected">
-                                          {formatItemText2(item , true)}
+                                            {formatItemText(item, true)}
                                             {/* :
                                               {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
-                                        </StylePop>
+                                          </StylePop>
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -862,7 +841,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -888,7 +867,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
 
                                         </Typography>
                                       </Tooltip>
@@ -916,7 +895,7 @@ const SubmitModal = ({
                                       >
                                         <Typography>
 
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
