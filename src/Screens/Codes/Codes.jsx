@@ -74,6 +74,7 @@ import { History, NotFound, MyProfile } from "../../Screens";
 import { Visibility } from "@mui/icons-material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import zIndex from "@mui/material/styles/zIndex";
+import { Scans } from "../../container/Scan";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -875,9 +876,9 @@ export const Codes = () => {
 
     {
       key: 7,
-      code: "Deleted Codes / Conditions",
-      codeCount: summary?.deleted_codes_count,
-      container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      code: "External Data",
+      codeCount: summary?.external_data_count,
+      container: <Scans sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
     },
   ];
 
@@ -1247,8 +1248,6 @@ export const Codes = () => {
   }
 
   // handle hoag modal switch on final summary screen
-
-
   const finalSummaryScreenHoag = () => {
     setHoagmodalarrow(!hoagmodalarrow);
 

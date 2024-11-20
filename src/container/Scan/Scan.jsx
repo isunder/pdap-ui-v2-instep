@@ -1,0 +1,913 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Grid, styled, Typography } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import Dialog from "@mui/material/Dialog";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import "../ExistingConditions/ExistingConditions.css"
+import {
+  CrossWhite,
+  PrimaryButton,
+  PlusIcon,
+  CorrectIcon,
+  InputBoxText,
+  DeleteIcon,
+} from "../../components";
+import { patientScanCode, rejectScanCode } from "../../redux/userSlice/patientInfoSlice";
+import { ReadMore } from "../ReadMore/ReadMore";
+import { suspectReject } from "../../redux/userSlice/rejectCodesSlice";
+import { suspectValue } from "../../redux/userSlice/acceptCodesSlice";
+import { ReasonTextVal } from "../../components/Validation/ReasonTextVal";
+import { TabsSlag } from "../TabsSlag/TabsSlag";
+import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import { DialogModal } from "../../components/Modal/DialogModal";
+import { InputField } from "../../components/InputField";
+import { SelectField } from "../../components/SelectField";
+import handleAddEventData from "../../container/"
+import {
+  StyleCircle,
+  StyleButton,
+  StyleCode,
+  StyledText,
+  StyledHeader,
+  StyledBox,
+  StyledButton,
+  chipContainer,
+} from "../Common/StyledMuiComponents";
+import { convertDate, isSlugOrJwt } from "../../utils/helper";
+import { addAuditLog1 } from "../../utils/indexedDb";
+
+const StyleHead = styled("h2")(() => ({
+  fontSize: "16px",
+  fontWeight: 600,
+  lineHeight: "21px",
+  color: "#000",
+}));
+
+export const Scans = ({ sessionObject, handleAddEventData }) => {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const tabs = TabsSlag();
+  const userDetail = useSelector((state) => state?.user?.data?.userInfo);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const { doctorDetail } = useSelector((state) => state?.doctor?.data);
+  const [suspectCode, setSuspectCode] = useState([]);
+  const [rejectReason, setRejectReason] = useState("Insufficient Proof");
+  const [otherText, setOtherText] = useState(null);
+  const [error, setError] = useState({});
+  const [selectedRejectData, setSelectedRejectData] = useState({});
+
+  const rejectedData = useSelector((state) => state?.reject?.suspectReject);
+  const [rejectSuspectCode, setRejectSuspectCode] = useState([]);
+
+  const suspectedCode = useSelector((state) => state?.summary?.suspect);
+  const [selectedSuspectcode, setSelectedSuspectcode] = useState([]);
+  const { user } = useSelector((state) => state);
+
+  const state = useSelector((state) => state.user.data.suspectedCode);
+  const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
+  const [aarr, setAarr] = useState([]);
+  const [suspectRaf, setSuspectRaf] = useState(tabs && tabs["patient_dashboard_weights"]?.active)
+
+
+
+
+  let array = [];
+  state &&
+    Object.keys(state).forEach((key) => {
+      array.push({
+        SuspectedCondition: key,
+        data: state[key].data,
+        reason: state[key].reason,
+        remarks: state[key].remarks,
+        definition: state[key].definition,
+        total_weight: state[key].total_weight,
+        dataValue: state[key].data.value
+      });
+    });
+  array?.length !== suspectCode?.length && setSuspectCode(array);
+
+  const handleClose = () => {
+    rejectReason !== "Insufficient Proof" &&
+      setRejectReason("Insufficient Proof");
+    otherText?.length > 0 && setOtherText(null);
+    setError({});
+    setDeleteOpen(false);
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECTION_REASON_CANCEL", metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        parentCodesCount: (suspectCode?.length)
+
+      }
+    };
+
+    handleAddEventData(exampleMetadata)
+  };
+
+  const handleRemoveDeletedCode = (item) => {
+
+
+    setButtonDisable(false)
+    if (userDetail?.mrn) {
+      sessionObject = JSON.parse(
+        localStorage.getItem(`sessionObject_${userDetail.mrn}`)
+      );
+      let codeList;
+
+      codeList = sessionObject?.suspectCodeReject?.filter(
+        (value) => Object.keys(value)[0] !== item
+      );
+      let sessionExisting = sessionObject?.existingCode;
+      let sessionExistingReject = sessionObject?.existingCodeReject;
+      let sessionSuspect = sessionObject?.suspectCode;
+      let sessionRecapture = sessionObject?.recaptureCode;
+      let sessionRecaptureReject = sessionObject?.recaptureCodeReject;
+      let sessionDuplicate = sessionObject?.duplicateCode;
+      let sessionDuplicateReject = sessionObject?.duplicateCodeReject;
+      let expirationDate = sessionObject?.expiresAt;
+
+      sessionObject = {
+        mrn: userDetail?.mrn,
+        expiresAt: expirationDate,
+        existingCode: sessionExisting,
+        existingCodeReject: sessionExistingReject,
+        suspectCode: sessionSuspect,
+        suspectCodeReject: codeList,
+        recaptureCode: sessionRecapture,
+        recaptureCodeReject: sessionRecaptureReject,
+        duplicateCode: sessionDuplicate,
+        duplicateCodeReject: sessionDuplicateReject,
+      };
+      localStorage.setItem(
+        `sessionObject_${userDetail.mrn}`,
+        JSON.stringify(sessionObject)
+      );
+      setRejectSuspectCode(codeList);
+    }
+
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECT_CONDITION",
+      metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: item,
+        description: item,
+        reasonForRejection: rejectSuspectCode[0]?.[item].reason,
+        raf: item?.info?.total_weight,
+        alternateCodes: item?.info?.alternate_codes,
+        parentCodesCount: (suspectCode?.length)
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
+
+  };
+
+  const [buttonDisable, setButtonDisable] = useState(false)
+
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isTruncated = windowWidth >= 969 && windowWidth <= 1300;
+
+  const handleClickOpen = (item) => {
+
+
+    setButtonDisable(false)
+    setDeleteOpen(true);
+    setSelectedRejectData(item);
+
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECTION_REASON_SELECTION", metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: item?.code,
+        description: item?.definition,
+        reasonForRejection: rejectReason,
+        raf: item?.total_weight,
+        alternateCodes: "",
+        parentCodesCount: (suspectCode?.length)
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
+  };
+
+
+
+  const handleDelete = () => {
+    if (userDetail?.mrn) {
+      sessionObject = JSON.parse(
+        localStorage.getItem(`sessionObject_${userDetail.mrn}`)
+      );
+      let reason = rejectReason === "Other" ? otherText : rejectReason;
+      let val = {
+        isValid: true,
+      };
+      if (rejectReason === "Other") {
+        val = ReasonTextVal(otherText);
+        setError(val);
+
+      }
+      if (!val.isValid) {
+        setError(val);
+        return;
+      } else {
+        let newObj = selectedRejectData.data;
+        let codeValue = [];
+
+        for (let x in newObj) {
+          codeValue.push(`${x}  ${newObj[x]?.value}`);
+        }
+        let code = rejectedData?.some((value, index) => {
+          let key = Object.keys(value)[0];
+          if (selectedRejectData?.SuspectedCondition === key) {
+            return true;
+          }
+        });
+
+        let codeList,
+          updatedVal = [];
+        let sessionExisting = sessionObject?.existingCode;
+        let sessionExistingReject = sessionObject?.existingCodeReject;
+        let sessionSuspect = sessionObject?.suspectCode;
+        let sessionRecapture = sessionObject?.recaptureCode;
+        let sessionRecaptureReject = sessionObject?.recaptureCodeReject;
+        let sessionDuplicate = sessionObject?.duplicateCode;
+        let sessionDuplicateReject = sessionObject?.duplicateCodeReject;
+        let expirationDate = sessionObject?.expiresAt;
+
+        if (code) {
+          codeList = rejectedData?.filter(
+            (value) =>
+              Object?.keys(value)[0] !== selectedRejectData?.SuspectedCondition
+          );
+          updatedVal = codeList;
+        } else {
+          codeList = {
+            [selectedRejectData.SuspectedCondition]: {
+              value: selectedRejectData.SuspectedCondition,
+              code: " ",
+              reason: reason,
+            },
+          };
+          updatedVal = [...rejectedData, codeList];
+        }
+        setRejectSuspectCode(updatedVal);
+        sessionObject = {
+          mrn: userDetail?.mrn,
+          expiresAt: expirationDate,
+          existingCode: sessionExisting,
+          existingCodeReject: sessionExistingReject,
+          suspectCode: sessionSuspect,
+          suspectCodeReject: codeList,
+          recaptureCode: sessionRecapture,
+          recaptureCodeReject: sessionRecaptureReject,
+          duplicateCode: sessionDuplicate,
+          duplicateCodeReject: sessionDuplicateReject,
+        };
+        localStorage.setItem(
+          `sessionObject_${userDetail.mrn}`,
+          JSON.stringify(sessionObject)
+        );
+
+        reason !== "Insufficient Proof" &&
+          setRejectReason("Insufficient Proof");
+        otherText?.length > 0 && setOtherText(null);
+        setDeleteOpen(false);
+
+
+        const exampleMetadata = {
+          event_type: "SUSPECT_REJECTION_REASON_DELETION", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: code,
+            description: selectedRejectData.definition,
+            reasonForRejection: rejectReason,
+            raf: selectedRejectData.total_weight,
+            alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
+      }
+    }
+    setButtonDisable(true);
+  };
+
+  const handleReseon = (event) => {
+    const value = event.target.value;
+    if (value !== "Other") {
+      setError({});
+      setOtherText("");
+    }
+    setRejectReason(value);
+  };
+
+  const handleOtherText = (e) => {
+    let value = e.target.value;
+    let val = ReasonTextVal(value);
+    setError(val);
+    setOtherText(e.target.value);
+  };
+
+  const handleClickOpen1 = (key, item, allData) => {
+
+
+    if (userDetail?.mrn) {
+      sessionObject = JSON.parse(
+        localStorage.getItem(`sessionObject_${userDetail.mrn}`)
+      );
+      let itemCode = key;
+      let value = item?.value;
+      let additional_info = item?.remarks?.reason;
+      let suspectedCondition = allData?.SuspectedCondition
+      let code = sessionObject?.suspectCode?.some((value, index) => {
+        if (key === value.code) {
+          return true;
+        }
+      });
+      let codeList,
+        updateVal = [];
+      let sessionExisting = sessionObject?.existingCode;
+      let sessionExistingReject = sessionObject?.existingCodeReject;
+      let sessionSuspectReject = sessionObject?.suspectCodeReject;
+      let sessionRecapture = sessionObject?.recaptureCode;
+      let sessionRecaptureReject = sessionObject?.recaptureCodeReject;
+      let sessionDuplicate = sessionObject?.duplicateCode;
+      let sessionDuplicateReject = sessionObject?.duplicateCodeReject;
+      let expirationDate = sessionObject?.expiresAt;
+      if (code) {
+        codeList = sessionObject?.suspectCode?.filter(
+          (value) => value?.code !== key
+        );
+        updateVal = codeList;
+
+        const exampleMetadata = {
+          event_type: "SUSPECT_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: allData.SuspectedCondition,
+            description: allData.definition,
+            reasonForRejection: rejectReason,
+            raf: allData.total_weight,
+            alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
+
+
+      } else {
+        codeList = {
+          code: itemCode,
+          value: value,
+          additional_info: additional_info,
+          suspectedCondition: suspectedCondition,
+        };
+        updateVal =
+          selectedSuspectcode?.length > 0
+            ? [...selectedSuspectcode, codeList]
+            : [codeList];
+
+        const exampleMetadata = {
+          event_type: "SUSPECT_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: allData.SuspectedCondition,
+            description: allData.definition,
+            reasonForRejection: rejectReason,
+            raf: allData.total_weight,
+            alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
+
+
+      }
+      sessionObject = {
+        mrn: userDetail?.mrn,
+        expiresAt: expirationDate,
+        existingCode: sessionExisting,
+        existingCodeReject: sessionExistingReject,
+        suspectCode: updateVal,
+        suspectCodeReject: sessionSuspectReject,
+        recaptureCode: sessionRecapture,
+        recaptureCodeReject: sessionRecaptureReject,
+        duplicateCode: sessionDuplicate,
+        duplicateCodeReject: sessionDuplicateReject,
+      };
+      localStorage.setItem(
+        `sessionObject_${userDetail.mrn}`,
+        JSON.stringify(sessionObject)
+      );
+      setSelectedSuspectcode(updateVal);
+    }
+  };
+
+  // Function to check if the condition is rejected
+  const isConditionRejected = (item) => {
+    return keyOfRejectedData?.some(
+      (value) => item?.SuspectedCondition === value
+    );
+  };
+
+  // Function to check if the condition is rejected
+  const isConditionRejected2 = (item) => {
+    const newKey = keyOfRejectedData?.map(
+      (value) => item?.SuspectedCondition === value
+    );
+
+    isConditionRejected2();
+  };
+
+  // Function to check if the code is not selected
+  const isCodeSelected = (dataValue) => {
+    return selectedSuspectcode?.some((ele) => ele.code === dataValue);
+  };
+
+  const params = window.location.pathname;
+  const queryString = window.location.search;
+
+
+  const slug = isSlugOrJwt();
+
+ 
+
+
+
+
+
+
+useEffect(() => {
+
+  const payload = { 
+    source: "axcxzi", 
+    hcc_version: "V24", 
+    rejectedReason: "Othxcxzer", 
+    serviceDate: "2024-09-16T00:00:00Z", 
+    conditionName:"Diabetes xzcxzcxWith Chronic Complications",
+    catagory:""
+}
+
+
+  if (slug) {
+    dispatch(patientScanCode());
+    dispatch(rejectScanCode(payload))
+
+  };
+}, []);
+
+useEffect(() => {
+  if (
+    sessionObject &&
+    !sessionObjLoaded &&
+    Object.keys(sessionObject).length > 0
+  ) {
+    let newSuspect =
+      suspectedCode?.length > 0 && sessionObject?.suspectCode?.length > 0
+        ? [...sessionObject?.suspectCode, ...suspectedCode]
+        : suspectedCode?.length > 0
+          ? suspectedCode
+          : sessionObject?.suspectCode || [];
+    selectedSuspectcode?.length === 0 &&
+      setSelectedSuspectcode([...newSuspect]);
+
+    let newSuspectReject =
+      rejectSuspectCode?.length > 0 &&
+        sessionObject?.suspectCodeReject?.length > 0
+        ? [...sessionObject?.suspectCodeReject, ...rejectSuspectCode]
+        : rejectSuspectCode?.length > 0
+          ? rejectSuspectCode
+          : sessionObject?.suspectCodeReject || [];
+    rejectSuspectCode?.length === 0 &&
+      setRejectSuspectCode([...newSuspectReject]);
+    setSessionObjLoaded(true);
+  }
+}, [sessionObject]);
+
+useEffect(() => {
+  dispatch(suspectValue(selectedSuspectcode));
+  dispatch(suspectReject(rejectSuspectCode));
+}, [rejectSuspectCode, selectedSuspectcode]);
+
+useEffect(() => {
+  let sessionSuspect = suspectedCode?.length > 0 ? suspectedCode : [];
+  selectedSuspectcode?.length !== sessionSuspect?.length &&
+    setSelectedSuspectcode([...sessionSuspect]);
+
+  let newSuspectReject = rejectedData?.length > 0 ? rejectedData : [];
+  rejectSuspectCode?.length !== newSuspectReject?.length &&
+    setRejectSuspectCode([...newSuspectReject]);
+}, [suspectedCode.length, rejectedData.length]);
+
+const keyOfRejectedData = rejectedData?.map((value) => Object.keys(value)[0]);
+
+return (
+  <div>
+    <Box
+      sx={{
+        padding: "10px 15px 10px",
+        backgroundColor: "#fff",
+        borderRadius: "0px 0px 10px 10px",
+      }}
+    >
+      {/* Header for accordion body */}
+      <Box sx={{ ...flexAlignCenter, flexDirection: "column" }}>
+        <StyledHeader>
+          <Grid
+            container
+            spacing={0}
+            className="ContentBody"
+            sx={{ padding: "0px 10px 5px 0px", backgroundColor: "#fff", pl: 0, }}
+          >
+            <StyledBox
+              sx={{
+                padding: "0 !important",
+                fontWeight: "800 !important",
+                borderBottom: "1px solid #D9D9D999",
+                [theme.breakpoints.only("md")]: {
+                  pl: 0,
+                },
+              }}
+              className="acc-content-header-items"
+            >
+
+              {/* Description */}
+              <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active ? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active ? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10}
+                sx={{
+                  '@media (max-width:767px)': {
+                    maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                    flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                  }
+
+
+                }}
+              >
+                <StyledText sx={{
+                  padding: "0 !important",
+                  '@media (max-width:767px)': {
+                    borderRight: tabs && tabs["patient_dashboard_weights"]?.active ? "2px solid rgba(0, 0, 0, 0.12)" : "0px !important",
+
+
+
+                  }
+                }} className={`${tabs && !!tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
+                  Description
+                </StyledText>
+              </Grid>
+
+              {tabs && tabs["patient_dashboard_weights"]?.active && (
+                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+
+                  <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
+                    sx={{
+                      [theme.breakpoints.down("768")]: {
+                        borderRight: "0px !important",
+                        padding: 0
+                      },
+                    }}
+                  >
+                    RAF
+                  </StyledText>
+
+                </Grid>
+              )}
+
+              {/* Action */}
+              <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
+                sx={{
+                  '@media (max-width:767px)': {
+                    display: 'none'
+                  }
+                }}
+              >
+                <StyledText sx={{ border: "none !important" }} className={`${tabs && !tabs["patient_dashboard_weights"]?.active ? "suspect_action_custom_width acc-content-cust-header1" : "acc-content-cust-header1"}`}>
+                  Actions
+                </StyledText>
+              </Grid>
+            </StyledBox>
+          </Grid>
+        </StyledHeader>
+      </Box>
+      {/* Header end for accordion body */}
+      {suspectCode &&
+        suspectCode?.map((item, index) => (
+          <Box key={index + 1}>
+            <Grid
+              container
+              sx={{
+                paddingTop: "20px", borderTop: "1px solid #D9D9D999",
+              }}
+              spacing={0}
+              className="ContentBody"
+
+            >
+              {/* Description contents */}
+              <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active ? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active ? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10}
+                className="suspect_desc_content"
+                sx={{
+                  '@media (max-width:767px)': {
+                    maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                    flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                  }
+                }}
+              // sx={{ padding: "3px 0px"  }}
+              >
+                <Box sx={{ ...chipContainer }}>
+                  <Button sx={{}}>Source: AI</Button>
+                  <Button sx={{}}>HCC V24</Button>
+                </Box>
+                <StyleHead sx={{ pr: 1 }}>
+                  {item.SuspectedCondition}
+
+                </StyleHead>
+                <Box
+                  sx={{
+                    width: "90%",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "21px",
+                    color: "#000",
+                    margin: "7px 0px",
+                  }}
+                >
+                  {item?.reason}
+                </Box>
+                <Box
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "21px",
+                    color: "#000",
+                  }}
+                >
+                  {item?.remarks}
+                </Box>
+
+
+
+              </Grid>
+
+              {/* RAF Contents */}
+
+              {tabs && tabs["patient_dashboard_weights"]?.active && (
+                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                  className="suspect_raf"
+                  sx={{
+                    textAlign: "start",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    paddingLeft: "10px !important"
+                    // [theme.breakpoints.down("sm")]: {
+                    //   display: "none"
+                    // },
+                  }}
+
+                >
+
+                  {item?.total_weight ? item.total_weight : "--"}
+                </Grid>
+              )}
+              {/* Action btn contents */}
+
+
+              <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
+                sx={{
+                  display: "flex",
+                  '@media (min-width:767px)': {
+                    paddingLeft: "10px"
+                  }
+                }}
+                className="acc-content-suspects-action"
+              >
+                {isConditionRejected(item) ? (
+                  <StyledButton
+                    disabled={tabs?.read_only_mode?.active}
+                    onClick={() =>
+                      handleRemoveDeletedCode(item?.SuspectedCondition)
+                    }
+                    sx={{
+                      fontSize: "14px",
+                      width: "105px !important",
+                      justifyContent: "center",
+                      backgroundColor: theme.palette.error.active1,
+                      color: "#fff",
+                      ":hover": {
+                        backgroundColor: theme.palette.error.main,
+                      },
+                      [theme.breakpoints.down("768")]: {
+                        width: "100% !important",
+                      },
+                      filter:
+                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                          ? "opacity(0.5)"
+                          : "none",
+                      cursor:
+                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                          ? "not-allowed"
+                          : "pointer",
+                      pointerEvents:
+                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
+                    }}
+                    startIcon={
+                      <StyleCircle
+                        sx={{
+                          background: "#B90E0E",
+                          ...flexAlignCenter,
+                          justifyContent: "center",
+                          borderRadius: "100px",
+                        }}
+                      >
+                        <CrossWhite />
+                      </StyleCircle>
+                    }
+                  >
+                    Rejected
+                  </StyledButton>
+                ) : (
+                  <StyledButton
+                    disabled={tabs?.read_only_mode?.active}
+                    onClick={() => handleClickOpen(item)}
+                    sx={{
+                      fontSize: "14px",
+                      width: "98px !important",
+                      justifyContent: "center",
+                      backgroundColor: (tabs?.read_only_mode?.active) ? "#D5D5D5" : theme.palette.primary.main,
+                      color: "#fff !important",
+                      ":hover": {
+                        backgroundColor: theme.palette.primary.main,
+                      },
+
+                      '@media (max-width:767px)': {
+                        width: "100% !important"
+                      },
+
+                      filter:
+                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                          ? "opacity(0.5)"
+                          : "none",
+                      cursor:
+                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                          ? "not-allowed"
+                          : "pointer",
+                      pointerEvents:
+                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
+                    }}
+                    startIcon={
+                      <StyleCircle
+                        sx={{
+                          background: (tabs?.read_only_mode?.active) ? "#ADADAD" : "#434343",
+                          ...flexAlignCenter,
+                          justifyContent: "center",
+                          borderRadius: "100px",
+                        }}
+                      >
+                        <CrossWhite />
+                      </StyleCircle>
+                    }
+
+                  >
+                    Reject
+                  </StyledButton>
+                )}
+              </Grid>
+
+
+
+
+            </Grid>
+          </Box>
+        ))}
+    </Box>
+
+    <DialogModal
+      open={deleteOpen}
+      setOpen={setDeleteOpen}
+      header={<DeleteIcon style={{ width: 45, height: 45 }} />}
+      width="25rem"
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+          mb: 3,
+        }}
+      >
+        <Box>
+          <Typography
+            variant="h4"
+            sx={{
+              display: "flex",
+              width: "90%",
+              height: "28px",
+              fontSize: "18px",
+              fontWeight: 700,
+              lineHeight: "28px",
+              letterSpacing: "0em",
+              textAlign: "left",
+              color: "#101828",
+            }}
+          >
+            Are you sure?
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#475467",
+            }}
+          >
+            You want to delete this problem from DoctusTech? This will not
+            remove the code from your Electronic Health Record system!
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <SelectField
+              value={rejectReason}
+              labelText="Select a reason"
+              onChange={(e) => handleReseon(e)}
+            >
+              <MenuItem value="Insufficient Proof">
+                Insufficient Proof
+              </MenuItem>
+              <MenuItem value="Resolved">Resolved</MenuItem>
+              <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </SelectField>
+            {rejectReason === "Other" && (
+              <InputField
+                placeholder="Add Reason"
+                onChange={(e) => handleOtherText(e)}
+                helperText={!error.isValid && error?.reason}
+                labelText="Reason for Rejection"
+              />
+            )}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              gap: "1rem",
+            }}
+          >
+            <StyleButton variant="outlined" onClick={handleClose} sx={{}}>
+              Cancel
+            </StyleButton>
+            <StyleButton
+              variant="contained"
+              onClick={() => handleDelete()}
+              color="error"
+              sx={{}}
+              disabled={buttonDisable}
+            >
+              Delete
+            </StyleButton>
+          </Box>
+        </Box>
+      </Box>
+    </DialogModal>
+  </div>
+);
+};
+
+const flexAlignCenter = {
+  display: "flex",
+  alignItems: "center",
+};

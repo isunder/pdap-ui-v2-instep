@@ -106,6 +106,30 @@ export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", asy
 });
 
 
+export const rejectScanCode = createAsyncThunk("rejectScanCode", async (payload) => {
+    try {
+        if (slug) {
+            const response = await axios.post(
+                `${baseUrl}/api/v1/patient-extended-data-rejected/?slug=${slug}`,
+                payload // Include payload here
+            );
+            return response.data;
+        } else if (token) {
+            const response = await axios.post(
+                `${baseUrl}/api/v1/patient-extended-data-rejected/`,
+                payload, // Include payload here
+                { headers: getApiHeaders() } // Headers moved to the config object
+            );
+            return response.data;
+        }
+    } catch (error) {
+        console.log("error in patientDuplicateCode", error);
+        throw error; // Optionally rethrow the error for further handling
+    }
+});
+
+
+
 // function for patient suspect Codes
 export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", async () => {
     try {
@@ -116,6 +140,28 @@ export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", asy
 
         else if (token) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
+    } catch (error) {
+        console.log("error in patientSuspectedCode", error)
+    }
+});
+
+
+
+// function for patient scan Codes
+export const patientScanCode = createAsyncThunk("patientScanCode", async () => {
+    try {
+        if (slug) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-extended-data/?slug=${slug}` );
+            return data.data;
+        }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-extended-data/`, 
                { headers: getApiHeaders()}
             );
             return data.data;
@@ -304,6 +350,35 @@ const slice = createSlice({
         builder.addCase(patientSuspectedCode.rejected, (state, action) => {
             state.isLoading = false;
             
+            state.isError = true;
+        });
+
+
+          // for patient patient Scan code
+          builder.addCase(rejectScanCode.pending, (state) => {
+            state.isLoading = true
+        });
+        builder.addCase(rejectScanCode.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data.scanCode = action.payload;
+        });
+        builder.addCase(rejectScanCode.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+
+        
+          // for patient patient Scan code
+          builder.addCase(patientScanCode.pending, (state) => {
+            state.isLoading = true
+        });
+        builder.addCase(patientScanCode.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data.scanCode = action.payload;
+        });
+        builder.addCase(patientScanCode.rejected, (state, action) => {
+            state.isLoading = false;
             state.isError = true;
         });
 
