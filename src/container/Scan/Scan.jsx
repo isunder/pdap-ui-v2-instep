@@ -21,7 +21,7 @@ import {
   InputBoxText,
   DeleteIcon,
 } from "../../components";
-import { patientScanCode, rejectScanCode } from "../../redux/userSlice/patientInfoSlice";
+import { patientScanCode, rejectScanCodeRequest } from "../../redux/userSlice/patientInfoSlice";
 import { ReadMore } from "../ReadMore/ReadMore";
 import { scanReject } from "../../redux/userSlice/rejectCodesSlice";
 import { suspectValue } from "../../redux/userSlice/acceptCodesSlice";
@@ -41,6 +41,7 @@ import {
   StyledBox,
   StyledButton,
   chipContainer,
+  descriptionBottomText,
 } from "../Common/StyledMuiComponents";
 import { convertDate, isSlugOrJwt } from "../../utils/helper";
 import { addAuditLog1 } from "../../utils/indexedDb";
@@ -76,59 +77,35 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   const [aarr, setAarr] = useState([]);
   const [suspectRaf, setSuspectRaf] = useState(tabs && tabs["patient_dashboard_weights"]?.active);
 
-  console.log(useSelector((state) => state), "sfadsafasfasf")
 
+  let array = [];
 
-  const array = [];
+  const combineAiAndMor =(input) => {
+    const result = [];
+
+    // Process the ai array and add the "source" identifier
+    input?.ai?.forEach(item => {
+        result.push({
+            ...item,
+            source: 'ai'
+        });
+    });
+
+    // Process the mor array and add the "source" identifier
+    input?.mor?.forEach(item => {
+        result.push({
+            ...item,
+            source: 'mor'
+        });
+    });
+
+    return result;
+}
 
   if (state) {
-      Object.keys(state).forEach((key) => {
-          const stateItem = state[key];
-  
-          // Extract AI and MOR arrays from the current stateItem
-          const ai = state?.ai || [];
-          const mor = state?.mor || [];
-  
-          const newEntry = [];
-  
-          // Process AI entries
-          if (ai.length) {
-              for (let i = 0; i < ai.length; i++) {
-                  const aiItem = ai[i];
-                  newEntry.push({
-                      SuspectedCondition: key, // Add the 'key' value here
-                      ai_recommendation_reason: aiItem.ai_recommendation_reason,
-                      hcc_model_version: aiItem.hcc_model_version,
-                      service_date: aiItem.service_date,
-                      is_rejected: aiItem.is_rejected,
-                      rationale: aiItem.rationale,
-                  });
-              }
-          }
-  
-          // Process MOR entries
-          if (mor.length) {
-              for (let i = 0; i < mor.length; i++) {
-                  const morItem = mor[i];
-                  newEntry.push({
-                      SuspectedCondition: key, // Add the 'key' value here
-                      service_date: morItem.service_date,
-                      hcc_model_version: morItem.hcc_model_version,
-                      category: morItem.category,
-                      category_name: morItem.category_name,
-                      is_rejected: morItem.is_rejected,
-                  });
-              }
-          }
-  
-          // Append processed entries to the main array
-          array.push(...newEntry);
-      });
+      array = combineAiAndMor(state);      
   }
-  
-  console.log(array);
-  
-  
+   
   // Check and set scanCode
   if (array?.length !== scanCode?.length) {
     setScanCode(array);
@@ -230,8 +207,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   const isTruncated = windowWidth >= 969 && windowWidth <= 1300;
 
   const handleClickOpen = (item) => {
-
-
     setButtonDisable(false)
     setDeleteOpen(true);
     setSelectedRejectData(item);
@@ -253,8 +228,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
     handleAddEventData(exampleMetadata);
   };
-
-
 
   const handleDelete = () => {
     if (userDetail?.mrn) {
@@ -355,8 +328,17 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
             parentCodesCount: scanCode?.length,
           },
         };
-  
-        handleAddEventData(exampleMetadata);
+        // Need to change once we get event_type from BE.
+        // handleAddEventData(exampleMetadata);
+
+        const payload = {
+          source: selectedRejectData.source,
+          id: selectedRejectData.id,
+          rejection_reason: rejectReason,
+          rejected_by: doctorDetail?.doctor_name || "",
+        }
+
+        dispatch(rejectScanCodeRequest(payload))
       }
     }
     setButtonDisable(true);
@@ -458,7 +440,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
         handleAddEventData(exampleMetadata);
 
-
       }
       sessionObject = {
         mrn: userDetail?.mrn,
@@ -482,9 +463,10 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   // Function to check if the condition is rejected
   const isConditionRejected = (item) => {
-    return keyOfRejectedData?.some(
-      (value) => item?.SuspectedCondition === value
-    );
+    // return keyOfRejectedData?.some(
+    //   (value) => item?.SuspectedCondition === value
+    // );
+    return item?.is_rejected;
   };
 
   // Function to check if the condition is rejected
@@ -508,22 +490,10 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   const slug = isSlugOrJwt();
 
   useEffect(() => {
-
-    const payload = {
-      source: "axcxzi",
-      hcc_version: "V24",
-      rejectedReason: "Othxcxzer",
-      serviceDate: "2024-09-16T00:00:00Z",
-      conditionName: "Diabetes xzcxzcxWith Chronic Complications",
-      catagory: ""
-    }
-
     if (slug) {
       dispatch(patientScanCode());
-      // dispatch(rejectScanCode(payload))
     };
-
-  }, []);
+  }, [rejectScanCode]);
 
   useEffect(() => {
     if (
@@ -567,8 +537,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
     rejectScanCode?.length !== newSuspectReject?.length &&
       setRejectScanCode([...newSuspectReject]);
   }, [scancode?.length, rejectedData.length]);
-
-  console.log(scanCode, "safsagdsgdfgds")
 
   const keyOfRejectedData = rejectedData?.map((value) => Object.keys(value)[0]);
 
@@ -684,7 +652,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                 // sx={{ padding: "3px 0px"  }}
                 >
                   <Box sx={{ ...chipContainer }}>
-                    <Button sx={{}}>Source: {item.SuspectedCondition}</Button>
+                    <Button sx={{}}>Source: {item.source}</Button>
                     <Button sx={{}}>HCC {item.hcc_model_version}</Button>
                   </Box>
                   <StyleHead sx={{ pr: 1 }}>
@@ -711,11 +679,13 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                       color: "#000",
                     }}
                   >
-                    {item?.remarks}
+                    {item?.remarks} 
                   </Box>
-
-
-
+                  <Box sx={{...descriptionBottomText}}> 
+                    <Typography component={'p'}> Deleted on:<Typography component={'b'}>06.15.2024</Typography></Typography>
+                    <Typography component={'p'}> Deleted by:<Typography component={'span'}>Adam Steele</Typography></Typography>
+                    {item?.rejection_reason && <Typography component={'p'}> Reason:<Typography component={'span'}>{item?.rejection_reason}</Typography></Typography>}
+                  </Box>
                 </Grid>
 
                 {/* RAF Contents */}
@@ -752,10 +722,11 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                 >
                   {isConditionRejected(item) ? (
                     <StyledButton
-                      disabled={tabs?.read_only_mode?.active}
-                      onClick={() =>
-                        handleRemoveDeletedCode(item?.SuspectedCondition)
-                      }
+                    //By default it should be disabled
+                      disabled={true}
+                      // onClick={() =>
+                      //   handleRemoveDeletedCode(item?.SuspectedCondition)
+                      // }
                       sx={{
                         fontSize: "14px",
                         width: "105px !important",
@@ -779,18 +750,18 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                         pointerEvents:
                           selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
                       }}
-                      startIcon={
-                        <StyleCircle
-                          sx={{
-                            background: "#B90E0E",
-                            ...flexAlignCenter,
-                            justifyContent: "center",
-                            borderRadius: "100px",
-                          }}
-                        >
-                          <CrossWhite />
-                        </StyleCircle>
-                      }
+                      // startIcon={
+                      //   <StyleCircle
+                      //     sx={{
+                      //       background: "#B90E0E",
+                      //       ...flexAlignCenter,
+                      //       justifyContent: "center",
+                      //       borderRadius: "100px",
+                      //     }}
+                      //   >
+                      //     <CrossWhite />
+                      //   </StyleCircle>
+                      // }
                     >
                       Rejected
                     </StyledButton>

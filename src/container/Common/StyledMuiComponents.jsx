@@ -182,3 +182,27 @@ export const chipContainer ={
 
   },
 }
+
+export const descriptionBottomText={
+  display:'flex',
+  flexDirection:'column',
+  gap:'4px',
+p:{
+  fontFamily: 'Proxima Nova',
+  fontSize: '14px',
+  fontWeight: 400,
+  lineHeight: '21px',
+  textAlign: 'left',
+  paddingLeft:'0px',
+  p:{
+    paddingLeft:'0px',
+    color: '#00000099',
+    span:{
+         color:'#000000'
+    },
+    b:{
+      color:'#000000'
+    }
+  }
+}
+}

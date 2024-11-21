@@ -106,7 +106,7 @@ export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", asy
 });
 
 
-export const rejectScanCode = createAsyncThunk("rejectScanCode", async (payload) => {
+export const rejectScanCodeRequest = createAsyncThunk("rejectScanCodeRequest", async (payload) => {
     try {
         if (slug) {
             const response = await axios.post(
@@ -355,14 +355,14 @@ const slice = createSlice({
 
 
           // for patient patient Scan code
-          builder.addCase(rejectScanCode.pending, (state) => {
+          builder.addCase(rejectScanCodeRequest.pending, (state) => {
             state.isLoading = true
         });
-        builder.addCase(rejectScanCode.fulfilled, (state, action) => {
+        builder.addCase(rejectScanCodeRequest.fulfilled, (state, action) => {
             state.isLoading = false;
             state.data.scanCode = action.payload;
         });
-        builder.addCase(rejectScanCode.rejected, (state, action) => {
+        builder.addCase(rejectScanCodeRequest.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
         });
