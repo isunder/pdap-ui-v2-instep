@@ -76,6 +76,7 @@ const SubmitModal = ({
   const [combinedData2hoag, setCombinedData2hoag] = useState([]);
   const [inProblemList, setInProblemList] = useState([]);
   const [notInProblemList, setNotInProblemList] = useState([]);
+  const rejectedData = useSelector((state) => state?.reject?.scanReject);
 
   useEffect(() => {
     if (duplicateCode && duplicateCodeNew) {
@@ -342,12 +343,12 @@ const SubmitModal = ({
                                               : windowSize.width > 437
                                                 ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
                                                 : windowSize.width > 407
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 367
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 319
-                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                  : item?.value
+                                                  ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                      : item?.value
                                       }
                                     </StylePop>
                                   </Typography>
@@ -414,12 +415,12 @@ const SubmitModal = ({
                                                 : windowSize.width > 437
                                                   ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
                                                   : windowSize.width > 407
-                                                  ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                  : windowSize.width > 367
-                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                  : windowSize.width > 319
-                                                    ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                    : item?.value
+                                                    ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                        : item?.value
                                         }
                                       </StylePop>
                                     </Typography>
@@ -497,12 +498,12 @@ const SubmitModal = ({
                                                     : windowSize.width > 437
                                                       ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                       : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
+                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                        : windowSize.width > 367
+                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                          : windowSize.width > 319
+                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                            : item[Object.keys(item)].value
                                             }
 
                                           </StylePop>{" "}
@@ -549,12 +550,12 @@ const SubmitModal = ({
                                                     : windowSize.width > 437
                                                       ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                       : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
+                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                        : windowSize.width > 367
+                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                          : windowSize.width > 319
+                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                            : item[Object.keys(item)].value
                                             }
 
                                           </StylePop>{" "}
@@ -602,12 +603,12 @@ const SubmitModal = ({
                                                     : windowSize.width > 437
                                                       ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                       : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
+                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                        : windowSize.width > 367
+                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                          : windowSize.width > 319
+                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                            : item[Object.keys(item)].value
                                             }
                                           </StylePop>{" "}
                                         </Typography>
@@ -653,13 +654,49 @@ const SubmitModal = ({
                                                     : windowSize.width > 437
                                                       ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                       : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
+                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                        : windowSize.width > 367
+                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                          : windowSize.width > 319
+                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                            : item[Object.keys(item)].value
                                             }                                  </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+
+                                {rejectedData && rejectedData?.length > 0 &&
+                                  rejectedData?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={item?.id + ((item?.value) ? (" : " + item?.value) : null)}
+                                      >
+                                        <Typography
+                                          sx={
+                                            {
+                                              padding: "0px !important",
+                                              paddingRight: "8px !important"
+                                            }
+                                          }
+
+                                        >
+                                          <StylePop className="ChipSpan rejected">
+                                            {item?.id + ":" + item?.value?.slice(0, 15)}{" "}
+
+                                            <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+
+                                            </Typography>
+                                          </StylePop>{" "}
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
@@ -682,7 +719,8 @@ const SubmitModal = ({
             existingCodeReject?.length > 0 ||
             recaptureCodeReject?.length > 0 ||
             suspectCodeReject?.length > 0 ||
-            duplicateCodeReject?.length > 0 ? (
+            duplicateCodeReject?.length > 0 ||
+            rejectedData.length > 0 ? (
             <button
               style={{ cursor: "pointer", width: "98%", margin: "0 auto" }}
               className="SubmitBtn"
@@ -791,12 +829,12 @@ const SubmitModal = ({
                                               : windowSize.width > 437
                                                 ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
                                                 : windowSize.width > 407
-                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                : windowSize.width > 367
-                                                ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                : windowSize.width > 319
-                                                  ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                  : item?.value
+                                                  ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                      : item?.value
                                       }
                                     </StylePop>
                                   </Typography>
@@ -863,12 +901,12 @@ const SubmitModal = ({
                                                 : windowSize.width > 437
                                                   ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
                                                   : windowSize.width > 407
-                                                  ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                  : windowSize.width > 367
-                                                    ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                    : windowSize.width > 319
-                                                      ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
-                                                      : item?.value
+                                                    ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                        : item?.value
                                         }
                                       </StylePop>
                                     </Typography>
@@ -944,6 +982,42 @@ const SubmitModal = ({
                                     </Stack>
                                   ))}
 
+                                  
+                                {rejectedData && rejectedData?.length > 0 &&
+                                  rejectedData?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <Tooltip
+                                        title={item?.id + ((item?.value) ? (" : " + item?.value) : null)}
+                                      >
+                                        <Typography
+                                          sx={
+                                            {
+                                              padding: "0px !important",
+                                              paddingRight: "8px !important"
+                                            }
+                                          }
+
+                                        >
+                                          <StylePop className="ChipSpan rejected">
+                                          {item?.value?.slice(0,20)}{" "}
+                                            <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+
+                                            </Typography>
+                                          </StylePop>{" "}
+                                        </Typography>
+                                      </Tooltip>
+                                    </Stack>
+                                  ))}
+
                                 {existingCodeReject?.length > 0 &&
                                   existingCodeReject?.map((item, index) => (
                                     <Stack
@@ -982,12 +1056,12 @@ const SubmitModal = ({
                                                     : windowSize.width > 437
                                                       ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                       : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                        ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                        : windowSize.width > 319
-                                                          ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                          : item[Object.keys(item)].value
+                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                        : windowSize.width > 367
+                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                          : windowSize.width > 319
+                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                            : item[Object.keys(item)].value
                                             }
                                           </StylePop>{" "}
                                         </Typography>
@@ -1034,12 +1108,12 @@ const SubmitModal = ({
                                                     : windowSize.width > 437
                                                       ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                       : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
+                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                        : windowSize.width > 367
+                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                          : windowSize.width > 319
+                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                            : item[Object.keys(item)].value
                                             }
 
                                           </StylePop>{" "}
@@ -1086,12 +1160,12 @@ const SubmitModal = ({
                                                     : windowSize.width > 437
                                                       ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
                                                       : windowSize.width > 407
-                                                                  ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                      : windowSize.width > 367
-                                                      ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                      : windowSize.width > 319
-                                                        ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                        : item[Object.keys(item)].value
+                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
+                                                        : windowSize.width > 367
+                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
+                                                          : windowSize.width > 319
+                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
+                                                            : item[Object.keys(item)].value
                                             }
                                           </StylePop>{" "}
                                         </Typography>
@@ -1116,7 +1190,8 @@ const SubmitModal = ({
             existingCodeReject?.length > 0 ||
             recaptureCodeReject?.length > 0 ||
             suspectCodeReject?.length > 0 ||
-            duplicateCodeReject?.length > 0 ? (
+            duplicateCodeReject?.length > 0 ||
+            rejectedData.length > 0 ? (
             <button
               style={{ cursor: "pointer", width: "98%", margin: "0 auto" }}
               className="SubmitBtn"

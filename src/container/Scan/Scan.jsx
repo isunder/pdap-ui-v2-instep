@@ -280,11 +280,12 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
           updatedVal = codeList;
         } else {
           codeList = {
-            [selectedRejectData.SuspectedCondition]: {
-              value: selectedRejectData.SuspectedCondition,
-              code: " ",
-              reason: reason,
-            },
+              value:(selectedRejectData.category_name || selectedRejectData.rationale),
+              source: selectedRejectData.source,
+              id: selectedRejectData.id,
+              rejection_reason: rejectReason,
+              rejected_by: doctorDetail?.doctor_name || "",
+            
           };
           updatedVal = [...rejectedData, codeList];
         }
@@ -338,7 +339,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
           rejected_by: doctorDetail?.doctor_name || "",
         }
 
-        dispatch(rejectScanCodeRequest(payload))
+        dispatch(rejectScanCodeRequest(payload));
       }
     }
     setButtonDisable(true);

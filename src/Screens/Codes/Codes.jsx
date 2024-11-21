@@ -141,6 +141,8 @@ const StyleButton = styled(Button)(() => ({
 }));
 
 export const Codes = () => {
+
+  const rejectedData = useSelector((state) => state?.reject?.scanReject);
   const tabs = TabsSlag();
   const dispatch = useDispatch();
   const queryString = window.location.search;
@@ -175,10 +177,17 @@ export const Codes = () => {
   const suspectCodeReject = useSelector(
     (state) => state?.reject?.suspectReject
   );
+
   const duplicateCode = useSelector((state) => state?.summary?.duplicate);
   const duplicateCodeReject = useSelector(
     (state) => state?.reject.duplicateReject
   );
+
+  const scanCode = useSelector((state) => state?.summary?.scanCode);
+  const scanCodeReject = useSelector(
+    (state) => state?.reject.duplicateReject
+  );
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -825,8 +834,6 @@ export const Codes = () => {
   ]);
 
   const { summary } = useSelector((state) => state.user.data);
-  console.log('summary:----', state?.reject);
-  
 
   // const localData =
   const existingConditionNew = useSelector((state) => state.user.data.existingCondition);
@@ -1280,9 +1287,6 @@ export const Codes = () => {
   if (isLoadingMain) {
     return <div style={{ height: '100vh', backgroundColor: 'white' }}></div>; // Blank screen
   }
-
-
-
 
   return (
     <>
@@ -2234,6 +2238,7 @@ export const Codes = () => {
                                   </>
                                 )}
                               </Grid>
+
                               <Grid container sx={{ pb: 2, mb: 0 }}>
                                 <Grid item lg={9} md={9} sm={10} xs={10}>
                                   <Typography className="HeadSummary">
@@ -2241,113 +2246,200 @@ export const Codes = () => {
                                   </Typography>
                                 </Grid>
 
-                                {!(
-                                  duplicateCode?.length ||
-                                  0 + duplicateRejectCode?.length ||
-                                  0
-                                ) > 0 ? (
-                                  <>
-                                    <Grid
-                                      item
-                                      lg={3}
-                                      md={2}
-                                      sm={2}
-                                      xs={12}
-                                      sx={{ textAlign: "end" }}
-                                    >
-                                      <StyleSheetNumber>0</StyleSheetNumber>
-                                    </Grid>
+                                {
+                                  !(
+                                    duplicateCode?.length ||
+                                    0 + duplicateRejectCode?.length ||
+                                    0
+                                  ) > 0 ? (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>0</StyleSheetNumber>
+                                      </Grid>
 
-                                    <div className="ItemsDiv">
-                                      <p>0 item</p>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Grid
-                                      item
-                                      lg={3}
-                                      md={2}
-                                      sm={2}
-                                      xs={12}
-                                      sx={{ textAlign: "end" }}
-                                    >
-                                      <StyleSheetNumber>
-                                        {(duplicateCode?.length || 0) +
-                                          (duplicateRejectCode?.length || 0)}
-                                      </StyleSheetNumber>
-                                    </Grid>
-                                    {duplicateCode?.length > 0 &&
-                                      duplicateCode?.map((item, index) => (
-                                        <Stack
-                                          direction="row"
-                                          spacing={1}
-                                          sx={{
-                                            px: 0,
-                                            ml: 0.08,
-                                            mt: 0.5,
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <Tooltip
-                                            title={item?.code + " : " + item?.value}
+                                      <div className="ItemsDiv">
+                                        <p>0 item</p>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>
+                                          {(duplicateCode?.length || 0) +
+                                            (duplicateRejectCode?.length || 0)}
+                                        </StyleSheetNumber>
+                                      </Grid>
+                                      {duplicateCode?.length > 0 &&
+                                        duplicateCode?.map((item, index) => (
+                                          <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            sx={{
+                                              px: 0,
+                                              ml: 0.08,
+                                              mt: 0.5,
+                                              cursor: "pointer",
+                                            }}
                                           >
-                                            <Typography
-                                              onClick={(event) =>
-                                                handleDelete(event, item, "duplicate")
-                                              }
+                                            <Tooltip
+                                              title={item?.code + " : " + item?.value}
                                             >
-                                              <StylePop className="ChipSpan">
-                                                {item?.code?.slice(0, 20)}{" "}
-                                                {item?.code.length > 20 ? "..." : ""}
-                                                :
-                                                {item?.value?.slice(0, 20)}{" "}
-                                                {item?.value?.length > 20 ? "..." : ""}
-                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                                  <CrossIcon />{" "}
-                                                </Typography>
-                                              </StylePop>{" "}
-                                            </Typography>
-                                          </Tooltip>
-                                        </Stack>
-                                      ))}
-                                    {duplicateRejectCode?.length > 0 &&
-                                      duplicateRejectCode?.map((item, index) => (
-                                        <Stack
-                                          direction="row"
-                                          spacing={1}
-                                          sx={{
-                                            px: 0,
-                                            ml: 0.08,
-                                            mt: 0.5,
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <Tooltip
-                                            title={item?.code + " : " + item?.value}
+                                              <Typography
+                                                onClick={(event) =>
+                                                  handleDelete(event, item, "duplicate")
+                                                }
+                                              >
+                                                <StylePop className="ChipSpan">
+                                                  {item?.code?.slice(0, 20)}{" "}
+                                                  {item?.code.length > 20 ? "..." : ""}
+                                                  :
+                                                  {item?.value?.slice(0, 20)}{" "}
+                                                  {item?.value?.length > 20 ? "..." : ""}
+                                                  <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                    <CrossIcon />{" "}
+                                                  </Typography>
+                                                </StylePop>{" "}
+                                              </Typography>
+                                            </Tooltip>
+                                          </Stack>
+                                        ))}
+                                      {duplicateRejectCode?.length > 0 &&
+                                        duplicateRejectCode?.map((item, index) => (
+                                          <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            sx={{
+                                              px: 0,
+                                              ml: 0.08,
+                                              mt: 0.5,
+                                              cursor: "pointer",
+                                            }}
                                           >
-                                            <Typography
-                                              onClick={(event) =>
-                                                handleDelete(event, item, "duplicate")
-                                              }
+                                            <Tooltip
+                                              title={item?.code + " : " + item?.value}
                                             >
-                                              <StylePop className="ChipSpan rejected">
-                                                {item?.code?.slice(0, 20)}{" "}
-                                                {item?.code.length > 20 ? "..." : ""}
-                                                :
-                                                {item?.value?.slice(0, 20)}{" "}
-                                                {item?.value?.length > 20 ? "..." : ""}
-                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                                  <CrossIcon state="rejected" />{" "}
-                                                </Typography>
-                                              </StylePop>{" "}
-                                            </Typography>
-                                          </Tooltip>
-                                        </Stack>
-                                      ))}
-                                  </>
-                                )}
+                                              <Typography
+                                                onClick={(event) =>
+                                                  handleDelete(event, item, "duplicate")
+                                                }
+                                              >
+                                                <StylePop className="ChipSpan rejected">
+                                                  {item?.code?.slice(0, 20)}{" "}
+                                                  {item?.code.length > 20 ? "..." : ""}
+                                                  :
+                                                  {item?.value?.slice(0, 20)}{" "}
+                                                  {item?.value?.length > 20 ? "..." : ""}
+                                                  <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                    <CrossIcon state="rejected" />{" "}
+                                                  </Typography>
+                                                </StylePop>{" "}
+                                              </Typography>
+                                            </Tooltip>
+                                          </Stack>
+                                        ))}
+                                    </>
+                                  )}
                               </Grid>
+
+
+                              <Grid container sx={{ pb: 2, mb: 0 }}>
+                                <Grid item lg={9} md={9} sm={10} xs={10}>
+                                  <Typography className="HeadSummary">
+                                    Scan Code
+                                  </Typography>
+                                </Grid>
+
+                                {
+                                  !(
+                                    rejectedData?.length ||
+                                    0 + rejectedData?.length ||
+                                    0
+                                  ) > 0 ? (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>0</StyleSheetNumber>
+                                      </Grid>
+
+                                      <div className="ItemsDiv">
+                                        <p>0 item</p>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>
+                                          {(rejectedData?.length || 0)}
+                                        </StyleSheetNumber>
+                                      </Grid>
+
+                                      {rejectedData?.length > 0 &&
+                                        rejectedData?.map((item, index) => (
+                                          <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            sx={{
+                                              px: 0,
+                                              ml: 0.08,
+                                              mt: 0.5,
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <Tooltip
+                                              title={item?.id + " : " + item?.value}
+                                            >
+                                              <Typography
+                                                onClick={(event) =>
+                                                  handleDelete(event, item, "duplicate")
+                                                }
+                                              >
+                                                <StylePop className="ChipSpan rejected">
+                                                  {item?.id}{" "}
+
+                                                  :
+                                                  {item?.value?.slice(0, 20)}{" "}
+                                                  {item?.value?.length > 20 ? "..." : ""}
+                                                  <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                    <CrossIcon state="rejected" />{" "}
+                                                  </Typography>
+                                                </StylePop>{" "}
+                                              </Typography>
+                                            </Tooltip>
+                                          </Stack>
+                                        ))}
+                                    </>
+                                  )}
+
+                              </Grid>
+
+
                               {existingCode?.length > 0 ||
                                 recaptureCode?.length > 0 ||
                                 duplicateCode?.length > 0 ||
@@ -3336,15 +3428,19 @@ export const Codes = () => {
                         )}
                       </Grid>
 
-                      <Grid container sx={{ pb: 2, mb: 0, position: "relative" }}>
+
+                      <Grid
+                        container
+                        sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
+                      >
                         <Grid item lg={9} md={9} sm={10} xs={12}>
                           <Typography className="HeadSummary">
-                            External Data
+                            Scan Code
                           </Typography>
                         </Grid>
                         {!(
-                          duplicateCode?.length ||
-                          0 + duplicateRejectCode?.length ||
+                          Object?.keys(rejectedData)?.length ||
+                          0 + suspectCodeReject?.length ||
                           0
                         ) > 0 ? (
                           <>
@@ -3374,25 +3470,24 @@ export const Codes = () => {
                               sx={{ textAlign: "end" }}
                             >
                               <StyleSheetNumber>
-                                {(duplicateCode?.length || 0) +
-                                  (duplicateRejectCode?.length || 0)}
+                                {(rejectedData?.length || 0) +
+                                  (rejectedData?.length || 0)}
                               </StyleSheetNumber>
                             </Grid>
-                            {duplicateCode && duplicateCode?.length > 0 &&
-                              duplicateCode?.map((item, index) => (
+                            {rejectedData && rejectedData?.length > 0 &&
+                              rejectedData?.map((item, index) => (
                                 <Stack
                                   direction="row"
                                   spacing={1}
                                   sx={{
                                     px: 0,
-                                    position: "relative",
                                     ml: 0.08,
                                     mt: 0.5,
                                     cursor: "pointer",
                                   }}
                                 >
                                   <Tooltip
-                                    title={item?.code + " : " + item?.value}
+                                    title={item?.id + ((item?.value) ? (" : " + item?.value) : null)}
                                   >
                                     <Typography
                                       sx={
@@ -3402,58 +3497,21 @@ export const Codes = () => {
                                         }
                                       }
                                       onClick={(event) =>
-                                        handleDelete(event, item, "duplicate")
-                                      }
-                                    >
-                                      <StylePop className="ChipSpan">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
-                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon />{" "}
-                                        </Typography>
-                                      </StylePop>{" "}
-                                    </Typography>
-                                  </Tooltip>
-                                </Stack>
-                              ))}
-                            {duplicateRejectCode?.length > 0 &&
-                              duplicateRejectCode?.map((item, index) => (
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  sx={{
-                                    px: 0,
-                                    position: "relative",
-                                    ml: 0.08,
-                                    mt: 0.5,
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={item?.code + " : " + item?.value}
-                                  >
-                                    <Typography
-                                      sx={
-                                        {
-                                          padding: "0px !important",
-                                          paddingRight: "8px !important"
-                                        }
-                                      }
-                                      onClick={(event) =>
-                                        handleDelete(event, item, "duplicate")
+                                        handleDelete(event, item, "suspect")
                                       }
                                     >
                                       <StylePop className="ChipSpan rejected">
-                                        {item?.code?.slice(0, 20)}{" "}
-                                        {item?.code.length > 20 ? "..." : ""}
+                                        {item?.value?.slice(0, 20)}{" "}
+
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                          <CrossIcon state="rejected" />{" "}
+
                                         </Typography>
                                       </StylePop>{" "}
                                     </Typography>
                                   </Tooltip>
                                 </Stack>
                               ))}
+
                           </>
                         )}
                       </Grid>
@@ -3465,26 +3523,28 @@ export const Codes = () => {
                         existingCodeReject?.length > 0 ||
                         recaptureCodeReject?.length > 0 ||
                         duplicateCodeReject?.length > 0 ||
-                        suspectCodeReject?.length > 0 ? (
-                        <button
-                          style={{ cursor: "pointer" }}
-                          className="SubmitBtn"
-                          onClick={() => handleSubmitRedirect(tabs)}
-                        >
-                          Submit
-                        </button>
-                      ) : (
-                        <button
-                          style={{
-                            cursor: "pointer",
-                            backgroundColor: "#D3D3D3",
-                          }}
-                          className="SubmitBtn"
-                          disabled
-                        >
-                          Submit
-                        </button>
-                      )}
+                        suspectCodeReject?.length > 0 ||
+                        rejectedData?.length > 0
+                        ? (
+                          <button
+                            style={{ cursor: "pointer" }}
+                            className="SubmitBtn"
+                            onClick={() => handleSubmitRedirect(tabs)}
+                          >
+                            Submit
+                          </button>
+                        ) : (
+                          <button
+                            style={{
+                              cursor: "pointer",
+                              backgroundColor: "#D3D3D3",
+                            }}
+                            className="SubmitBtn"
+                            disabled
+                          >
+                            Submit
+                          </button>
+                        )}
                     </Box>
                   </div>
 
@@ -3797,7 +3857,7 @@ export const Codes = () => {
 
                                       {
                                         !(
-                                          existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                                          existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0 + rejectedData?.length || 0) > 0 ? (
                                           <>
                                             <div className="ItemsDivNew">
                                               <p>No applicable codes/conditions.</p>
@@ -4006,6 +4066,41 @@ export const Codes = () => {
                                                                         ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
                                                                         : item[Object.keys(item)].value
                                                         }                                         </StylePop>{" "}
+                                                    </Typography>
+                                                  </Tooltip>
+                                                </Stack>
+                                              ))}
+
+                                            {rejectedData && rejectedData?.length > 0 &&
+                                              rejectedData?.map((item, index) => (
+                                                <Stack
+                                                  direction="row"
+                                                  spacing={1}
+                                                  sx={{
+                                                    px: 0,
+                                                    ml: 0.08,
+                                                    mt: 0.5,
+                                                    cursor: "pointer",
+                                                  }}
+                                                >
+                                                  <Tooltip
+                                                    title={item?.id + ((item?.value) ? (" : " + item?.value) : null)}
+                                                  >
+                                                    <Typography
+                                                      sx={
+                                                        {
+                                                          padding: "0px !important",
+                                                          paddingRight: "8px !important"
+                                                        }
+                                                      }
+
+                                                    >
+                                                      <StylePop className="ChipSpan rejected">
+                                                        {item?.value?.slice(0, 20)}{" "}
+                                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+
+                                                        </Typography>
+                                                      </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
                                                 </Stack>
