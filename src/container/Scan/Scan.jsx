@@ -478,6 +478,11 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
     isConditionRejected2();
   };
 
+  const convertDateFormat = (dateStr) => {
+    const [year, month, day] = dateStr.split('-');
+    return `${day}-${month}-${year}`;
+  };
+
   // Function to check if the code is not selected
   const isCodeSelected = (dataValue) => {
     return selectedSuspectcode?.some((ele) => ele.code === dataValue);
@@ -682,7 +687,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                     {item?.remarks} 
                   </Box>
                   <Box sx={{...descriptionBottomText}}> 
-                    {item?.rejected_on && item?.is_rejected && <Typography component={'p'}> Deleted on:<Typography>{item?.rejected_on}</Typography></Typography>}
+                    {item?.rejected_on && item?.is_rejected && <Typography component={'p'}> Deleted on:<Typography>{convertDateFormat(item?.rejected_on)}</Typography></Typography>}
                     {item?.is_rejected && <Typography component={'p'}> Deleted by:<Typography component={'span'}>{item?.rejected_by || "Not Available"}</Typography></Typography>}
                     {item?.rejection_reason && item?.is_rejected && <Typography component={'p'}> Reason:<Typography component={'span'}>{item?.rejection_reason}</Typography></Typography>}
                   </Box>

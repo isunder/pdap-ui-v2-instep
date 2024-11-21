@@ -849,6 +849,7 @@ export const Codes = () => {
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
   const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
+console.log('summary:--', summary);
 
   let codesData = [];  
   if(tabs && tabs['patient_dashboard_extended_data']?.active) {
@@ -3569,8 +3570,7 @@ export const Codes = () => {
                               sx={{ textAlign: "end" }}
                             >
                               <StyleSheetNumber>
-                                {(rejectedData?.length || 0) +
-                                  (rejectedData?.length || 0)}
+                                {(rejectedData?.length || 0)}
                               </StyleSheetNumber>
                             </Grid>
                             {rejectedData && rejectedData?.length > 0 &&
