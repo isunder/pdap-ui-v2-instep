@@ -23,7 +23,7 @@ import {
 } from "../../components";
 import { patientScanCode, rejectScanCode } from "../../redux/userSlice/patientInfoSlice";
 import { ReadMore } from "../ReadMore/ReadMore";
-import { suspectReject } from "../../redux/userSlice/rejectCodesSlice";
+import { scanReject } from "../../redux/userSlice/rejectCodesSlice";
 import { suspectValue } from "../../redux/userSlice/acceptCodesSlice";
 import { ReasonTextVal } from "../../components/Validation/ReasonTextVal";
 import { TabsSlag } from "../TabsSlag/TabsSlag";
@@ -53,6 +53,7 @@ const StyleHead = styled("h2")(() => ({
 }));
 
 export const Scans = ({ sessionObject, handleAddEventData }) => {
+
   const theme = useTheme();
   const dispatch = useDispatch();
   const tabs = TabsSlag();
@@ -60,41 +61,79 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
-  const [suspectCode, setSuspectCode] = useState([]);
+  const [scanCode, setScanCode] = useState([]);
   const [rejectReason, setRejectReason] = useState("Insufficient Proof");
   const [otherText, setOtherText] = useState(null);
   const [error, setError] = useState({});
   const [selectedRejectData, setSelectedRejectData] = useState({});
-
-  const rejectedData = useSelector((state) => state?.reject?.suspectReject);
-  const [rejectSuspectCode, setRejectSuspectCode] = useState([]);
-
-  const suspectedCode = useSelector((state) => state?.summary?.suspect);
+  const rejectedData = useSelector((state) => state?.reject?.scanReject);
+  const [rejectScanCode, setRejectScanCode] = useState([]);
+  const scancode = useSelector((state) => state?.summary?.scanCode);
   const [selectedSuspectcode, setSelectedSuspectcode] = useState([]);
   const { user } = useSelector((state) => state);
-
-  const state = useSelector((state) => state.user.data.suspectedCode);
+  const state = useSelector((state) => state.user.data.scanCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
   const [aarr, setAarr] = useState([]);
-  const [suspectRaf, setSuspectRaf] = useState(tabs && tabs["patient_dashboard_weights"]?.active)
+  const [suspectRaf, setSuspectRaf] = useState(tabs && tabs["patient_dashboard_weights"]?.active);
+
+  console.log(useSelector((state) => state), "sfadsafasfasf")
 
 
+  const array = [];
 
-
-  let array = [];
-  state &&
-    Object.keys(state).forEach((key) => {
-      array.push({
-        SuspectedCondition: key,
-        data: state[key].data,
-        reason: state[key].reason,
-        remarks: state[key].remarks,
-        definition: state[key].definition,
-        total_weight: state[key].total_weight,
-        dataValue: state[key].data.value
+  if (state) {
+      Object.keys(state).forEach((key) => {
+          const stateItem = state[key];
+  
+          // Extract AI and MOR arrays from the current stateItem
+          const ai = state?.ai || [];
+          const mor = state?.mor || [];
+  
+          const newEntry = [];
+  
+          // Process AI entries
+          if (ai.length) {
+              for (let i = 0; i < ai.length; i++) {
+                  const aiItem = ai[i];
+                  newEntry.push({
+                      SuspectedCondition: key, // Add the 'key' value here
+                      ai_recommendation_reason: aiItem.ai_recommendation_reason,
+                      hcc_model_version: aiItem.hcc_model_version,
+                      service_date: aiItem.service_date,
+                      is_rejected: aiItem.is_rejected,
+                      rationale: aiItem.rationale,
+                  });
+              }
+          }
+  
+          // Process MOR entries
+          if (mor.length) {
+              for (let i = 0; i < mor.length; i++) {
+                  const morItem = mor[i];
+                  newEntry.push({
+                      SuspectedCondition: key, // Add the 'key' value here
+                      service_date: morItem.service_date,
+                      hcc_model_version: morItem.hcc_model_version,
+                      category: morItem.category,
+                      category_name: morItem.category_name,
+                      is_rejected: morItem.is_rejected,
+                  });
+              }
+          }
+  
+          // Append processed entries to the main array
+          array.push(...newEntry);
       });
-    });
-  array?.length !== suspectCode?.length && setSuspectCode(array);
+  }
+  
+  console.log(array);
+  
+  
+  // Check and set scanCode
+  if (array?.length !== scanCode?.length) {
+    setScanCode(array);
+  }
+  
 
   const handleClose = () => {
     rejectReason !== "Insufficient Proof" &&
@@ -108,7 +147,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         provider_name: doctorDetail?.doctor_name || "",
         patient_id: user?.data?.userInfo?.mrn || "",
         event_datetime: convertDate(new Date().toISOString()),
-        parentCodesCount: (suspectCode?.length)
+        parentCodesCount: (scanCode?.length)
 
       }
     };
@@ -118,7 +157,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   const handleRemoveDeletedCode = (item) => {
 
-
     setButtonDisable(false)
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -126,12 +164,12 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
       );
       let codeList;
 
-      codeList = sessionObject?.suspectCodeReject?.filter(
+      codeList = sessionObject?.scanReject?.filter(
         (value) => Object.keys(value)[0] !== item
       );
       let sessionExisting = sessionObject?.existingCode;
       let sessionExistingReject = sessionObject?.existingCodeReject;
-      let sessionSuspect = sessionObject?.suspectCode;
+      let sessionScan = sessionObject?.scanCode;
       let sessionRecapture = sessionObject?.recaptureCode;
       let sessionRecaptureReject = sessionObject?.recaptureCodeReject;
       let sessionDuplicate = sessionObject?.duplicateCode;
@@ -143,8 +181,8 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         expiresAt: expirationDate,
         existingCode: sessionExisting,
         existingCodeReject: sessionExistingReject,
-        suspectCode: sessionSuspect,
-        suspectCodeReject: codeList,
+        scanCode: sessionScan,
+        scanReject: codeList,
         recaptureCode: sessionRecapture,
         recaptureCodeReject: sessionRecaptureReject,
         duplicateCode: sessionDuplicate,
@@ -154,7 +192,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         `sessionObject_${userDetail.mrn}`,
         JSON.stringify(sessionObject)
       );
-      setRejectSuspectCode(codeList);
+      setRejectScanCode(codeList);
     }
 
     const exampleMetadata = {
@@ -166,10 +204,10 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         event_datetime: convertDate(new Date().toISOString()),
         code: item,
         description: item,
-        reasonForRejection: rejectSuspectCode[0]?.[item].reason,
+        reasonForRejection: rejectScanCode[0]?.[item].reason,
         raf: item?.info?.total_weight,
         alternateCodes: item?.info?.alternate_codes,
-        parentCodesCount: (suspectCode?.length)
+        parentCodesCount: (scanCode?.length)
       }
     };
 
@@ -178,8 +216,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   };
 
   const [buttonDisable, setButtonDisable] = useState(false)
-
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -211,7 +247,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         reasonForRejection: rejectReason,
         raf: item?.total_weight,
         alternateCodes: "",
-        parentCodesCount: (suspectCode?.length)
+        parentCodesCount: (scanCode?.length)
       }
     };
 
@@ -225,47 +261,48 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
       );
+  
       let reason = rejectReason === "Other" ? otherText : rejectReason;
       let val = {
         isValid: true,
       };
+  
       if (rejectReason === "Other") {
         val = ReasonTextVal(otherText);
         setError(val);
-
       }
+  
       if (!val.isValid) {
         setError(val);
         return;
       } else {
         let newObj = selectedRejectData.data;
         let codeValue = [];
-
+  
         for (let x in newObj) {
           codeValue.push(`${x}  ${newObj[x]?.value}`);
         }
-        let code = rejectedData?.some((value, index) => {
-          let key = Object.keys(value)[0];
-          if (selectedRejectData?.SuspectedCondition === key) {
-            return true;
-          }
+  
+        // Check if selectedRejectData exists in rejectedData
+        let code = rejectedData?.some((value) => {
+          return JSON.stringify(value) === JSON.stringify(selectedRejectData);
         });
-
+  
         let codeList,
           updatedVal = [];
         let sessionExisting = sessionObject?.existingCode;
         let sessionExistingReject = sessionObject?.existingCodeReject;
-        let sessionSuspect = sessionObject?.suspectCode;
+        let sessionScan = sessionObject?.scanCode;
         let sessionRecapture = sessionObject?.recaptureCode;
         let sessionRecaptureReject = sessionObject?.recaptureCodeReject;
         let sessionDuplicate = sessionObject?.duplicateCode;
         let sessionDuplicateReject = sessionObject?.duplicateCodeReject;
         let expirationDate = sessionObject?.expiresAt;
-
+  
         if (code) {
+          // Remove the object based on object match
           codeList = rejectedData?.filter(
-            (value) =>
-              Object?.keys(value)[0] !== selectedRejectData?.SuspectedCondition
+            (value) => JSON.stringify(value) !== JSON.stringify(selectedRejectData)
           );
           updatedVal = codeList;
         } else {
@@ -278,32 +315,34 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
           };
           updatedVal = [...rejectedData, codeList];
         }
-        setRejectSuspectCode(updatedVal);
+  
+        setRejectScanCode(updatedVal);
+  
         sessionObject = {
           mrn: userDetail?.mrn,
           expiresAt: expirationDate,
           existingCode: sessionExisting,
           existingCodeReject: sessionExistingReject,
-          suspectCode: sessionSuspect,
-          suspectCodeReject: codeList,
+          scanCode: sessionScan,
+          scanReject: updatedVal, // Updated reject codes
           recaptureCode: sessionRecapture,
           recaptureCodeReject: sessionRecaptureReject,
           duplicateCode: sessionDuplicate,
           duplicateCodeReject: sessionDuplicateReject,
         };
+  
         localStorage.setItem(
           `sessionObject_${userDetail.mrn}`,
           JSON.stringify(sessionObject)
         );
-
-        reason !== "Insufficient Proof" &&
-          setRejectReason("Insufficient Proof");
+  
+        reason !== "Insufficient Proof" && setRejectReason("Insufficient Proof");
         otherText?.length > 0 && setOtherText(null);
         setDeleteOpen(false);
-
-
+  
         const exampleMetadata = {
-          event_type: "SUSPECT_REJECTION_REASON_DELETION", metadata: {
+          event_type: "SUSPECT_REJECTION_REASON_DELETION",
+          metadata: {
             identifier: tabs?.["user"]?.value || "",
             provider_name: doctorDetail?.doctor_name || "",
             patient_id: user?.data?.userInfo?.mrn || "",
@@ -313,15 +352,16 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
             reasonForRejection: rejectReason,
             raf: selectedRejectData.total_weight,
             alternateCodes: "",
-            parentCodesCount: (suspectCode?.length)
-          }
+            parentCodesCount: scanCode?.length,
+          },
         };
-
+  
         handleAddEventData(exampleMetadata);
       }
     }
     setButtonDisable(true);
   };
+  
 
   const handleReseon = (event) => {
     const value = event.target.value;
@@ -350,7 +390,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
       let value = item?.value;
       let additional_info = item?.remarks?.reason;
       let suspectedCondition = allData?.SuspectedCondition
-      let code = sessionObject?.suspectCode?.some((value, index) => {
+      let code = sessionObject?.scanCode?.some((value, index) => {
         if (key === value.code) {
           return true;
         }
@@ -359,14 +399,14 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         updateVal = [];
       let sessionExisting = sessionObject?.existingCode;
       let sessionExistingReject = sessionObject?.existingCodeReject;
-      let sessionSuspectReject = sessionObject?.suspectCodeReject;
+      let sessionScanReject = sessionObject?.scanReject;
       let sessionRecapture = sessionObject?.recaptureCode;
       let sessionRecaptureReject = sessionObject?.recaptureCodeReject;
       let sessionDuplicate = sessionObject?.duplicateCode;
       let sessionDuplicateReject = sessionObject?.duplicateCodeReject;
       let expirationDate = sessionObject?.expiresAt;
       if (code) {
-        codeList = sessionObject?.suspectCode?.filter(
+        codeList = sessionObject?.scanCode?.filter(
           (value) => value?.code !== key
         );
         updateVal = codeList;
@@ -382,7 +422,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
             reasonForRejection: rejectReason,
             raf: allData.total_weight,
             alternateCodes: "",
-            parentCodesCount: (suspectCode?.length)
+            parentCodesCount: (scanCode?.length)
           }
         };
 
@@ -412,7 +452,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
             reasonForRejection: rejectReason,
             raf: allData.total_weight,
             alternateCodes: "",
-            parentCodesCount: (suspectCode?.length)
+            parentCodesCount: (scanCode?.length)
           }
         };
 
@@ -425,8 +465,8 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         expiresAt: expirationDate,
         existingCode: sessionExisting,
         existingCodeReject: sessionExistingReject,
-        suspectCode: updateVal,
-        suspectCodeReject: sessionSuspectReject,
+        scanCode: updateVal,
+        scanReject: sessionScanReject,
         recaptureCode: sessionRecapture,
         recaptureCodeReject: sessionRecaptureReject,
         duplicateCode: sessionDuplicate,
@@ -467,444 +507,438 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   const slug = isSlugOrJwt();
 
- 
+  useEffect(() => {
 
+    const payload = {
+      source: "axcxzi",
+      hcc_version: "V24",
+      rejectedReason: "Othxcxzer",
+      serviceDate: "2024-09-16T00:00:00Z",
+      conditionName: "Diabetes xzcxzcxWith Chronic Complications",
+      catagory: ""
+    }
 
+    if (slug) {
+      dispatch(patientScanCode());
+      // dispatch(rejectScanCode(payload))
+    };
 
+  }, []);
 
+  useEffect(() => {
+    if (
+      sessionObject &&
+      !sessionObjLoaded &&
+      Object.keys(sessionObject).length > 0
+    ) {
+      let newSuspect =
+        scancode?.length > 0 && sessionObject?.scanCode?.length > 0
+          ? [...sessionObject?.scanCode, ...scancode]
+          : scancode?.length > 0
+            ? scancode
+            : sessionObject?.scanCode || [];
+      selectedSuspectcode?.length === 0 &&
+        setSelectedSuspectcode([...newSuspect]);
 
+      let newSuspectReject =
+        rejectScanCode?.length > 0 &&
+          sessionObject?.scanReject?.length > 0
+          ? [...sessionObject?.scanReject, ...rejectScanCode]
+          : rejectScanCode?.length > 0
+            ? rejectScanCode
+            : sessionObject?.scanReject || [];
+      rejectScanCode?.length === 0 &&
+        setRejectScanCode([...newSuspectReject]);
+      setSessionObjLoaded(true);
+    }
+  }, [sessionObject]);
 
-useEffect(() => {
+  useEffect(() => {
+    dispatch(suspectValue(selectedSuspectcode));
+    dispatch(scanReject(rejectScanCode));
+  }, [rejectScanCode, selectedSuspectcode]);
 
-  const payload = { 
-    source: "axcxzi", 
-    hcc_version: "V24", 
-    rejectedReason: "Othxcxzer", 
-    serviceDate: "2024-09-16T00:00:00Z", 
-    conditionName:"Diabetes xzcxzcxWith Chronic Complications",
-    catagory:""
-}
+  useEffect(() => {
+    let sessionScan = scancode?.length > 0 ? scancode : [];
+    selectedSuspectcode?.length !== sessionScan?.length &&
+      setSelectedSuspectcode([...sessionScan]);
 
+    let newSuspectReject = rejectedData?.length > 0 ? rejectedData : [];
+    rejectScanCode?.length !== newSuspectReject?.length &&
+      setRejectScanCode([...newSuspectReject]);
+  }, [scancode?.length, rejectedData.length]);
 
-  if (slug) {
-    dispatch(patientScanCode());
-    dispatch(rejectScanCode(payload))
+  console.log(scanCode, "safsagdsgdfgds")
 
-  };
-}, []);
+  const keyOfRejectedData = rejectedData?.map((value) => Object.keys(value)[0]);
 
-useEffect(() => {
-  if (
-    sessionObject &&
-    !sessionObjLoaded &&
-    Object.keys(sessionObject).length > 0
-  ) {
-    let newSuspect =
-      suspectedCode?.length > 0 && sessionObject?.suspectCode?.length > 0
-        ? [...sessionObject?.suspectCode, ...suspectedCode]
-        : suspectedCode?.length > 0
-          ? suspectedCode
-          : sessionObject?.suspectCode || [];
-    selectedSuspectcode?.length === 0 &&
-      setSelectedSuspectcode([...newSuspect]);
-
-    let newSuspectReject =
-      rejectSuspectCode?.length > 0 &&
-        sessionObject?.suspectCodeReject?.length > 0
-        ? [...sessionObject?.suspectCodeReject, ...rejectSuspectCode]
-        : rejectSuspectCode?.length > 0
-          ? rejectSuspectCode
-          : sessionObject?.suspectCodeReject || [];
-    rejectSuspectCode?.length === 0 &&
-      setRejectSuspectCode([...newSuspectReject]);
-    setSessionObjLoaded(true);
-  }
-}, [sessionObject]);
-
-useEffect(() => {
-  dispatch(suspectValue(selectedSuspectcode));
-  dispatch(suspectReject(rejectSuspectCode));
-}, [rejectSuspectCode, selectedSuspectcode]);
-
-useEffect(() => {
-  let sessionSuspect = suspectedCode?.length > 0 ? suspectedCode : [];
-  selectedSuspectcode?.length !== sessionSuspect?.length &&
-    setSelectedSuspectcode([...sessionSuspect]);
-
-  let newSuspectReject = rejectedData?.length > 0 ? rejectedData : [];
-  rejectSuspectCode?.length !== newSuspectReject?.length &&
-    setRejectSuspectCode([...newSuspectReject]);
-}, [suspectedCode.length, rejectedData.length]);
-
-const keyOfRejectedData = rejectedData?.map((value) => Object.keys(value)[0]);
-
-return (
-  <div>
-    <Box
-      sx={{
-        padding: "10px 15px 10px",
-        backgroundColor: "#fff",
-        borderRadius: "0px 0px 10px 10px",
-      }}
-    >
-      {/* Header for accordion body */}
-      <Box sx={{ ...flexAlignCenter, flexDirection: "column" }}>
-        <StyledHeader>
-          <Grid
-            container
-            spacing={0}
-            className="ContentBody"
-            sx={{ padding: "0px 10px 5px 0px", backgroundColor: "#fff", pl: 0, }}
-          >
-            <StyledBox
-              sx={{
-                padding: "0 !important",
-                fontWeight: "800 !important",
-                borderBottom: "1px solid #D9D9D999",
-                [theme.breakpoints.only("md")]: {
-                  pl: 0,
-                },
-              }}
-              className="acc-content-header-items"
-            >
-
-              {/* Description */}
-              <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active ? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active ? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10}
-                sx={{
-                  '@media (max-width:767px)': {
-                    maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
-                    flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
-                  }
-
-
-                }}
-              >
-                <StyledText sx={{
-                  padding: "0 !important",
-                  '@media (max-width:767px)': {
-                    borderRight: tabs && tabs["patient_dashboard_weights"]?.active ? "2px solid rgba(0, 0, 0, 0.12)" : "0px !important",
-
-
-
-                  }
-                }} className={`${tabs && !!tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
-                  Description
-                </StyledText>
-              </Grid>
-
-              {tabs && tabs["patient_dashboard_weights"]?.active && (
-                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-
-                  <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
-                    sx={{
-                      [theme.breakpoints.down("768")]: {
-                        borderRight: "0px !important",
-                        padding: 0
-                      },
-                    }}
-                  >
-                    RAF
-                  </StyledText>
-
-                </Grid>
-              )}
-
-              {/* Action */}
-              <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
-                sx={{
-                  '@media (max-width:767px)': {
-                    display: 'none'
-                  }
-                }}
-              >
-                <StyledText sx={{ border: "none !important" }} className={`${tabs && !tabs["patient_dashboard_weights"]?.active ? "suspect_action_custom_width acc-content-cust-header1" : "acc-content-cust-header1"}`}>
-                  Actions
-                </StyledText>
-              </Grid>
-            </StyledBox>
-          </Grid>
-        </StyledHeader>
-      </Box>
-      {/* Header end for accordion body */}
-      {suspectCode &&
-        suspectCode?.map((item, index) => (
-          <Box key={index + 1}>
-            <Grid
-              container
-              sx={{
-                paddingTop: "20px", borderTop: "1px solid #D9D9D999",
-              }}
-              spacing={0}
-              className="ContentBody"
-
-            >
-              {/* Description contents */}
-              <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active ? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active ? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10}
-                className="suspect_desc_content"
-                sx={{
-                  '@media (max-width:767px)': {
-                    maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
-                    flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
-                  }
-                }}
-              // sx={{ padding: "3px 0px"  }}
-              >
-                <Box sx={{ ...chipContainer }}>
-                  <Button sx={{}}>Source: AI</Button>
-                  <Button sx={{}}>HCC V24</Button>
-                </Box>
-                <StyleHead sx={{ pr: 1 }}>
-                  {item.SuspectedCondition}
-
-                </StyleHead>
-                <Box
-                  sx={{
-                    width: "90%",
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    lineHeight: "21px",
-                    color: "#000",
-                    margin: "7px 0px",
-                  }}
-                >
-                  {item?.reason}
-                </Box>
-                <Box
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    lineHeight: "21px",
-                    color: "#000",
-                  }}
-                >
-                  {item?.remarks}
-                </Box>
-
-
-
-              </Grid>
-
-              {/* RAF Contents */}
-
-              {tabs && tabs["patient_dashboard_weights"]?.active && (
-                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
-                  className="suspect_raf"
-                  sx={{
-                    textAlign: "start",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    paddingLeft: "10px !important"
-                    // [theme.breakpoints.down("sm")]: {
-                    //   display: "none"
-                    // },
-                  }}
-
-                >
-
-                  {item?.total_weight ? item.total_weight : "--"}
-                </Grid>
-              )}
-              {/* Action btn contents */}
-
-
-              <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
-                sx={{
-                  display: "flex",
-                  '@media (min-width:767px)': {
-                    paddingLeft: "10px"
-                  }
-                }}
-                className="acc-content-suspects-action"
-              >
-                {isConditionRejected(item) ? (
-                  <StyledButton
-                    disabled={tabs?.read_only_mode?.active}
-                    onClick={() =>
-                      handleRemoveDeletedCode(item?.SuspectedCondition)
-                    }
-                    sx={{
-                      fontSize: "14px",
-                      width: "105px !important",
-                      justifyContent: "center",
-                      backgroundColor: theme.palette.error.active1,
-                      color: "#fff",
-                      ":hover": {
-                        backgroundColor: theme.palette.error.main,
-                      },
-                      [theme.breakpoints.down("768")]: {
-                        width: "100% !important",
-                      },
-                      filter:
-                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
-                          ? "opacity(0.5)"
-                          : "none",
-                      cursor:
-                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
-                          ? "not-allowed"
-                          : "pointer",
-                      pointerEvents:
-                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
-                    }}
-                    startIcon={
-                      <StyleCircle
-                        sx={{
-                          background: "#B90E0E",
-                          ...flexAlignCenter,
-                          justifyContent: "center",
-                          borderRadius: "100px",
-                        }}
-                      >
-                        <CrossWhite />
-                      </StyleCircle>
-                    }
-                  >
-                    Rejected
-                  </StyledButton>
-                ) : (
-                  <StyledButton
-                    disabled={tabs?.read_only_mode?.active}
-                    onClick={() => handleClickOpen(item)}
-                    sx={{
-                      fontSize: "14px",
-                      width: "98px !important",
-                      justifyContent: "center",
-                      backgroundColor: (tabs?.read_only_mode?.active) ? "#D5D5D5" : theme.palette.primary.main,
-                      color: "#fff !important",
-                      ":hover": {
-                        backgroundColor: theme.palette.primary.main,
-                      },
-
-                      '@media (max-width:767px)': {
-                        width: "100% !important"
-                      },
-
-                      filter:
-                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
-                          ? "opacity(0.5)"
-                          : "none",
-                      cursor:
-                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
-                          ? "not-allowed"
-                          : "pointer",
-                      pointerEvents:
-                        selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
-                    }}
-                    startIcon={
-                      <StyleCircle
-                        sx={{
-                          background: (tabs?.read_only_mode?.active) ? "#ADADAD" : "#434343",
-                          ...flexAlignCenter,
-                          justifyContent: "center",
-                          borderRadius: "100px",
-                        }}
-                      >
-                        <CrossWhite />
-                      </StyleCircle>
-                    }
-
-                  >
-                    Reject
-                  </StyledButton>
-                )}
-              </Grid>
-
-
-
-
-            </Grid>
-          </Box>
-        ))}
-    </Box>
-
-    <DialogModal
-      open={deleteOpen}
-      setOpen={setDeleteOpen}
-      header={<DeleteIcon style={{ width: 45, height: 45 }} />}
-      width="25rem"
-    >
+  return (
+    <div>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-          mb: 3,
+          padding: "10px 15px 10px",
+          backgroundColor: "#fff",
+          borderRadius: "0px 0px 10px 10px",
         }}
       >
-        <Box>
-          <Typography
-            variant="h4"
-            sx={{
-              display: "flex",
-              width: "90%",
-              height: "28px",
-              fontSize: "18px",
-              fontWeight: 700,
-              lineHeight: "28px",
-              letterSpacing: "0em",
-              textAlign: "left",
-              color: "#101828",
-            }}
-          >
-            Are you sure?
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: "#475467",
-            }}
-          >
-            You want to delete this problem from DoctusTech? This will not
-            remove the code from your Electronic Health Record system!
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            <SelectField
-              value={rejectReason}
-              labelText="Select a reason"
-              onChange={(e) => handleReseon(e)}
+        {/* Header for accordion body */}
+        <Box sx={{ ...flexAlignCenter, flexDirection: "column" }}>
+          <StyledHeader>
+            <Grid
+              container
+              spacing={0}
+              className="ContentBody"
+              sx={{ padding: "0px 10px 5px 0px", backgroundColor: "#fff", pl: 0, }}
             >
-              <MenuItem value="Insufficient Proof">
-                Insufficient Proof
-              </MenuItem>
-              <MenuItem value="Resolved">Resolved</MenuItem>
-              <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
-              <MenuItem value="Other">Other</MenuItem>
-            </SelectField>
-            {rejectReason === "Other" && (
-              <InputField
-                placeholder="Add Reason"
-                onChange={(e) => handleOtherText(e)}
-                helperText={!error.isValid && error?.reason}
-                labelText="Reason for Rejection"
-              />
-            )}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              gap: "1rem",
-            }}
-          >
-            <StyleButton variant="outlined" onClick={handleClose} sx={{}}>
-              Cancel
-            </StyleButton>
-            <StyleButton
-              variant="contained"
-              onClick={() => handleDelete()}
-              color="error"
-              sx={{}}
-              disabled={buttonDisable}
-            >
-              Delete
-            </StyleButton>
-          </Box>
+              <StyledBox
+                sx={{
+                  padding: "0 !important",
+                  fontWeight: "800 !important",
+                  borderBottom: "1px solid #D9D9D999",
+                  [theme.breakpoints.only("md")]: {
+                    pl: 0,
+                  },
+                }}
+                className="acc-content-header-items"
+              >
+
+                {/* Description */}
+                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active ? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active ? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10}
+                  sx={{
+                    '@media (max-width:767px)': {
+                      maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                      flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                    }
+
+
+                  }}
+                >
+                  <StyledText sx={{
+                    padding: "0 !important",
+                    '@media (max-width:767px)': {
+                      borderRight: tabs && tabs["patient_dashboard_weights"]?.active ? "2px solid rgba(0, 0, 0, 0.12)" : "0px !important",
+
+
+
+                    }
+                  }} className={`${tabs && !!tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
+                    Description
+                  </StyledText>
+                </Grid>
+
+                {tabs && tabs["patient_dashboard_weights"]?.active && (
+                  <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+
+                    <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
+                      sx={{
+                        [theme.breakpoints.down("768")]: {
+                          borderRight: "0px !important",
+                          padding: 0
+                        },
+                      }}
+                    >
+                      RAF
+                    </StyledText>
+
+                  </Grid>
+                )}
+
+                {/* Action */}
+                <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
+                  sx={{
+                    '@media (max-width:767px)': {
+                      display: 'none'
+                    }
+                  }}
+                >
+                  <StyledText sx={{ border: "none !important" }} className={`${tabs && !tabs["patient_dashboard_weights"]?.active ? "suspect_action_custom_width acc-content-cust-header1" : "acc-content-cust-header1"}`}>
+                    Actions
+                  </StyledText>
+                </Grid>
+              </StyledBox>
+            </Grid>
+          </StyledHeader>
         </Box>
+        {/* Header end for accordion body */}
+        {scanCode &&
+          scanCode?.map((item, index) => (
+            <Box key={index + 1}>
+              <Grid
+                container
+                sx={{
+                  paddingTop: "20px", borderTop: "1px solid #D9D9D999",
+                }}
+                spacing={0}
+                className="ContentBody"
+
+              >
+                {/* Description contents */}
+                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active ? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active ? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active ? 8 : 10}
+                  className="suspect_desc_content"
+                  sx={{
+                    '@media (max-width:767px)': {
+                      maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                      flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                    }
+                  }}
+                // sx={{ padding: "3px 0px"  }}
+                >
+                  <Box sx={{ ...chipContainer }}>
+                    <Button sx={{}}>Source: {item.SuspectedCondition}</Button>
+                    <Button sx={{}}>HCC {item.hcc_model_version}</Button>
+                  </Box>
+                  <StyleHead sx={{ pr: 1 }}>
+                    {item?.category_name}
+
+                  </StyleHead>
+                  <Box
+                    sx={{
+                      width: "90%",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "21px",
+                      color: "#000",
+                      margin: "7px 0px",
+                    }}
+                  >
+                    {item?.rationale || null}
+                  </Box>
+                  <Box
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "21px",
+                      color: "#000",
+                    }}
+                  >
+                    {item?.remarks}
+                  </Box>
+
+
+
+                </Grid>
+
+                {/* RAF Contents */}
+
+                {tabs && tabs["patient_dashboard_weights"]?.active && (
+                  <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                    className="suspect_raf"
+                    sx={{
+                      textAlign: "start",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      paddingLeft: "10px !important"
+                      // [theme.breakpoints.down("sm")]: {
+                      //   display: "none"
+                      // },
+                    }}
+
+                  >
+
+                    {item?.total_weight ? item.total_weight : "--"}
+                  </Grid>
+                )}
+                {/* Action btn contents */}
+
+
+                <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
+                  sx={{
+                    display: "flex",
+                    '@media (min-width:767px)': {
+                      paddingLeft: "10px"
+                    }
+                  }}
+                  className="acc-content-suspects-action"
+                >
+                  {isConditionRejected(item) ? (
+                    <StyledButton
+                      disabled={tabs?.read_only_mode?.active}
+                      onClick={() =>
+                        handleRemoveDeletedCode(item?.SuspectedCondition)
+                      }
+                      sx={{
+                        fontSize: "14px",
+                        width: "105px !important",
+                        justifyContent: "center",
+                        backgroundColor: theme.palette.error.active1,
+                        color: "#fff",
+                        ":hover": {
+                          backgroundColor: theme.palette.error.main,
+                        },
+                        [theme.breakpoints.down("768")]: {
+                          width: "100% !important",
+                        },
+                        filter:
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "opacity(0.5)"
+                            : "none",
+                        cursor:
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "not-allowed"
+                            : "pointer",
+                        pointerEvents:
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
+                      }}
+                      startIcon={
+                        <StyleCircle
+                          sx={{
+                            background: "#B90E0E",
+                            ...flexAlignCenter,
+                            justifyContent: "center",
+                            borderRadius: "100px",
+                          }}
+                        >
+                          <CrossWhite />
+                        </StyleCircle>
+                      }
+                    >
+                      Rejected
+                    </StyledButton>
+                  ) : (
+                    <StyledButton
+                      disabled={tabs?.read_only_mode?.active}
+                      onClick={() => handleClickOpen(item)}
+                      sx={{
+                        fontSize: "14px",
+                        width: "98px !important",
+                        justifyContent: "center",
+                        backgroundColor: (tabs?.read_only_mode?.active) ? "#D5D5D5" : theme.palette.primary.main,
+                        color: "#fff !important",
+                        ":hover": {
+                          backgroundColor: theme.palette.primary.main,
+                        },
+
+                        '@media (max-width:767px)': {
+                          width: "100% !important"
+                        },
+
+                        filter:
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "opacity(0.5)"
+                            : "none",
+                        cursor:
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
+                            ? "not-allowed"
+                            : "pointer",
+                        pointerEvents:
+                          selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
+                      }}
+                      startIcon={
+                        <StyleCircle
+                          sx={{
+                            background: (tabs?.read_only_mode?.active) ? "#ADADAD" : "#434343",
+                            ...flexAlignCenter,
+                            justifyContent: "center",
+                            borderRadius: "100px",
+                          }}
+                        >
+                          <CrossWhite />
+                        </StyleCircle>
+                      }
+
+                    >
+                      Reject
+                    </StyledButton>
+                  )}
+                </Grid>
+
+
+
+
+              </Grid>
+            </Box>
+          ))}
       </Box>
-    </DialogModal>
-  </div>
-);
+
+      <DialogModal
+        open={deleteOpen}
+        setOpen={setDeleteOpen}
+        header={<DeleteIcon style={{ width: 45, height: 45 }} />}
+        width="25rem"
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            mb: 3,
+          }}
+        >
+          <Box>
+            <Typography
+              variant="h4"
+              sx={{
+                display: "flex",
+                width: "90%",
+                height: "28px",
+                fontSize: "18px",
+                fontWeight: 700,
+                lineHeight: "28px",
+                letterSpacing: "0em",
+                textAlign: "left",
+                color: "#101828",
+              }}
+            >
+              Are you sure?
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: "#475467",
+              }}
+            >
+              You want to delete this problem from DoctusTech? This will not
+              remove the code from your Electronic Health Record system!
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <SelectField
+                value={rejectReason}
+                labelText="Select a reason"
+                onChange={(e) => handleReseon(e)}
+              >
+                <MenuItem value="Insufficient Proof">
+                  Insufficient Proof
+                </MenuItem>
+                <MenuItem value="Resolved">Resolved</MenuItem>
+                <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </SelectField>
+              {rejectReason === "Other" && (
+                <InputField
+                  placeholder="Add Reason"
+                  onChange={(e) => handleOtherText(e)}
+                  helperText={!error.isValid && error?.reason}
+                  labelText="Reason for Rejection"
+                />
+              )}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                gap: "1rem",
+              }}
+            >
+              <StyleButton variant="outlined" onClick={handleClose} sx={{}}>
+                Cancel
+              </StyleButton>
+              <StyleButton
+                variant="contained"
+                onClick={() => handleDelete()}
+                color="error"
+                sx={{}}
+                disabled={buttonDisable}
+              >
+                Delete
+              </StyleButton>
+            </Box>
+          </Box>
+        </Box>
+      </DialogModal>
+    </div>
+  );
 };
 
 const flexAlignCenter = {
