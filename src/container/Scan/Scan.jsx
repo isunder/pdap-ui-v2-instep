@@ -99,8 +99,8 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         });
     });
 
-    return result;
-}
+    return result.sort((a, b) => a.is_rejected - b.is_rejected);
+  }
 
   if (state) {
       array = combineAiAndMor(state);      
@@ -111,7 +111,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
     setScanCode(array);
   }
   
-
   const handleClose = () => {
     rejectReason !== "Insufficient Proof" &&
       setRejectReason("Insufficient Proof");
@@ -657,7 +656,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                     <Button sx={{}}>HCC {item.hcc_model_version}</Button>
                   </Box>
                   <StyleHead sx={{ pr: 1 }}>
-                    {item?.category_name}
+                    {item?.category_name || item?.condition_name}
 
                   </StyleHead>
                   <Box
@@ -684,7 +683,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                   </Box>
                   <Box sx={{...descriptionBottomText}}> 
                     {item?.rejected_on && item?.is_rejected && <Typography component={'p'}> Deleted on:<Typography component={'b'}>{item?.rejected_on}</Typography></Typography>}
-                    {item?.rejected_by && item?.is_rejected && <Typography component={'p'}> Deleted by:<Typography component={'span'}>{item?.rejected_by}</Typography></Typography>}
+                    {item?.is_rejected && <Typography component={'p'}> Deleted by:<Typography component={'span'}>{item?.rejected_by}</Typography></Typography>}
                     {item?.rejection_reason && item?.is_rejected && <Typography component={'p'}> Reason:<Typography component={'span'}>{item?.rejection_reason}</Typography></Typography>}
                   </Box>
                 </Grid>
@@ -733,7 +732,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                         width: "105px !important",
                         justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
-                        color: "#fff",
+                        color: "#fff !important",
                         ":hover": {
                           backgroundColor: theme.palette.error.main,
                         },
@@ -751,18 +750,20 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                         pointerEvents:
                           selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition) ? "none" : "all",
                       }}
-                      // startIcon={
-                      //   <StyleCircle
-                      //     sx={{
-                      //       background: "#B90E0E",
-                      //       ...flexAlignCenter,
-                      //       justifyContent: "center",
-                      //       borderRadius: "100px",
-                      //     }}
-                      //   >
-                      //     <CrossWhite />
-                      //   </StyleCircle>
-                      // }
+                      startIcon={
+                        <>
+                          {!item.is_rejected &&<StyleCircle
+                            sx={{
+                              background: "#B90E0E",
+                              ...flexAlignCenter,
+                              justifyContent: "center",
+                              borderRadius: "100px",
+                            }}
+                          >
+                            <CrossWhite />
+                          </StyleCircle>}
+                        </>
+                      }
                     >
                       Rejected
                     </StyledButton>

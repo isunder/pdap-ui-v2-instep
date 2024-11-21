@@ -647,7 +647,16 @@ export const Codes = () => {
         }
       };
 
-      handleAddEventData(exampleMetadata)
+      handleAddEventData(exampleMetadata);
+
+      // const payload = {
+      //   source: selectedRejectData.source,
+      //   id: selectedRejectData.id,
+      //   rejection_reason: rejectReason,
+      //   rejected_by: doctorDetail?.doctor_name || "",
+      // }
+
+      // dispatch(rejectScanCodeRequest(payload));
     }
     const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
     if (isSummaryModal) {
@@ -841,55 +850,148 @@ export const Codes = () => {
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
   const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
 
-  const codesData = [
-    {
-      key: 1,
-      code: "Existing conditions",
-      codeCount: summary?.existing_codes_count,
-      problemList: "Recapturing required",
-      container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 2,
-      code: "Suspects",
-      codeCount: summary?.suspect_conditions_count,
-      problemList: "Review Potential diagnoses",
-      container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 3,
-      code: "Codes not in problem list",
-      codeCount: summary?.recapture_codes_count,
-      problemList: "Update Problem List",
-      container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 4,
-      code: "Addressed Codes",
-      codeCount: summary?.addressed_codes_count,
-      container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 5,
-      code: "Additional diagnoses",
-      codeCount: summary?.duplicate_codes_count,
-      container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
+  let codesData = [];  
+  if(tabs && tabs['patient_dashboard_extended_data']?.active) {
+    codesData = [
+      {
+        key: 1,
+        code: "Existing conditions",
+        codeCount: summary?.existing_codes_count,
+        problemList: "Recapturing required",
+        container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 2,
+        code: "Suspects",
+        codeCount: summary?.suspect_conditions_count,
+        problemList: "Review Potential diagnoses",
+        container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 3,
+        code: "Codes not in problem list",
+        codeCount: summary?.recapture_codes_count,
+        problemList: "Update Problem List",
+        container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 4,
+        code: "Addressed Codes",
+        codeCount: summary?.addressed_codes_count,
+        container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 5,
+        code: "Additional diagnoses",
+        codeCount: summary?.duplicate_codes_count,
+        container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 7,
+        code: "External Data",
+        codeCount: summary?.external_data_count,
+        container: <Scans sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+        isShow: tabs && tabs['patient_dashboard_extended_da']?.active || false,
+      },
+      {
+        key: 6,
+        code: "Deleted Codes / Conditions",
+        codeCount: summary?.deleted_codes_count,
+        container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+    ];
+  } else {
+    codesData = [
+      {
+        key: 1,
+        code: "Existing conditions",
+        codeCount: summary?.existing_codes_count,
+        problemList: "Recapturing required",
+        container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 2,
+        code: "Suspects",
+        codeCount: summary?.suspect_conditions_count,
+        problemList: "Review Potential diagnoses",
+        container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 3,
+        code: "Codes not in problem list",
+        codeCount: summary?.recapture_codes_count,
+        problemList: "Update Problem List",
+        container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 4,
+        code: "Addressed Codes",
+        codeCount: summary?.addressed_codes_count,
+        container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 5,
+        code: "Additional diagnoses",
+        codeCount: summary?.duplicate_codes_count,
+        container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 6,
+        code: "Deleted Codes / Conditions",
+        codeCount: summary?.deleted_codes_count,
+        container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+    ];
+  }
 
-    {
-      key: 6,
-      code: "Deleted Codes / Conditions",
-      codeCount: summary?.deleted_codes_count,
-      container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-
-    {
-      key: 7,
-      code: "External Data",
-      codeCount: summary?.external_data_count,
-      container: <Scans sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-  ];
+  // const codesData = [
+  //   {
+  //     key: 1,
+  //     code: "Existing conditions",
+  //     codeCount: summary?.existing_codes_count,
+  //     problemList: "Recapturing required",
+  //     container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 2,
+  //     code: "Suspects",
+  //     codeCount: summary?.suspect_conditions_count,
+  //     problemList: "Review Potential diagnoses",
+  //     container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 3,
+  //     code: "Codes not in problem list",
+  //     codeCount: summary?.recapture_codes_count,
+  //     problemList: "Update Problem List",
+  //     container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 4,
+  //     code: "Addressed Codes",
+  //     codeCount: summary?.addressed_codes_count,
+  //     container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 5,
+  //     code: "Additional diagnoses",
+  //     codeCount: summary?.duplicate_codes_count,
+  //     container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 7,
+  //     code: "External Data",
+  //     codeCount: summary?.external_data_count,
+  //     container: <Scans sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //     isShow: tabs && tabs['patient_dashboard_extended_da']?.active || false,
+  //   },
+  //   {
+  //     key: 6,
+  //     code: "Deleted Codes / Conditions",
+  //     codeCount: summary?.deleted_codes_count,
+  //     container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  // ];
 
 
   const handleDelete = (event, item, key) => {
@@ -2356,7 +2458,7 @@ export const Codes = () => {
                               </Grid>
 
 
-                              <Grid container sx={{ pb: 2, mb: 0 }}>
+                              {tabs && tabs['patient_dashboard_extended_data']?.active && <Grid container sx={{ pb: 2, mb: 0 }}>
                                 <Grid item lg={9} md={9} sm={10} xs={10}>
                                   <Typography className="HeadSummary">
                                   External Data
@@ -2413,7 +2515,7 @@ export const Codes = () => {
                                             }}
                                           >
                                             <Tooltip
-                                              title={item?.id + " : " + item?.value}
+                                              title={item?.value}
                                             >
                                               <Typography
                                                 onClick={(event) =>
@@ -2421,9 +2523,6 @@ export const Codes = () => {
                                                 }
                                               >
                                                 <StylePop className="ChipSpan rejected">
-                                                  {item?.id}{" "}
-
-                                                  :
                                                   {item?.value?.slice(0, 20)}{" "}
                                                   {item?.value?.length > 20 ? "..." : ""}
                                                   <Typography sx={{ flexGrow: 1, ml: "10px" }}>
@@ -2437,7 +2536,7 @@ export const Codes = () => {
                                     </>
                                   )}
 
-                              </Grid>
+                              </Grid>}
 
 
                               {existingCode?.length > 0 ||
@@ -2656,7 +2755,7 @@ export const Codes = () => {
                       </>
                     }
                   >
-                    {item.container}
+                    {item.isShow}{item.container}
                   </MuiAccordions>
                 ))}
 
@@ -3429,7 +3528,7 @@ export const Codes = () => {
                       </Grid>
 
 
-                      <Grid
+                     {tabs && tabs['patient_dashboard_extended_data']?.active && <Grid
                         container
                         sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                       >
@@ -3487,7 +3586,7 @@ export const Codes = () => {
                                   }}
                                 >
                                   <Tooltip
-                                    title={item?.id + ((item?.value) ? (" : " + item?.value) : null)}
+                                    title={((item?.value) ? (item?.value) : null)}
                                   >
                                     <Typography
                                       sx={
@@ -3514,7 +3613,7 @@ export const Codes = () => {
 
                           </>
                         )}
-                      </Grid>
+                      </Grid>}
 
                       {existingCode?.length > 0 ||
                         recaptureCode?.length > 0 ||
