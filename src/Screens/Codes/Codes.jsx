@@ -2359,7 +2359,7 @@ export const Codes = () => {
                               <Grid container sx={{ pb: 2, mb: 0 }}>
                                 <Grid item lg={9} md={9} sm={10} xs={10}>
                                   <Typography className="HeadSummary">
-                                    Scan Code
+                                  External Data
                                   </Typography>
                                 </Grid>
 
@@ -3435,7 +3435,7 @@ export const Codes = () => {
                       >
                         <Grid item lg={9} md={9} sm={10} xs={12}>
                           <Typography className="HeadSummary">
-                            Scan Code
+                            External Data
                           </Typography>
                         </Grid>
                         {!(
