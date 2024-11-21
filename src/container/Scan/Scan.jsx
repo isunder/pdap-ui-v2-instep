@@ -480,7 +480,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   const convertDateFormat = (dateStr) => {
     const [year, month, day] = dateStr.split('-');
-    return `${day}-${month}-${year}`;
+    return `${month}-${day}-${year}`;
   };
 
   // Function to check if the code is not selected
