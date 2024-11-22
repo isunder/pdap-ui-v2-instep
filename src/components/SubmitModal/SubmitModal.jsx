@@ -212,7 +212,6 @@ const SubmitModal = ({
   }, [matchedValuesExisting, suspectCode, matchedValuesDuplicate, matchedValuesRecapture]);
 
 
-
   const setOpenSubmitModalFunc = (key) => {
 
     setOpenSubmitModal(false);
@@ -404,7 +403,7 @@ const SubmitModal = ({
                                     <Typography>
                                       <StylePop className="ChipSpan">
                                         {item?.code?.slice(0, 30)} {item?.code.length > 30 ? "..." : ""}
-                                        {": "}
+                                        {item?.value === "" ? "" : ":"}
                                         {
                                           windowSize.width > 967
                                             ? item?.value?.slice(0, 40) + (item?.value?.length > 40 ? "..." : "")
@@ -450,7 +449,7 @@ const SubmitModal = ({
 
                           {
                             !(
-                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0 + rejectedData?.length || 0) > 0 ? (
                               <>
                                 <div className="ItemsDivNew">
                                   <p>No applicable codes/conditions.</p>
@@ -505,6 +504,7 @@ const SubmitModal = ({
                                                             ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
                                                             : item[Object.keys(item)].value
                                             }
+                                              
 
                                           </StylePop>{" "}
                                         </Typography>
@@ -691,8 +691,8 @@ const SubmitModal = ({
 
                                         >
                                           <StylePop className="ChipSpan rejected">
-                                            {item?.id + ":" + item?.value?.slice(0, 15)}{" "}
-
+                                            {item?.value?.slice(0, 25)}
+                                            {item?.value?.length > 25 ? "..." : ""}
                                             <Typography sx={{ flexGrow: 1, ml: "10px" }}>
 
                                             </Typography>
@@ -996,7 +996,7 @@ const SubmitModal = ({
                                       }}
                                     >
                                       <Tooltip
-                                        title={item?.id + ((item?.value) ? (" : " + item?.value) : null)}
+                                        title={((item?.value) ? (item?.value) : null)}
                                       >
                                         <Typography
                                           sx={

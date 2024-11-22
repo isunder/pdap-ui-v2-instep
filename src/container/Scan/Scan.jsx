@@ -279,7 +279,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
           updatedVal = codeList;
         } else {
           codeList = {
-              value:(selectedRejectData.category_name || selectedRejectData.rationale),
+              value:(selectedRejectData.category_name || selectedRejectData.condition_name),
               source: selectedRejectData.source,
               id: selectedRejectData.id,
               rejection_reason: rejectReason,
@@ -480,7 +480,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   const convertDateFormat = (dateStr) => {
     const [year, month, day] = dateStr.split('-');
-    return `${month}-${day}-${year}`;
+    return `${month}/${day}/${year}`;
   };
 
   // Function to check if the code is not selected

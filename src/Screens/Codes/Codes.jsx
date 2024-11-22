@@ -692,7 +692,11 @@ export const Codes = () => {
     const shouldSkipApiCall =
       filteredExistingCode?.length === 0 &&
       filteredRecaptureCode?.length === 0 &&
-      filteredDuplicateCode?.length === 0;
+      filteredDuplicateCode?.length === 0 &&
+      existingCodeReject?.length === 0 &&
+      recaptureCodeReject?.length === 0 &&
+      duplicateCodeReject?.length === 0 &&
+      suspectCodeReject?.length === 0;
 
     if (shouldSkipApiCall) {
       setOpenSubmitModal(false);
@@ -849,7 +853,6 @@ export const Codes = () => {
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
   const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
-console.log('summary:--', summary);
 
   let codesData = [];  
   if(tabs && tabs['patient_dashboard_extended_data']?.active) {
@@ -3600,8 +3603,8 @@ console.log('summary:--', summary);
                                       }
                                     >
                                       <StylePop className="ChipSpan rejected">
-                                        {item?.value?.slice(0, 20)}{" "}
-
+                                        {item?.value?.slice(0, 25)}
+                                        {item?.value?.length > 25 ? "..." : ""}
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
 
                                         </Typography>
@@ -4011,6 +4014,7 @@ console.log('summary:--', summary);
                                                                         ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
                                                                         : item[Object.keys(item)].value
                                                         }
+                                                        
                                                       </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
