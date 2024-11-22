@@ -488,23 +488,7 @@ const SubmitModal = ({
                                               20
                                               ? "..."
                                               : ""}
-                                            {
-                                              windowSize.width > 967
-                                                ? item[Object.keys(item)].value.slice(0, 40) + (item[Object.keys(item)].value.length > 40 ? "..." : "")
-                                                : windowSize.width > 767
-                                                  ? item[Object.keys(item)].value.slice(0, 25) + (item[Object.keys(item)].value.length > 25 ? "..." : "")
-                                                  : windowSize.width > 567
-                                                    ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                    : windowSize.width > 437
-                                                      ? item[Object.keys(item)].value.slice(0, 24) + (item[Object.keys(item)].value.length > 24 ? "..." : "")
-                                                      : windowSize.width > 407
-                                                        ? item[Object.keys(item)].value.slice(0, 20) + (item[Object.keys(item)].value.length > 20 ? "..." : "")
-                                                        : windowSize.width > 367
-                                                          ? item[Object.keys(item)].value.slice(0, 15) + (item[Object.keys(item)].value.length > 15 ? "..." : "")
-                                                          : windowSize.width > 319
-                                                            ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
-                                                            : item[Object.keys(item)].value
-                                            }
+                                            
 
 
                                           </StylePop>{" "}
