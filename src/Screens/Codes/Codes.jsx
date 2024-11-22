@@ -45,7 +45,7 @@ import { WarningIcon } from "../../components";
 import { PrimaryButton } from "../../components/Button";
 import { ArrowDropDownIcon, CrossIcon } from "../../../src/components/Icons";
 import "./Codes.css";
-import { patientSummary, patientTabFlag } from "../../redux/userSlice/patientInfoSlice";
+import { patientSummary, patientTabFlag, rejectScanCodeRequest } from "../../redux/userSlice/patientInfoSlice";
 import {
   existingRejectInfo,
   existingValue,
@@ -59,6 +59,7 @@ import {
   recaptureReject,
   suspectReject,
   duplicateReject,
+  scanReject,
 } from "../../redux/userSlice/rejectCodesSlice";
 import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
@@ -698,12 +699,12 @@ export const Codes = () => {
       duplicateCodeReject?.length === 0 &&
       suspectCodeReject?.length === 0;
 
-    if (shouldSkipApiCall) {
-      setOpenSubmitModal(false);
-      setDialog(true);
-      setIsModalSubmit(true);
-      return;
-    }
+    // if (shouldSkipApiCall) {
+    //   setOpenSubmitModal(false);
+    //   setDialog(true);
+    //   setIsModalSubmit(true);
+    //   return;
+    // }
 
     let requestBody = {};
 
@@ -789,7 +790,19 @@ export const Codes = () => {
 
     // Post summary API call
     try {
+
+      dispatch(rejectScanCodeRequest(rejectScanCode)).then(() => {
+        setRejectScanCode([]);
+        setOpenSubmitModal(false);
+        setDialog(true);
+        setIsModalSubmit(true);
+      });
+
+      if (Object.keys(requestBody).length === 0) {
+        return;
+      }
       const result = await dispatch(patientSubmitData(requestBody));
+
       if (result?.meta?.requestStatus === "fulfilled") {
         setOpenSubmitModal(false);
         setDialog(true);
@@ -853,9 +866,10 @@ export const Codes = () => {
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
   const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
+  const [rejectScanCode, setRejectScanCode] = useState([]);
 
-  let codesData = [];  
-  if(tabs && tabs['patient_dashboard_extended_data']?.active) {
+  let codesData = [];
+  if (tabs && tabs['patient_dashboard_extended_data']?.active) {
     codesData = [
       {
         key: 1,
@@ -894,7 +908,7 @@ export const Codes = () => {
         key: 7,
         code: "External Data",
         codeCount: summary?.external_data_count,
-        container: <Scans sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+        container: <Scans setRejectScanCode={setRejectScanCode} rejectScanCode={rejectScanCode} sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
         isShow: tabs && tabs['patient_dashboard_extended_da']?.active || false,
       },
       {
@@ -1001,6 +1015,7 @@ export const Codes = () => {
   const handleDelete = (event, item, key) => {
     event.stopPropagation()
     let newSessionObject = {};
+
     if (key === "existing") {
       if (item?.reason) {
         const codeList = existingCodeReject.filter(
@@ -1171,7 +1186,9 @@ export const Codes = () => {
 
       handleAddEventData(exampleMetadata)
 
-    } else if (key === "duplicate") {
+    }
+
+    else if (key === "duplicate") {
       if (item?.reason) {
         const codeList = duplicateCodeReject.filter(
           (value) => Object.keys(value)[0] !== item.code
@@ -1210,6 +1227,12 @@ export const Codes = () => {
       handleAddEventData(exampleMetadata)
 
     }
+
+    else if (key === "external") {
+      setRejectScanCode((prev) =>
+        [...prev.filter((items) => items.id !== item.id)] // Replace 'someId' with the id to match
+      );
+    }
     localStorage.setItem(
       `sessionObject_${userDetail.mrn}`,
       JSON.stringify(newSessionObject)
@@ -1227,7 +1250,8 @@ export const Codes = () => {
       suspectCode?.length +
       suspectCodeReject?.length +
       duplicateCode?.length +
-      duplicateCodeReject?.length
+      duplicateCodeReject?.length +
+      rejectedData.length
     );
   }, [
     existingCode,
@@ -1238,6 +1262,7 @@ export const Codes = () => {
     recaptureCodeReject,
     suspectCodeReject,
     duplicateCodeReject,
+    rejectedData
   ]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -2465,7 +2490,7 @@ export const Codes = () => {
                               {tabs && tabs['patient_dashboard_extended_data']?.active && <Grid container sx={{ pb: 2, mb: 0 }}>
                                 <Grid item lg={9} md={9} sm={10} xs={10}>
                                   <Typography className="HeadSummary">
-                                  External Data
+                                    External Data
                                   </Typography>
                                 </Grid>
 
@@ -2523,12 +2548,27 @@ export const Codes = () => {
                                             >
                                               <Typography
                                                 onClick={(event) =>
-                                                  handleDelete(event, item, "duplicate")
+                                                  handleDelete(event, item, "external")
                                                 }
                                               >
                                                 <StylePop className="ChipSpan rejected">
-                                                  {item?.value?.slice(0, 20)}{" "}
-                                                  {item?.value?.length > 20 ? "..." : ""}
+                                                  {
+                                                    windowSize.width > 967
+                                                      ? item?.value?.slice(0, 30) + (item?.value?.length > 30 ? "..." : "")
+                                                      : windowSize.width > 767
+                                                        ? item?.value?.slice(0, 23) + (item?.value?.length > 23 ? "..." : "")
+                                                        : windowSize.width > 567
+                                                          ? item?.value?.slice(0, 22) + (item?.value?.length > 22 ? "..." : "")
+                                                          : windowSize.width > 437
+                                                            ? item?.value?.slice(0, 21) + (item?.value?.length > 21 ? "..." : "")
+                                                            : windowSize.width > 407
+                                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                              : windowSize.width > 367
+                                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                                : windowSize.width > 319
+                                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                                  : item?.value
+                                                  }
                                                   <Typography sx={{ flexGrow: 1, ml: "10px" }}>
                                                     <CrossIcon state="rejected" />{" "}
                                                   </Typography>
@@ -2550,26 +2590,28 @@ export const Codes = () => {
                                 existingCodeReject?.length > 0 ||
                                 recaptureCodeReject?.length > 0 ||
                                 suspectCodeReject?.length > 0 ||
-                                duplicateCodeReject?.length > 0 ? (
-                                <button
-                                  style={{ cursor: "pointer" }}
-                                  className="SubmitBtn"
-                                  onClick={() => handleSubmitRedirect(tabs)}
-                                >
-                                  Submit
-                                </button>
-                              ) : (
-                                <button
-                                  style={{
-                                    cursor: "pointer",
-                                    backgroundColor: "#D3D3D3",
-                                  }}
-                                  className="SubmitBtn"
-                                  disabled
-                                >
-                                  Submit
-                                </button>
-                              )}
+                                duplicateCodeReject?.length > 0 ||
+                                rejectedData?.length > 0
+                                ? (
+                                  <button
+                                    style={{ cursor: "pointer" }}
+                                    className="SubmitBtn"
+                                    onClick={() => handleSubmitRedirect(tabs)}
+                                  >
+                                    Submit
+                                  </button>
+                                ) : (
+                                  <button
+                                    style={{
+                                      cursor: "pointer",
+                                      backgroundColor: "#D3D3D3",
+                                    }}
+                                    className="SubmitBtn"
+                                    disabled
+                                  >
+                                    Submit
+                                  </button>
+                                )}
                             </Box>
                           </CardContent>
                         </Card>
@@ -3532,7 +3574,7 @@ export const Codes = () => {
                       </Grid>
 
 
-                     {tabs && tabs['patient_dashboard_extended_data']?.active && <Grid
+                      {tabs && tabs['patient_dashboard_extended_data']?.active && <Grid
                         container
                         sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
                       >
@@ -3576,6 +3618,7 @@ export const Codes = () => {
                                 {(rejectedData?.length || 0)}
                               </StyleSheetNumber>
                             </Grid>
+
                             {rejectedData && rejectedData?.length > 0 &&
                               rejectedData?.map((item, index) => (
                                 <Stack
@@ -3599,14 +3642,29 @@ export const Codes = () => {
                                         }
                                       }
                                       onClick={(event) =>
-                                        handleDelete(event, item, "suspect")
+                                        handleDelete(event, item, "external")
                                       }
                                     >
                                       <StylePop className="ChipSpan rejected">
-                                        {item?.value?.slice(0, 25)}
-                                        {item?.value?.length > 25 ? "..." : ""}
+                                        {
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 30) + (item?.value?.length > 30 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 23) + (item?.value?.length > 23 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 22) + (item?.value?.length > 22 ? "..." : "")
+                                                : windowSize.width > 437
+                                                  ? item?.value?.slice(0, 21) + (item?.value?.length > 21 ? "..." : "")
+                                                  : windowSize.width > 407
+                                                    ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                        : item?.value
+                                        }
                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-
+                                          <CrossIcon state="rejected" />{" "}
                                         </Typography>
                                       </StylePop>{" "}
                                     </Typography>
@@ -4014,7 +4072,7 @@ export const Codes = () => {
                                                                         ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
                                                                         : item[Object.keys(item)].value
                                                         }
-                                                        
+
                                                       </StylePop>{" "}
                                                     </Typography>
                                                   </Tooltip>
@@ -4187,7 +4245,7 @@ export const Codes = () => {
                                                   }}
                                                 >
                                                   <Tooltip
-                                                    title={item?.id + ((item?.value) ? (" : " + item?.value) : null)}
+                                                    title={((item?.value) ? (item?.value) : null)}
                                                   >
                                                     <Typography
                                                       sx={
@@ -4199,7 +4257,23 @@ export const Codes = () => {
 
                                                     >
                                                       <StylePop className="ChipSpan rejected">
-                                                        {item?.value?.slice(0, 20)}{" "}
+                                                        {
+                                                          windowSize.width > 967
+                                                            ? item?.value?.slice(0, 30) + (item?.value?.length > 30 ? "..." : "")
+                                                            : windowSize.width > 767
+                                                              ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                              : windowSize.width > 567
+                                                                ? item?.value?.slice(0, 25) + (item?.value?.length > 25 ? "..." : "")
+                                                                : windowSize.width > 437
+                                                                  ? item?.value?.slice(0, 24) + (item?.value?.length > 24 ? "..." : "")
+                                                                  : windowSize.width > 407
+                                                                    ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                                    : windowSize.width > 367
+                                                                      ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                                      : windowSize.width > 319
+                                                                        ? item?.value?.slice(0, 10) + (item?.value?.length > 10 ? "..." : "")
+                                                                        : item?.value
+                                                        }
                                                         <Typography sx={{ flexGrow: 1, ml: "10px" }}>
 
                                                         </Typography>

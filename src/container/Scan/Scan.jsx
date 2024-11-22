@@ -53,7 +53,7 @@ const StyleHead = styled("h2")(() => ({
   color: "#000",
 }));
 
-export const Scans = ({ sessionObject, handleAddEventData }) => {
+export const Scans = ({ sessionObject, handleAddEventData, setRejectScanCode, rejectScanCode }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -68,7 +68,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   const [error, setError] = useState({});
   const [selectedRejectData, setSelectedRejectData] = useState({});
   const rejectedData = useSelector((state) => state?.reject?.scanReject);
-  const [rejectScanCode, setRejectScanCode] = useState([]);
   const scancode = useSelector((state) => state?.summary?.scanCode);
   const [selectedSuspectcode, setSelectedSuspectcode] = useState([]);
   const { user } = useSelector((state) => state);
@@ -80,37 +79,37 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   let array = [];
 
-  const combineAiAndMor =(input) => {
+  const combineAiAndMor = (input) => {
     const result = [];
 
     // Process the ai array and add the "source" identifier
     input?.ai?.forEach(item => {
-        result.push({
-            ...item,
-            source: 'ai'
-        });
+      result.push({
+        ...item,
+        source: 'ai'
+      });
     });
 
     // Process the mor array and add the "source" identifier
     input?.mor?.forEach(item => {
-        result.push({
-            ...item,
-            source: 'mor'
-        });
+      result.push({
+        ...item,
+        source: 'mor'
+      });
     });
 
     return result.sort((a, b) => a.is_rejected - b.is_rejected);
   }
 
   if (state) {
-      array = combineAiAndMor(state);      
+    array = combineAiAndMor(state);
   }
-   
+
   // Check and set scanCode
   if (array?.length !== scanCode?.length) {
     setScanCode(array);
   }
-  
+
   const handleClose = () => {
     rejectReason !== "Insufficient Proof" &&
       setRejectReason("Insufficient Proof");
@@ -133,37 +132,16 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   const handleRemoveDeletedCode = (item) => {
 
-    setButtonDisable(false)
+    setButtonDisable(false);
+
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
       );
+
       let codeList;
+      codeList = rejectScanCode?.filter((items) => items.id !== item);
 
-      codeList = sessionObject?.scanReject?.filter(
-        (value) => Object.keys(value)[0] !== item
-      );
-      let sessionExisting = sessionObject?.existingCode;
-      let sessionExistingReject = sessionObject?.existingCodeReject;
-      let sessionScan = sessionObject?.scanCode;
-      let sessionRecapture = sessionObject?.recaptureCode;
-      let sessionRecaptureReject = sessionObject?.recaptureCodeReject;
-      let sessionDuplicate = sessionObject?.duplicateCode;
-      let sessionDuplicateReject = sessionObject?.duplicateCodeReject;
-      let expirationDate = sessionObject?.expiresAt;
-
-      sessionObject = {
-        mrn: userDetail?.mrn,
-        expiresAt: expirationDate,
-        existingCode: sessionExisting,
-        existingCodeReject: sessionExistingReject,
-        scanCode: sessionScan,
-        scanReject: codeList,
-        recaptureCode: sessionRecapture,
-        recaptureCodeReject: sessionRecaptureReject,
-        duplicateCode: sessionDuplicate,
-        duplicateCodeReject: sessionDuplicateReject,
-      };
       localStorage.setItem(
         `sessionObject_${userDetail.mrn}`,
         JSON.stringify(sessionObject)
@@ -180,7 +158,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         event_datetime: convertDate(new Date().toISOString()),
         code: item,
         description: item,
-        reasonForRejection: rejectScanCode[0]?.[item].reason,
+        // reasonForRejection: rejectScanCode[0]?.[item].reason,
         raf: item?.info?.total_weight,
         alternateCodes: item?.info?.alternate_codes,
         parentCodesCount: (scanCode?.length)
@@ -206,6 +184,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   const isTruncated = windowWidth >= 969 && windowWidth <= 1300;
 
   const handleClickOpen = (item) => {
+
     setButtonDisable(false)
     setDeleteOpen(true);
     setSelectedRejectData(item);
@@ -233,33 +212,33 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
       );
-  
+
       let reason = rejectReason === "Other" ? otherText : rejectReason;
       let val = {
         isValid: true,
       };
-  
+
       if (rejectReason === "Other") {
         val = ReasonTextVal(otherText);
         setError(val);
       }
-  
+
       if (!val.isValid) {
         setError(val);
         return;
       } else {
         let newObj = selectedRejectData.data;
         let codeValue = [];
-  
+
         for (let x in newObj) {
           codeValue.push(`${x}  ${newObj[x]?.value}`);
         }
-  
+
         // Check if selectedRejectData exists in rejectedData
         let code = rejectedData?.some((value) => {
           return JSON.stringify(value) === JSON.stringify(selectedRejectData);
         });
-  
+
         let codeList,
           updatedVal = [];
         let sessionExisting = sessionObject?.existingCode;
@@ -270,7 +249,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         let sessionDuplicate = sessionObject?.duplicateCode;
         let sessionDuplicateReject = sessionObject?.duplicateCodeReject;
         let expirationDate = sessionObject?.expiresAt;
-  
+
         if (code) {
           // Remove the object based on object match
           codeList = rejectedData?.filter(
@@ -279,18 +258,18 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
           updatedVal = codeList;
         } else {
           codeList = {
-              value:(selectedRejectData.category_name || selectedRejectData.condition_name),
-              source: selectedRejectData.source,
-              id: selectedRejectData.id,
-              rejection_reason: rejectReason,
-              rejected_by: doctorDetail?.doctor_name || "",
-            
+            value: (selectedRejectData.category_name || selectedRejectData.condition_name),
+            source: selectedRejectData.source,
+            id: selectedRejectData.id,
+            rejection_reason: reason,
+            rejected_by: doctorDetail?.doctor_name || "",
+
           };
           updatedVal = [...rejectedData, codeList];
         }
-  
+
         setRejectScanCode(updatedVal);
-  
+
         sessionObject = {
           mrn: userDetail?.mrn,
           expiresAt: expirationDate,
@@ -303,16 +282,16 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
           duplicateCode: sessionDuplicate,
           duplicateCodeReject: sessionDuplicateReject,
         };
-  
+
         localStorage.setItem(
           `sessionObject_${userDetail.mrn}`,
           JSON.stringify(sessionObject)
         );
-  
+
         reason !== "Insufficient Proof" && setRejectReason("Insufficient Proof");
         otherText?.length > 0 && setOtherText(null);
         setDeleteOpen(false);
-  
+
         const exampleMetadata = {
           event_type: "SUSPECT_REJECTION_REASON_DELETION",
           metadata: {
@@ -328,22 +307,14 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
             parentCodesCount: scanCode?.length,
           },
         };
-        // Need to change once we get event_type from BE.
-        // handleAddEventData(exampleMetadata);
 
-        const payload = {
-          source: selectedRejectData.source,
-          id: selectedRejectData.id,
-          rejection_reason: rejectReason,
-          rejected_by: doctorDetail?.doctor_name || "",
-        }
+        handleAddEventData(exampleMetadata);
 
-        dispatch(rejectScanCodeRequest(payload));
       }
     }
     setButtonDisable(true);
   };
-  
+
 
   const handleReseon = (event) => {
     const value = event.target.value;
@@ -362,7 +333,6 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
   };
 
   const handleClickOpen1 = (key, item, allData) => {
-
 
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -463,10 +433,20 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
 
   // Function to check if the condition is rejected
   const isConditionRejected = (item) => {
-    // return keyOfRejectedData?.some(
-    //   (value) => item?.SuspectedCondition === value
-    // );
-    return item?.is_rejected;
+
+    if (item.is_rejected === true) {
+      return true; // Return true if is_rejected is true
+    }
+
+    for (let i = 0; i < rejectScanCode?.length; i++) {
+
+
+      if (item.is_rejected === false && rejectScanCode[i]?.id === item.id) {
+        return true; // Return true if a match is found and is_rejected is false
+      }
+    }
+
+    return false; // Explicitly return nothing if no match is found
   };
 
   // Function to check if the condition is rejected
@@ -498,7 +478,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
     if (slug) {
       dispatch(patientScanCode());
     };
-  }, [rejectScanCode]);
+  }, []);
 
   useEffect(() => {
     if (
@@ -634,7 +614,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
         </Box>
         {/* Header end for accordion body */}
         {scanCode &&
-          scanCode?.map((item, index) => (
+          scanCode.map((item, index) => (
             <Box key={index + 1}>
               <Grid
                 container
@@ -684,9 +664,9 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                       color: "#000",
                     }}
                   >
-                    {item?.remarks} 
+                    {item?.remarks}
                   </Box>
-                  <Box sx={{...descriptionBottomText}}> 
+                  <Box sx={{ ...descriptionBottomText }}>
                     {item?.rejected_on && item?.is_rejected && <Typography component={'p'}> Deleted on:<Typography>{convertDateFormat(item?.rejected_on)}</Typography></Typography>}
                     {item?.is_rejected && <Typography component={'p'}> Deleted by:<Typography component={'span'}>{item?.rejected_by || "Not Available"}</Typography></Typography>}
                     {item?.rejection_reason && item?.is_rejected && <Typography component={'p'}> Reason:<Typography component={'span'}>{item?.rejection_reason}</Typography></Typography>}
@@ -725,13 +705,13 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                   }}
                   className="acc-content-suspects-action"
                 >
-                  {isConditionRejected(item) ? (
+                  {(isConditionRejected(item)) ? (
                     <StyledButton
-                    //By default it should be disabled
-                      disabled={true}
-                      // onClick={() =>
-                      //   handleRemoveDeletedCode(item?.SuspectedCondition)
-                      // }
+                      //By default it should be disabled
+                      disabled={item.is_rejected}
+                      onClick={() =>
+                        handleRemoveDeletedCode(item.id)
+                      }
                       sx={{
                         fontSize: "14px",
                         width: "105px !important",
@@ -757,7 +737,7 @@ export const Scans = ({ sessionObject, handleAddEventData }) => {
                       }}
                       startIcon={
                         <>
-                          {!item.is_rejected &&<StyleCircle
+                          {!item.is_rejected && <StyleCircle
                             sx={{
                               background: "#B90E0E",
                               ...flexAlignCenter,

@@ -76,6 +76,7 @@ const SubmitModal = ({
   const [combinedData2hoag, setCombinedData2hoag] = useState([]);
   const [inProblemList, setInProblemList] = useState([]);
   const [notInProblemList, setNotInProblemList] = useState([]);
+
   const rejectedData = useSelector((state) => state?.reject?.scanReject);
 
   useEffect(() => {
@@ -504,7 +505,7 @@ const SubmitModal = ({
                                                             ? item[Object.keys(item)].value.slice(0, 10) + (item[Object.keys(item)].value.length > 10 ? "..." : "")
                                                             : item[Object.keys(item)].value
                                             }
-                                              
+
 
                                           </StylePop>{" "}
                                         </Typography>
@@ -936,7 +937,7 @@ const SubmitModal = ({
 
                           {
                             !(
-                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0 + rejectedData?.length>0 || 0) > 0 ? (
                               <>
                                 <div className="ItemsDivNew">
                                   <p>No applicable codes/conditions.</p>
@@ -982,10 +983,12 @@ const SubmitModal = ({
                                     </Stack>
                                   ))}
 
-                                  
-                                {rejectedData && rejectedData?.length > 0 &&
-                                  rejectedData?.map((item, index) => (
+
+
+                                {rejectedData && rejectedData.length > 0 &&
+                                  rejectedData.map((item, index) => (
                                     <Stack
+                                      key={index}
                                       direction="row"
                                       spacing={1}
                                       sx={{
@@ -996,27 +999,40 @@ const SubmitModal = ({
                                       }}
                                     >
                                       <Tooltip
-                                        title={((item?.value) ? (item?.value) : null)}
+                                        title={item.value ? item.value : null}
                                       >
                                         <Typography
-                                          sx={
-                                            {
-                                              padding: "0px !important",
-                                              paddingRight: "8px !important"
-                                            }
-                                          }
-
+                                          sx={{
+                                            padding: "0px !important",
+                                            paddingRight: "8px !important",
+                                          }}
                                         >
                                           <StylePop className="ChipSpan rejected">
-                                          {item?.value?.slice(0,20)}{" "}
+                                          {
+                                        windowSize.width > 967
+                                          ? item?.value?.slice(0, 30) + (item?.value?.length > 30 ? "..." : "")
+                                          : windowSize.width > 767
+                                            ? item?.value?.slice(0, 23) + (item?.value?.length > 23 ? "..." : "")
+                                            : windowSize.width > 567
+                                              ? item?.value?.slice(0, 22) + (item?.value?.length > 22 ? "..." : "")
+                                              : windowSize.width > 437
+                                                ? item?.value?.slice(0, 21) + (item?.value?.length > 21 ? "..." : "")
+                                                : windowSize.width > 407
+                                                  ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                  : windowSize.width > 367
+                                                    ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                    : windowSize.width > 319
+                                                      ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                      : item?.value
+                                      }
                                             <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-
                                             </Typography>
-                                          </StylePop>{" "}
+                                          </StylePop>
                                         </Typography>
                                       </Tooltip>
                                     </Stack>
-                                  ))}
+                                  ))
+                                }
 
                                 {existingCodeReject?.length > 0 &&
                                   existingCodeReject?.map((item, index) => (
