@@ -314,7 +314,8 @@ const SubmitModal = ({
 
   function formatItemText2(item, useDynamicKey = false) {
 
-    const value = item?.value;
+    const value = (item[Object.keys(item)[0]]?.value
+    || item?.value);
 
     let widthInRem = 10; // Default width (10rem)
 
@@ -566,7 +567,7 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                          {formatItemText(item, true)}
+                                          {formatItemText2(item, true)}
                                         </Typography>
                                       </CustomTooltip>
                                     </Stack>
@@ -668,13 +669,7 @@ const SubmitModal = ({
                                         title={((item.value) ? (item.value) : "djfhjdgdf")}
                                       >
                                         <Typography
-                                          sx={
-                                            {
-                                              padding: "0px !important",
-                                              paddingRight: "8px !important"
-                                            }
-                                          }
-
+                                      
                                         >
                                           {formatItemText2(item, true)}
                                         </Typography>
@@ -907,7 +902,7 @@ const SubmitModal = ({
                                       >
                                         <Typography>
                                           <StylePop className="ChipSpan rejected">
-                                            {formatItemText(item, true)}
+                                            {formatItemText2(item, true)}
                                             {/* :
                                               {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
                                           </StylePop>
@@ -938,10 +933,6 @@ const SubmitModal = ({
                                         }}
                                       >
                                         <Typography
-                                          sx={{
-                                            padding: "0px !important",
-                                            paddingRight: "8px !important",
-                                          }}
                                         >
                                           {formatItemText2(item, true)}
                                         </Typography>
