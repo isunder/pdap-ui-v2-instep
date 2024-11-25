@@ -45,7 +45,7 @@ import { WarningIcon } from "../../components";
 import { PrimaryButton } from "../../components/Button";
 import { ArrowDropDownIcon, CrossIcon } from "../../../src/components/Icons";
 import "./Codes.css";
-import { patientSummary, patientTabFlag } from "../../redux/userSlice/patientInfoSlice";
+import { patientSummary, patientTabFlag, rejectScanCodeRequest } from "../../redux/userSlice/patientInfoSlice";
 import {
   existingRejectInfo,
   existingValue,
@@ -59,6 +59,7 @@ import {
   recaptureReject,
   suspectReject,
   duplicateReject,
+  scanReject,
 } from "../../redux/userSlice/rejectCodesSlice";
 import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
@@ -74,6 +75,7 @@ import { History, NotFound, MyProfile } from "../../Screens";
 import { Visibility } from "@mui/icons-material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import zIndex from "@mui/material/styles/zIndex";
+import { Scans } from "../../container/Scan";
 
 const StyledText = styled("Box")(() => ({
   fontSize: "0.96rem",
@@ -140,6 +142,8 @@ const StyleButton = styled(Button)(() => ({
 }));
 
 export const Codes = () => {
+
+  const rejectedData = useSelector((state) => state?.reject?.scanReject);
   const tabs = TabsSlag();
   const dispatch = useDispatch();
   const queryString = window.location.search;
@@ -174,10 +178,17 @@ export const Codes = () => {
   const suspectCodeReject = useSelector(
     (state) => state?.reject?.suspectReject
   );
+
   const duplicateCode = useSelector((state) => state?.summary?.duplicate);
   const duplicateCodeReject = useSelector(
     (state) => state?.reject.duplicateReject
   );
+
+  const scanCode = useSelector((state) => state?.summary?.scanCode);
+  const scanCodeReject = useSelector(
+    (state) => state?.reject.duplicateReject
+  );
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -637,7 +648,16 @@ export const Codes = () => {
         }
       };
 
-      handleAddEventData(exampleMetadata)
+      handleAddEventData(exampleMetadata);
+
+      // const payload = {
+      //   source: selectedRejectData.source,
+      //   id: selectedRejectData.id,
+      //   rejection_reason: rejectReason,
+      //   rejected_by: doctorDetail?.doctor_name || "",
+      // }
+
+      // dispatch(rejectScanCodeRequest(payload));
     }
     const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
     if (isSummaryModal) {
@@ -679,12 +699,12 @@ export const Codes = () => {
       duplicateCodeReject?.length === 0 &&
       suspectCodeReject?.length === 0;
 
-    if (shouldSkipApiCall) {
-      setOpenSubmitModal(false);
-      setDialog(true);
-      setIsModalSubmit(true);
-      return;
-    }
+    // if (shouldSkipApiCall) {
+    //   setOpenSubmitModal(false);
+    //   setDialog(true);
+    //   setIsModalSubmit(true);
+    //   return;
+    // }
 
     let requestBody = {};
 
@@ -770,7 +790,19 @@ export const Codes = () => {
 
     // Post summary API call
     try {
+
+      dispatch(rejectScanCodeRequest(rejectScanCode)).then(() => {
+        setRejectScanCode([]);
+        setOpenSubmitModal(false);
+        setDialog(true);
+        setIsModalSubmit(true);
+      });
+
+      if (Object.keys(requestBody).length === 0) {
+        return;
+      }
       const result = await dispatch(patientSubmitData(requestBody));
+
       if (result?.meta?.requestStatus === "fulfilled") {
         setOpenSubmitModal(false);
         setDialog(true);
@@ -834,61 +866,156 @@ export const Codes = () => {
   const duplicateCodeNew = useSelector((state) => state.user.data.duplicateCode);
   const recaptureCodeNew = useSelector((state) => state.user.data.recaptureCode);
   const suspectCodeNew = useSelector((state) => state.user.data.suspectedCode);
+  const [rejectScanCode, setRejectScanCode] = useState([]);
 
-  const codesData = [
-    {
-      key: 1,
-      code: "Existing conditions",
-      codeCount: summary?.existing_codes_count,
-      problemList: "Recapturing required",
-      container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 2,
-      code: "Suspects",
-      codeCount: summary?.suspect_conditions_count,
-      problemList: "Review Potential diagnoses",
-      container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 3,
-      code: "Codes not in problem list",
-      codeCount: summary?.recapture_codes_count,
-      problemList: "Update Problem List",
-      container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 4,
-      code: "Addressed Codes",
-      codeCount: summary?.addressed_codes_count,
-      container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-    {
-      key: 5,
-      code: "Additional diagnoses",
-      codeCount: summary?.duplicate_codes_count,
-      container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
+  let codesData = [];
+  if (tabs && tabs['patient_dashboard_extended_data']?.active) {
+    codesData = [
+      {
+        key: 1,
+        code: "Existing conditions",
+        codeCount: summary?.existing_codes_count,
+        problemList: "Recapturing required",
+        container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 2,
+        code: "Suspects",
+        codeCount: summary?.suspect_conditions_count,
+        problemList: "Review Potential diagnoses",
+        container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 3,
+        code: "Codes not in problem list",
+        codeCount: summary?.recapture_codes_count,
+        problemList: "Update Problem List",
+        container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 4,
+        code: "Addressed Codes",
+        codeCount: summary?.addressed_codes_count,
+        container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 5,
+        code: "Additional diagnoses",
+        codeCount: summary?.duplicate_codes_count,
+        container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 7,
+        code: "External Data",
+        codeCount: summary?.external_data_count,
+        container: <Scans setRejectScanCode={setRejectScanCode} rejectScanCode={rejectScanCode} sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+        isShow: tabs && tabs['patient_dashboard_extended_da']?.active || false,
+      },
+      {
+        key: 6,
+        code: "Deleted Codes / Conditions",
+        codeCount: summary?.deleted_codes_count,
+        container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+    ];
+  } else {
+    codesData = [
+      {
+        key: 1,
+        code: "Existing conditions",
+        codeCount: summary?.existing_codes_count,
+        problemList: "Recapturing required",
+        container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 2,
+        code: "Suspects",
+        codeCount: summary?.suspect_conditions_count,
+        problemList: "Review Potential diagnoses",
+        container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 3,
+        code: "Codes not in problem list",
+        codeCount: summary?.recapture_codes_count,
+        problemList: "Update Problem List",
+        container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 4,
+        code: "Addressed Codes",
+        codeCount: summary?.addressed_codes_count,
+        container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 5,
+        code: "Additional diagnoses",
+        codeCount: summary?.duplicate_codes_count,
+        container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+      {
+        key: 6,
+        code: "Deleted Codes / Conditions",
+        codeCount: summary?.deleted_codes_count,
+        container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+    ];
+  }
 
-    {
-      key: 6,
-      code: "Deleted Codes / Conditions",
-      codeCount: summary?.deleted_codes_count,
-      container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    },
-
-    // {
-    //   key: 7,
-    //   code: "Deleted Codes / Conditions",
-    //   codeCount: summary?.deleted_codes_count,
-    //   container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
-    // },
-  ];
+  // const codesData = [
+  //   {
+  //     key: 1,
+  //     code: "Existing conditions",
+  //     codeCount: summary?.existing_codes_count,
+  //     problemList: "Recapturing required",
+  //     container: <ExistingConditions sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 2,
+  //     code: "Suspects",
+  //     codeCount: summary?.suspect_conditions_count,
+  //     problemList: "Review Potential diagnoses",
+  //     container: <Suspects sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 3,
+  //     code: "Codes not in problem list",
+  //     codeCount: summary?.recapture_codes_count,
+  //     problemList: "Update Problem List",
+  //     container: <CodesNotList sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 4,
+  //     code: "Addressed Codes",
+  //     codeCount: summary?.addressed_codes_count,
+  //     container: <AddressedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 5,
+  //     code: "Additional diagnoses",
+  //     codeCount: summary?.duplicate_codes_count,
+  //     container: <DuplicateCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  //   {
+  //     key: 7,
+  //     code: "External Data",
+  //     codeCount: summary?.external_data_count,
+  //     container: <Scans sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //     isShow: tabs && tabs['patient_dashboard_extended_da']?.active || false,
+  //   },
+  //   {
+  //     key: 6,
+  //     code: "Deleted Codes / Conditions",
+  //     codeCount: summary?.deleted_codes_count,
+  //     container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+  //   },
+  // ];
 
 
   const handleDelete = (event, item, key) => {
     event.stopPropagation()
     let newSessionObject = {};
+
     if (key === "existing") {
       if (item?.reason) {
         const codeList = existingCodeReject.filter(
@@ -1059,7 +1186,9 @@ export const Codes = () => {
 
       handleAddEventData(exampleMetadata)
 
-    } else if (key === "duplicate") {
+    }
+
+    else if (key === "duplicate") {
       if (item?.reason) {
         const codeList = duplicateCodeReject.filter(
           (value) => Object.keys(value)[0] !== item.code
@@ -1098,6 +1227,12 @@ export const Codes = () => {
       handleAddEventData(exampleMetadata)
 
     }
+
+    else if (key === "external") {
+      setRejectScanCode((prev) =>
+        [...prev.filter((items) => items.id !== item.id)] // Replace 'someId' with the id to match
+      );
+    }
     localStorage.setItem(
       `sessionObject_${userDetail.mrn}`,
       JSON.stringify(newSessionObject)
@@ -1115,7 +1250,8 @@ export const Codes = () => {
       suspectCode?.length +
       suspectCodeReject?.length +
       duplicateCode?.length +
-      duplicateCodeReject?.length
+      duplicateCodeReject?.length +
+      rejectedData.length
     );
   }, [
     existingCode,
@@ -1126,6 +1262,7 @@ export const Codes = () => {
     recaptureCodeReject,
     suspectCodeReject,
     duplicateCodeReject,
+    rejectedData
   ]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -1251,8 +1388,6 @@ export const Codes = () => {
   }
 
   // handle hoag modal switch on final summary screen
-
-
   const finalSummaryScreenHoag = () => {
     setHoagmodalarrow(!hoagmodalarrow);
 
@@ -1326,12 +1461,52 @@ export const Codes = () => {
 
 
 
+  function formatItemText2(item, useDynamicKey = false) {
+
+    const value = item?.value;
+
+  let widthInRem = 10; // Default width (10rem)
+
+  if (windowSize.width > 967) {
+    widthInRem = 22; // 32rem for large screens
+  } else if (windowSize.width > 767) {
+    widthInRem = 17; // 30rem for medium screens
+  } else if (windowSize.width > 567) {
+    widthInRem = 17; // 28rem for smaller tablets
+  } else if (windowSize.width > 437) {
+    widthInRem = 16; // 24rem for small tablets or larger mobile screens
+  } else if (windowSize.width > 407) {
+    widthInRem = 16; // 22rem for mobile screens
+  } else if (windowSize.width > 367) {
+    widthInRem = 13; // 20rem for smaller mobile screens
+  } else if (windowSize.width > 319) {
+    widthInRem = 9; // 18rem for very small screens
+  } else {
+    widthInRem = 8; // 16rem for extra small screens
+  }
+
+  return (
+    <StylePop
+      className={`ChipSpan rejected`}
+      style={{
+        display: 'block',
+        whiteSpace: 'nowrap',  // Prevent text from wrapping
+        overflow: 'hidden',    // Hide overflow text
+        textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
+        width: `${widthInRem}rem`,  // Set dynamic width in rem
+      }}
+    >
+      {`${value}`}
+    </StylePop>
+  );
+}
+
+
+
+
   if (isLoadingMain) {
     return <div style={{ height: '100vh', backgroundColor: 'white' }}></div>; // Blank screen
   }
-
-
-
 
   return (
     <>
@@ -2285,6 +2460,7 @@ export const Codes = () => {
                                   </>
                                 )}
                               </Grid>
+
                               <Grid container sx={{ pb: 2, mb: 0 }}>
                                 <Grid item lg={9} md={9} sm={10} xs={10}>
                                   <Typography className="HeadSummary">
@@ -2292,113 +2468,191 @@ export const Codes = () => {
                                   </Typography>
                                 </Grid>
 
-                                {!(
-                                  duplicateCode?.length ||
-                                  0 + duplicateRejectCode?.length ||
-                                  0
-                                ) > 0 ? (
-                                  <>
-                                    <Grid
-                                      item
-                                      lg={3}
-                                      md={2}
-                                      sm={2}
-                                      xs={12}
-                                      sx={{ textAlign: "end" }}
-                                    >
-                                      <StyleSheetNumber>0</StyleSheetNumber>
-                                    </Grid>
+                                {
+                                  !(
+                                    duplicateCode?.length ||
+                                    0 + duplicateRejectCode?.length ||
+                                    0
+                                  ) > 0 ? (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>0</StyleSheetNumber>
+                                      </Grid>
 
-                                    <div className="ItemsDiv">
-                                      <p>0 item</p>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Grid
-                                      item
-                                      lg={3}
-                                      md={2}
-                                      sm={2}
-                                      xs={12}
-                                      sx={{ textAlign: "end" }}
-                                    >
-                                      <StyleSheetNumber>
-                                        {(duplicateCode?.length || 0) +
-                                          (duplicateRejectCode?.length || 0)}
-                                      </StyleSheetNumber>
-                                    </Grid>
-                                    {duplicateCode?.length > 0 &&
-                                      duplicateCode?.map((item, index) => (
-                                        <Stack
-                                          direction="row"
-                                          spacing={1}
-                                          sx={{
-                                            px: 0,
-                                            ml: 0.08,
-                                            mt: 0.5,
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <Tooltip
-                                            title={item?.code + " : " + item?.value}
+                                      <div className="ItemsDiv">
+                                        <p>0 item</p>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>
+                                          {(duplicateCode?.length || 0) +
+                                            (duplicateRejectCode?.length || 0)}
+                                        </StyleSheetNumber>
+                                      </Grid>
+                                      {duplicateCode?.length > 0 &&
+                                        duplicateCode?.map((item, index) => (
+                                          <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            sx={{
+                                              px: 0,
+                                              ml: 0.08,
+                                              mt: 0.5,
+                                              cursor: "pointer",
+                                            }}
                                           >
-                                            <Typography
-                                              onClick={(event) =>
-                                                handleDelete(event, item, "duplicate")
-                                              }
+                                            <Tooltip
+                                              title={item?.code + " : " + item?.value}
                                             >
-                                              <StylePop className="ChipSpan">
-                                                {item?.code?.slice(0, 20)}{" "}
-                                                {item?.code.length > 20 ? "..." : ""}
-                                                :
-                                                {item?.value?.slice(0, 20)}{" "}
-                                                {item?.value?.length > 20 ? "..." : ""}
-                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                                  <CrossIcon />{" "}
-                                                </Typography>
-                                              </StylePop>{" "}
-                                            </Typography>
-                                          </Tooltip>
-                                        </Stack>
-                                      ))}
-                                    {duplicateRejectCode?.length > 0 &&
-                                      duplicateRejectCode?.map((item, index) => (
-                                        <Stack
-                                          direction="row"
-                                          spacing={1}
-                                          sx={{
-                                            px: 0,
-                                            ml: 0.08,
-                                            mt: 0.5,
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <Tooltip
-                                            title={item?.code + " : " + item?.value}
+                                              <Typography
+                                                onClick={(event) =>
+                                                  handleDelete(event, item, "duplicate")
+                                                }
+                                              >
+                                                <StylePop className="ChipSpan">
+                                                  {item?.code?.slice(0, 20)}{" "}
+                                                  {item?.code.length > 20 ? "..." : ""}
+                                                  :
+                                                  {item?.value?.slice(0, 20)}{" "}
+                                                  {item?.value?.length > 20 ? "..." : ""}
+                                                  <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                    <CrossIcon />{" "}
+                                                  </Typography>
+                                                </StylePop>{" "}
+                                              </Typography>
+                                            </Tooltip>
+                                          </Stack>
+                                        ))}
+                                      {duplicateRejectCode?.length > 0 &&
+                                        duplicateRejectCode?.map((item, index) => (
+                                          <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            sx={{
+                                              px: 0,
+                                              ml: 0.08,
+                                              mt: 0.5,
+                                              cursor: "pointer",
+                                            }}
                                           >
-                                            <Typography
-                                              onClick={(event) =>
-                                                handleDelete(event, item, "duplicate")
-                                              }
+                                            <Tooltip
+                                              title={item?.code + " : " + item?.value}
                                             >
-                                              <StylePop className="ChipSpan rejected">
-                                                {item?.code?.slice(0, 20)}{" "}
-                                                {item?.code.length > 20 ? "..." : ""}
-                                                :
-                                                {item?.value?.slice(0, 20)}{" "}
-                                                {item?.value?.length > 20 ? "..." : ""}
-                                                <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                                  <CrossIcon state="rejected" />{" "}
-                                                </Typography>
-                                              </StylePop>{" "}
-                                            </Typography>
-                                          </Tooltip>
-                                        </Stack>
-                                      ))}
-                                  </>
-                                )}
+                                              <Typography
+                                                onClick={(event) =>
+                                                  handleDelete(event, item, "duplicate")
+                                                }
+                                              >
+                                                <StylePop className="ChipSpan rejected">
+                                                  {item?.code?.slice(0, 20)}{" "}
+                                                  {item?.code.length > 20 ? "..." : ""}
+                                                  :
+                                                  {item?.value?.slice(0, 20)}{" "}
+                                                  {item?.value?.length > 20 ? "..." : ""}
+                                                  <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                                    <CrossIcon state="rejected" />{" "}
+                                                  </Typography>
+                                                </StylePop>{" "}
+                                              </Typography>
+                                            </Tooltip>
+                                          </Stack>
+                                        ))}
+                                    </>
+                                  )}
                               </Grid>
+
+
+                              {tabs && tabs['patient_dashboard_extended_data']?.active && <Grid container sx={{ pb: 2, mb: 0 }}>
+                                <Grid item lg={9} md={9} sm={10} xs={10}>
+                                  <Typography className="HeadSummary">
+                                    External Data
+                                  </Typography>
+                                </Grid>
+
+                                {
+                                  !(
+                                    rejectedData?.length ||
+                                    0 + rejectedData?.length ||
+                                    0
+                                  ) > 0 ? (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>0</StyleSheetNumber>
+                                      </Grid>
+
+                                      <div className="ItemsDiv">
+                                        <p>0 item</p>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Grid
+                                        item
+                                        lg={3}
+                                        md={2}
+                                        sm={2}
+                                        xs={12}
+                                        sx={{ textAlign: "end" }}
+                                      >
+                                        <StyleSheetNumber>
+                                          {(rejectedData?.length || 0)}
+                                        </StyleSheetNumber>
+                                      </Grid>
+
+                                      {rejectedData?.length > 0 &&
+                                        rejectedData?.map((item, index) => (
+                                          <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            sx={{
+                                              px: 0,
+                                              ml: 0.08,
+                                              mt: 0.5,
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <Tooltip
+                                              title={item?.value}
+                                            >
+                                              <Typography
+                                                onClick={(event) =>
+                                                  handleDelete(event, item, "external")
+                                                }
+                                              >
+                                               {formatItemText2(item)}
+                                              </Typography>
+                                            </Tooltip>
+                                          </Stack>
+                                        ))}
+                                    </>
+                                  )}
+
+                              </Grid>}
+
+
                               {existingCode?.length > 0 ||
                                 recaptureCode?.length > 0 ||
                                 duplicateCode?.length > 0 ||
@@ -2406,26 +2660,28 @@ export const Codes = () => {
                                 existingCodeReject?.length > 0 ||
                                 recaptureCodeReject?.length > 0 ||
                                 suspectCodeReject?.length > 0 ||
-                                duplicateCodeReject?.length > 0 ? (
-                                <button
-                                  style={{ cursor: "pointer" }}
-                                  className="SubmitBtn"
-                                  onClick={() => handleSubmitRedirect(tabs)}
-                                >
-                                  Submit
-                                </button>
-                              ) : (
-                                <button
-                                  style={{
-                                    cursor: "pointer",
-                                    backgroundColor: "#D3D3D3",
-                                  }}
-                                  className="SubmitBtn"
-                                  disabled
-                                >
-                                  Submit
-                                </button>
-                              )}
+                                duplicateCodeReject?.length > 0 ||
+                                rejectedData?.length > 0
+                                ? (
+                                  <button
+                                    style={{ cursor: "pointer" }}
+                                    className="SubmitBtn"
+                                    onClick={() => handleSubmitRedirect(tabs)}
+                                  >
+                                    Submit
+                                  </button>
+                                ) : (
+                                  <button
+                                    style={{
+                                      cursor: "pointer",
+                                      backgroundColor: "#D3D3D3",
+                                    }}
+                                    className="SubmitBtn"
+                                    disabled
+                                  >
+                                    Submit
+                                  </button>
+                                )}
                             </Box>
                           </CardContent>
                         </Card>
@@ -2615,7 +2871,7 @@ export const Codes = () => {
                       </>
                     }
                   >
-                    {item.container}
+                    {item.isShow}{item.container}
                   </MuiAccordions>
                 ))}
 
@@ -3387,6 +3643,109 @@ export const Codes = () => {
                         )}
                       </Grid>
 
+
+                      {tabs && tabs['patient_dashboard_extended_data']?.active && <Grid
+                        container
+                        sx={{ borderBottom: "1px solid #00000029", pb: 2, mb: 2 }}
+                      >
+                        <Grid item lg={9} md={9} sm={10} xs={12}>
+                          <Typography className="HeadSummary">
+                            External Data
+                          </Typography>
+                        </Grid>
+                        {!(
+                          Object?.keys(rejectedData)?.length ||
+                          0 + suspectCodeReject?.length ||
+                          0
+                        ) > 0 ? (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>0</StyleSheetNumber>
+                            </Grid>
+
+                            <div className="ItemsDiv">
+                              <p>0 item</p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Grid
+                              item
+                              lg={3}
+                              md={3}
+                              sm={2}
+                              xs={12}
+                              sx={{ textAlign: "end" }}
+                            >
+                              <StyleSheetNumber>
+                                {(rejectedData?.length || 0)}
+                              </StyleSheetNumber>
+                            </Grid>
+
+                            {rejectedData && rejectedData?.length > 0 &&
+                              rejectedData?.map((item, index) => (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{
+                                    px: 0,
+                                    ml: 0.08,
+                                    mt: 0.5,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={((item?.value) ? (item?.value) : null)}
+                                  >
+                                    <Typography
+                                      sx={
+                                        {
+                                          padding: "0px !important",
+                                          paddingRight: "8px !important"
+                                        }
+                                      }
+                                      onClick={(event) =>
+                                        handleDelete(event, item, "external")
+                                      }
+                                    >
+                                      <StylePop className="ChipSpan rejected">
+                                        {
+                                          windowSize.width > 967
+                                            ? item?.value?.slice(0, 30) + (item?.value?.length > 30 ? "..." : "")
+                                            : windowSize.width > 767
+                                              ? item?.value?.slice(0, 23) + (item?.value?.length > 23 ? "..." : "")
+                                              : windowSize.width > 567
+                                                ? item?.value?.slice(0, 22) + (item?.value?.length > 22 ? "..." : "")
+                                                : windowSize.width > 437
+                                                  ? item?.value?.slice(0, 21) + (item?.value?.length > 21 ? "..." : "")
+                                                  : windowSize.width > 407
+                                                    ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                    : windowSize.width > 367
+                                                      ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
+                                                      : windowSize.width > 319
+                                                        ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
+                                                        : item?.value
+                                        }
+                                        <Typography sx={{ flexGrow: 1, ml: "10px" }}>
+                                          <CrossIcon state="rejected" />{" "}
+                                        </Typography>
+                                      </StylePop>{" "}
+                                    </Typography>
+                                  </Tooltip>
+                                </Stack>
+                              ))}
+
+                          </>
+                        )}
+                      </Grid>}
+
                       {existingCode?.length > 0 ||
                         recaptureCode?.length > 0 ||
                         duplicateCode?.length > 0 ||
@@ -3394,26 +3753,28 @@ export const Codes = () => {
                         existingCodeReject?.length > 0 ||
                         recaptureCodeReject?.length > 0 ||
                         duplicateCodeReject?.length > 0 ||
-                        suspectCodeReject?.length > 0 ? (
-                        <button
-                          style={{ cursor: "pointer" }}
-                          className="SubmitBtn"
-                          onClick={() => handleSubmitRedirect(tabs)}
-                        >
-                          Submit
-                        </button>
-                      ) : (
-                        <button
-                          style={{
-                            cursor: "pointer",
-                            backgroundColor: "#D3D3D3",
-                          }}
-                          className="SubmitBtn"
-                          disabled
-                        >
-                          Submit
-                        </button>
-                      )}
+                        suspectCodeReject?.length > 0 ||
+                        rejectedData?.length > 0
+                        ? (
+                          <button
+                            style={{ cursor: "pointer" }}
+                            className="SubmitBtn"
+                            onClick={() => handleSubmitRedirect(tabs)}
+                          >
+                            Submit
+                          </button>
+                        ) : (
+                          <button
+                            style={{
+                              cursor: "pointer",
+                              backgroundColor: "#D3D3D3",
+                            }}
+                            className="SubmitBtn"
+                            disabled
+                          >
+                            Submit
+                          </button>
+                        )}
                     </Box>
                   </div>
 
@@ -3692,7 +4053,7 @@ export const Codes = () => {
 
                                       {
                                         !(
-                                          existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                                          existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0 + rejectedData?.length || 0) > 0 ? (
                                           <>
                                             <div className="ItemsDivNew">
                                               <p>No applicable codes/conditions.</p>
@@ -3801,6 +4162,36 @@ export const Codes = () => {
                                                   >
                                                     <Typography>
                                                     {formatItemText(item , true)}
+                                                    </Typography>
+                                                  </Tooltip>
+                                                </Stack>
+                                              ))}
+
+                                            {rejectedData && rejectedData?.length > 0 &&
+                                              rejectedData?.map((item, index) => (
+                                                <Stack
+                                                  direction="row"
+                                                  spacing={1}
+                                                  sx={{
+                                                    px: 0,
+                                                    ml: 0.08,
+                                                    mt: 0.5,
+                                                    cursor: "pointer",
+                                                  }}
+                                                >
+                                                  <Tooltip
+                                                    title={((item?.value) ? (item?.value) : null)}
+                                                  >
+                                                    <Typography
+                                                      sx={
+                                                        {
+                                                          padding: "0px !important",
+                                                          paddingRight: "8px !important"
+                                                        }
+                                                      }
+
+                                                    >
+                                                     {formatItemText2(item)}
                                                     </Typography>
                                                   </Tooltip>
                                                 </Stack>

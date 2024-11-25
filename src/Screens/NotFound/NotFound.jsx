@@ -49,8 +49,9 @@ export const NotFound = () => {
           <div></div>
         </div>
         <h2></h2>
-        <h3 style={{ fontSize: '100% ' }}>Patient appears to be new. There will be data available to be shown at the next
-          appointment.</h3>
+        <h3 style={{ fontSize: '16px ' , color:"#000000" , fontWeight:700 }}>The patient appears to be either new or not currently  <br />  assigned by your organization within DoctusTech.</h3>
+
+        <h6 style={{fontSize: '14px' , color:"#7C85AB"}}>If this is incorrect, please reach out to your <br /> administrator to report the MRN.</h6>
       </div>
     </div>
 

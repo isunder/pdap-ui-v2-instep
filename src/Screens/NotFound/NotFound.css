@@ -9,11 +9,24 @@ div {
 
 @media only screen and (max-width: 968px) {
     .notfound .notfound-bg {
-        width: 287px;
+        width: 80%;
         margin: auto;
     }
 }
-
+@media only screen and (max-width: 591px) {
+    .notfound .notfound-bg {
+        width: 71%;
+    }
+    #notfound .notfound h3,
+    #notfound .notfound h6{
+    width: 74%;
+    }
+    .notfound{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
 #notfound {
     position: relative;
     height: 100vh;
