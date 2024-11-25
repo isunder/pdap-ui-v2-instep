@@ -22,7 +22,7 @@
   display: block;
 }
 .ChipSpan {
-  display: block !;
+  display: inline-flex;
   color: #17236d !important;
   font-size: 0.875rem !important;
   font-weight: 700;
@@ -32,13 +32,15 @@
   height: 1.4375rem !important;
   padding: 0.125rem 0.5rem !important;
   padding-right: 10px !important;
-  width: 500px;
   overflow: hidden;
+ width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ChipSpan.rejected {
   color: #F20000 !important;
   background: #FEE5E5 !important;
-  width: 500px;
   overflow: hidden;
 }
 
