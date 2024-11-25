@@ -2270,7 +2270,7 @@ export const Codes = () => {
                                           }}
                                         >
                                           <Tooltip
-                                            title={item?.code + " : " + item?.value}
+                                            title={item?.code || item?.value}
                                           >
                                             <Typography
                                               onClick={(event) =>
@@ -2305,8 +2305,7 @@ export const Codes = () => {
                                         >
                                           <Tooltip
                                             title={
-                                              Object.keys(item) +
-                                              " : " +
+                                              Object.keys(item) ||
                                               item[Object.keys(item)].value
                                             }
                                           >
@@ -4076,8 +4075,7 @@ export const Codes = () => {
                                                 >
                                                   <Tooltip
                                                     title={
-                                                      Object.keys(item) +
-                                                        " : " +
+                                                      Object.keys(item) ||
                                                         ([Object.keys(item)].code) ? (item[Object.keys(item)].value) : null
 
                                                     }
