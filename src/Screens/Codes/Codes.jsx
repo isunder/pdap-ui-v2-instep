@@ -1461,49 +1461,46 @@ export const Codes = () => {
 
 
 
-  function formatItemText(item, useDynamicKey = false) {
-    const code = item?.code || Object.keys(item)[0] || '';
-    const value = useDynamicKey
-      ? item[Object.keys(item)[0]]?.value
-      : item?.value;
-  
-    if (!value) return ''; // Return empty if value is undefined or null
-  
-    let widthInRem = 10; // Default width (10rem)
-    
-    if (windowSize.width > 967) {
-      widthInRem = 22; // 32rem for large screens
-    } else if (windowSize.width > 767) {
-      widthInRem = 17; // 30rem for medium screens
-    } else if (windowSize.width > 567) {
-      widthInRem = 17; // 28rem for smaller tablets
-    } else if (windowSize.width > 437) {
-      widthInRem = 16; // 24rem for small tablets or larger mobile screens
-    } else if (windowSize.width > 407) {
-      widthInRem = 16; // 22rem for mobile screens
-    } else if (windowSize.width > 367) {
-      widthInRem = 13; // 20rem for smaller mobile screens
-    } else if (windowSize.width > 319) {
-      widthInRem = 9; // 18rem for very small screens
-    } else {
-      widthInRem = 8; // 16rem for extra small screens
-    }
-  
-    return (
-      <StylePop
-        className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
-        style={{
-          display: 'block',
-          whiteSpace: 'nowrap',  // Prevent text from wrapping
-          overflow: 'hidden',    // Hide overflow text
-          textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
-          width: `${widthInRem}rem`,  // Set dynamic width in rem
-        }}
-      >
-        {`${code}: ${value}`}
-      </StylePop>
-    );
+  function formatItemText2(item, useDynamicKey = false) {
+
+    const value = item?.value;
+
+  let widthInRem = 10; // Default width (10rem)
+
+  if (windowSize.width > 967) {
+    widthInRem = 22; // 32rem for large screens
+  } else if (windowSize.width > 767) {
+    widthInRem = 17; // 30rem for medium screens
+  } else if (windowSize.width > 567) {
+    widthInRem = 17; // 28rem for smaller tablets
+  } else if (windowSize.width > 437) {
+    widthInRem = 16; // 24rem for small tablets or larger mobile screens
+  } else if (windowSize.width > 407) {
+    widthInRem = 16; // 22rem for mobile screens
+  } else if (windowSize.width > 367) {
+    widthInRem = 13; // 20rem for smaller mobile screens
+  } else if (windowSize.width > 319) {
+    widthInRem = 9; // 18rem for very small screens
+  } else {
+    widthInRem = 8; // 16rem for extra small screens
   }
+
+  return (
+    <StylePop
+      className={`ChipSpan rejected`}
+      style={{
+        display: 'block',
+        whiteSpace: 'nowrap',  // Prevent text from wrapping
+        overflow: 'hidden',    // Hide overflow text
+        textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
+        width: `${widthInRem}rem`,  // Set dynamic width in rem
+      }}
+    >
+      {`${value}`}
+    </StylePop>
+  );
+}
+
 
 
 
@@ -2645,28 +2642,7 @@ export const Codes = () => {
                                                   handleDelete(event, item, "external")
                                                 }
                                               >
-                                                <StylePop className="ChipSpan rejected">
-                                                  {
-                                                    windowSize.width > 967
-                                                      ? item?.value?.slice(0, 30) + (item?.value?.length > 30 ? "..." : "")
-                                                      : windowSize.width > 767
-                                                        ? item?.value?.slice(0, 23) + (item?.value?.length > 23 ? "..." : "")
-                                                        : windowSize.width > 567
-                                                          ? item?.value?.slice(0, 22) + (item?.value?.length > 22 ? "..." : "")
-                                                          : windowSize.width > 437
-                                                            ? item?.value?.slice(0, 21) + (item?.value?.length > 21 ? "..." : "")
-                                                            : windowSize.width > 407
-                                                              ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                              : windowSize.width > 367
-                                                                ? item?.value?.slice(0, 20) + (item?.value?.length > 20 ? "..." : "")
-                                                                : windowSize.width > 319
-                                                                  ? item?.value?.slice(0, 15) + (item?.value?.length > 15 ? "..." : "")
-                                                                  : item?.value
-                                                  }
-                                                  <Typography sx={{ flexGrow: 1, ml: "10px" }}>
-                                                    <CrossIcon state="rejected" />{" "}
-                                                  </Typography>
-                                                </StylePop>{" "}
+                                               {formatItemText2(item)}
                                               </Typography>
                                             </Tooltip>
                                           </Stack>
@@ -4215,7 +4191,7 @@ export const Codes = () => {
                                                       }
 
                                                     >
-                                                     {formatItemText(item)}
+                                                     {formatItemText2(item)}
                                                     </Typography>
                                                   </Tooltip>
                                                 </Stack>
