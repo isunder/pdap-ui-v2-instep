@@ -116,6 +116,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
   };
 
   const handleClickOpen1 = (item) => {
+
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -160,7 +161,9 @@ export const DuplicateCodes = ({ sessionObject }) => {
           code: item?.code,
           value: item?.value ? item?.value : item?.info?.value,
           additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
-          code_in_problem_list: item?.code_in_problem_list ? item?.code_in_problem_list : item?.info?.code_in_problem_list
+          code_in_problem_list: item?.code_in_problem_list ? item?.code_in_problem_list : item?.info?.code_in_problem_list,
+          identifier: (item?.info?.identifier !== null) ? item?.info?.identifier : null ,
+          type: (item?.info?.type !== null) ? item?.info?.type : null
         };
         selectedDuplicatecode?.length > 0
           ? setSelectedDuplicatecode([...selectedDuplicatecode, codeList])
@@ -253,7 +256,11 @@ export const DuplicateCodes = ({ sessionObject }) => {
     }
   }, [sessionObject]);
 
+
   useEffect(() => {
+
+
+
     dispatch(duplicateValue(selectedDuplicatecode));
     dispatch(duplicateReject(rejectDuplicateCode));
     dispatch(duplicateRejectInfo(rejectDuplicateData));
@@ -382,11 +389,15 @@ export const DuplicateCodes = ({ sessionObject }) => {
               value: selectedRejectData?.value,
               reason: reason,
               delete_code: false,
+              identifier: (selectedRejectData?.info?.identifier !== null) ? selectedRejectData?.info?.identifier : null ,
+              type: (selectedRejectData?.info?.type !== null) ? selectedRejectData?.info?.type : null,
               alternate_codes: [
                 {
                   code: selectedRejectData?.code,
                   reason: reason,
                   value: selectedRejectData?.value,
+                  identifier: (selectedRejectData?.identifier !== null) ? selectedRejectData?.identifier : null ,
+                  type: (selectedRejectData?.type !== null) ? selectedRejectData?.type : null
                 },
               ],
             },
