@@ -672,6 +672,8 @@ export const Codes = () => {
   const handleSubmit = async () => {
     const tenetType = tabs['type']?.value;
 
+    
+
     const filteredExistingCode = tenetType === "EPIC"
       ? existingCode?.every(item => item.code_in_problem_list === true)
         ? []
@@ -747,6 +749,8 @@ export const Codes = () => {
         [item.code]: {
           value: item?.value,
           additional_info: item?.additional_info,
+          identifier: item?.identifier !== null ? (item?.identifier) : null,
+          type: item?.type !== null ? (item?.type) : null
         },
       }));
       let duplicate_codes = Object.assign({}, ...mapped);
@@ -762,6 +766,7 @@ export const Codes = () => {
     }
 
     if (duplicateCodeReject?.length > 0) {
+
       let mapped = duplicateCodeReject.map((item) => item);
       let duplicate_codes = Object.assign({}, ...mapped);
       requestBody = requestBody.delete_codes
