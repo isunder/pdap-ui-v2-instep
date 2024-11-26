@@ -1355,7 +1355,8 @@ export const Codes = () => {
     height: "max-content",
     top: '200%',
     cursor: "auto",
-    transition: "all ease-in-out"
+    transition: "all ease-in-out",
+    zIndex:99
   };
 
   const styles2 = {
@@ -1363,7 +1364,8 @@ export const Codes = () => {
     height: "max-content",
     top: '200%',
     cursor: "auto",
-    transition: "all ease-in-out"
+    transition: "all ease-in-out",
+    zIndex:99
   };
 
   const offcanvasBody = {
