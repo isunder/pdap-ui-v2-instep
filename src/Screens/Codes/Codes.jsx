@@ -467,12 +467,12 @@ export const Codes = () => {
     const handleActivity = () => {
       setIsInactive(false);
       clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(() => setIsInactive(true), 1 * 60000);
+      inactivityTimer = setTimeout(() => setIsInactive(true), 15 * 60000);
     };
 
     window.addEventListener('mousemove', handleActivity);
     window.addEventListener('keydown', handleActivity);
-    inactivityTimer = setTimeout(() => setIsInactive(true), 1 * 60000);
+    inactivityTimer = setTimeout(() => setIsInactive(true), 15 * 60000);
 
     return () => {
       clearTimeout(inactivityTimer);
