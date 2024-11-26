@@ -458,7 +458,7 @@ export const Codes = () => {
   }, [])
 
 
-  // Application Inactivity Recorder  :-------------------------------------------------:
+  // Application Inactivity Recorder or Idle Modal  :-------------------------------------------------:
 
   const [isInactive, setIsInactive] = useState(false);
   let inactivityTimer;
@@ -467,12 +467,12 @@ export const Codes = () => {
     const handleActivity = () => {
       setIsInactive(false);
       clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(() => setIsInactive(true), 15 * 60000);
+      inactivityTimer = setTimeout(() => setIsInactive(true), 1 * 60000);
     };
 
     window.addEventListener('mousemove', handleActivity);
     window.addEventListener('keydown', handleActivity);
-    inactivityTimer = setTimeout(() => setIsInactive(true), 15 * 60000);
+    inactivityTimer = setTimeout(() => setIsInactive(true), 1 * 60000);
 
     return () => {
       clearTimeout(inactivityTimer);
@@ -2262,6 +2262,7 @@ export const Codes = () => {
                                           (suspectCodeReject?.length || 0)}
                                       </StyleSheetNumber>
                                     </Grid>
+
                                     {suspectCode?.length > 0 &&
                                       suspectCode?.map((item, index) => (
                                         <Stack
@@ -2275,7 +2276,7 @@ export const Codes = () => {
                                           }}
                                         >
                                           <Tooltip
-                                            title={item?.code || item?.value}
+                                            title={ item?.code ? (item?.code +":"+ item?.value) : item?.value}
                                           >
                                             <Typography
                                               onClick={(event) =>
@@ -2296,6 +2297,7 @@ export const Codes = () => {
                                           </Tooltip>
                                         </Stack>
                                       ))}
+
                                     {suspectCodeReject?.length > 0 &&
                                       suspectCodeReject?.map((item, index) => (
                                         <Stack
