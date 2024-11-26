@@ -2278,7 +2278,13 @@ export const Codes = () => {
                                           }}
                                         >
                                           <Tooltip
-                                            title={ item?.code ? (item?.code +":"+ item?.value) : item?.value}
+                                          title={ 
+                                            item?.code 
+                                              ? item?.value === "" 
+                                                ? item?.code 
+                                                : item?.code + ":" + item?.value 
+                                              : item?.value 
+                                          }
                                           >
                                             <Typography
                                               onClick={(event) =>
@@ -3333,7 +3339,13 @@ export const Codes = () => {
                                   }}
                                 >
                                   <Tooltip
-                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
+                                    title={ 
+                                      item?.code 
+                                        ? item?.value === "" 
+                                          ? item?.code 
+                                          : item?.code + ":" + item?.value 
+                                        : item?.value 
+                                    }
                                   >
                                     <Typography
                                       sx={

@@ -506,7 +506,13 @@ const SubmitModal = ({
                                   key={index}
                                 >
                                   <CustomTooltip
-                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
+                                    title={ 
+                                      item?.code 
+                                        ? item?.value === "" 
+                                          ? item?.code 
+                                          : item?.code + ":" + item?.value 
+                                        : item?.value 
+                                    }
                                   >
                                     <Typography>
                                       {formatItemText(item)}
@@ -839,7 +845,13 @@ const SubmitModal = ({
                                   key={index}
                                 >
                                   <CustomTooltip
-                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
+                                    title={ 
+                                      item?.code 
+                                        ? item?.value === "" 
+                                          ? item?.code 
+                                          : item?.code + ":" + item?.value 
+                                        : item?.value 
+                                    }
                                   >
                                     <Typography>
 
