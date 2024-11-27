@@ -483,7 +483,7 @@ export const DuplicateCodes = ({ sessionObject }) => {
           [value.code]: {
             value: value?.value,
             reason: reason,
-            
+
           },
         };
       });
@@ -1016,6 +1016,14 @@ export const DuplicateCodes = ({ sessionObject }) => {
                                     height: "1.438rem",
                                     padding: "0.219rem 1.25rem",
                                     ml: 1,
+
+                                    '@media only screen and (min-width: 967px) and (max-width: 1017px)': {
+                                      padding: "0.219rem 0.25rem",
+                                    }
+,
+                                    '@media only screen and (max-width: 400px)': {
+                                      padding: "0.219rem 0.25rem",
+                                    }
                                   }}
                                 >
                                   {source}
