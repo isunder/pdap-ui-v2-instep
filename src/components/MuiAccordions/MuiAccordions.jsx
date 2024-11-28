@@ -4,8 +4,7 @@ import MuiAccordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { convertDate } from "../../utils/helper";
 
 const Accordion = styled((props) => (
@@ -28,11 +27,9 @@ const StyledAccordionSummary = styled(AccordionSummary)(({ sx }) => ({
 export const MuiAccordions = (props) => {
   const {
     item,
-    summary,
     tabs,
     panel,
     code,
-    name,
     setExpanded,
     expanded,
     setSingleExpand,
@@ -43,8 +40,6 @@ export const MuiAccordions = (props) => {
     children,
     handleAddEventData
   } = props;
-
-  const [addClass, setAddClass] = useState(false)
 
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const { user } = useSelector((state) => state);
@@ -93,18 +88,11 @@ export const MuiAccordions = (props) => {
     }
   }
 
-  useEffect(() => {
-    if (item?.key === panel && (item?.codeCount === 0 || item?.codeCount === undefined)) {
-      setAddClass(true)
-    }
-  }, [])
-
   const handleChange = (panel) => (_, isExpanded) => {
 
     if ((item?.key === panel && item?.codeCount === 0) || item?.key === panel && item?.codeCount === undefined) {
       return
     }
-
 
     if (panel) {
       let codeValue = "";
@@ -119,19 +107,19 @@ export const MuiAccordions = (props) => {
     }
 
 
-    if (isExpanded == true && panel == 1) {
+    if (isExpanded === true && panel === 1) {
       auditdata(exampleMetadata1);
     }
 
-    else if (isExpanded == true && panel == 2) {
+    else if (isExpanded === true && panel === 2) {
       auditdata(exampleMetadata2);
     }
 
-    else if (isExpanded == false && panel == 1) {
+    else if (isExpanded === false && panel === 1) {
       auditdata(exampleMetadata3);
     }
 
-    else if (isExpanded == false && panel == 2) {
+    else if (isExpanded === false && panel === 2) {
       auditdata(exampleMetadata4);
     }
 

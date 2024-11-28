@@ -7,23 +7,21 @@ import {
   Typography,
   styled,
   useTheme,
-  Button,
+  
   Tooltip,
-  Skeleton,
+  
   DialogContent,
   DialogContentText,
 } from "@mui/material";
 import {
   ArrowDropUpIcon
 } from "../../components";
-import Drawer from "@mui/material/Drawer";
 import { MuiAccordions } from "../../components/MuiAccordions/MuiAccordions";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import moment from "moment";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAppContext from "../../hooks/useAppContext";
@@ -59,7 +57,7 @@ import {
   recaptureReject,
   suspectReject,
   duplicateReject,
-  scanReject,
+ 
 } from "../../redux/userSlice/rejectCodesSlice";
 import { GreenDoneIcon } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
@@ -71,10 +69,7 @@ import { convertDate, isSlugOrJwt } from "../../utils/helper";
 import { IdleModal } from "../../components/idleModal/IdleModal";
 import { refreshSSOToken } from "../../redux/userSlice/refreshToken";
 import { useLocation, useNavigate } from "react-router-dom";
-import { History, NotFound, MyProfile } from "../../Screens";
-import { Visibility } from "@mui/icons-material";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import zIndex from "@mui/material/styles/zIndex";
 import { Scans } from "../../container/Scan";
 
 const StyledText = styled("Box")(() => ({
@@ -88,23 +83,9 @@ const StyledCodeTypography = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   lineHeight: "20px",
   textAlign: "left",
-  color: "#0D426A",
   display: "block",
   paddingLeft: "8px",
   color: "#0D426A",
-}));
-
-const StyleSheetNumber1 = styled("Span")(({ theme }) => ({
-  color: "#FFF",
-  fontSize: "0.75rem",
-  fontWeight: 600,
-  lineHeight: "1.4rem",
-  backgroundColor: "#17236D",
-  width: "1.3125rem",
-  height: "1.3125rem",
-  display: "inline-block",
-  borderRadius: "1.3125rem",
-  textAlign: "center",
 }));
 
 const StyleSheetNumber = styled("Span")(({ theme }) => ({
@@ -130,30 +111,17 @@ const StylePop = styled("Typography")(() => ({
   fontWeight: "600",
 }));
 
-const StyleButton = styled(Button)(() => ({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  width: "100%",
-  height: "2.5rem",
-  fontSize: "1rem",
-  fontWeight: 600,
-  borderRadius: "0.5rem",
-}));
-
 export const Codes = () => {
 
   const rejectedData = useSelector((state) => state?.reject?.scanReject);
   const tabs = TabsSlag();
   const dispatch = useDispatch();
-  const queryString = window.location.search;
   const slug = isSlugOrJwt();
   const theme = useTheme();
   const { user } = useSelector((state) => state);
   const [openSubmitModal, setOpenSubmitModal] = useState();
   const [closeSubmitModal, setCloseSubmitModal] = useState(false);
   const { state, setState } = useAppContext();
-  const [codesDataLoaded, setCodesDataLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalSubmit, setIsModalSubmit] = useState(false);
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
@@ -184,10 +152,6 @@ export const Codes = () => {
     (state) => state?.reject.duplicateReject
   );
 
-  const scanCode = useSelector((state) => state?.summary?.scanCode);
-  const scanCodeReject = useSelector(
-    (state) => state?.reject.duplicateReject
-  );
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -230,31 +194,8 @@ export const Codes = () => {
     useState(existingRejectData);
   const [sumCount, setSumCount] = useState(0);
   const [dialog, setDialog] = useState(false);
-  const isLoading = useSelector((state) => state?.summary?.isLoading);
-  const codesSkeletonData = [
-    {
-      height: 40,
-      marginBottom: "10px",
-    },
-    {
-      height: 100,
-      marginBottom: "8px",
-    },
-    {
-      height: 100,
-      marginBottom: "8px",
-    },
-    {
-      height: 100,
-      marginBottom: "8px",
-    },
-    {
-      height: 100,
-      marginBottom: "8px",
-    },
-  ];
-
-  const objToArr = (state) => {
+ 
+ const objToArr = (state) => {
     let array = [];
     state &&
       state?.map((value, index) => {
@@ -424,17 +365,12 @@ export const Codes = () => {
     }
   };
 
-
-
-
   useEffect(() => {
 
   }, [setOpenSubmitModal])
 
 
   // Application JWT and Slug remove  :-------------------------------------------------:
-
-  const [newSlug, setNewSlug] = useState(isSlugOrJwt());
 
   useEffect(() => {
     if (location.pathname === "/") {
@@ -452,7 +388,7 @@ export const Codes = () => {
   const lastLocation = localStorage.getItem("lastVisitedRoute");
 
   useEffect(() => {
-    if (Object.keys(slug).length === 0 && slug.constructor === Object && lastLocation == "/") {
+    if (Object.keys(slug).length === 0 && slug.constructor === Object && lastLocation === "/") {
       navigate("/404")
     }
   }, [])
@@ -616,7 +552,7 @@ export const Codes = () => {
   const handleSubmitRedirect = async (tabs) => {
 
     setIsModalOpen(true);
-    const isAthenaModal = tabs['type']?.value == "Athena";
+    const isAthenaModal = tabs['type']?.value === "Athena";
 
     if (isAthenaModal) {
       setSwitchModal(true);
@@ -650,14 +586,6 @@ export const Codes = () => {
 
       handleAddEventData(exampleMetadata);
 
-      // const payload = {
-      //   source: selectedRejectData.source,
-      //   id: selectedRejectData.id,
-      //   rejection_reason: rejectReason,
-      //   rejected_by: doctorDetail?.doctor_name || "",
-      // }
-
-      // dispatch(rejectScanCodeRequest(payload));
     }
     const isSummaryModal = tabs['patient_dashboard_summary_screen']?.active || false;
     if (isSummaryModal) {
@@ -701,12 +629,12 @@ export const Codes = () => {
       duplicateCodeReject?.length === 0 &&
       suspectCodeReject?.length === 0;
 
-    // if (shouldSkipApiCall) {
-    //   setOpenSubmitModal(false);
-    //   setDialog(true);
-    //   setIsModalSubmit(true);
-    //   return;
-    // }
+    if (shouldSkipApiCall) {
+      setOpenSubmitModal(false);
+      setDialog(true);
+      setIsModalSubmit(true);
+      return;
+    }
 
     let requestBody = {};
 
@@ -845,7 +773,6 @@ export const Codes = () => {
       });
       sendAuditLog();
       const timer = setTimeout(() => {
-        setCodesDataLoaded(true);
       }, 2000);
 
       // Clean up the timeout if the component is unmounted before the timeout completes
@@ -967,7 +894,7 @@ export const Codes = () => {
     ];
   }
 
-  // const codesData = [
+ 
   //   {
   //     key: 1,
   //     code: "Existing conditions",
@@ -1830,55 +1757,7 @@ export const Codes = () => {
                                   </Typography>
                                 </Grid>
                               </Grid>
-                              {/* <Grid container >
-                        <Grid item lg={2} md={2} sm={1.5} xs={3} >
-                          <PrimaryButton
-
-                            sx={{
-                              width: "2.375rem",
-                              height: "1.5625rem",
-                              backgroundColor: "#F200001A",
-                              color: theme.palette.error.main,
-                              ":hover": {
-                                backgroundColor: "#F200001A",
-                              },
-                              fontWeight: 600,
-                              minWidth: "inherit",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {summary?.duplicate_codes_count || 0}
-                          </PrimaryButton>
-                        </Grid>
-                        <Grid
-                          item
-                          lg={10}
-                          md={10}
-                          sm={10.5}
-                          xs={9}
-                          sx={{ pl: 1 }}
-                        >
-                          <Typography
-                            sx={{
-                              fontSize: "1rem",
-                              color: "rgba(0, 0, 0, 0.60);",
-                              fontWeight: "600",
-                              lineHeight: "1.375rem",
-                              textTransform: "initial",
-                            }}
-                          >
-                            You have  { }
-                            <Typography
-                              sx={{
-                                color: "#000;",
-                              }}
-                            >
-                              {summary?.duplicate_codes_count || 0}
-                            </Typography>
-                            { } Duplicate Codes
-                          </Typography>
-                        </Grid>
-                      </Grid> */}
+                
                             </Box>
                           </div>
 
@@ -2932,7 +2811,7 @@ export const Codes = () => {
                     >
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
-                          onClick={() => setExpanded(expanded == 1 ? false : 1)}
+                          onClick={() => setExpanded(expanded === 1 ? false : 1)}
                           disabled={(summary?.existing_codes_count === undefined || summary?.existing_codes_count === 0) || 0}
                           sx={{
                             width: "2.375rem",
@@ -3003,7 +2882,7 @@ export const Codes = () => {
                             minWidth: "inherit",
                             fontSize: "0.875rem",
                           }}
-                          onClick={() => setExpanded((summary?.suspect_conditions_count === undefined && summary?.suspect_conditions_count === 0) ? false : expanded == 2 ? false : 2)}
+                          onClick={() => setExpanded((summary?.suspect_conditions_count === undefined && summary?.suspect_conditions_count === 0) ? false : expanded === 2 ? false : 2)}
                         >
                           {summary?.suspect_conditions_count || 0}
                         </PrimaryButton>
@@ -3038,7 +2917,7 @@ export const Codes = () => {
                       <Grid item lg={2} md={2} sm={2} xs={12}>
                         <PrimaryButton
                           disabled={(summary?.recapture_codes_count === undefined || summary?.recapture_codes_count === 0) || 0}
-                          onClick={() => setExpanded(expanded == 3 ? false : 3)}
+                          onClick={() => setExpanded(expanded === 3 ? false : 3)}
                           sx={{
                             width: "2.375rem",
                             height: "1.5625rem",
@@ -3063,7 +2942,6 @@ export const Codes = () => {
                         <Typography
                           sx={{
                             fontFamily: "Proxima Nova Rg",
-                            fontWeight: 500,
                             fontSize: "1rem",
                             color: "rgba(0, 0, 0, 0.60)",
                             fontWeight: "600",

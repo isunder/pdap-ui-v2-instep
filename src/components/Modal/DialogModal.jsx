@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogActions, DialogContent, Grid, styled, useTheme } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, Grid, styled } from "@mui/material";
 import { CloseButton } from "../CloseButton";
 
 const StyleDialog = styled(Dialog)(({ theme, width, minHeight }) => ({
@@ -25,7 +25,6 @@ const StyleDialog = styled(Dialog)(({ theme, width, minHeight }) => ({
 
 export const DialogModal = (props) => {
     const { setOpen, open, header, width, minHeight, children, handleClick, removeCloseButton, ...rest } = props;
-    const theme = useTheme()
 
     const handleClose = () => {
         if (!removeCloseButton) {

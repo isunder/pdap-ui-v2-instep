@@ -2,23 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Grid, styled, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import Dialog from "@mui/material/Dialog";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import "../ExistingConditions/ExistingConditions.css"
 import {
   CrossWhite,
-  PrimaryButton,
   PlusIcon,
   CorrectIcon,
-  InputBoxText,
   DeleteIcon,
 } from "../../components";
 import { patientSuspectedCode } from "../../redux/userSlice/patientInfoSlice";
@@ -27,11 +16,9 @@ import { suspectReject } from "../../redux/userSlice/rejectCodesSlice";
 import { suspectValue } from "../../redux/userSlice/acceptCodesSlice";
 import { ReasonTextVal } from "../../components/Validation/ReasonTextVal";
 import { TabsSlag } from "../TabsSlag/TabsSlag";
-import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { InputField } from "../../components/InputField";
 import { SelectField } from "../../components/SelectField";
-import handleAddEventData from "../../container/"
 import {
   StyleCircle,
   StyleButton,
@@ -42,7 +29,6 @@ import {
   StyledButton,
 } from "../Common/StyledMuiComponents";
 import { convertDate, isSlugOrJwt } from "../../utils/helper";
-import { addAuditLog1 } from "../../utils/indexedDb";
 
 const StyleHead = styled("h2")(() => ({
   fontSize: "16px",
@@ -57,7 +43,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
   const tabs = TabsSlag();
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const [suspectCode, setSuspectCode] = useState([]);
   const [rejectReason, setRejectReason] = useState("Insufficient Proof");
@@ -74,9 +59,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
 
   const state = useSelector((state) => state.user.data.suspectedCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
-  const [aarr, setAarr] = useState([]);
-  const [suspectRaf, setSuspectRaf] = useState(tabs && tabs["patient_dashboard_weights"]?.active)
-
 
   let array = [];
   state &&
@@ -175,20 +157,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
   };
 
   const [buttonDisable, setButtonDisable] = useState(false)
-
-
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-      const handleResize = () => {
-          setWindowWidth(window.innerWidth);
-      };
-
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const isTruncated = windowWidth >= 969 && windowWidth <= 1300;
 
   const handleClickOpen = (item) => {
 
@@ -457,10 +425,6 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
   const isCodeSelected = (dataValue) => {
     return selectedSuspectcode?.some((ele) => ele.code === dataValue);
   };
-
-  const params = window.location.pathname;
-  const queryString = window.location.search;
-
 
   const slug = isSlugOrJwt();
   useEffect(() => {
@@ -768,9 +732,7 @@ export const Suspects = ({ sessionObject, handleAddEventData }) => {
                               <StyleCode
                                 sx={{
                                   background: "#008F53",
-                                  textAlign: "center",
                                   color: "#fff",
-                                  justifyContent: "center",
                                   cursor: "pointer",
                                   display: "flex",
                                   alignItems: "center",

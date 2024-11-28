@@ -11,7 +11,6 @@ export const NotFound = () => {
   const { user } = useSelector((state) => state);
 
   const tabs = TabsSlag();
-  const funcName = localStorage.getItem("handleAddEventData") || null;
   const dispatch = useDispatch();
   const currentUrl = window.location.href;
   useEffect(() => {

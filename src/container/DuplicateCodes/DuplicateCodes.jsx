@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Box,
-  Divider,
   Grid,
   Typography,
-  styled,
   ButtonGroup,
   Tooltip,
 } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContentText from "@mui/material/DialogContentText";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import {
@@ -28,10 +17,7 @@ import {
   MuiAccordions,
   DocIcon,
   CorrectIcon,
-  ArrowUpIcon,
-  PrimaryButton,
   CrossWhite,
-  InputBoxText,
   DeleteIcon,
 } from "../../components";
 import "../../Screens/Codes/Codes.css";
@@ -44,13 +30,10 @@ import { patientClinicalDocument } from "../../redux/userSlice/petientClinicalSl
 import { duplicateReject } from "../../redux/userSlice/rejectCodesSlice";
 import { TabsSlag } from "../TabsSlag/TabsSlag";
 import { ReasonTextVal } from "../../components/Validation/ReasonTextVal";
-import DocumentModal from "../../components/DocumentModal/DocumentModal";
-import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import Documentmodal from "../../components/DocumentModal/DocumentModal";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { SelectField } from "../../components/SelectField";
 import { InputField } from "../../components/InputField";
-
 
 import {
   StyleCircle,
@@ -64,7 +47,6 @@ import {
   StyledButton1,
   StyledButton2,
 } from "../Common/StyledMuiComponents";
-import SubmitModal from "../../components/SubmitModal/SubmitModal";
 
 export const DuplicateCodes = ({ sessionObject }) => {
   const dispatch = useDispatch();

@@ -62,7 +62,6 @@ const CardDiv = styled("div")(() => ({
 export const MyProfile = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const queryString = window.location.search;
   const slug = isSlugOrJwt();
   const tabs = TabsSlag();
   const { doctorDetail } = useSelector(state => state.doctor.data);
