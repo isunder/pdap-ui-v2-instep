@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@emotion/react";
 import {
   Box,
-  Divider,
   Grid,
   Typography,
-  styled,
   ButtonGroup,
   Tooltip,
 } from "@mui/material";
@@ -18,7 +16,6 @@ import {
   CorrectIcon,
   CrossWhite,
   MuiAccordions,
-  PrimaryButton,
   DocIcon,
   DeleteIcon,
 } from "../../components";
@@ -49,7 +46,6 @@ import {
   StyledButton1,
   StyledButton2,
 } from "../Common/StyledMuiComponents";
-import { addAuditLog1 } from "../../utils/indexedDb";
 import { convertDate } from "../../utils/helper";
 
 export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {

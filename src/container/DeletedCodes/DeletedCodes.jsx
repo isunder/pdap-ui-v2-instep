@@ -30,8 +30,6 @@ export const DeletedCodes = ({ sessionObject }) => {
     const tabs = TabsSlag();
     const [expanded, setExpanded] = React.useState(false);
     const [deletedCodess, setDeletedCodes] = React.useState([]);
-    const [open, setOpen] = React.useState(false);
-    const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
     const [deletedCondition, setDeletedCondition] = useState([]);
     const deletedCodes = useSelector((state) => state?.summary?.duplicate);
     const [selecteddeletedCodes, setSelecteddeletedCodes] = useState([]);
@@ -78,7 +76,6 @@ export const DeletedCodes = ({ sessionObject }) => {
                 areAlternateCodesAvailable,
             };
         });
-        setCheckedAcceptAll(result);
         return result;
     }
 
@@ -194,11 +191,7 @@ export const DeletedCodes = ({ sessionObject }) => {
 
                                 </StyledBox>
                             </Grid>
-                            {/* <Grid item xs={5.7} sm={5.2} md={6} lg={4.5} xl={4.5} >
-                <Grid
-                  container >
-                </Grid>
-              </Grid> */}
+                       
                         </Grid>
                     </Grid>
                 </StyledHeader>

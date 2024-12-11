@@ -152,9 +152,6 @@
 }
 
 @media screen and (max-width: 767px) {
-
- 
-
   .MuiTypography-root.acc-content-header-item.ct-code, .acc-content-header-item.ct-code {
     width: 22%;
   }
@@ -188,11 +185,15 @@
   .acc-content-header-items .acc-content-header-item:nth-last-child(2) {
     border: none;
   }
-
-
-
 }
 
+
+@media screen and (max-width: 385px) {
+  .MuiTypography-root.acc-content-header-item.ct-code, .acc-content-header-item.ct-code {
+    width: 5%;
+  }
+ 
+}
 /* .acc-content-body-desc {
   margin-top: 5px !important;
 } */

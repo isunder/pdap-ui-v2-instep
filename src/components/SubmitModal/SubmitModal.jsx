@@ -6,8 +6,9 @@ import {
   Grid,
   Typography,
   Box,
+  Tooltip,
 } from "@mui/material";
-import { Card, CardContent, Stack, Tooltip } from "@mui/material";
+import { Card, CardContent, Stack, CustomTooltip } from "@mui/material";
 import { CrossIcon2 } from "../../../src/components/Icons";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
 import { styled } from "@mui/system";
@@ -76,6 +77,8 @@ const SubmitModal = ({
   const [combinedData2hoag, setCombinedData2hoag] = useState([]);
   const [inProblemList, setInProblemList] = useState([]);
   const [notInProblemList, setNotInProblemList] = useState([]);
+
+  const rejectedData = useSelector((state) => state?.reject?.scanReject);
 
   useEffect(() => {
     if (duplicateCode && duplicateCodeNew) {
@@ -211,7 +214,6 @@ const SubmitModal = ({
   }, [matchedValuesExisting, suspectCode, matchedValuesDuplicate, matchedValuesRecapture]);
 
 
-
   const setOpenSubmitModalFunc = (key) => {
 
     setOpenSubmitModal(false);
@@ -247,15 +249,16 @@ const SubmitModal = ({
   }
 
   function formatItemText(item, useDynamicKey = false) {
+
     const code = item?.code || Object.keys(item)[0] || '';
     const value = useDynamicKey
       ? item[Object.keys(item)[0]]?.value
       : item?.value;
-  
-    if (!value) return ''; // Return empty if value is undefined or null
-  
+
+    // Return empty if value is undefined or null
+
     let widthInRem = 10; // Default width (10rem)
-    
+
     if (windowSize.width > 967) {
       widthInRem = 22; // 32rem for large screens
     } else if (windowSize.width > 767) {
@@ -273,7 +276,25 @@ const SubmitModal = ({
     } else {
       widthInRem = 8; // 16rem for extra small screens
     }
-  
+
+
+    if (!value)
+
+      return (
+        <StylePop
+          className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
+          style={{
+            display: 'block',
+            whiteSpace: 'nowrap',  // Prevent text from wrapping
+            overflow: 'hidden',    // Hide overflow text
+            textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
+            width: `${widthInRem}rem`,  // Set dynamic width in rem
+          }}
+        >
+          {`${code}`}
+        </StylePop>
+      );
+
     return (
       <StylePop
         className={`ChipSpan ${useDynamicKey ? 'rejected' : ''}`}
@@ -289,12 +310,73 @@ const SubmitModal = ({
       </StylePop>
     );
   }
-  
-  
+
+
+  function formatItemText2(item, useDynamicKey = false) {
+
+    const value = (item[Object.keys(item)[0]]?.value
+    || item?.value);
+
+    let widthInRem = 10; // Default width (10rem)
+
+    if (windowSize.width > 967) {
+      widthInRem = 22; // 32rem for large screens
+    } else if (windowSize.width > 767) {
+      widthInRem = 17; // 30rem for medium screens
+    } else if (windowSize.width > 567) {
+      widthInRem = 17; // 28rem for smaller tablets
+    } else if (windowSize.width > 437) {
+      widthInRem = 16; // 24rem for small tablets or larger mobile screens
+    } else if (windowSize.width > 407) {
+      widthInRem = 16; // 22rem for mobile screens
+    } else if (windowSize.width > 367) {
+      widthInRem = 13; // 20rem for smaller mobile screens
+    } else if (windowSize.width > 319) {
+      widthInRem = 9; // 18rem for very small screens
+    } else {
+      widthInRem = 8; // 16rem for extra small screens
+    }
+
+    return (
+      <StylePop
+        className={`ChipSpan rejected`}
+        style={{
+          display: 'block',
+          whiteSpace: 'nowrap',  // Prevent text from wrapping
+          overflow: 'hidden',    // Hide overflow text
+          textOverflow: 'ellipsis', // Show ellipsis (...) when text overflows
+          width: `${widthInRem}rem`,  // Set dynamic width in rem
+        }}
+      >
+        {`${value}`}
+      </StylePop>
+    );
+  }
+
+  const CustomTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props}  classes={{
+      tooltip: "customTooltip", // Custom tooltip styling
+      popper: "customPopper",   // Custom popper styling
+    }} />
+  ))(({ theme }) => ({
+    "& .MuiTooltip-tooltip": {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+      fontSize: "0.875rem",
+      boxShadow: theme.shadows[1],
+      padding: "8px 16px",
+      borderRadius: "4px",
+      zIndex: 99999999 , // Custom zIndex
+    },
+    "& .MuiTooltip-popper": {
+      zIndex: 99999999, // Ensure the CustomTooltip wrapper also has a high zIndex
+    },
+  }));
+
   return (
     <Dialog
       open={openSubmitModal}
-      sx={{ zIndex: 9999999 }}
+      sx={{ zIndex: 1000 }}
       aria-labelledby="responsive-dialog-title"
       className={switchModal ? "SubmitModal" : "SubmitModal2"}
     >
@@ -372,12 +454,12 @@ const SubmitModal = ({
                                 }}
                                 key={index}
                               >
-                                <Tooltip title={item?.code + " : " + item?.value}>
+                                <CustomTooltip title={item?.code + " : " + item?.value}>
                                   <Typography>
 
-                                      {formatItemText(item)}
+                                    {formatItemText(item)}
                                   </Typography>
-                                </Tooltip>
+                                </CustomTooltip>
                               </Stack>
                             ))
 
@@ -423,13 +505,19 @@ const SubmitModal = ({
                                   }}
                                   key={index}
                                 >
-                                  <Tooltip
-                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
+                                  <CustomTooltip
+                                    title={ 
+                                      item?.code 
+                                        ? item?.value === "" 
+                                          ? item?.code 
+                                          : item?.code + ":" + item?.value 
+                                        : item?.value 
+                                    }
                                   >
                                     <Typography>
-                                        {formatItemText(item)}
+                                      {formatItemText(item)}
                                     </Typography>
-                                  </Tooltip>
+                                  </CustomTooltip>
                                 </Stack>
                               ))
 
@@ -455,7 +543,7 @@ const SubmitModal = ({
 
                           {
                             !(
-                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0 + rejectedData?.length || 0) > 0 ? (
                               <>
                                 <div className="ItemsDivNew">
                                   <p>No applicable codes/conditions.</p>
@@ -476,7 +564,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                             " : " +
@@ -485,9 +573,9 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText2(item, true)}
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
 
@@ -503,7 +591,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                           " : " +
@@ -511,9 +599,9 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
 
@@ -529,7 +617,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                           " : " +
@@ -538,9 +626,9 @@ const SubmitModal = ({
                                       >
                                         <Typography>
 
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
 
@@ -556,7 +644,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                           " : " +
@@ -564,9 +652,34 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
+                                    </Stack>
+                                  ))}
+
+                                {rejectedData && rejectedData?.length > 0 &&
+                                  rejectedData?.map((item, index) => (
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                       
+                                      }}
+                                    >
+                                      <CustomTooltip
+                                        title={((item.value) ? (item.value) : "djfhjdgdf")}
+                                      >
+                                        <Typography
+                                      
+                                        >
+                                          {formatItemText2(item, true)}
+                                        </Typography>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
                               </>
@@ -587,7 +700,8 @@ const SubmitModal = ({
             existingCodeReject?.length > 0 ||
             recaptureCodeReject?.length > 0 ||
             suspectCodeReject?.length > 0 ||
-            duplicateCodeReject?.length > 0 ? (
+            duplicateCodeReject?.length > 0 ||
+            rejectedData.length > 0 ? (
             <button
               style={{ cursor: "pointer", width: "98%", margin: "0 auto" }}
               className="SubmitBtn"
@@ -680,11 +794,11 @@ const SubmitModal = ({
                                 }}
                                 key={index}
                               >
-                                <Tooltip title={item?.code + " : " + item?.value}>
+                                <CustomTooltip title={item?.code + " : " + item?.value}>
                                   <Typography>
-                                      {formatItemText(item)}
+                                    {formatItemText(item)}
                                   </Typography>
-                                </Tooltip>
+                                </CustomTooltip>
                               </Stack>
                             ))
 
@@ -730,14 +844,20 @@ const SubmitModal = ({
                                   }}
                                   key={index}
                                 >
-                                  <Tooltip
-                                    title={item?.code + ((item?.value) ? (" : " + item?.value) : null)}
+                                  <CustomTooltip
+                                    title={ 
+                                      item?.code 
+                                        ? item?.value === "" 
+                                          ? item?.code 
+                                          : item?.code + ":" + item?.value 
+                                        : item?.value 
+                                    }
                                   >
                                     <Typography>
 
-                                        {formatItemText(item)}
+                                      {formatItemText(item)}
                                     </Typography>
-                                  </Tooltip>
+                                  </CustomTooltip>
                                 </Stack>
                               ))
 
@@ -763,7 +883,7 @@ const SubmitModal = ({
 
                           {
                             !(
-                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0) > 0 ? (
+                              existingCodeReject?.length || 0 + suspectCodeReject?.length || 0 + recaptureCodeReject?.length || 0 + duplicateCodeReject?.length || 0 + rejectedData?.length > 0 || 0) > 0 ? (
                               <>
                                 <div className="ItemsDivNew">
                                   <p>No applicable codes/conditions.</p>
@@ -784,7 +904,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                             " : " +
@@ -793,19 +913,45 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {Object.keys(item)
-                                              .toString()
-                                              .slice(0, 20)}{" "}
-                                            {Object.keys(item).toString().length >
-                                              20
-                                              ? "..."
-                                              : ""}
+                                          <StylePop className="ChipSpan rejected">
+                                            {formatItemText2(item, true)}
                                             {/* :
                                               {item[Object.keys(item)].value.slice(0, 20)} { item[Object.keys(item)].value.length > 20 ? "..." : ""} */}
+                                          </StylePop>
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
+
+
+
+                                {rejectedData && rejectedData.length > 0 &&
+                                  rejectedData.map((item, index) => (
+                                    <Stack
+                                      key={index}
+                                      direction="row"
+                                      spacing={1}
+                                      sx={{
+                                        px: 0,
+                                        ml: 0.08,
+                                        mt: 0.5,
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <CustomTooltip
+                                        title={((item?.value) ? (item?.value) : null)}
+                                        sx={{
+                                          zIndex: 999999999, // Adjust zIndex as needed
+                                        }}
+                                      >
+                                        <Typography
+                                        >
+                                          {formatItemText2(item, true)}
+                                        </Typography>
+                                      </CustomTooltip>
+                                    </Stack>
+                                  ))
+                                }
 
                                 {existingCodeReject?.length > 0 &&
                                   existingCodeReject?.map((item, index) => (
@@ -819,7 +965,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                           " : " +
@@ -827,9 +973,9 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
 
@@ -845,7 +991,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                           " : " +
@@ -853,10 +999,10 @@ const SubmitModal = ({
                                         }
                                       >
                                         <Typography>
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
 
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
 
@@ -872,7 +1018,7 @@ const SubmitModal = ({
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <Tooltip
+                                      <CustomTooltip
                                         title={
                                           Object.keys(item) +
                                           " : " +
@@ -881,9 +1027,9 @@ const SubmitModal = ({
                                       >
                                         <Typography>
 
-                                            {formatItemText(item, true)}
+                                          {formatItemText(item, true)}
                                         </Typography>
-                                      </Tooltip>
+                                      </CustomTooltip>
                                     </Stack>
                                   ))}
                               </>
@@ -904,7 +1050,8 @@ const SubmitModal = ({
             existingCodeReject?.length > 0 ||
             recaptureCodeReject?.length > 0 ||
             suspectCodeReject?.length > 0 ||
-            duplicateCodeReject?.length > 0 ? (
+            duplicateCodeReject?.length > 0 ||
+            rejectedData.length > 0 ? (
             <button
               style={{ cursor: "pointer", width: "98%", margin: "0 auto" }}
               className="SubmitBtn"
