@@ -30,8 +30,6 @@ export const DeletedCodes = ({ sessionObject }) => {
     const tabs = TabsSlag();
     const [expanded, setExpanded] = React.useState(false);
     const [deletedCodess, setDeletedCodes] = React.useState([]);
-    const [open, setOpen] = React.useState(false);
-    const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
     const [deletedCondition, setDeletedCondition] = useState([]);
     const deletedCodes = useSelector((state) => state?.summary?.duplicate);
     const [selecteddeletedCodes, setSelecteddeletedCodes] = useState([]);
@@ -78,7 +76,6 @@ export const DeletedCodes = ({ sessionObject }) => {
                 areAlternateCodesAvailable,
             };
         });
-        setCheckedAcceptAll(result);
         return result;
     }
 
@@ -165,14 +162,23 @@ export const DeletedCodes = ({ sessionObject }) => {
                                     }}
                                     className="acc-content-header-items"
                                 >
-                                    <StyledText sx={{ paddingLeft: "6px !important" }} className="acc-content-header-item ct-code">
+                                    <StyledText sx={{
+                                        paddingLeft: "6px !important",
+                                        [theme.breakpoints.down("md")]: {
+                                            borderRight: "2px solid rgba(0, 0, 0, 0.12) !important",
+                                        },
+                                    }} className="acc-content-header-item ct-code">
                                         Code(s)
                                     </StyledText>
                                     <StyledText sx={{
+                                        [theme.breakpoints.down("967")]: {
+                                            borderRight:  tabs && tabs["patient_dashboard_weights"]?.active ? "2px solid rgba(0, 0, 0, 0.12) !important" : "0px !important",
+                                        },
+
                                         width: {
                                             md: "68% !important",
                                             lg: "80% !important",  // width for large screens
-                                            xl: "80% !important",  // width for extra-large screens
+                                            xl: "80% !important",
                                         }
                                     }} className="acc-content-header-item ct-desc">
                                         Description
@@ -185,11 +191,7 @@ export const DeletedCodes = ({ sessionObject }) => {
 
                                 </StyledBox>
                             </Grid>
-                            {/* <Grid item xs={5.7} sm={5.2} md={6} lg={4.5} xl={4.5} >
-                <Grid
-                  container >
-                </Grid>
-              </Grid> */}
+                       
                         </Grid>
                     </Grid>
                 </StyledHeader>
@@ -221,20 +223,16 @@ export const DeletedCodes = ({ sessionObject }) => {
 
                                                     <StyleCode2
                                                         sx={{
-                                                            verticalAlign: "top",
                                                             ml: 0.5,
                                                             maxWidth: "100%",
                                                             textOverflow: "ellipsis",
-                                                            overflow: "hidden",
                                                             [theme.breakpoints.only("md")]: {
                                                                 mr: 2,
                                                             },
-                                                            [theme.breakpoints.down("md")]: {
-                                                                mt: 0.5,
-                                                            },
+                                                            
                                                             [theme.breakpoints.up("md")]: {
                                                                 mr: 2,
-                                                                mt: 1.5,
+                                                                
                                                             },
                                                         }}
                                                     >
@@ -260,7 +258,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             },
                                                             [theme.breakpoints.up("md")]: {
                                                                 mr: 2,
-                                                                mt: 1.5,
+                                                                
                                                             },
                                                         }}
                                                     >
@@ -317,7 +315,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                     </StyledText>
                                                     <StyledText
                                                         sx={{
-                                                            fontWeight: 500,
+                                                            fontWeight: 600,
                                                             textDecorationLine: "underline",
                                                             color: theme.palette.secondary.main,
                                                             display: "inline-block",
@@ -358,32 +356,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             {item?.info?.icd_code_description === "" ? item?.info?.icd_code : item?.info?.icd_code_description}
                                                         </StyledText>
                                                     </Grid>
-                                                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                                                        <Box
-                                                            sx={{
-                                                                my: 1,
-                                                                fontSize: "14px",
-                                                                fontWeight: 400,
-                                                                lineHeight: "25px",
-                                                                letterSpacing: "0em",
-                                                                display: "inline-block",
-                                                                margin: "0px !important"
-                                                            }}
-                                                        >
-                                                            Deleted by:
-                                                            <Typography
-                                                                sx={{
-                                                                    fontSize: "14px",
-                                                                    fontWeight: 700,
-                                                                    lineHeight: "25px",
-                                                                    letterSpacing: "0.02em",
-
-                                                                }}
-                                                            >
-                                                                {item?.info?.deleted_by}
-                                                            </Typography>
-                                                        </Box>
-                                                    </Grid>
+                                                   
                                                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                                         <Box
                                                             sx={{
@@ -394,17 +367,24 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 display: "inline-block",
                                                             }}
                                                         >
-                                                            Deleted On:
+                                                            <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                                Deleted On:
+                                                            </Typography>
+                                                            
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",
-                                                                    fontWeight: 700,
+                                                                    fontWeight: 500,
                                                                     lineHeight: "25px",
                                                                     letterSpacing: "0.02em",
                                                                     paddingLeft: "4px",
                                                                 }}
                                                             >
-                                                                {item?.info?.deleted_on.substring(0, 10)}
+                                                                {item?.info?.deleted_on.substring(0, 10).replace(/-/g, '/')}
                                                             </Typography>
                                                         </Box>
                                                     </Grid>
@@ -421,11 +401,53 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 margin: "0px !important"
                                                             }}
                                                         >
-                                                            Type of Code/Condition:
+
+                                                            <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                                Deleted by: 
+                                                            </Typography>
+
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",
-                                                                    fontWeight: 700,
+                                                                    fontWeight: 500,
+                                                                    lineHeight: "25px",
+                                                                    letterSpacing: "0.02em",
+                                                                    paddingLeft: "4px"
+                                                                }}
+                                                            >
+                                                                {item?.info?.deleted_by}
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
+
+                                                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                                        <Box
+                                                            sx={{
+                                                                my: 1,
+                                                                fontSize: "14px",
+                                                                fontWeight: 400,
+                                                                lineHeight: "25px",
+                                                                letterSpacing: "0em",
+                                                                display: "inline-block",
+                                                                margin: "0px !important"
+                                                            }}
+                                                        >
+                                                             <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                                Type of Code/Condition:
+                                                            </Typography>
+                                                            
+                                                            <Typography
+                                                                sx={{
+                                                                    fontSize: "14px",
+                                                                    fontWeight: 500,
                                                                     lineHeight: "25px",
                                                                     letterSpacing: "0.02em",
                                                                     paddingLeft: "4px",
@@ -449,11 +471,20 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 margin: "0px !important"
                                                             }}
                                                         >
-                                                            Reason
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                                              Reason:
+                                                            </Typography>
+                                                            
+                                                            
                                                             <Typography
                                                                 sx={{
                                                                     fontSize: "14px",
-                                                                    fontWeight: 700,
+                                                                    fontWeight: 500,
                                                                     lineHeight: "25px",
                                                                     letterSpacing: "0.02em",
                                                                     paddingLeft: "4px",
@@ -469,7 +500,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                     <StyledText
                                                         className="acc-content-collapse-see-less"
                                                         sx={{
-                                                            fontWeight: 500,
+                                                            fontWeight: 600,
                                                             textDecorationLine: "underline",
                                                             color: "#3D4A8F",
                                                             ml: 1,
@@ -504,11 +535,11 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                             },
                                                             [theme.breakpoints.only("md")]: {
                                                                 pl: "12px",
-                                                              },
-                                
-                                                              [theme.breakpoints.only("lg")]: {
+                                                            },
+
+                                                            [theme.breakpoints.only("lg")]: {
                                                                 pl: "12px",
-                                                              }
+                                                            }
 
                                                         }}
                                                     >
@@ -638,7 +669,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                 <Grid item md={1.5} lg={1.3} xl={1.5}>
                                                                     <StyledText
                                                                         sx={{
-                                                                            fontWeight: 500,
+                                                                            fontWeight: 600,
                                                                             textDecorationLine: "underline",
                                                                             color: theme.palette.secondary.main,
                                                                             display: "inline-block",
@@ -762,7 +793,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                                                                                         handleIsCollapse({ value })
                                                                                     }
                                                                                     sx={{
-                                                                                        fontWeight: 500,
+                                                                                        fontWeight: 600,
                                                                                         textDecorationLine: "underline",
                                                                                         color: theme.palette.secondary.main,
                                                                                         ml: 1,
@@ -786,7 +817,7 @@ export const DeletedCodes = ({ sessionObject }) => {
                         );
                     })}
             </Box>
-        </Box>
+        </Box >
     );
 };
 const flexAlignCenter = {

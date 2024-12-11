@@ -16,11 +16,12 @@ export const Layouts = ({ children }) => {
   const sessionObject = JSON.parse(
     localStorage.getItem(`sessionObject_${userDetail?.mrn}`)
   );
+
   return (
     <>
-      {variable.pathname === '/404' ?
+      {(variable.pathname === '/404' || variable.pathname === '/')?
         <StyledMain>{children}</StyledMain> : <>
-          <Header sessionObject={sessionObject} />
+        <Header sessionObject={sessionObject} /> 
           <StyledMain>{children}</StyledMain>
         </>}
 

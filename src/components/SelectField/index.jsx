@@ -92,7 +92,7 @@ export const SelectField = (props) => {
                     }}
                     IconComponent={() => (
                         <>
-                            {isOpen ? (
+                            {!isOpen ? (
 
                                 <KeyboardArrowDownIcon
                                     onClick={handleOpen}
@@ -104,7 +104,7 @@ export const SelectField = (props) => {
                                     }}
                                 />
                             ) : (
-                                <KeyboardArrowUpIcon
+                                <KeyboardArrowDownIcon
                                     onClick={handleOpen}
                                     style={{
                                         width: 18,
@@ -120,6 +120,7 @@ export const SelectField = (props) => {
                 >
                     {children}
                 </SelectBox>
+
                 {helperText && (
                     <ErrorText
                         sx={{

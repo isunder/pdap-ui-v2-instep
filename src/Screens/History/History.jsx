@@ -30,7 +30,8 @@ import "./History.css";
 import { MuiAccordions } from "../../components";
 import { patientHistory } from "../../redux/userSlice/patientInfoSlice";
 import { patientSummaryBarSlice } from "../../redux/userSlice/patientSummaryBarSlice";
-import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
+import { isSlugOrJwt } from "../../utils/helper";
+import { useLocation } from "react-router-dom";
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -92,7 +93,6 @@ const StyleCode = styled("Typography")(() => ({
 
 export const History = () => {
   const dispatch = useDispatch();
-  const tabs = TabsSlag();
   const theme = useTheme();
   const { isLoading, data } = useSelector(state => state?.summaryBar);
   const [history, setHistory] = React.useState([])
@@ -137,10 +137,9 @@ export const History = () => {
 
   const open = Boolean(anchorEl);
   const [open1, setOpen] = React.useState(true);
-  const params = window.location.pathname
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  
+  const slug = isSlugOrJwt();
+  const location = useLocation();
 
   useEffect(() => {
     if (slug) {
@@ -149,7 +148,9 @@ export const History = () => {
     }
   }, []);
 
-
+  useEffect(() => {
+    localStorage.setItem('lastVisitedRoute', location.pathname);
+  }, [location]);
 
   return (
     <div>
@@ -663,7 +664,3 @@ export const History = () => {
     </div >
   );
 };
-
-const codesData = [
-  { key: 1, code: "January 20, 2023", codeCount: "4 actions" },
-];

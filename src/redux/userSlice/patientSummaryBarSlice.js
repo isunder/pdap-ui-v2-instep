@@ -1,18 +1,29 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
+import { getApiHeaders } from '../../utils/helper';
 
 const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
 
-const slug = urlParams.get('slug')
+const slug = sessionStorage.getItem("newslug") || null;
+const jwt = sessionStorage.getItem("newjwt") || null;
+
 const baseUrl = process.env.REACT_APP_BASE_URL;
-
+const importedHeader = getApiHeaders();
 export const patientSummaryBarSlice = createAsyncThunk("SummaryBar", async () => {
     try {
-        const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/?slug=${slug}`);
+       if(slug){
+        const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/?slug=${slug}`, {
+            headers: importedHeader
+        });
         return data.data;
+       }
+       else {
+        const data = await axios.get(`${baseUrl}/api/v1/patient-summary-bar/`, {
+            headers: importedHeader
+        });
+        return data.data;
+       }
     } catch (error) {
-        console.log("error in patientSummaryBarSlice", error)
     }
 });
 
@@ -35,7 +46,6 @@ const slice = createSlice({
         });
         builder.addCase(patientSummaryBarSlice.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('Error', action.payload)
             state.isError = true;
         });
     }

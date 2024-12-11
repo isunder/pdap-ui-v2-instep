@@ -1,10 +1,15 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React,{useState, useEffect} from "react";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import { Codes, History, NotFound, MyProfile } from "./Screens";
 import { Layouts } from "./components";
+import { isSlugOrJwt } from "./utils/helper";
 
 export const Routers = () => {
+
+  
+
+
   return (
     <BrowserRouter>
       <Layouts>

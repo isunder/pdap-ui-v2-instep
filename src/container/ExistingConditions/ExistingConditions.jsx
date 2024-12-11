@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@emotion/react";
 import {
   Box,
-  Divider,
   Grid,
   Typography,
-  styled,
   ButtonGroup,
   Tooltip,
 } from "@mui/material";
@@ -18,7 +16,6 @@ import {
   CorrectIcon,
   CrossWhite,
   MuiAccordions,
-  PrimaryButton,
   DocIcon,
   DeleteIcon,
 } from "../../components";
@@ -49,8 +46,9 @@ import {
   StyledButton1,
   StyledButton2,
 } from "../Common/StyledMuiComponents";
+import { convertDate } from "../../utils/helper";
 
-export const ExistingConditions = ({ sessionObject }) => {
+export const ExistingConditions = ({ sessionObject, handleAddEventData }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const tabs = TabsSlag();
@@ -63,7 +61,7 @@ export const ExistingConditions = ({ sessionObject }) => {
   const [otherText, setOtherText] = useState(null);
   const [error, setError] = useState({});
   const [open, setOpen] = useState(false);
-  const [Deleteopen, setDeleteOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [handleFunction, setHandleFunction] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [selectedRejectData, setSelectedRejectData] = useState();
@@ -72,7 +70,7 @@ export const ExistingConditions = ({ sessionObject }) => {
   const existingRejectCode = useSelector(
     (state) => state?.summary?.existingRejectCode
   );
-
+  const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const [rejectExistingData, setExistingRejectData] =
     useState(existingRejectCode);
 
@@ -86,9 +84,8 @@ export const ExistingConditions = ({ sessionObject }) => {
 
   const [checkedAcceptAll, setCheckedAcceptAll] = useState([]);
 
-  const [butttonDisable, setButtonDisable] = useState(false)
-
-
+  const [buttonDisable, setButtonDisable] = useState(false)
+  const { user } = useSelector((state) => state);
 
   const handleClickOpen = (item, code) => {
     setButtonDisable(false);
@@ -97,14 +94,52 @@ export const ExistingConditions = ({ sessionObject }) => {
       let code = result[item];
       setHandleFunction(true);
       setSelectedRejectData(code);
+
+      const exampleMetadata = {
+        event_type: "EXISTING_CONDITION_REJECT_ALL_CODES",
+        metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          code: item?.code,
+          description: item?.value ? item?.value : item?.info?.value,
+          reasonForRejection: '',
+          raf: item?.info?.total_weight,
+          alternateCodes: item?.info?.alternate_codes,
+          parentCodesCount: ""
+        }
+      };
+
+      handleAddEventData(exampleMetadata);
     } else {
       setSelectedRejectData(item);
+      const exampleMetadata =
+      {
+        event_type: "EXISTING_CONDITION_REJECTION_REASON_SELECTION",
+        metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          code: item?.code,
+          description: item?.value ? item?.value : item?.info?.value,
+          reasonForRejection: rejectReason,
+          raf: item?.info?.total_weight,
+          alternateCodes: item?.info?.alternate_codes,
+          parentCodesCount: (existingCondition?.length + 1)
+        }
+      };
+
+      handleAddEventData(exampleMetadata);
     }
     setSelectedMainCode(code);
     setDeleteOpen(true);
+
   };
 
   const handleRemoveDeletedCode = (item, id) => {
+
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -149,6 +184,7 @@ export const ExistingConditions = ({ sessionObject }) => {
         );
         setRejectExistingCode(codeList);
       }
+
       const updatedRejectData = rejectExistingData?.map((itemData) => {
         const key = Object.keys(itemData)[0];
 
@@ -214,6 +250,25 @@ export const ExistingConditions = ({ sessionObject }) => {
         }
       }
     }
+
+
+    const exampleMetadata = {
+      event_type: "EXISTING_CONDITION_REJECT-CODE",
+      metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: item?.code,
+        description: item?.value ? item?.value : item?.info?.value,
+        reasonForRejection: '',
+        raf: item?.info?.total_weight,
+        alternateCodes: item?.info?.alternate_codes,
+        parentCodesCount: (existingCondition?.length + 1)
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
   };
 
   const handleClose = () => {
@@ -222,9 +277,23 @@ export const ExistingConditions = ({ sessionObject }) => {
     otherText?.length > 0 && setOtherText(null);
     setError({});
     setDeleteOpen(false);
+
+    const exampleMetadata = {
+      event_type: "EXISTING_CONDITION_REJECTION_REASON_CANCEL", metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        parentCodesCount: (existingCondition?.length + 1)
+      }
+    };
+
+    handleAddEventData(exampleMetadata)
+
   };
 
   const handleClickOpen1 = (item) => {
+
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -251,18 +320,53 @@ export const ExistingConditions = ({ sessionObject }) => {
         updateVal = codeList;
         setSelectedExistingcode(codeList);
 
+        const exampleMetadata = {
+          event_type: "EXISTING_CONDITION_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: item?.code,
+            description: item?.value ? item?.value : item?.info?.value,
+            reasonForRejection: '',
+            raf: item?.info?.total_weight,
+            alternateCodes: item?.info?.alternate_codes,
+            parentCodesCount: (existingCondition?.length + 1)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
+
       } else {
 
         codeList = {
           code: item?.code,
           value: item?.value ? item?.value : item?.info?.value,
           additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
+          code_in_problem_list: item?.code_in_problem_list ? item?.code_in_problem_list : item?.info?.code_in_problem_list
         };
         updateVal =
           selectedExistingcode?.length > 0
             ? [...selectedExistingcode, codeList]
             : [codeList];
         setSelectedExistingcode(updateVal);
+
+        const exampleMetadata = {
+          event_type: "EXISTING_CONDITION_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: item?.code,
+            description: item?.value ? item?.value : item?.info?.value,
+            reasonForRejection: '',
+            raf: item?.info?.total_weight,
+            alternateCodes: item?.info?.alternate_codes,
+            parentCodesCount: (existingCondition?.length + 1)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
       }
 
       sessionObject = {
@@ -347,6 +451,7 @@ export const ExistingConditions = ({ sessionObject }) => {
           code: item?.code,
           value: item?.value ? item?.value : item?.info?.value,
           additional_info: item?.remarks ? item?.remarks : item?.info?.remarks,
+          code_in_problem_list: item?.code_in_problem_list ? item?.code_in_problem_list : item?.info?.code_in_problem_list
         };
       }
     });
@@ -412,12 +517,38 @@ export const ExistingConditions = ({ sessionObject }) => {
   }, [selectedExistingcode, rejectExistingCode]);
 
   const handleCollapse = (code) => {
+
+    let val;
+
     let changeData = existingCondition?.map((value) => {
       return value?.code === code
         ? ((value.collapse = !value?.collapse), value)
         : value;
     });
+
+    const changeData2 = existingCondition?.filter((value) => {
+      return value?.code === code
+    });
+
     setExistingCondition(changeData);
+
+    const exampleMetadata = {
+      event_type: changeData2[0]?.collapse ? "EXISTING_CONDITION_SEE_ALL_DETAILS" : "EXISTING_CONDITION_SEE_LESS_DETAILS", metadata: {
+        identifier: tabs?.["user"]?.value,
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: changeData2[0]?.code,
+        description: changeData2[0]?.info?.value,
+        reasonForRejection: '',
+        raf: changeData2[0]?.info?.total_weight,
+        alternateCodes: changeData2[0]?.info.alternate_codes,
+        parentCodesCount: changeData?.length + 1
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
+
   };
 
   const handleIsCollapse = (data) => {
@@ -433,6 +564,24 @@ export const ExistingConditions = ({ sessionObject }) => {
     });
 
     setExistingCondition(changeData);
+
+    const exampleMetadata = {
+      event_type: "EXISTING_CONDITION_SEE_ALL_DETAILS", metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: code,
+        description: "",
+        reasonForRejection: '',
+        raf: "",
+        alternateCodes: "",
+        parentCodesCount: (existingCondition?.length + 1)
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
+
   };
 
   const handleClinicalDoc = async (item) => {
@@ -533,8 +682,6 @@ export const ExistingConditions = ({ sessionObject }) => {
   };
 
   const handleDelete = () => {
-
-
 
     let reason = rejectReason === "Other" ? otherText : rejectReason;
     let val = {
@@ -648,19 +795,42 @@ export const ExistingConditions = ({ sessionObject }) => {
       rejectReason !== "Insufficient Proof" &&
         setRejectReason("Insufficient Proof");
       otherText?.length > 0 && setOtherText(null);
+
+      const exampleMetadata = {
+        event_type: "EXISTING_CONDITION_REJECTION_REASON_DELETION", metadata: {
+          identifier: tabs?.["user"]?.value || "",
+          provider_name: doctorDetail?.doctor_name || "",
+          patient_id: user?.data?.userInfo?.mrn || "",
+          event_datetime: convertDate(new Date().toISOString()),
+          code: selectedRejectData?.code,
+          description: selectedRejectData?.info?.remarks,
+          reasonForRejection: reason,
+          raf: selectedRejectData?.info?.total_weight,
+          alternateCodes: selectedRejectData?.info?.alternate_codes,
+          parentCodesCount: (existingCondition?.length + 1)
+        }
+      };
+
+      handleAddEventData(exampleMetadata);
+
     }
     setButtonDisable(true);
+
+
+
   };
 
   const handleReseon = (event) => {
     const value = event.target.value;
     if (value !== "Other") {
       setError({});
+      setOtherText("");
     }
     setRejectReason(value);
   };
 
   const handleOtherText = (e) => {
+
     let value = e.target.value;
     let val = ReasonTextVal(value);
     setError(val);
@@ -707,7 +877,13 @@ export const ExistingConditions = ({ sessionObject }) => {
                       RAF
                     </StyledText>
                   )}
-                  <StyledText className="acc-content-header-item ct-actions">
+                  <StyledText sx={{
+
+                    '@media (max-width:767px)': {
+                      display: 'none'
+                    }
+
+                  }} className="acc-content-header-item ct-actions">
                     Actions
                   </StyledText>
                 </StyledBox>
@@ -748,20 +924,20 @@ export const ExistingConditions = ({ sessionObject }) => {
                     <Grid item className="acc-content-header-item ct-code">
                       <StyleCode
                         sx={{
-                          verticalAlign: "top",
+                          // verticalAlign: "top",
                           ml: 0.5,
                           maxWidth: "100%",
                           textOverflow: "ellipsis",
-                          overflow: "hidden",
+                          // overflow: "hidden",
                           [theme.breakpoints.only("md")]: {
                             mr: 2,
                           },
                           [theme.breakpoints.down("md")]: {
-                            mt: 0.5,
+                            // mt: "4px",
                           },
                           [theme.breakpoints.up("md")]: {
                             mr: 2,
-                            mt: 1.5,
+                            // mt: 1.5,
                           },
                         }}
                       >
@@ -800,7 +976,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                               whiteSpace: "nowrap",
                               textTransform: "inherit",
                               display: "inline-block",
-                              verticalAlign: "bottom",
+
                               [theme.breakpoints.up("md")]: {
                                 fontSize: "90%",
                               },
@@ -811,7 +987,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                           </StyledText>
                           <StyledText
                             sx={{
-                              fontWeight: 500,
+                              fontWeight: 600,
                               textDecorationLine: "underline",
                               color: theme.palette.secondary.main,
                               display: "inline-block",
@@ -834,7 +1010,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                           </StyledText>
                         </Box>
                       ) : (
-                        <Grid sx={{ gap: "10px !important" }} container>
+                        <Grid sx={{ gap: "10px !important", marginTop: "7px" }} container>
                           {/* Expanded view */}
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <StyledText
@@ -852,81 +1028,123 @@ export const ExistingConditions = ({ sessionObject }) => {
                               {item?.info?.value}
                             </StyledText>
                           </Grid>
-                          <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
-                            <Box
-                              sx={{
-                                fontSize: "14px",
-                                fontWeight: 400,
-                                lineHeight: "25px",
-                                letterSpacing: "0em",
-                                display: "inline-block",
-                              }}
-                            >
-                              Noted by:
-                              <Typography
-                                sx={{
-                                  fontSize: "14px",
-                                  fontWeight: 700,
-                                  lineHeight: "25px",
-                                  letterSpacing: "0.02em",
-                                  padding: "0px",
-                                  margin: "0px"
-                                }}
-                              >
-                                {item?.info?.noted_by}
-                              </Typography>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
-                            <Box
-                              sx={{
-                                fontSize: "14px",
-                                fontWeight: 500,
-                                lineHeight: "25px",
-                                letterSpacing: "0em",
-                                display: "inline-block",
 
-                              }}
-                            >
-                              Date:
-                              <Typography
-                                sx={{
-                                  fontSize: "14px",
-                                  fontWeight: 700,
-                                  lineHeight: "25px",
-                                  letterSpacing: "0.02em",
-                                  paddingLeft: "4px",
-                                }}
-                              >
-                                {item?.info?.noted_date}
-                              </Typography>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                            <Box
-                              sx={{
+                          {
+                            !item?.info['hide_noted_by_&_noted_date'] &&
+                            <>
+                              <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: "14px",
 
-                                fontSize: "14px",
-                                fontWeight: 400,
-                                lineHeight: "25px",
-                                letterSpacing: "0em",
-                                display: "inline-block",
-                              }}
-                            >
-                              Remarks:
-                              <Typography
-                                sx={{
-                                  fontSize: "14px",
-                                  fontWeight: 700,
-                                  lineHeight: "25px",
-                                  letterSpacing: "0.02em",
-                                  paddingLeft: "4px",
-                                }}
-                              >
-                                {item?.info?.remarks}
-                              </Typography>
-                            </Box>
-                          </Grid>
+                                    fontWeight: 400,
+                                    lineHeight: "25px",
+                                    letterSpacing: "0em",
+                                    display: "inline-block",
+                                  }}
+                                >
+
+                                  <Typography
+                                    sx={{
+                                      opacity: 0.6
+                                    }}
+                                  >
+                                    Noted by:
+                                  </Typography>
+
+                                  <Typography
+                                    sx={{
+                                      fontSize: "14px",
+                                      fontWeight: 500,
+                                      lineHeight: "25px",
+                                      letterSpacing: "0.02em",
+                                      padding: "0px",
+                                      margin: "0px",
+                                      paddingLeft: "4px"
+                                    }}
+                                  >
+                                    {item?.info?.noted_by}
+                                  </Typography>
+                                </Box>
+                              </Grid>
+
+
+                              <Grid item xs={6} sm={12} md={12} lg={6} xl={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: "14px",
+                                    fontWeight: 500,
+
+                                    lineHeight: "25px",
+                                    letterSpacing: "0em",
+                                    display: "inline-block",
+
+                                  }}
+                                >
+
+                                  <Typography
+                                    sx={{
+                                      opacity: 0.6
+                                    }}
+                                  >
+                                    Date:
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      fontSize: "14px",
+                                      fontWeight: 500,
+                                      lineHeight: "25px",
+                                      letterSpacing: "0.02em",
+                                      paddingLeft: "4px",
+                                    }}
+                                  >
+                                    {item?.info?.noted_date}
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </>
+                          }
+
+                          {
+
+                            !item?.info?.hide_remarks && (
+                              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                <Box
+                                  sx={{
+
+                                    fontSize: "14px",
+                                    fontWeight: 400,
+
+                                    lineHeight: "25px",
+                                    letterSpacing: "0em",
+                                    display: "inline-block",
+                                  }}
+                                >
+
+
+                                  <Typography
+                                    sx={{
+                                      opacity: 0.6
+                                    }}
+                                  >
+                                    Remarks:
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      fontSize: "14px",
+                                      fontWeight: 700,
+
+                                      lineHeight: "25px",
+                                      letterSpacing: "0.02em",
+                                      paddingLeft: "4px",
+                                    }}
+                                  >
+                                    {item?.info?.remarks}
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            )}
+
                           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                             <Box
                               sx={{
@@ -940,6 +1158,8 @@ export const ExistingConditions = ({ sessionObject }) => {
                               }}
                             >
                               Sources:
+
+
                               {item?.info?.sources?.map((source, index) => (
                                 <Typography
                                   key={index}
@@ -995,7 +1215,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                           <StyledText
                             className="acc-content-collapse-see-less"
                             sx={{
-                              fontWeight: 500,
+                              fontWeight: 600,
                               textDecorationLine: "underline",
                               color: "#3D4A8F",
 
@@ -1017,6 +1237,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                         {tabs && tabs["patient_dashboard_weights"]?.active && (
                           <StyledText
                             sx={{
+                              marginTop: "7px",
                               [theme.breakpoints.only("xl")]: {
                                 pr: 1,
                               },
@@ -1045,7 +1266,11 @@ export const ExistingConditions = ({ sessionObject }) => {
                               (ele) => ele.code === item.code
                             ) ? (
                               <StyledButton1
-                                sx={{ border: "none !important", width: "105px !important" }}
+                                disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
+                                sx={{
+                                  border: "none !important", width: "105px !important",
+                                 
+                                }}
                                 onClick={() => handleClickOpen1(item)}
                                 startIcon={
                                   <StyleCircle
@@ -1077,12 +1302,12 @@ export const ExistingConditions = ({ sessionObject }) => {
                                     mr: 2,
                                   },
                                   background:
-                                    tabs?.read_only?.active && "#D5D5D5 ",
+                                    (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) && "#D5D5D5 ",
                                 }}
                                 startIcon={
                                   <StyleCircle
                                     sx={{
-                                      background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                      background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                       ...flexAlignCenter,
                                       justifyContent: "center",
                                       borderRadius: "100px",
@@ -1091,7 +1316,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                     <CorrectIcon state="white" />
                                   </StyleCircle>
                                 }
-                                disabled={tabs?.read_only?.active}
+                                disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                 className="acc-content-act-btn"
                               >
                                 Accept
@@ -1107,6 +1332,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 }
                               }) ? (
                                 <StyledButton
+                                  disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleRemoveDeletedCode(item, item?.code)
                                   }
@@ -1137,21 +1363,25 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 </StyledButton>
                               ) : (
                                 <StyledButton
+                                  disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(item, item?.code)
                                   }
                                   sx={{
-                                    backgroundColor: theme.palette.primary.main,
+                                    backgroundColor:
+                                      (tabs?.read_only_mode?.active) ? "#D5D5D5" : theme.palette.primary.main,
+
                                     color: "#fff",
                                     ":hover": {
                                       backgroundColor:
                                         theme.palette.primary.main,
                                     },
+
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: "#434343",
+                                        background: (tabs?.read_only_mode?.active) ? "#ADADAD" : "#434343",
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1292,7 +1522,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                       </StyledText>
                                       <StyledText
                                         sx={{
-                                          fontWeight: 500,
+                                          fontWeight: 600,
                                           textDecorationLine: "underline",
                                           color: theme.palette.secondary.main,
                                           display: "inline-block",
@@ -1513,7 +1743,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                       <StyledText
                                         className="acc-content-collapse-see-less"
                                         sx={{
-                                          fontWeight: 500,
+                                          fontWeight: 600,
                                           textDecorationLine: "underline",
                                           color: "#3D4A8F",
                                           ml: 1,
@@ -1603,6 +1833,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                           (ele) => ele?.code === value?.code
                                         ) ? (
                                           <StyledButton1
+                                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             sx={{ width: "105px !important" }}
                                             onClick={() =>
                                               handleClickOpen1(value)
@@ -1641,13 +1872,13 @@ export const ExistingConditions = ({ sessionObject }) => {
                                                 mr: 2,
                                               },
                                               background:
-                                                tabs?.read_only?.active &&
+                                                (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) &&
                                                 "#D5D5D5 ",
                                             }}
                                             startIcon={
                                               <StyleCircle
                                                 sx={{
-                                                  background: tabs?.read_only?.active ? '#ADADAD' : '#3D4A8F',
+                                                  background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#3D4A8F',
                                                   ...flexAlignCenter,
                                                   justifyContent: "center",
                                                   borderRadius: "100px",
@@ -1656,7 +1887,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                                 <CorrectIcon />
                                               </StyleCircle>
                                             }
-                                            disabled={tabs?.read_only?.active}
+                                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                                             className="acc-content-act-btn"
                                           >
                                             Accept
@@ -1674,6 +1905,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                             }
                                           ) ? (
                                             <StyledButton
+                                              disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleRemoveDeletedCode(
                                                   value,
@@ -1708,6 +1940,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                             </StyledButton>
                                           ) : (
                                             <StyledButton
+                                              disabled={tabs?.read_only_mode?.active}
                                               onClick={() =>
                                                 handleClickOpen(
                                                   value,
@@ -1716,7 +1949,8 @@ export const ExistingConditions = ({ sessionObject }) => {
                                               }
                                               sx={{
                                                 backgroundColor:
-                                                  theme.palette.primary.main,
+                                                  (tabs?.read_only_mode?.active) ? "#D5D5D5" : theme.palette.primary.main,
+
                                                 color: "#fff",
                                                 ":hover": {
                                                   backgroundColor:
@@ -1726,7 +1960,8 @@ export const ExistingConditions = ({ sessionObject }) => {
                                               startIcon={
                                                 <StyleCircle
                                                   sx={{
-                                                    background: "#434343",
+
+                                                    background: (tabs?.read_only_mode?.active) ? "#ADADAD" : "#434343",
                                                     ...flexAlignCenter,
                                                     justifyContent: "center",
                                                     borderRadius: "100px",
@@ -1791,8 +2026,10 @@ export const ExistingConditions = ({ sessionObject }) => {
                                 return false;
                               }) ? (
                               <StyledButton
+                                disabled={tabs?.read_only_mode?.active}
                                 sx={{
-                                  backgroundColor: theme.palette.error.active1,
+                                  backgroundColor:
+                                    (tabs?.read_only_mode?.active) ? "#D5D5D5" : theme.palette.error.active1,
                                   color: "#fff",
                                   ":hover": {
                                     backgroundColor: theme.palette.error.main,
@@ -1821,6 +2058,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                             ) : (
                               <>
                                 <StyledButton
+                                  disabled={tabs?.read_only_mode?.active}
                                   onClick={() =>
                                     handleClickOpen(index, item?.code)
                                   }
@@ -1833,13 +2071,12 @@ export const ExistingConditions = ({ sessionObject }) => {
                                     },
                                     width: "9.75rem",
                                     height: "2rem",
-                                    background:
-                                      tabs?.read_only?.active && "#D5D5D5",
+
                                   }}
                                   startIcon={
                                     <StyleCircle
                                       sx={{
-                                        background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                        background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#434343',
                                         ...flexAlignCenter,
                                         justifyContent: "center",
                                         borderRadius: "100px",
@@ -1848,7 +2085,6 @@ export const ExistingConditions = ({ sessionObject }) => {
                                       <CrossWhite />
                                     </StyleCircle>
                                   }
-                                  disabled={tabs?.read_only?.active}
                                 >
                                   Reject All (
                                   {Object.keys(item?.info?.alternate_codes)
@@ -1860,6 +2096,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                         </Grid>
                       ) : (
                         <StyledButton2
+                          disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                           sx={{ mr: 2, width: "105px !important", height: "2rem" }}
                           startIcon={
                             <StyleCircle
@@ -1920,6 +2157,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                                   return false;
                                 }) ? (
                                 <Button
+                                  disabled={tabs?.read_only_mode?.active}
                                   sx={{
                                     borderRadius: "10px",
                                     height: "37px",
@@ -1955,6 +2193,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                               ) : (
                                 <>
                                   <Button
+                                    disabled={tabs?.read_only_mode?.active}
                                     onClick={() =>
                                       handleClickOpen(index, item?.code)
                                     }
@@ -1967,13 +2206,12 @@ export const ExistingConditions = ({ sessionObject }) => {
                                       fontWeight: 600,
                                       textTransform: "inherit",
                                       padding: "5px 25px",
-                                      background:
-                                        tabs?.read_only?.active && "#D5D5D5",
+
                                     }}
                                     startIcon={
                                       <StyleCircle
                                         sx={{
-                                          background: tabs?.read_only?.active ? '#ADADAD' : '#434343',
+                                          background: (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active)) ? '#ADADAD' : '#434343',
                                           ...flexAlignCenter,
                                           justifyContent: "center",
                                           borderRadius: "100px",
@@ -1982,7 +2220,6 @@ export const ExistingConditions = ({ sessionObject }) => {
                                         <CrossWhite />
                                       </StyleCircle>
                                     }
-                                    disabled={tabs?.read_only?.active}
                                   >
                                     Reject All ({" "}
                                     {Object.keys(item?.info?.alternate_codes)
@@ -1994,6 +2231,7 @@ export const ExistingConditions = ({ sessionObject }) => {
                           </Grid>
                         ) : (
                           <Button
+                            disabled={(tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))}
                             sx={{
                               borderRadius: "10px",
                               height: "37px",
@@ -2040,7 +2278,7 @@ export const ExistingConditions = ({ sessionObject }) => {
         clinicalDoc={clinicalDoc}
       />
       <DialogModal
-        open={Deleteopen}
+        open={deleteOpen}
         setOpen={setDeleteOpen}
         header={<DeleteIcon style={{ width: 45, height: 45 }} />}
         width="25rem"
@@ -2092,14 +2330,15 @@ export const ExistingConditions = ({ sessionObject }) => {
                   Insufficient Proof
                 </MenuItem>
                 <MenuItem value="Resolved">Resolved</MenuItem>
+                <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
               </SelectField>
               {rejectReason === "Other" && (
                 <InputField
-                  placeholder="Please mention the reason for rejection"
+                  placeholder="Add Reason"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
-                  labelText="Please enter reject reason"
+                  labelText="Reason for Rejection"
                 />
               )}
             </Box>
@@ -2111,14 +2350,14 @@ export const ExistingConditions = ({ sessionObject }) => {
               }}
             >
               <StyleButton variant="outlined" onClick={handleClose} sx={{}}>
-                Close
+                Cancel
               </StyleButton>
               <StyleButton
                 variant="contained"
                 onClick={() =>
                   handleFunction ? handleDeleteAll() : handleDelete()
                 }
-                disabled={butttonDisable}
+                disabled={buttonDisable}
                 color="error"
                 sx={{}}
               >

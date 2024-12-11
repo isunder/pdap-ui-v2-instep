@@ -20,6 +20,7 @@ import Drawer from "@mui/material/Drawer";
 import "./SubHeader.css";
 import useAppContext from "../../hooks/useAppContext";
 import { patientInfo, patientSummary } from '../../redux/userSlice/patientInfoSlice';
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyledText = styled("span")(() => ({
   color: "#000000",
@@ -48,23 +49,17 @@ export const SubHeader = () => {
   const { state, setState } = useAppContext();
   const [patientAge, setPatientAge] = useState(0);
   const [patientGender, setPatientGender] = useState(null);
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setState({ ...state, [anchor]: open });
-  };
+  const newPatientInfo = localStorage.getItem("patientInfo") || {}; 
 
   const { summary } = useSelector(state => state?.user?.data);
   const { isLoading, user } = useSelector((state) => state);
+
+  const [genderDisp, setGenderDisp] = useState(false);
+
   let obj = {};
   if (!isLoading) {
-    const { userInfo } = user?.data;
 
+    const { userInfo } = user?.data;
     if (Object.keys(userInfo || {})?.length) {
       const { mrn, patient_first_name, patient_last_name, get_gender_display, dob } = userInfo;
       patientGender !== get_gender_display && setPatientGender(get_gender_display);
@@ -79,15 +74,16 @@ export const SubHeader = () => {
       }
     }
   }
-  const params = window.location.pathname
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  const params = window.location.pathname;
+
+  const slug = isSlugOrJwt();
+
   useEffect(() => {
-    dispatch(patientInfo());
-    if (slug) {
-      dispatch(patientSummary());
-    }
+    dispatch(patientInfo()).then((res) => {
+      if (res?.payload?.patient_first_name !== "" && res?.payload?.patient_last_name !== "") {
+        setGenderDisp(true)
+      }
+    });
   }, []);
 
 
@@ -100,12 +96,6 @@ export const SubHeader = () => {
           backgroundColor: "white",
           height: "50px",
           ...flexAlignCenter,
-
-          [theme.breakpoints.down("md")]: {
-            zIndex: state["top"] ? 9999 : (state["down"] ? 9999 : 'auto'),
-            position: state["top"] ? "relative" : (state["down"] ? "relative" : 'static'),
-            background: state["top"] ? "#fff" : (state["down"] ? "#fff" : '#fff'),
-          },
 
           [theme.breakpoints.down('sm')]: {
             padding: "10px 0"
@@ -226,16 +216,21 @@ export const SubHeader = () => {
                             width: "1.7rem",
                             ml: 2,
                             ...flexCenter,
-                            [theme.breakpoints.down("md")]: {
-                              display: "none",
-                            },
+
                           }}
                         >
-                          {(patientGender === 'Male') ? <Typography component='span' >
-                            (Male)
-                          </Typography> : <Typography component='span'>
-                            (Female)
-                          </Typography>
+                          {
+                            genderDisp && patientGender && (
+                              (patientGender === 'Male') ? (
+                                <Typography component='span'>
+                                  (Male)
+                                </Typography>
+                              ) : (
+                                <Typography component='span'>
+                                  (Female)
+                                </Typography>
+                              )
+                            )
                           }
                         </Box>
                       )}
@@ -296,16 +291,21 @@ export const SubHeader = () => {
                       width: "1.7rem",
                       ml: 2,
                       ...flexCenter,
-                      [theme.breakpoints.down("md")]: {
-                        display: "none",
-                      },
+
                     }}
                   >
-                    {(patientGender === 'Male') ? <Typography component='span' >
-                      (Male)
-                    </Typography> : <Typography component='span'>
-                      (Female)
-                    </Typography>
+                    {
+                      genderDisp && patientGender && (
+                        (patientGender === 'Male') ? (
+                          <Typography sx={{ fontSize: "13px", color: " #000000", marginLeft: "8px", fontWeight: "600" }} component='span'>
+                            (Male)
+                          </Typography>
+                        ) : (
+                          <Typography sx={{ fontSize: "13px", color: " #000000", marginLeft: "8px", fontWeight: "600" }} component='span'>
+                            (Female)
+                          </Typography>
+                        )
+                      )
                     }
                   </Box>
                 )}

@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { TabsSlag } from "../../container/TabsSlag/TabsSlag";
+import { isSlugOrJwt } from "../../utils/helper";
+import { useLocation } from "react-router-dom";
 
 const StyleDiv = styled("div")(() => ({
   padding: "40px 0px",
@@ -60,9 +62,7 @@ const CardDiv = styled("div")(() => ({
 export const MyProfile = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get('slug');
+  const slug = isSlugOrJwt();
   const tabs = TabsSlag();
   const { doctorDetail } = useSelector(state => state.doctor.data);
 
@@ -71,6 +71,12 @@ export const MyProfile = () => {
       dispatch(doctorInfo());
     }
   }, []);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    localStorage.setItem('lastVisitedRoute', location.pathname);
+  }, [location]);
 
   return (
     <div>

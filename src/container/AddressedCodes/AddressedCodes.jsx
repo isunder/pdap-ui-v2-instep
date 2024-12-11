@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { Box, Divider, Grid, Typography, styled, Tooltip } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -45,9 +45,7 @@ export const AddressedCodes = () => {
   const [open, setOpen] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const state = useSelector((state) => state?.user?.data?.adressCode);
-
-  let array = [];
+  const state = useSelector((state) => state?.user?.data?.addressCode);
 
   const result =
     state &&
@@ -75,7 +73,7 @@ export const AddressedCodes = () => {
 
   useEffect(() => {
     dispatch(patientAddressCode());
-  }, []);
+  }, [dispatch]);
 
   const handleClinicalDoc = async (item) => {
     let data = await dispatch(
@@ -125,7 +123,12 @@ export const AddressedCodes = () => {
                   }}
                   className="acc-content-header-items"
                 >
-                  <StyledText sx={{ paddingLeft: "6px !important" }} className="acc-content-header-item ct-code">
+                  <StyledText sx={{
+                    paddingLeft: "6px !important",
+                    [theme.breakpoints.down("md")]: {
+                      borderRight: "2px solid rgba(0, 0, 0, 0.12) !important",
+                    },
+                  }} className="acc-content-header-item ct-code">
                     Code(s)
                   </StyledText>
                   <StyledText sx={{
@@ -133,7 +136,12 @@ export const AddressedCodes = () => {
                       md: "68% !important",
                       lg: "80% !important",  // width for large screens
                       xl: "80% !important",  // width for extra-large screens
-                    }
+                    },
+                    ...(tabs?.["patient_dashboard_weights"]?.active && {
+                      [theme.breakpoints.down("md")]: {
+                        borderRight: "2px solid rgba(0, 0, 0, 0.12) !important",
+                      },
+                    })
                   }} className="acc-content-header-item ct-desc">
                     Description
                   </StyledText>
@@ -144,11 +152,7 @@ export const AddressedCodes = () => {
                   )}
                 </StyledBox>
               </Grid>
-              {/* <Grid item xs={5.7} sm={5.2} md={6} lg={4.5} xl={4.5} >
-                <Grid
-                  container >
-                </Grid>
-              </Grid> */}
+            
             </Grid>
           </Grid>
         </StyledHeader>
@@ -175,20 +179,18 @@ export const AddressedCodes = () => {
                     <Grid item className="acc-content-header-item ct-code">
                       <StyleCode
                         sx={{
-                          verticalAlign: "top",
                           ml: 0.5,
                           maxWidth: "100%",
                           textOverflow: "ellipsis",
-                          overflow: "hidden",
                           [theme.breakpoints.only("md")]: {
                             mr: 2,
                           },
                           [theme.breakpoints.down("md")]: {
-                            mt: 0.5,
+                          
                           },
                           [theme.breakpoints.up("md")]: {
                             mr: 2,
-                            mt: 1.5,
+                            
                           },
                         }}
                       >
@@ -244,7 +246,7 @@ export const AddressedCodes = () => {
                           </StyledText>
                           <StyledText
                             sx={{
-                              fontWeight: 500,
+                              fontWeight: 600,
                               textDecorationLine: "underline",
                               color: theme.palette.secondary.main,
                               display: "inline-block",
@@ -296,11 +298,18 @@ export const AddressedCodes = () => {
                                 display: "inline-block",
                               }}
                             >
-                              Noted by:
+                              <Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                   Noted by:
+                                  </Typography>
+                            
                               <Typography
                                 sx={{
                                   fontSize: "14px",
-                                  fontWeight: 700,
+                                  fontWeight: 500,
                                   lineHeight: "25px",
                                   letterSpacing: "0.02em",
                                   paddingLeft: "4px",
@@ -321,11 +330,19 @@ export const AddressedCodes = () => {
 
                               }}
                             >
-                              Date:
+
+<Typography
+                                                                sx={{
+                                                                    opacity: 0.6
+                                                                }}
+                                                            >
+                                    Date:
+                                  </Typography>
+                             
                               <Typography
                                 sx={{
                                   fontSize: "14px",
-                                  fontWeight: 700,
+                                  fontWeight: 500,
                                   lineHeight: "25px",
                                   letterSpacing: "0.02em",
                                   paddingLeft: "4px",
@@ -403,7 +420,7 @@ export const AddressedCodes = () => {
                           <StyledText
                             className="acc-content-collapse-see-less"
                             sx={{
-                              fontWeight: 500,
+                              fontWeight: 600,
                               textDecorationLine: "underline",
                               color: "#3D4A8F",
                               ml: 1,

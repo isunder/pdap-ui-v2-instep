@@ -2,23 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Grid, styled, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import Dialog from "@mui/material/Dialog";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import "../ExistingConditions/ExistingConditions.css"
 import {
   CrossWhite,
-  PrimaryButton,
   PlusIcon,
   CorrectIcon,
-  InputBoxText,
   DeleteIcon,
 } from "../../components";
 import { patientSuspectedCode } from "../../redux/userSlice/patientInfoSlice";
@@ -27,11 +16,9 @@ import { suspectReject } from "../../redux/userSlice/rejectCodesSlice";
 import { suspectValue } from "../../redux/userSlice/acceptCodesSlice";
 import { ReasonTextVal } from "../../components/Validation/ReasonTextVal";
 import { TabsSlag } from "../TabsSlag/TabsSlag";
-import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { InputField } from "../../components/InputField";
 import { SelectField } from "../../components/SelectField";
-
 import {
   StyleCircle,
   StyleButton,
@@ -41,6 +28,7 @@ import {
   StyledBox,
   StyledButton,
 } from "../Common/StyledMuiComponents";
+import { convertDate, isSlugOrJwt } from "../../utils/helper";
 
 const StyleHead = styled("h2")(() => ({
   fontSize: "16px",
@@ -49,14 +37,13 @@ const StyleHead = styled("h2")(() => ({
   color: "#000",
 }));
 
-export const Suspects = ({ sessionObject }) => {
+export const Suspects = ({ sessionObject, handleAddEventData }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const tabs = TabsSlag();
   const userDetail = useSelector((state) => state?.user?.data?.userInfo);
-  const [Deleteopen, setDeleteOpen] = useState(false);
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const { doctorDetail } = useSelector((state) => state?.doctor?.data);
   const [suspectCode, setSuspectCode] = useState([]);
   const [rejectReason, setRejectReason] = useState("Insufficient Proof");
   const [otherText, setOtherText] = useState(null);
@@ -68,10 +55,10 @@ export const Suspects = ({ sessionObject }) => {
 
   const suspectedCode = useSelector((state) => state?.summary?.suspect);
   const [selectedSuspectcode, setSelectedSuspectcode] = useState([]);
+  const { user } = useSelector((state) => state);
 
   const state = useSelector((state) => state.user.data.suspectedCode);
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
-  const [aarr, setAarr] = useState([]);
 
   let array = [];
   state &&
@@ -94,9 +81,23 @@ export const Suspects = ({ sessionObject }) => {
     otherText?.length > 0 && setOtherText(null);
     setError({});
     setDeleteOpen(false);
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECTION_REASON_CANCEL", metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        parentCodesCount: (suspectCode?.length)
+
+      }
+    };
+
+    handleAddEventData(exampleMetadata)
   };
 
   const handleRemoveDeletedCode = (item) => {
+
+
     setButtonDisable(false)
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
@@ -134,20 +135,57 @@ export const Suspects = ({ sessionObject }) => {
       );
       setRejectSuspectCode(codeList);
     }
+
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECT_CONDITION",
+      metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: item,
+        description: item,
+        reasonForRejection: rejectSuspectCode[0]?.[item].reason,
+        raf: item?.info?.total_weight,
+        alternateCodes: item?.info?.alternate_codes,
+        parentCodesCount: (suspectCode?.length)
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
+
   };
 
-  const [butttonDisable, setButtonDisable] = useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false)
 
   const handleClickOpen = (item) => {
+
+
     setButtonDisable(false)
     setDeleteOpen(true);
     setSelectedRejectData(item);
+
+    const exampleMetadata = {
+      event_type: "SUSPECT_REJECTION_REASON_SELECTION", metadata: {
+        identifier: tabs?.["user"]?.value || "",
+        provider_name: doctorDetail?.doctor_name || "",
+        patient_id: user?.data?.userInfo?.mrn || "",
+        event_datetime: convertDate(new Date().toISOString()),
+        code: item?.code,
+        description: item?.definition,
+        reasonForRejection: rejectReason,
+        raf: item?.total_weight,
+        alternateCodes: "",
+        parentCodesCount: (suspectCode?.length)
+      }
+    };
+
+    handleAddEventData(exampleMetadata);
   };
 
 
 
   const handleDelete = () => {
-
     if (userDetail?.mrn) {
       sessionObject = JSON.parse(
         localStorage.getItem(`sessionObject_${userDetail.mrn}`)
@@ -159,7 +197,7 @@ export const Suspects = ({ sessionObject }) => {
       if (rejectReason === "Other") {
         val = ReasonTextVal(otherText);
         setError(val);
-      
+
       }
       if (!val.isValid) {
         setError(val);
@@ -228,6 +266,23 @@ export const Suspects = ({ sessionObject }) => {
         otherText?.length > 0 && setOtherText(null);
         setDeleteOpen(false);
 
+
+        const exampleMetadata = {
+          event_type: "SUSPECT_REJECTION_REASON_DELETION", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: code,
+            description: selectedRejectData.definition,
+            reasonForRejection: rejectReason,
+            raf: selectedRejectData.total_weight,
+            alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
       }
     }
     setButtonDisable(true);
@@ -237,6 +292,7 @@ export const Suspects = ({ sessionObject }) => {
     const value = event.target.value;
     if (value !== "Other") {
       setError({});
+      setOtherText("");
     }
     setRejectReason(value);
   };
@@ -249,7 +305,6 @@ export const Suspects = ({ sessionObject }) => {
   };
 
   const handleClickOpen1 = (key, item, allData) => {
-
 
 
     if (userDetail?.mrn) {
@@ -281,6 +336,24 @@ export const Suspects = ({ sessionObject }) => {
         );
         updateVal = codeList;
 
+        const exampleMetadata = {
+          event_type: "SUSPECT_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: allData.SuspectedCondition,
+            description: allData.definition,
+            reasonForRejection: rejectReason,
+            raf: allData.total_weight,
+            alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
+
+
       } else {
         codeList = {
           code: itemCode,
@@ -292,6 +365,24 @@ export const Suspects = ({ sessionObject }) => {
           selectedSuspectcode?.length > 0
             ? [...selectedSuspectcode, codeList]
             : [codeList];
+
+        const exampleMetadata = {
+          event_type: "SUSPECT_ACCEPT_CODE", metadata: {
+            identifier: tabs?.["user"]?.value || "",
+            provider_name: doctorDetail?.doctor_name || "",
+            patient_id: user?.data?.userInfo?.mrn || "",
+            event_datetime: convertDate(new Date().toISOString()),
+            code: allData.SuspectedCondition,
+            description: allData.definition,
+            reasonForRejection: rejectReason,
+            raf: allData.total_weight,
+            alternateCodes: "",
+            parentCodesCount: (suspectCode?.length)
+          }
+        };
+
+        handleAddEventData(exampleMetadata);
+
 
       }
       sessionObject = {
@@ -335,10 +426,7 @@ export const Suspects = ({ sessionObject }) => {
     return selectedSuspectcode?.some((ele) => ele.code === dataValue);
   };
 
-  const params = window.location.pathname;
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const slug = urlParams.get("slug");
+  const slug = isSlugOrJwt();
   useEffect(() => {
     if (slug) dispatch(patientSuspectedCode());
   }, []);
@@ -404,52 +492,68 @@ export const Suspects = ({ sessionObject }) => {
               container
               spacing={0}
               className="ContentBody"
-              sx={{ padding: "0px 10px 5px", backgroundColor: "#fff", pl: 0, }}
+              sx={{ padding: "0px 10px 5px 0px", backgroundColor: "#fff", pl: 0, }}
             >
               <StyledBox
                 sx={{
+                  padding:"0 !important",
                   fontWeight: "800 !important",
+                  borderBottom:"1px solid #D9D9D999",
                   [theme.breakpoints.only("md")]: {
                     pl: 0,
                   },
                 }}
                 className="acc-content-header-items"
               >
-                <Grid item xs={10} sm={10} md={7.5} lg={8.5} xl={8.5}>
-                  <StyledText className="acc-content-cust-header1">
+
+                {/* Description */}
+                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
+                  sx={{
+                    '@media (max-width:767px)':{
+                      maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                            flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                    }
+
+                    
+                  }}
+                  >
+                  <StyledText sx={{padding:"0 !important", 
+                      '@media (max-width:767px)':{
+                        borderRight: tabs && tabs["patient_dashboard_weights"]?.active ? "2px solid rgba(0, 0, 0, 0.12)" : "0px !important",
+                        
+                           
+                          
+                  }}} className={`${tabs && !!tabs?.patient_dashboard_weights?.active ? "suspect_description_custom_width acc-content-cust-header1 suspect_desc_head" : "acc-content-cust-header1 suspect_desc_head"}`}>
                     Description
                   </StyledText>
                 </Grid>
 
-                <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-                  {tabs && tabs["patient_dashboard_weights"]?.active && (
+                {tabs && tabs["patient_dashboard_weights"]?.active && (
+                  <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+
                     <StyledText className="acc-content-cust-header1 cust_RAF_suspect"
                       sx={{
-                        [theme.breakpoints.only("xs")]: {
-                          borderRight: "0px",
+                        [theme.breakpoints.down("768")]: {
+                          borderRight: "0px !important",
                           padding: 0
                         },
                       }}
                     >
                       RAF
                     </StyledText>
-                  )}
-                </Grid>
 
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={2.5}
-                  lg={1.5}
-                  xl={1.5}
+                  </Grid>
+                )}
+
+                {/* Action */}
+                <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
                   sx={{
-                    [theme.breakpoints.down("md")]: {
-                      display: "none",
-                    },
+                    '@media (max-width:767px)': {
+                      display: 'none'
+                    }
                   }}
                 >
-                  <StyledText sx={{ border: "none !important" }} className="acc-content-cust-header1">
+                  <StyledText sx={{ border: "none !important" }} className={`${tabs && !tabs["patient_dashboard_weights"]?.active ? "suspect_action_custom_width acc-content-cust-header1" : "acc-content-cust-header1"}`}>
                     Actions
                   </StyledText>
                 </Grid>
@@ -464,26 +568,32 @@ export const Suspects = ({ sessionObject }) => {
               <Grid
                 container
                 sx={{
-                  paddingTop: "20px", borderBottom: "1px solid #D9D9D999",
+                  paddingTop: "20px", borderTop: "1px solid #D9D9D999",
                 }}
                 spacing={0}
                 className="ContentBody"
 
               >
                 {/* Description contents */}
-                <Grid
-                  item
-                  xs={10}
-                  sm={10}
-                  md={7.5}
-                  lg={8.5}
-                  xl={8.5}
-                  sx={{ padding: "3px 0px" }}
+                <Grid item xs={tabs && tabs["patient_dashboard_weights"]?.active? 10 : 12} sm={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} md={tabs && tabs["patient_dashboard_weights"]?.active? 7.5 : 9.5} lg={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} xl={tabs && tabs["patient_dashboard_weights"]?.active? 8 : 10} 
+                  className="suspect_desc_content"
+                  sx={{
+                    '@media (max-width:767px)': {
+                      maxWidth: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                      flexBasis: tabs && tabs["patient_dashboard_weights"]?.active ? '83.33%' : '100%',
+                    }
+                  }}
+                  // sx={{ padding: "3px 0px"  }}
                 >
                   <StyleHead sx={{ pr: 1 }}>
                     {index + 1}. {item.SuspectedCondition}
                     {item.definition?.length > 0 && (
+
                       <ReadMore
+                        tabs={tabs}
+                        user={user}
+                        item={item}
+                        handleAddEventData={handleAddEventData}
                         length={0}
                         readMore={"Read More"}
                         showLess={"Show Less"}
@@ -502,6 +612,7 @@ export const Suspects = ({ sessionObject }) => {
                   </StyleHead>
                   <Box
                     sx={{
+                      width:"90%",
                       fontSize: "14px",
                       fontWeight: 400,
                       lineHeight: "21px",
@@ -521,57 +632,227 @@ export const Suspects = ({ sessionObject }) => {
                   >
                     {item?.remarks}
                   </Box>
+
+
+                  <div className="acc-content-suspects-code-selector">
+                  {/* Code add selectors */}
+                  {Object.keys(item?.data)?.length > 0 ?
+                    Object.keys(item?.data).map((dataValue, index) => (
+                      <Box sx={{ mt: 2 }} key={index}>
+                        <Grid
+                          container
+                          spacing={0}
+                          className="ContentBody"
+                          sx={{
+                           alignItems:'center',
+                            pb: 1,
+                            mb: 1,
+                            flexWrap: "nowrap",
+                          }}
+                        >
+                          {!isCodeSelected(dataValue) ? (
+                            <Grid
+                              item
+                              sx={{ maxWidth:"100% !important" }}
+                              // xs="auto"
+                              // sm="auto"
+                              // md="auto"
+                              lg="auto"
+                              xl="auto"
+                              onClick={() => {
+                                if ((tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))) {
+                                  return;
+                                }
+                                if (!isConditionRejected(item)) {
+                                  handleClickOpen1(
+                                    dataValue,
+                                    item?.data[dataValue],
+                                    item
+                                  );
+                                }
+                              }
+                              }
+                            >
+                              <StyleCode
+
+                              className="text-container"
+                                sx={{
+                                  filter: isConditionRejected(item) || (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))
+                                    ? "opacity(0.5)"
+                                    : "none",
+                                  cursor: isConditionRejected(item) || (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))
+                                    ? "not-allowed"
+                                    : "pointer",
+                                  pointerEvents: isConditionRejected(item) || (tabs?.read_only_rejection_allowed?.active || (tabs?.read_only_mode?.active))
+                                    ? "none"
+                                    : "all",
+                                }}
+                              >
+                                {/* {dataValue.substring(0, 70) + '...'} */}
+
+                                {dataValue} 
+                                
+                                <StyleCircle
+                                  sx={{
+                                    background: "#17236D",
+                                    ...flexAlignCenter,
+                                    marginLeft: "6px",
+                                    justifyContent: "center",
+                                    borderRadius: "100px",
+                                    display: "inline-block",
+                                    textAlign: "center",
+                                    flexShrink:'0'
+                                  }}
+                                >
+                                  <PlusIcon />
+                                </StyleCircle>
+
+                                
+                              </StyleCode>
+                            </Grid>
+                          ) : (
+                            <Grid
+                              item
+                              xs="auto"
+                              sm="auto"
+                              md="auto"
+                              lg="auto"
+                              xl="auto"
+                              sx={{maxWidth:'100% !important'}}
+                              onClick={() => {
+                                if (!isConditionRejected(item)) {
+                                  handleClickOpen1(
+                                    dataValue,
+                                    item?.data[dataValue],
+                                    item
+                                  );
+                                }
+                              }}
+                            >
+                              <StyleCode
+                                sx={{
+                                  background: "#008F53",
+                                  color: "#fff",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  textAlign: "left"
+                                 
+                                }}
+                              >
+                                {dataValue}
+                                <StyleCircle
+                                  sx={{
+                                    background: "#FFF",
+                                    ...flexAlignCenter,
+                                    justifyContent: "center",
+                                    marginLeft: "6px",
+                                    borderRadius: "100px",
+                                    display: "inline-block",
+                                    textAlign: "center",
+                                    alignItems: "center",
+                                    flexShrink:0
+                                  }}
+                                >
+                                  <CorrectIcon fill={"#008F53"} />
+                                </StyleCircle>
+                              </StyleCode>
+                            </Grid>
+                          )}
+
+
+                          {
+                            item?.data[dataValue]?.value &&
+                            <Grid
+                            item
+                            xs={8}
+                            sm={8}
+                            md={8}
+                            lg={10}
+                            xl={10}
+                            sx={{
+                              mt: "3px",
+                              [theme.breakpoints.up("lg")]: {
+                                ml: "10px",
+                              },
+                              [theme.breakpoints.up("md")]: {
+                                ml: "10px",
+                              },
+                              [theme.breakpoints.down("md")]: {
+                                ml: "10px",
+                              },
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "14px",
+                                fontWeight: 500,
+                                lineHeight: "20px",
+                                color: "#000",
+                                textTransform: "inherit",
+                              }}
+                            >
+                              {item?.data[dataValue]?.value}
+                            </Typography>
+                          </Grid>
+                          }
+                          
+                        </Grid>
+                      </Box>
+                    )) : null}
+                </div>
                 </Grid>
 
                 {/* RAF Contents */}
+
                 {tabs && tabs["patient_dashboard_weights"]?.active && (
-                  <Grid
-                    item
-                    xs={2}
-                    sm={2}
-                    md={2}
-                    lg={2}
-                    xl={2}
+                  <Grid item xs={2} sm={2} md={2} lg={2} xl={2}
+                    className="suspect_raf"
                     sx={{
                       textAlign: "start",
                       fontSize: "14px",
                       fontWeight: 600,
+                      paddingLeft:"10px !important"
+                      // [theme.breakpoints.down("sm")]: {
+                      //   display: "none"
+                      // },
                     }}
 
                   >
+
                     {item?.total_weight ? item.total_weight : "--"}
                   </Grid>
                 )}
-
                 {/* Action btn contents */}
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={2.5}
-                  lg={1.5}
-                  xl={1.5}
+
+
+                <Grid item xs={12} sm={2} md={2.5} lg={2} xl={2}
                   sx={{
                     display: "flex",
+                    '@media (min-width:767px)': {
+                     paddingLeft:"10px"
+                    }
                   }}
                   className="acc-content-suspects-action"
                 >
                   {isConditionRejected(item) ? (
                     <StyledButton
+                    disabled={tabs?.read_only_mode?.active}
                       onClick={() =>
                         handleRemoveDeletedCode(item?.SuspectedCondition)
                       }
                       sx={{
                         fontSize: "14px",
-                        width: "98px !important",
+                        width: "105px !important",
                         justifyContent: "center",
                         backgroundColor: theme.palette.error.active1,
                         color: "#fff",
                         ":hover": {
                           backgroundColor: theme.palette.error.main,
                         },
-                        [theme.breakpoints.down("md")]: {
-                          width: "100%",
+                        [theme.breakpoints.down("768")]: {
+                          width: "100% !important",
                         },
                         filter:
                           selectedSuspectcode?.some(obj => obj.suspectedCondition === item?.SuspectedCondition)
@@ -601,18 +882,20 @@ export const Suspects = ({ sessionObject }) => {
                     </StyledButton>
                   ) : (
                     <StyledButton
+                    disabled={tabs?.read_only_mode?.active}
                       onClick={() => handleClickOpen(item)}
                       sx={{
                         fontSize: "14px",
-                        width: "92px !important",
-                        justifyContent: "left",
-                        backgroundColor: theme.palette.primary.main,
+                        width: "98px !important",
+                        justifyContent: "center",
+                        backgroundColor:(tabs?.read_only_mode?.active)? "#D5D5D5" : theme.palette.primary.main,
                         color: "#fff !important",
                         ":hover": {
                           backgroundColor: theme.palette.primary.main,
                         },
-                        [theme.breakpoints.down("md")]: {
-                          width: "100%",
+                       
+                        '@media (max-width:767px)': {
+                          width:"100% !important"
                         },
 
                         filter:
@@ -629,7 +912,7 @@ export const Suspects = ({ sessionObject }) => {
                       startIcon={
                         <StyleCircle
                           sx={{
-                            background: "#434343",
+                            background: (tabs?.read_only_mode?.active)? "#ADADAD" : "#434343",
                             ...flexAlignCenter,
                             justifyContent: "center",
                             borderRadius: "100px",
@@ -645,160 +928,16 @@ export const Suspects = ({ sessionObject }) => {
                   )}
                 </Grid>
 
-                <div className="acc-content-suspects-code-selector">
-                  {/* Code add selectors */}
-                  {Object.keys(item?.data)?.length &&
-                    Object.keys(item?.data).map((dataValue, index) => (
-                      <Box sx={{ mt: 2 }} key={index}>
-                        <Grid
-                          container
-                          spacing={0}
-                          className="ContentBody"
-                          sx={{
+               
 
-                            pb: 1,
-                            mb: 1,
-                            flexWrap: "nowrap",
-                          }}
-                        >
-                          {!isCodeSelected(dataValue) ? (
-                            <Grid
-                              item
-                              xs="auto"
-                              sm="auto"
-                              md="auto"
-                              lg="auto"
-                              xl="auto"
-                              onClick={() => {
-                                if (tabs?.read_only?.active) {
-                                  return;
-                                }
-                                if (!isConditionRejected(item)) {
-                                  handleClickOpen1(
-                                    dataValue,
-                                    item?.data[dataValue],
-                                    item
-                                  );
-                                }
-                              }
-                              }
-                            >
-                              <StyleCode
-                                sx={{
-                                  filter: isConditionRejected(item) || tabs?.read_only?.active
-                                    ? "opacity(0.5)"
-                                    : "none",
-                                  cursor: isConditionRejected(item) || tabs?.read_only?.active
-                                    ? "not-allowed"
-                                    : "pointer",
-                                  pointerEvents: isConditionRejected(item) || tabs?.read_only?.active
-                                    ? "none"
-                                    : "all",
-                                }}
-                              >
-                                {dataValue}
-                                <StyleCircle
-                                  sx={{
-                                    background: "#17236D",
-                                    ...flexAlignCenter,
-                                    marginLeft: "6px",
-                                    justifyContent: "center",
-                                    borderRadius: "100px",
-                                    display: "inline-block",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  <PlusIcon />
-                                </StyleCircle>
-                              </StyleCode>
-                            </Grid>
-                          ) : (
-                            <Grid
-                              item
-                              xs="auto"
-                              sm="auto"
-                              md="auto"
-                              lg="auto"
-                              xl="auto"
-                              onClick={() => {
-                                if (!isConditionRejected(item)) {
-                                  handleClickOpen1(
-                                    dataValue,
-                                    item?.data[dataValue],
-                                    item
-                                  );
-                                }
-                              }}
-                            >
-                              <StyleCode
-                                sx={{
-                                  background: "#008F53",
-                                  textAlign: "center",
-                                  color: "#fff",
-                                  justifyContent: "center",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                {dataValue}
-                                <StyleCircle
-                                  sx={{
-                                    background: "#FFF",
-                                    ...flexAlignCenter,
-                                    justifyContent: "center",
-                                    marginLeft: "6px",
-                                    borderRadius: "100px",
-                                    display: "inline-block",
-                                    textAlign: "center",
-                                    alignItems: "center"
-                                  }}
-                                >
-                                  <CorrectIcon fill={"#008F53"} />
-                                </StyleCircle>
-                              </StyleCode>
-                            </Grid>
-                          )}
-                          <Grid
-                            item
-                            xs={8}
-                            sm={8}
-                            md={8}
-                            lg={10}
-                            xl={10}
-                            sx={{
-                              [theme.breakpoints.up("lg")]: {
-                                ml: "10px",
-                              },
-                              [theme.breakpoints.up("md")]: {
-                                ml: "10px",
-                              },
-                              [theme.breakpoints.down("md")]: {
-                                ml: "10px",
-                              },
-                            }}
-                          >
-                            <Typography
-                              sx={{
-                                fontSize: "14px",
-                                fontWeight: 700,
-                                lineHeight: "21px",
-                                color: "#000",
-                                textTransform: "inherit",
-                              }}
-                            >
-                              {item?.data[dataValue]?.value}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                    ))}
-                </div>
+
               </Grid>
             </Box>
           ))}
       </Box>
 
       <DialogModal
-        open={Deleteopen}
+        open={deleteOpen}
         setOpen={setDeleteOpen}
         header={<DeleteIcon style={{ width: 45, height: 45 }} />}
         width="25rem"
@@ -849,14 +988,15 @@ export const Suspects = ({ sessionObject }) => {
                   Insufficient Proof
                 </MenuItem>
                 <MenuItem value="Resolved">Resolved</MenuItem>
+                <MenuItem value="A better, more accurate code exists">A better, more accurate code exists</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
               </SelectField>
               {rejectReason === "Other" && (
                 <InputField
-                  placeholder="Please mention the reason for rejection"
+                  placeholder="Add Reason"
                   onChange={(e) => handleOtherText(e)}
                   helperText={!error.isValid && error?.reason}
-                  labelText="Please enter reject reason"
+                  labelText="Reason for Rejection"
                 />
               )}
             </Box>
@@ -868,14 +1008,14 @@ export const Suspects = ({ sessionObject }) => {
               }}
             >
               <StyleButton variant="outlined" onClick={handleClose} sx={{}}>
-                Close
+                Cancel
               </StyleButton>
               <StyleButton
                 variant="contained"
                 onClick={() => handleDelete()}
                 color="error"
                 sx={{}}
-                disabled={butttonDisable}
+                disabled={buttonDisable}
               >
                 Delete
               </StyleButton>

@@ -7,13 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Create A Doctus tech app" />
-
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
   <!-- Google font -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
 
   <title>Doctus Tech</title>
+
+  <script>
+    if (top !== self) {
+      top.location = self.location;
+    }
+  </script>
+  
 </head>
 
 <body>

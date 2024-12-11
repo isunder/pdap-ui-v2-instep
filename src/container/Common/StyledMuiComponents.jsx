@@ -18,6 +18,7 @@ export const StyleButton = styled(Button)(() => ({
   fontSize: "1rem",
   fontWeight: 600,
   borderRadius: "0.5rem",
+  textTransform: "capitalize"
 }));
 
 export const StyleCode = styled(Box)(({ theme }) => ({
@@ -60,7 +61,6 @@ export const StyledText = styled(Typography)(({ theme }) => ({
   lineHeight: "175%",
   letterSpacing: "0.0175rem",
   padding: "0px",
-  marginTop: "10px",
   textTransform: "inherit",
 
   [theme.breakpoints.down("md")]: {
@@ -93,7 +93,7 @@ export const StyledBox = styled(Box)(() => ({
   display: "flex",
   height: "2.4375rem",
   alignItems: "center",
-  padding: "0 0.5rem",
+ 
 }));
 
 export const StyledAccordingBox = styled(Box)(() => ({
@@ -152,3 +152,57 @@ export const StyledButton1 = styled(PrimaryButton)(({ theme }) => ({
   width: "98px !important",
   height: "32px",
 }));
+
+
+export const chipContainer ={
+  display:'flex',
+  alignItems:'center',
+  gap:'4px',
+  marginBottom:'8px',
+  button:{
+  padding:' 4px 8px 4px 8px',
+  borderRadius: '8px',
+  fontFamily: 'Proxima Nova',
+  fontSize: '12px',
+  fontWeight: 700,
+  lineHeight: '19px',
+  textAlign: 'left',
+
+  },
+  '& button:nth-child(1)': {
+    background: '#E5F8FF',
+    border: '1px solid #70DAFF',
+    color: '#2ABDF0'
+
+  },
+  '& button:nth-child(2)': {
+    background: '#FFF1CC',
+    border: '1px solid #FFD363',
+    color: '#F0B51F',
+
+  },
+}
+
+export const descriptionBottomText={
+  display:'flex',
+  flexDirection:'column',
+  gap:'4px',
+p:{
+  fontFamily: 'Proxima Nova',
+  fontSize: '14px',
+  fontWeight: 400,
+  lineHeight: '21px',
+  textAlign: 'left',
+  paddingLeft:'0px',
+  p:{
+    paddingLeft:'0px',
+    color: '#00000099',
+    span:{
+         color:'#000000'
+    },
+    b:{
+      color:'#000000'
+    }
+  }
+}
+}

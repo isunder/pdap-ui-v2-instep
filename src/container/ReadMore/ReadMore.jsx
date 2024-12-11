@@ -1,10 +1,50 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { convertDate } from "../../utils/helper";
 
-export const ReadMore = ({ children, length, readMore, showLess, other }) => {
+
+export const ReadMore = ({ children, length, readMore, showLess, other, user, tabs, item, handleAddEventData }) => {
     const [isReadMore, setIsReadMore] = useState(false);
+    const { doctorDetail } = useSelector((state) => state?.doctor?.data);
+
     const toggleReadMore = () => {
         setIsReadMore(!isReadMore)
+        if (!isReadMore) {
+            const exampleMetadata = {
+                event_type: "SUSPECT_SEE_LESS_DETAILS", metadata: {
+                    identifier: tabs?.["user"]?.value || "",
+                    provider_name: doctorDetail?.doctor_name || "",
+                    patient_id: user?.data?.userInfo?.mrn || "",
+                    event_datetime: convertDate(new Date().toISOString()),
+                    code: item?.code,
+                    description: item?.definition,
+                    raf: item?.total_weight,
+                    alternateCodes: "",
+                }
+            };
+
+            handleAddEventData(exampleMetadata);
+        }
+
+        else {
+            const exampleMetadata = {
+                event_type: "SUSPECT_READ_MORE_DETAILS", metadata: {
+                    identifier: tabs?.["user"]?.value || "",
+                    provider_name: doctorDetail?.doctor_name || "",
+                    patient_id: user?.data?.userInfo?.mrn || "",
+                    event_datetime: convertDate(new Date().toISOString()),
+                    code: item?.code,
+                    description: item?.definition,
+                    reasonForRejection: "rejectReason",
+                    raf: item?.total_weight,
+                    alternateCodes: "",
+                }
+            };
+
+            handleAddEventData(exampleMetadata);
+        }
+
     }
     return (
         <>
@@ -14,11 +54,15 @@ export const ReadMore = ({ children, length, readMore, showLess, other }) => {
                 fontWeight: 400,
                 lineHeight: "21px",
                 display: isReadMore ? "block" : "inline",
+
             }} >
                 {!isReadMore ? children.slice(0, length) : children}
-                <Typography component='span' sx={{ cursor: 'pointer', ...other }}
-
+                <Typography component='span' sx={{
+                    cursor: 'pointer', ...other,
+                    fontWeight: 700
+                }}
                 >
+                    {isReadMore ? <br /> : null}
                     {!isReadMore ? `${readMore}` : `${showLess}`}
                 </Typography>
             </Box>

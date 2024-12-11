@@ -18,7 +18,7 @@ import { useTheme } from "@emotion/react";
 
 const Deletemodal = ({
   fullScreen,
-  Deleteopen,
+  deleteOpen,
   handleClose,
   rejectReason,
   handleReseon,
@@ -32,7 +32,7 @@ const Deletemodal = ({
   return (
     <Dialog
       fullScreen={fullScreen}
-      open={Deleteopen}
+      open={deleteOpen}
       onClose={handleClose}
       aria-labelledby="responsive-dialog-title"
       className="PopupDelete"
@@ -60,7 +60,7 @@ const Deletemodal = ({
             },
           }}
         >
-          Close
+          Cancel
         </Button>
       </DialogActions>
 
@@ -116,7 +116,7 @@ const Deletemodal = ({
                   <>
                     <InputBoxText
                       handleChange={(e) => handleOtherText(e)}
-                      label="Please mention the reason for Rejection"
+                      label="Add Reason"
                       style={{
                         mt: 2,
                       }}

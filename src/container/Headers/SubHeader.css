@@ -1,18 +1,11 @@
-.MuiDrawerTop .MuiDrawer-paper {
-    top: 10rem;
-    box-shadow: 0px 0px 7px 0px #17236D66;
-    background: #F9F9F9 !important;
-    border-top: 3px solid #D9D9D9;
-}
+/* .subTop__header{
+     position: fixed;
+     top: 61px;
+     left: 0;
+     right: 0;
+     z-index: 99999;
+} */
 
-.MuiDrawerDown .MuiDrawer-paper {
-    top: 10rem;
-    box-shadow: 0px 0px 7px 0px #17236D66;
-    background: #FFFFFF !important;
-    border-top: 3px solid #D9D9D9;
-    height: fit-content;
-    width: 100%;
-}
 
 .pendingActions{
 
@@ -41,6 +34,22 @@
 } 
 
 
+@media (max-width: 374.95px) {
+    .css-1h2zfbv-MuiContainer-root {
+        padding: 5px !important;
+    }
+
+    .MuiDrawerTop .MuiDrawer-paper {
+        top:13.25rem;
+       
+    }
+    
+    .MuiDrawerDown .MuiDrawer-paper {
+        top:13.25rem;
+    }
+} 
+
+
 @media (max-width: 424.95px) {
 
     .pendingActions{
@@ -53,3 +62,45 @@
         font-weight: 600 !important;
     }
 } 
+
+/* @media (max-width: 549px) {
+    .subTop__header{
+        position: fixed;
+        top: 121px;
+      
+   }
+} */
+
+@media only screen and (max-width:550px){
+    .responsiveMuiDrawerTop .MuiDrawer-paper {
+        top: 13.8rem;
+    }
+    
+    
+
+    .responsiveMuiDrawerDown .MuiDrawer-paper {
+        top: 13.8rem;
+    }
+}
+
+
+@media only screen and (max-width:550px){
+    .responsiveMuiDrawerTopwithreadonly .MuiDrawer-paper {
+        top: 15.8rem;
+    }
+    
+    .responsiveMuiDrawerDownwithreadonly .MuiDrawer-paper {
+        top: 15.8rem;
+    }
+}
+
+
+@media only screen and (min-width: 550px) and (max-width: 969px) {
+    .responsiveMuiDrawerTopwithreadonly .MuiDrawer-paper {
+        top: 11.8rem;
+    }
+
+    .responsiveMuiDrawerDownwithreadonly .MuiDrawer-paper {
+        top: 11.8rem;
+    }
+}

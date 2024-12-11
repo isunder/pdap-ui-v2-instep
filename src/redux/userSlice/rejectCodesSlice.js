@@ -5,7 +5,8 @@ const initialState = {
     existingReject: [],
     suspectReject: [],
     recaptureReject: [],
-    duplicateReject: []
+    duplicateReject: [],
+    scanReject: []
 }
 export const rejectSlice = createSlice({
     name: 'rejectValue',
@@ -22,12 +23,15 @@ export const rejectSlice = createSlice({
         },
         duplicateReject: (state, action) => {
             state.duplicateReject = action.payload
-        }
+        },
+        scanReject: (state, action) => {
+            state.scanReject = action.payload
+        },
 
     },
 })
 
 
-export const { existingReject, suspectReject, recaptureReject, duplicateReject } = rejectSlice.actions
+export const { existingReject, suspectReject, recaptureReject, duplicateReject , scanReject } = rejectSlice.actions
 
 export default rejectSlice.reducer

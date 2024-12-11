@@ -1,21 +1,48 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
+import { getSlug, getToken, getApiHeaders } from '../../utils/helper';
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-
-const slug = urlParams.get('slug')
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-// function for patient info
+const slug = getSlug();
+const token = getToken();
+
 export const patientInfo = createAsyncThunk("patientInfo", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-info/?slug=${slug}`);
+            const data = await axios.get(`${baseUrl}/api/v1/patient-info/?slug=${slug}`,  
+            );
+            return data.data;
+        }
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-info/`, 
+               { headers: getApiHeaders()}
+            );
+            localStorage.setItem("patientInfo" , data.data)
             return data.data;
         }
     } catch (error) {
         console.log("error in patientInfo", error)
+    }
+});
+
+// function for patient Duplicate Codes
+export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
+    try {
+        if (slug) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}`);
+            return data.data;
+        }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
+    } catch (error) {
+        console.log("error in patientDeletedCode", error)
     }
 });
 
@@ -24,6 +51,13 @@ export const patientExistingConditions = createAsyncThunk("patientExistingCondit
     try {
         if (slug) {
             const data = await axios.get(`${baseUrl}/api/v1/patient-existing-conditions/?slug=${slug}`);
+            return data.data;
+        }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-existing-conditions/`, 
+               { headers: getApiHeaders()}
+            );
             return data.data;
         }
     } catch (error) {
@@ -38,6 +72,14 @@ export const patientAddressCode = createAsyncThunk("patientAddressCode", async (
             const data = await axios.get(`${baseUrl}/api/v1/patient-addressed-codes/?slug=${slug}`);
             return data.data;
         }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-addressed-codes/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
     } catch (error) {
         console.log("error in patientAddressCode", error)
     }
@@ -47,33 +89,84 @@ export const patientAddressCode = createAsyncThunk("patientAddressCode", async (
 export const patientDuplicateCode = createAsyncThunk("patientDuplicateCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/?slug=${slug}`);
+            const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/?slug=${slug}`,);
             return data.data;
         }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-duplicate-codes/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
     } catch (error) {
         console.log("error in patientDuplicateCode", error)
     }
 });
 
-// function for patient Duplicate Codes
-export const patientDeletedCode = createAsyncThunk("patientDeletedCode", async () => {
+
+export const rejectScanCodeRequest = createAsyncThunk("rejectScanCodeRequest", async (payload) => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-deleted-codes/?slug=${slug}`);
-            return data.data;
+            const response = await axios.post(
+                `${baseUrl}/api/v1/patient-extended-data-rejected/?slug=${slug}`,
+                payload // Include payload here
+            );
+            return response.data;
+        } else if (token) {
+            const response = await axios.post(
+                `${baseUrl}/api/v1/patient-extended-data-rejected/`,
+                payload, // Include payload here
+                { headers: getApiHeaders() } // Headers moved to the config object
+            );
+            return response.data;
         }
     } catch (error) {
-        console.log("error in patientDeletedCode", error)
+        console.log("error in patientDuplicateCode", error);
+        throw error; // Optionally rethrow the error for further handling
     }
 });
+
+
 
 // function for patient suspect Codes
 export const patientSuspectedCode = createAsyncThunk("patientSuspectedCode", async () => {
     try {
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/?slug=${slug}`);
+            const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/?slug=${slug}` );
             return data.data;
         }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-suspect-codes/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
+    } catch (error) {
+        console.log("error in patientSuspectedCode", error)
+    }
+});
+
+
+
+// function for patient scan Codes
+export const patientScanCode = createAsyncThunk("patientScanCode", async () => {
+    try {
+        if (slug) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-extended-data/?slug=${slug}` );
+            return data.data;
+        }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-extended-data/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
     } catch (error) {
         console.log("error in patientSuspectedCode", error)
     }
@@ -86,6 +179,14 @@ export const patientSummary = createAsyncThunk("patientSummary", async () => {
             const data = await axios.get(`${baseUrl}/api/v1/patient-summary/?slug=${slug}`);
             return data.data;
         }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-summary/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
     } catch (error) {
         console.log("error in patientSummary", error)
     }
@@ -98,6 +199,14 @@ export const patientRecaptureCode = createAsyncThunk("patientRecaptureCode", asy
             const data = await axios.get(`${baseUrl}/api/v1/patient-recapture-codes/?slug=${slug}`);
             return data.data;
         }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-recapture-codes/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
     } catch (error) {
         console.log("error in patientRecaptureCode", error)
     }
@@ -106,14 +215,30 @@ export const patientRecaptureCode = createAsyncThunk("patientRecaptureCode", asy
 // for patient tabs
 export const patientTabFlag = createAsyncThunk("patientTabFlag", async () => {
     try {
+        let data;
         if (slug) {
-            const data = await axios.get(`${baseUrl}/api/v1/patient-tabs/?slug=${slug}`);
-            return data.data;
+            data = await axios.get(`${baseUrl}/api/v1/patient-tabs/?slug=${slug}`);
+        } else if (token) {
+            data = await axios.get(`${baseUrl}/api/v1/patient-tabs/`, 
+               { headers: getApiHeaders() }
+            );
         }
+
+        // Manually set the active value for "7_patient_dashboard_weights"
+        if (data && data.data) {
+            data.data = data.data.map(tab => 
+                tab.name === "7_patient_dashboard_weights" 
+                ? { ...tab} 
+                : tab
+            );
+        }
+
+        return data ? data.data : [];
     } catch (error) {
-        console.log("error in patientTabFlag", error)
+        console.log("error in patientTabFlag", error);
     }
 });
+
 
 // for patient history
 export const patientHistory = createAsyncThunk("patientHistory", async () => {
@@ -122,6 +247,14 @@ export const patientHistory = createAsyncThunk("patientHistory", async () => {
             const data = await axios.get(`${baseUrl}/api/v1/patient-history/?slug=${slug}`);
             return data.data;
         }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-history/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
     } catch (error) {
         console.log("error in patientHistory", error)
     }
@@ -170,7 +303,7 @@ const slice = createSlice({
         });
         builder.addCase(patientAddressCode.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.data.adressCode = action.payload;
+            state.data.addressCode = action.payload;
         });
         builder.addCase(patientAddressCode.rejected, (state, action) => {
             state.isLoading = false;
@@ -217,6 +350,35 @@ const slice = createSlice({
         builder.addCase(patientSuspectedCode.rejected, (state, action) => {
             state.isLoading = false;
             
+            state.isError = true;
+        });
+
+
+          // for patient patient Scan code
+          builder.addCase(rejectScanCodeRequest.pending, (state) => {
+            state.isLoading = true
+        });
+        builder.addCase(rejectScanCodeRequest.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data.scanCode = action.payload;
+        });
+        builder.addCase(rejectScanCodeRequest.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
+
+        
+          // for patient patient Scan code
+          builder.addCase(patientScanCode.pending, (state) => {
+            state.isLoading = true
+        });
+        builder.addCase(patientScanCode.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data.scanCode = action.payload;
+        });
+        builder.addCase(patientScanCode.rejected, (state, action) => {
+            state.isLoading = false;
             state.isError = true;
         });
 

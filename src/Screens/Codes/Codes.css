@@ -22,6 +22,7 @@
   display: block;
 }
 .ChipSpan {
+  display: inline-flex;
   color: #17236d !important;
   font-size: 0.875rem !important;
   font-weight: 700;
@@ -31,10 +32,23 @@
   height: 1.4375rem !important;
   padding: 0.125rem 0.5rem !important;
   padding-right: 10px !important;
+  overflow: hidden;
+ width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ChipSpan.rejected {
   color: #F20000 !important;
   background: #FEE5E5 !important;
+  overflow: hidden;
+}
+
+.ChipSpanModal{
+  width: 400px !important;
+  overflow: hidden;
+  display: flex !important;
+
 }
 
 .MuiChip-label {
@@ -137,4 +151,17 @@ text-align: left;
   .pdap-ui-codes-read-only-t1{
     padding-left: 0px;
   }
+}
+
+.my__accordian .css-86lv0w-MuiButtonBase-root-MuiAccordionSummary-root{
+  cursor: not-allowed !important;
+}
+
+.modal-backdrop {
+  top: 16.5rem;
+}
+
+
+.MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.css-1gjvyju-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  min-width: 320px !important;
 }

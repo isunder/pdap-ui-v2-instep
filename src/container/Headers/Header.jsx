@@ -1,18 +1,12 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { Container, Grid, Typography, styled, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
-
-import { PrimaryButton } from "../../components/Button";
 import "./Header.css";
 import useAppContext from "../../hooks/useAppContext";
 import { TabsSlag } from "../TabsSlag/TabsSlag";
@@ -20,6 +14,7 @@ import { doctorInfo } from "../../redux/userSlice/doctorInfoSlice";
 import { DTLogo, FlagIcon } from "../../components";
 import { DialogModal } from "../../components/Modal/DialogModal";
 import { patientTabFlag } from "../../redux/userSlice/patientInfoSlice";
+import { isSlugOrJwt } from "../../utils/helper";
 
 const StyleText = styled(Typography)(() => ({
   fontSize: "13px",
@@ -87,9 +82,7 @@ const StyleButton = styled(Button)(() => ({
   textTransform: "capitalize",
 }));
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const slug = urlParams.get("slug");
+const slug = isSlugOrJwt();
 
 export const Header = ({ sessionObject }) => {
   const location = useLocation();
@@ -97,6 +90,7 @@ export const Header = ({ sessionObject }) => {
   const dispatch = useDispatch();
   const tabs = TabsSlag();
   const theme = useTheme();
+  const [showheader, setShowHeader] = useState(false);
 
   const [sessionObjLoaded, setSessionObjLoaded] = useState(false);
   const [value, setValue] = useState(0);
@@ -138,7 +132,9 @@ export const Header = ({ sessionObject }) => {
     if (!slug) {
       return navigate(`/404`);
     } else {
-      dispatch(patientTabFlag());
+      dispatch(patientTabFlag()).then(() => {
+        setShowHeader(true);
+      });
       let result = await dispatch(doctorInfo());
       if (result?.payload?.response?.status === 404) {
         return navigate(`/404`);
@@ -164,11 +160,8 @@ export const Header = ({ sessionObject }) => {
   return (
     <>
       <Box
-        sx={{
-          zIndex: state["top"] ? 9999 : (state["down"] ? 9999 : 'auto'),
-          position: state["top"] ? "relative" : (state["down"] ? "relative" : 'static'),
-          background: state["top"] ? "#fff" : (state["down"] ? "#fff" : 'transparent'),
-        }}
+      className="header"
+      sx={{backgroundColor:"white"}}
       >
         <AppBar
           position="static"
@@ -182,77 +175,117 @@ export const Header = ({ sessionObject }) => {
           <Container
             maxWidth="xl"
             sx={{
-              padding: "0px 50px",
-              [theme.breakpoints.down('sm')]: {
+              padding: "0px 50px ",
+              [theme.breakpoints.down("md")]: {
                 padding: "0px 10px",
               },
             }}
           >
-            <Grid container sx={{ flexWrap: "nowrap" }} spacing={{ md: 2 }}>
-              <Grid item xs={12} md={5} sx={{ alignItems: "center" }} >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: { xs: 3, md: 7, lg: 5 },
-                    height: "3.75rem",
-                    width: "100%",
-                    [theme.breakpoints.down("sm")]: {
-                      justifyContent: "space-between",
-                    },
-                  }}
-                >
-                  <StyleLogo
-                    onClick={() => {
-                      getActiveTab(0);
-                      navigate(`/?slug=${slug}`);
+            <>
+              <Grid container className="header__container" spacing={{ md: 2 }}>
+                <Grid className="header__container_child1" item xs={12} md={5} sm={12} sx={{
+                  alignItems: "center",
+                }} >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: { xs: 3, md: 7, lg: 5 },
+                      height: "3.75rem",
+                      width: "100%",
+                      [theme.breakpoints.down("sm")]: {
+                        justifyContent: "space-between",
+                      },
+
+
                     }}
                   >
-                    <DTLogo width="100%" height="100%" />
-                  </StyleLogo>
-                  <Box sx={{ ...flexCenter, gap: { xs: "4px", md: 1, lg: 4 } }}>
-                    {routes?.length > 0 &&
-                      routes?.map((item, i) => {
-                        return item.name === "History" ? (
-                          tabs &&
-                          tabs["patient_dashboard_history_tab"]?.active && (
-                            <Box
-                              key={i}
-                              onClick={() => {
-                                getActiveTab(i);
-                                navigate(item.path);
-                              }}
-                              sx={
-                                value === i
-                                  ? {
-                                    ...activeBorder,
-                                    borderColor: "#E6682D",
-                                  }
-                                  : {
-                                    ...activeBorder,
-                                    borderColor: "transparent",
-                                  }
-                              }
-                            >
-                              <StyleTabText
-                                label={item?.name}
+                    <StyleLogo
+                      onClick={() => {
+                        getActiveTab(0);
+                        navigate(`/`);
+                      }}
+                    >
+                      <DTLogo width="100%" height="100%" />
+                    </StyleLogo>
+                    <Box sx={{ ...flexCenter, gap: { xs: 1, md: 1, lg: 4 } }}>
+                      {routes?.length > 0 &&
+                        routes?.map((item, i) => {
+                          return item.name === "History" ? (
+                            tabs &&
+                            tabs["patient_dashboard_history_tab"]?.active && (
+                              <Box
+                                key={i}
+                                onClick={() => {
+                                  getActiveTab(i);
+                                  navigate(item.path);
+                                }}
                                 sx={
                                   value === i
                                     ? {
-                                      ...tabStyle?.active_tab,
+                                      ...activeBorder,
+                                      borderColor: "#E6682D",
                                     }
                                     : {
-                                      ...tabStyle.default_tab,
+                                      ...activeBorder,
+                                      borderColor: "transparent",
                                     }
                                 }
                               >
-                                {item?.name}
-                              </StyleTabText>
-                            </Box>
-                          )
-                        ) : item.name === "My Profile" ? (
-                          tabs &&
-                          tabs["patient_dashboard_view_profile"]?.active && (
+                                <StyleTabText
+                                  label={item?.name}
+                                  sx={
+                                    value === i
+                                      ? {
+                                        ...tabStyle?.active_tab,
+                                      }
+                                      : {
+                                        ...tabStyle.default_tab,
+                                      }
+                                  }
+                                >
+                                  {item?.name}
+                                </StyleTabText>
+                              </Box>
+                            )
+                          ) : item.name === "My Profile" ? (
+                            tabs &&
+                            tabs["patient_dashboard_view_profile"]?.active && (
+                              <Box
+                                key={i}
+                                onClick={() => {
+                                  getActiveTab(i);
+                                  navigate(item?.path);
+                                }}
+                                sx={
+                                  value === i
+                                    ? {
+                                      ...activeBorder,
+                                      borderColor: "#E6682D",
+                                    }
+                                    : {
+                                      ...activeBorder,
+                                      borderColor: "transparent",
+                                    }
+                                }
+                              >
+                                <StyleTabText
+                                  label={item?.name}
+                                  sx={
+                                    value === i
+                                      ? {
+                                        ...tabStyle?.active_tab,
+                                      }
+                                      : {
+                                        ...tabStyle.default_tab,
+                                      }
+                                  }
+                                >
+                                  {item?.name}
+                                </StyleTabText>
+                              </Box>
+                            )
+                          ) : (
                             <Box
                               key={i}
                               onClick={() => {
@@ -261,10 +294,7 @@ export const Header = ({ sessionObject }) => {
                               }}
                               sx={
                                 value === i
-                                  ? {
-                                    ...activeBorder,
-                                    borderColor: "#E6682D",
-                                  }
+                                  ? { ...activeBorder, borderColor: "#E6682D" }
                                   : {
                                     ...activeBorder,
                                     borderColor: "transparent",
@@ -286,71 +316,50 @@ export const Header = ({ sessionObject }) => {
                                 {item?.name}
                               </StyleTabText>
                             </Box>
-                          )
-                        ) : (
-                          <Box
-                            key={i}
-                            onClick={() => {
-                              getActiveTab(i);
-                              navigate(item?.path);
-                            }}
-                            sx={
-                              value === i
-                                ? { ...activeBorder, borderColor: "#E6682D" }
-                                : {
-                                  ...activeBorder,
-                                  borderColor: "transparent",
-                                }
-                            }
-                          >
-                            <StyleTabText
-                              label={item?.name}
-                              sx={
-                                value === i
-                                  ? {
-                                    ...tabStyle?.active_tab,
-                                  }
-                                  : {
-                                    ...tabStyle.default_tab,
-                                  }
-                              }
-                            >
-                              {item?.name}
-                            </StyleTabText>
-                          </Box>
-                        );
-                      })}
+                          );
+                        })}
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
+                </Grid>
 
+                {
+                  tabs && (tabs?.patient_dashboard_recapture_percentage?.active || tabs?.patient_dashboard_suspect_percentage?.active) && doctorDetail?.doctor_name && ((doctorDetail?.recapture_percentage !== "-") || (doctorDetail?.suspects_addressed_percentage !== "-")) ?
+                    <Grid item md={7} sm={12} className="suspect_recapture_header"
+                      sx={(theme) => ({
+                        ...(tabs &&
+                          (tabs?.patient_dashboard_recapture_percentage?.active ||
+                            tabs?.patient_dashboard_suspect_percentage?.active) &&
+                          doctorDetail?.doctor_name
+                          ? {
+                            
+                          }
+                          : null)
+                      })}
 
-              <Grid className="suspect_recapture_header" item md={7} sm={6}>
-                <Box
-                  sx={{
-                    ...flexCenter,
-                    // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
-                    width: "100%",
-                    height: "3.75rem",
-                    justifyContent: "flex-end",
-                    [theme.breakpoints.down("sm")]: {
-                      display: "none",
-                    },
-                    [theme.breakpoints.down("lg")]: {},
-                  }}
-                >
+                    >
+                      <Box
+                        className="panel_metric_header"
+                        sx={{
+                          ...flexCenter,
+                          // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                          width: "100%",
+                          height: "3.75rem",
+                          // justifyContent: "flex-end",
+                          // [theme.breakpoints.down("sm")]: {
+                          //   justifyContent: 'flex-start'
+                          // },
+                          [theme.breakpoints.down("lg")]: {},
+                        }}
+                      >
 
-                  {
-                    tabs && tabs["patient_dashboard_recapture_percentage"].active && tabs["patient_dashboard_suspect_percentage"].active ?
-                      <>
-                        <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                        <Box sx={{ ...flexCenter, gap: 0.2, flexDirection: "column" }}>
                           <StyleText
                             sx={{
                               fontWeight: 600,
                               fontSize: "0.875rem",
                               color: "#000",
 
-                              [theme.breakpoints.only("md")]: {
+                              [theme.breakpoints.down("md")]: {
                                 p: 0,
                               },
                             }}
@@ -365,7 +374,7 @@ export const Header = ({ sessionObject }) => {
                               fontSize: "0.875rem",
                               color: "#000",
 
-                              [theme.breakpoints.only("md")]: {
+                              [theme.breakpoints.down("md")]: {
                                 p: 0,
                               },
                             }}
@@ -376,9 +385,9 @@ export const Header = ({ sessionObject }) => {
                         </Box>
 
                         {tabs &&
-                          tabs["patient_dashboard_recapture_percentage"]
+                          (tabs["patient_dashboard_recapture_percentage"] || tabs["patient_dashboard_recapture_percentage"].active)
                           && (
-                            <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                            <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
                               <StyleText
                                 sx={{
                                   fontWeight: 600,
@@ -399,16 +408,19 @@ export const Header = ({ sessionObject }) => {
                                   color: theme.palette.success.main,
                                   fontWeight: 600,
                                   fontSize: "0.875rem",
+                                  marginTop: "3px"
                                 }}
                               >
-                                {doctorDetail?.recapture_percentage || "-"}
+                                {doctorDetail?.recapture_percentage || " - "}
                               </StyleText>
                             </Box>
                           )}
 
                         {tabs &&
-                          tabs["patient_dashboard_suspect_percentage"] && (
-                            <Box sx={{ ...flexCenter, gap: 0.7, flexDirection: "column" }}>
+                          (tabs["patient_dashboard_suspect_percentage"] || tabs["patient_dashboard_suspect_percentage"].active)
+
+                          && (
+                            <Box sx={{ ...flexCenter, gap: 0.4, flexDirection: "column" }}>
                               <StyleText
                                 sx={{
                                   fontWeight: 600,
@@ -425,36 +437,75 @@ export const Header = ({ sessionObject }) => {
                                   fontFamily: "Proxima nova",
                                   fontWeight: 600,
                                   fontSize: "0.875rem",
+                                  marginTop: "3px"
                                 }}
                               >
-                                {doctorDetail?.suspects_addressed_percentage || "-"}
+                                {doctorDetail?.suspects_addressed_percentage || " - "}
                               </StyleText>
                             </Box>
-
                           )}
-                      </> : null
-                  }
+                        <Box className="header_patient_name" sx={{ whiteSpace: "nowrap" }}>
+                          <StyleText
+                            sx={{
+                              fontWeight: 600,
+                              [theme.breakpoints.up(967)]: {
+                                marginLeft: "50px"
+                              },
+                            }}
+                          >
+                            {doctorDetail?.doctor_name && doctorDetail?.doctor_name || " - "}
+                          </StyleText>
+                        </Box>
+                      </Box>
+                    </Grid> :
+                    (doctorDetail?.doctor_name) ?
+                      <Grid item md={7} sm={12} className="suspect_recapture_header"
+                        sx={(theme) => ({
+                          ...(tabs &&
+                            (tabs?.patient_dashboard_recapture_percentage?.active ||
+                              tabs?.patient_dashboard_suspect_percentage?.active) &&
+                            doctorDetail?.doctor_name
+                            ? {
+                              [theme.breakpoints.down("sm")]: {
+                                display: "none"
+                              }
+                            }
+                            : null)
+                        })}
 
-                  <Box>
-                    <StyleText
-                      sx={{
-                        fontWeight: 600,
-                        [theme.breakpoints.down("lg")]: {
-                          width: "10rem",
-                        },
-                      }}
-                    >
-                      {doctorDetail?.doctor_name && doctorDetail?.doctor_name || ""}
-                    </StyleText>
-                  </Box>
-                </Box>
+                      >
+                        <Box
+                          className="panel_metric_header"
+                          sx={{
+                            ...flexCenter,
+                            // gap: { sm: 2, md: 0.9, lg: 1, xl: 1 },
+                            width: "100%",
+                            height: "3.75rem",
+                            // justifyContent: "flex-end",
+                            // [theme.breakpoints.down("sm")]: {
+                            //   justifyContent: 'flex-start'
+                            // },
+                            [theme.breakpoints.down("lg")]: {},
+                          }}
+                        >
+                          <Box className="header_patient_name" sx={{ whiteSpace: "nowrap" }}>
+                            <StyleText
+                              sx={{
+                                fontWeight: 600,
+                                // [theme.breakpoints.down("lg")]: {
+                                //   width: "10rem",
+                                // },
+                              }}
+                            >
+                              {doctorDetail?.doctor_name && doctorDetail?.doctor_name || " - "}
+                            </StyleText>
+                          </Box>
+                        </Box>
+                      </Grid>
+                      : null}
+
               </Grid>
-
-
-
-
-            </Grid>
-
+            </>
           </Container>
         </AppBar>
 
@@ -620,14 +671,16 @@ export const Header = ({ sessionObject }) => {
   );
 };
 const routes = [
-  { name: "Codes", routesPath: "/", path: `/?slug=${slug}` },
-  { name: "History", routesPath: "/history/", path: `/history/?slug=${slug}` },
+  { name: "Codes", routesPath: "/", path: `/` },
+  { name: "History", routesPath: "/history", path: `/history` },
   {
     name: "My Profile",
-    routesPath: "/my-profile/",
-    path: `/my-profile/?slug=${slug}`,
+    routesPath: "/my-profile",
+    path: `/my-profile`,
   },
 ];
+
+
 const flexCenter = {
   display: "flex",
   alignItems: "center",
