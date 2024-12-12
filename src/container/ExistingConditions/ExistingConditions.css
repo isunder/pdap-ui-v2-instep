@@ -119,6 +119,26 @@
   }
 } */
 
+
+/* more data table css  */
+ .insight-col-decs{
+width: 50%;
+}
+ .insight-col-hcc-code{
+width: 20%;
+}
+ .insight-col-hcc{
+width: 10%;
+}
+ .insight-col-raf{
+  width: 10%;
+}
+.insight-col-recived{
+  width: 10%;
+}
+
+/* more data table css  */
+
 @media screen and (max-width:767px){
   .acc-content-header-item.ct-actions .acc-content-act-btn.act-btn-active {
     width: 100% !important;

@@ -66,7 +66,10 @@ export const StyledText = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     marginTop: "0px",
   },
+
 }));
+
+
 
 export const StyledHead = styled(Typography)(({ theme }) => ({
   color: "#00000075",

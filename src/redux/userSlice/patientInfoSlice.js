@@ -260,6 +260,27 @@ export const patientHistory = createAsyncThunk("patientHistory", async () => {
     }
 });
 
+
+// for patient history
+export const MorDataInsight = createAsyncThunk("MorDataInsight", async () => {
+    try {
+        if (slug) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-mor-data/?slug=${slug}`);
+            return data.data;
+        }
+
+        else if (token) {
+            const data = await axios.get(`${baseUrl}/api/v1/patient-mor-data/`, 
+               { headers: getApiHeaders()}
+            );
+            return data.data;
+        }
+
+    } catch (error) {
+        console.log("error in patient-mor-data", error)
+    }
+});
+
 const slice = createSlice({
     name: 'user',
     initialState: {
@@ -437,6 +458,20 @@ const slice = createSlice({
             
             state.isError = true;
         });
+
+        // for patient existing condition
+        builder.addCase(MorDataInsight.pending, (state) => {
+            state.isLoading = true
+        });
+        builder.addCase(MorDataInsight.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data.MorDataInsight = action.payload;
+        });
+        builder.addCase(MorDataInsight.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+        });
+
     }
 });
 export default slice.reducer

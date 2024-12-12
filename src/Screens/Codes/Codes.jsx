@@ -853,6 +853,14 @@ export const Codes = () => {
         codeCount: summary?.deleted_codes_count,
         container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
       },
+
+      {
+        key: 8,
+        code: "Mor Data Insight",
+        codeCount: summary?.deleted_codes_count,
+        container: <MorData sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+
+      },
     ];
   } else {
     codesData = [
@@ -894,6 +902,14 @@ export const Codes = () => {
         code: "Deleted Codes / Conditions",
         codeCount: summary?.deleted_codes_count,
         container: <DeletedCodes sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+      },
+
+      {
+        key: 7,
+        code: "Mor Data Insight",
+        codeCount: summary?.deleted_codes_count,
+        container: <MorData sessionObject={sessionObject} handleAddEventData={handleAddEventData} />,
+
       },
     ];
   }
